@@ -1,10 +1,5 @@
 from pbvoting.tiebreaking import lexico_tie_breaking
-from pbvoting.tiebreaking.approval import app_score_tie_breaking
-from pbvoting.instance.satisfaction import Cost_Sat
-from pbvoting.fractions import as_frac, frac
-
-from fractions import Fraction
-from copy import copy
+from pbvoting.fractions import frac
 
 
 def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation, tie_breaking, resoluteness=True):
@@ -89,10 +84,11 @@ def method_of_equal_shares(instance, profile, satisfaction=None, sat_profile=Non
                 The instance.
             profile : pbvoting.instance.profile.ApprovalProfile
                 The profile.
-            satisfaction : pbvoting.instance.satisfaction.Satisfaction
-                The class defining the satisfaction function used to measure the social welfare. If no satisfaction
-                is provided, a satisfaction profile needs to be provided. If a satisfation profile is provided, the
-                satisfaction argument is disregarded.
+            satisfaction : class
+                The class defining the satisfaction function used to measure the social welfare. It should be a class
+                inhereting from pbvoting.instance.satisfaction.Satisfaction.
+                If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
+                provided, the satisfaction argument is disregarded.
             sat_profile : pbvoting.instance.satisfaction.SatisfactionFunction
                 The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
                 provided, but a satisfaction function is, the former is computed from the latter.
@@ -120,5 +116,5 @@ def method_of_equal_shares(instance, profile, satisfaction=None, sat_profile=Non
         if sat_profile is None:
             sat_profile = [satisfaction(instance, profile, ballot) for ballot in profile]
 
-    return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation, tie_breaking,
-                      resoluteness=resoluteness)
+    return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation,
+                      tie_breaking, resoluteness=resoluteness)
