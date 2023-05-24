@@ -2,7 +2,7 @@ from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
 from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat
 from pbvoting.instance.pbinstance import Project, PBInstance
 from pbvoting.rules.greedywelfare import greedy_welfare_approval
-from pbvoting.rules.mes import method_of_equal_shares_approval
+from pbvoting.rules.mes import method_of_equal_shares
 
 
 def test_greedy_welfare_approval():
@@ -25,9 +25,8 @@ def test_mes_approval():
     b3 = ApprovalBallot({projects[1], projects[2], projects[3]})
     b4 = ApprovalBallot({projects[2]})
     profile = ApprovalProfile([b1, b2, b3, b4], instance=instance)
-    assert method_of_equal_shares_approval(instance, profile, cost_sat(instance, profile)) == ["p2", "p0"]
-    assert method_of_equal_shares_approval(instance, profile, cardinality_sat(instance, profile)) == \
-           ["p1", "p3", "p0"]
+    assert method_of_equal_shares(instance, profile, satisfaction=Cost_Sat) == ["p2", "p0"]
+    assert method_of_equal_shares(instance, profile, satisfaction=Cardinality_Sat) == ["p1", "p3", "p0"]
 
 
 if __name__ == "__main__":
