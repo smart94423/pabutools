@@ -1,5 +1,5 @@
-from pbvoting.tiebreaking.approval import APPROVAL_TIE_BREAKING
-from pbvoting.instance.satisfaction import cost_sat
+from pbvoting.tiebreaking.approval import app_score_tie_breaking
+from pbvoting.instance.satisfaction import Cost_Sat
 from pbvoting.fractions import as_frac
 
 from fractions import Fraction
@@ -48,7 +48,7 @@ def affordable(project, approvers, leftover_budgets):
 
 
 def select_projects(instance, profile, satisfaction_func, leftover_budgets, allocation,
-                    tiebreaking_rule=APPROVAL_TIE_BREAKING, resoluteness=True):
+                    tiebreaking_rule=app_score_tie_breaking, resoluteness=True):
     minimal_alpha = None
     argmin = None
     for project in instance:
@@ -70,8 +70,8 @@ def select_projects(instance, profile, satisfaction_func, leftover_budgets, allo
     return argmin
 
 
-def method_of_equal_shares_approval(instance, profile, satisfaction_func=cost_sat,
-                                    initial_budget_allocation=(), tiebreaking_rule=APPROVAL_TIE_BREAKING,
+def method_of_equal_shares_approval(instance, profile, satisfaction=Cost_Sat,
+                                    initial_budget_allocation=(), tiebreaking_rule=app_score_tie_breaking,
                                     resoluteness=True):
     if not resoluteness:
         raise NotImplementedError
@@ -79,7 +79,7 @@ def method_of_equal_shares_approval(instance, profile, satisfaction_func=cost_sa
     leftover_budgets = [Fraction(int(instance.budget_limit), len(profile)) for _ in profile]
     allocation = list(initial_budget_allocation)
     while True:
-        project_candidates = select_projects(instance, profile, satisfaction_func, leftover_budgets, allocation,
+        project_candidates = select_projects(instance, profile, satisfaction, leftover_budgets, allocation,
                                              tiebreaking_rule=tiebreaking_rule, resoluteness=resoluteness)
 
         if project_candidates is None:

@@ -20,4 +20,4 @@ def lexicographic_untie(instance, profile, project):
     return project.name
 
 
-LEXICO_TIE_BREAKING = TieBreakingRule(lexicographic_untie)
+lexico_tie_breaking = TieBreakingRule(lexicographic_untie)

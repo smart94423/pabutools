@@ -1,14 +1,15 @@
 from copy import copy
 from fraction import Fraction
 
+from pbvoting.fractions import as_frac, frac
 from pbvoting.instance.pbinstance import total_cost
-from pbvoting.tiebreaking import LEXICO_TIE_BREAKING
+from pbvoting.instance.profile import ApprovalProfile
+from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.utils import fixed_size_subsets
-from pbvoting.instance.satisfaction import AdditiveSatisfactionFunction
+from pbvoting.instance.satisfaction import AdditiveSatisfaction, Cost_Sat
 
 
-def greedy_scheme(instance, profile, budget_allocation, score_function, tie_breaking,
-                  resoluteness=True):
+def greedy_scheme(instance, profile, sat_profile, budget_allocation, tie_breaking, resoluteness=True):
     """
         The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that
         lead to the highest increase in total score divided by the cost of the project. Projects that would lead to a
@@ -19,10 +20,10 @@ def greedy_scheme(instance, profile, budget_allocation, score_function, tie_brea
                 The instance.
             profile : pbvoting.instance.profile.ApprovalProfile
                 The profile.
+            sat_profile : pbvoting.instance.pbinstance.SatisfactionProfile
+                The profile of satisfaction functions.
             budget_allocation : collection of pbvoting.instance.pbinstance.Project
                 An initial budget allocation, typically empty.
-            score_function : func
-                The score function used that maps instances, ballots and sets of projects to a score.
             tie_breaking : pbvoting.rules.tiebreaking.TieBreakingRule
                 The tie-breaking rule used.
             resoluteness : bool, optional
@@ -33,7 +34,7 @@ def greedy_scheme(instance, profile, budget_allocation, score_function, tie_brea
             list of pbvoting.instance.pbinstance.Project if resolute, list of the previous if irresolute
     """
 
-    def aux(inst, prof, allocs, alloc, score, tie, resolute):
+    def aux(inst, prof, sats, allocs, alloc, tie, resolute):
         current_cost = total_cost(alloc)
         feasible = set(project for project in instance if project not in alloc and
                        current_cost + project.cost <= instance.budget_limit)
@@ -46,10 +47,9 @@ def greedy_scheme(instance, profile, budget_allocation, score_function, tie_brea
             argmax_marginal_score = []
             for project in feasible:
                 new_alloc = copy(alloc) + [project]
-                total_marginal_score = Fraction(0)
-                for ballot in prof:
-                    total_marginal_score += Fraction(score(inst, ballot, new_alloc) -
-                                                     score(inst, ballot, alloc), project.cost)
+                total_marginal_score = as_frac(0)
+                for sat in sats:
+                    total_marginal_score += frac(sat.sat(new_alloc) - sat.sat(alloc), project.cost)
 
                     if best_marginal_score is None or total_marginal_score > best_marginal_score:
                         best_marginal_score = total_marginal_score
@@ -62,11 +62,11 @@ def greedy_scheme(instance, profile, budget_allocation, score_function, tie_brea
                 tied_projects = tied_projects[:1]
             for selected_project in tied_projects:
                 new_alloc = copy(alloc) + [selected_project]
-                aux(inst, prof, allocs, new_alloc, score, tie, resolute)
+                aux(inst, prof, sats, allocs, new_alloc, tie, resolute)
 
     initial_budget_allocation = copy(budget_allocation)
     all_budget_allocations = []
-    aux(instance, profile, all_budget_allocations, initial_budget_allocation, score_function, tie_breaking,
+    aux(instance, profile, sat_profile, all_budget_allocations, initial_budget_allocation, tie_breaking,
         resoluteness)
     if resoluteness:
         return all_budget_allocations[0]
@@ -74,20 +74,21 @@ def greedy_scheme(instance, profile, budget_allocation, score_function, tie_brea
         return all_budget_allocations
 
 
-def greedy_scheme_additive_satisfaction(instance, profile, budget_allocation, score_function, tie_breaking,
-                                        resoluteness=True):
+def greedy_scheme_additive(instance, profile, sat_profile, budget_allocation, tie_breaking,
+                           resoluteness=True):
     """
-        Faster version of the inner algorithm for the greedy rule, if the satisfaction function is additive.
+        Faster version of the inner algorithm for the greedy rule, if the scores are additive and the same for all
+        voters.
         Parameters
         ----------
             instance : pbvoting.instance.pbinstance.PBInstance
                 The instance.
             profile : pbvoting.instance.profile.ApprovalProfile
                 The profile.
+            sat_profile : pbvoting.instance.pbinstance.SatisfactionProfile
+                The profile of satisfaction functions.
             budget_allocation : collection of pbvoting.instance.pbinstance.Project
                 An initial budget allocation, typically empty.
-            score_function : func
-                The score function used that maps instances, ballots and sets of projects to a score.
             tie_breaking : pbvoting.rules.tiebreaking.TieBreakingRule
                 The tie-breaking rule used.
             resoluteness : bool, optional
@@ -103,11 +104,7 @@ def greedy_scheme_additive_satisfaction(instance, profile, budget_allocation, sc
     ordered_projects = tie_breaking.order(instance, profile, projects)
 
     def satisfaction_density(proj):
-        res = 0
-        for ballot in profile:
-            if proj in ballot:
-                res += score_function(instance, ballot, [proj]) / proj.cost
-        return res
+        return frac(sum(sat.sat([proj]) for sat in sat_profile), proj.cost)
 
     ordered_projects.sort(key=satisfaction_density, reverse=True)
 
@@ -121,27 +118,11 @@ def greedy_scheme_additive_satisfaction(instance, profile, budget_allocation, sc
     if resoluteness:
         return selection
 
-    cost_last_project = selection[-1].cost
-    n_selected_tied_projects = 0
-    for project in selection:
-        if project.cost == cost_last_project:
-            n_selected_tied_projects += 1
-
-    tied_projects = []
-    for project in ordered_projects:
-        if project.cost == cost_last_project:
-            tied_projects.append(project)
-
-    selections = []
-    for tail in fixed_size_subsets(tied_projects, n_selected_tied_projects):
-        new_selection = copy(selection[:-n_selected_tied_projects])
-        new_selection += list(tail)
-        selections.append(selection)
-    return selections
+    raise NotImplementedError("Non resolute version of greedy_scheme_unanimous_additive has not been implemented.")
 
 
-def greedy_welfare_approval(instance, profile, satisfaction, tie_breaking=LEXICO_TIE_BREAKING, resoluteness=True,
-                            initial_budget_allocation=None):
+def greedy_welfare_approval(instance, profile, satisfaction=None, sat_profile=None, tie_breaking=lexico_tie_breaking,
+                            resoluteness=True, initial_budget_allocation=None):
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
         lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would
@@ -152,10 +133,16 @@ def greedy_welfare_approval(instance, profile, satisfaction, tie_breaking=LEXICO
                 The instance.
             profile : pbvoting.instance.profile.ApprovalProfile
                 The profile.
-            satisfaction : pbvoting.instance.satisfaction.SatisfactionFunction
-                The satisfaction function used to define the social welfare.
+            satisfaction : pbvoting.instance.satisfaction.Satisfaction
+                The class defining the satisfaction function used to measure the social welfare. If no satisfaction
+                is provided, a satisfaction profile needs to be provided. If a satisfation profile is provided, the
+                satisfaction argument is disregarded.
+            sat_profile : pbvoting.instance.satisfaction.SatisfactionFunction
+                The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
+                provided, but a satisfaction function is, the former is computed from the latter.
             tie_breaking : pbvoting.rules.tiebreaking.TieBreakingRule, optional
                 The tie-breaking rule used.
+                Defaults to lexico_tie_breaking.
             resoluteness : bool, optional
                 Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
                 Defaults to True.
@@ -170,9 +157,15 @@ def greedy_welfare_approval(instance, profile, satisfaction, tie_breaking=LEXICO
     else:
         budget_allocation = []
 
-    if isinstance(satisfaction, AdditiveSatisfactionFunction):
-        return greedy_scheme_additive_satisfaction(instance, profile, budget_allocation, satisfaction.sat, tie_breaking,
-                                                   resoluteness=resoluteness)
+    if satisfaction is None:
+        if sat_profile is None:
+            raise ValueError("satisfaction and sat_profile cannot both be None")
+    else:
+        if sat_profile is None:
+            sat_profile = [satisfaction(instance, profile, ballot) for ballot in profile]
 
-    return greedy_scheme(instance, profile, budget_allocation, satisfaction.sat, tie_breaking,
-                         resoluteness=resoluteness)
+    if resoluteness and satisfaction is not None and issubclass(satisfaction, AdditiveSatisfaction):
+        return greedy_scheme_additive(instance, profile, sat_profile, budget_allocation, tie_breaking,
+                                      resoluteness=resoluteness)
+
+    return greedy_scheme(instance, profile, sat_profile, budget_allocation, tie_breaking, resoluteness=resoluteness)

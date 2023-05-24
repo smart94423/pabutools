@@ -20,4 +20,4 @@ def approval_score_untie(instance, profile, project):
     return -profile.approval_score(project)
 
 
-APPROVAL_TIE_BREAKING = TieBreakingRule(approval_score_untie)
+app_score_tie_breaking = TieBreakingRule(approval_score_untie)

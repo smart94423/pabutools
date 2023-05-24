@@ -33,7 +33,9 @@ class Ballot:
 
 class Profile(list):
     """
-        A profile, that is, a list of ballots. This class inherits from `list`.
+        A profile, that is, a list of elemnts per voters. It typically contrains all the ballots of the voters, but
+        can also be a profile of satisfaction functions.
+        This class inherits from `list`.
         This is the class that all profile formats inherit from.
         Attributes
         ----------

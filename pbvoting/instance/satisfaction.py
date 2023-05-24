@@ -2,6 +2,7 @@ import numpy as np
 
 from pbvoting.fractions import as_frac, frac
 from pbvoting.instance.pbinstance import total_cost
+from pbvoting.instance.profile import Profile
 
 
 class Satisfaction:
@@ -126,33 +127,73 @@ class AdditiveSatisfaction(Satisfaction):
         return sum(self.get_score(project) for project in projects)
 
 
-def cardinality_sat(instance, profile, ballot):
-    return AdditiveSatisfaction(instance, profile, ballot,
-                                lambda inst, prof, ball, proj: as_frac(int(proj in ball)))
+def cardinality_sat_func(instance, profile, ballot, project):
+    return as_frac(int(project in ballot))
 
 
-def cost_sat(instance, profile, ballot):
-    return AdditiveSatisfaction(instance, profile, ballot,
-                                lambda inst, prof, ball, proj: int(proj in ball) * proj.cost)
+class Cardinality_Sat(AdditiveSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Cardinality_Sat, self).__init__(instance, profile, ballot, cardinality_sat_func)
 
 
-def effort_sat(instance, profile, ballot):
-    return AdditiveSatisfaction(instance, profile, ballot,
-                                lambda inst, prof, ball, proj: frac(proj.cost, sum(proj in b for b in prof)))
+def cost_sat_func(instance, profile, ballot, project):
+    return as_frac(int(project in ballot) * project.cost)
 
 
-def cc_sat(instance, profile, ballot):
-    return FunctionalSatisfaction(instance, profile, ballot,
-                                  lambda inst, prof, ball, projs: as_frac(int(any(p in ball for p in projs))))
+class Cost_Sat(AdditiveSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Cost_Sat, self).__init__(instance, profile, ballot, cost_sat_func)
 
 
-def cost_square_root_sat(instance, profile, ballot):
-    return FunctionalSatisfaction(instance, profile, ballot,
-                                  lambda inst, prof, ball, projs: as_frac(np.sqrt(
-                                      total_cost([p for p in projs if p in ball]))))
+def effort_sat_func(instance, profile, ballot, project):
+    return frac(project.cost, sum(project in b for b in profile))
 
 
-def log_sat(instance, profile, ballot):
-    return FunctionalSatisfaction(instance, profile, ballot,
-                                  lambda inst, prof, ball, projs: as_frac(np.log(
-                                      1 + total_cost([p for p in projs if p in ball]))))
+class Effort_Sat(AdditiveSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
+
+
+def cc_sat_func(instance, profile, ballot, projects):
+    return as_frac(int(any(p in ballot for p in projects)))
+
+
+class CC_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
+
+
+def cost_sqrt_sat_func(instance, profile, ballot, projects):
+    return as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
+
+
+class Cost_Sqrt_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Cost_Sqrt_Sat, self).__init__(instance, profile, ballot, cost_sqrt_sat_func)
+
+
+def log_sat_func(instance, profile, ballot, projects):
+    return as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
+
+
+class Log_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Log_Sat, self).__init__(instance, profile, ballot, log_sat_func)
+
+
+class SatisfactionProfile(Profile):
+    """
+        A profile of satisfaction functions, one per voter.
+         Inherits from `pbvoting.instance.profile.Profile`.
+        Attributes
+        ----------
+    """
+
+    def __init__(self, iterable=(), instance=None):
+        super(SatisfactionProfile, self).__init__(iterable=iterable, instance=instance)
