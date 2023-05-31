@@ -259,8 +259,8 @@ class CumulativeProfile(Profile):
 
 class OrdinalBallot(list, Ballot):
     def __init__(self, iterable=(), name="", meta=None):
-        list.__init__(iterable)
-        Ballot.__init__(name=name, meta=meta)
+        list.__init__(self, iterable)
+        Ballot.__init__(self, name=name, meta=meta)
 
     def __add__(self, value):
         return OrdinalBallot(list.__add__(self, value))

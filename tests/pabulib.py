@@ -159,3 +159,205 @@ voter_id;vote;points
     assert profile[4][projects[13]] == 1
     assert profile[4][projects[20]] == 1
 
+def test_ordinal():
+    with open("test.pb", "w", encoding="utf-8") as f:
+        f.write("""META
+key;value
+description;Municipal PB in Kraków
+country;Poland
+unit;Kraków
+instance;2018
+num_projects;123
+num_votes;32958
+budget;8000100
+vote_type;ordinal
+rule;greedy
+date_begin;16.06.2018
+date_end;30.06.2018
+min_length;3
+max_length;3
+language;polish
+edition;5
+PROJECTS
+project_id;cost;votes;score;name
+23;1725000;6512;14142;Zielony pochłaniacz smogu dla każdej dzielnicy!
+26;1700000;3780;8153;Tężnia solankowa
+18;2400030;2817;6068;CZYŻBY ZAPOMNIANO O ZALEWIE NOWOHUCKIM... i NOWEJ HUCIE ?
+120;296310;2687;5762;Bezpieczny ratownik - Bezpieczny Krakowianin
+95;1500000;2574;5069;Kąpielisko nad Bagrami Wielkimi - plaża i toalety
+34;2400000;2167;5033;ZIELONA KRUPNICZA, CZYLI ULICA PRZYJAZNA DLA MIESZKAŃCÓW
+39;700000;1998;4561;Winda dla chorych
+51;420000;2082;4503;Młynówka Królewska - tworzymy najdłuższy park w Polsce
+27;2275000;2029;4296;TAK DLA WILGI
+7;860000;2416;4185;Donice zamiast słupków.
+8;40700;2086;4019;Łączymy Parki Krakowa
+3;645000;1781;3617;REWITALIZACJA ALEI SŁOWACKIEGO
+123;260000;2008;3570;Ekologicznie przeciw komarom!
+62;2400000;1867;3438;Kocham Staw Płaszowski
+97;300000;1247;3267;Czerwone korale - magia stroju krakowskiego
+80;299999;1768;3239;NOWOCZESNY AMBULANS MEDYCZNY
+4;2320000;1501;3168;REWITALIZACJA PARKU KLEPARSKIEGO
+36;2400020;1607;3154;Nowy Park w Krakowie
+58;2400000;1563;3125;REWITALIZACJA PARKU MŁYNÓWKA KRÓLEWSKA ŁĄCZY DZIELNICE 1,5,6
+92;740000;1344;2663;Rowerem i pieszo bezpiecznie z mostu Wandy
+22;258000;966;2488;Przystanek początkowy 164 na pętli Piaski Nowe
+60;1000000;1239;2462;MAGICZNY PLAC ZABAW W PARKU JORDANA (K.DOMU HARCERZA)
+9;200000;1289;2397;Ogród witalny ... mimo że szpitalny! 
+103;550000;1121;2347;PLAC AKTYWNEGO WYPOCZYNKU DLA MŁODZIEŻY NA ZAKRZÓWKU
+19;1500000;1118;2337;Magiczny Park Kozłówek
+89;504300;1157;2284;Budowa ciągu pieszo-rowerowego wzdłuż al.Bora Komorowskiego
+35;800000;1188;2283;#BezpieczniNaBulwarach
+56;2400030;959;2269;DOŚĆ DZIUR - WsPóLnIe WYREMONTUJMY Bieńczycką i Kocmyrzowską
+78;170000;1356;2251;Dęby zamiast pomników
+15;250000;1162;2163;BON KULTURALNY DLA SENIORA
+83;1800000;1146;2102;Zielone Aleje Miejskie
+67;150000;1027;2079;SMOK CO KROK czyli szlakiem krakowskich smoków 
+122;1539520;1066;2055;Ścieżka rowerowa od ul. Rydla do ul. Wrocławskiej
+53;55000;1063;1991;Biblioteka Gier Planszowych
+52;150000;908;1930;Zaczytaj się w Krakowie
+117;25000;1498;1895;Mali Ratownicy 
+90;2400000;970;1845;Zielona Twierdza 
+6;134050;974;1835;Rowerem z Krupniczej na Ingardena
+81;1440000;971;1756;Bezpieczny Kraków dzięki monitoringowi
+1;1500000;699;1747;Spraw aby samolot przy ważnej trasie odzyskał piękno.
+17;35600;903;1702;Trening samoobrony i asertywności dla dziewcząt
+76;1050000;853;1691;Aleja Róż na nowo – cz. 2: mała architektura
+42;2400000;867;1660;"Z rozkładem autobusów ""za pan brat"" "
+70;2400030;916;1649;Renowacja, oznakowanie i promocja  KOPCA WANDY
+91;1740000;646;1635;Bezpieczny chodnik do Tyńca
+12;210000;862;1554;(NIE) POŁAMCIE SOBIE NÓG!
+5;32750;803;1509;Senior z pasją
+106;68500;808;1387;Zielona Aleja Konopnickiej
+61;185000;885;1381;70 dobrych uczynków na 70 lat Nowej Huty
+63;350000;736;1372;Plac Zabaw dla Dorosłych
+72;1500000;575;1318;ORLIK POD BALONEM
+101;250000;629;1306;ul. Bonarka z miejscem odpoczynku mieszkańców
+112;183900;605;1278;Asystent Osoby Niepełnosprawnej
+44;1500000;656;1263;Park aktywności i rekreacji ze strefą dla czworonogów
+87;1100000;548;1226;W malinowym chruśniaku!- krakowski ogród społecznościowy
+65;600000;526;1222;Sygnalizacja świetlna:  Malborska - Macedońska - Szkolna
+55;900000;647;1189;Nowe miejsca relaksu przy zdrojach artezyjskich
+10;137800;553;1103;Program profilaktyczny o zdrowym odżywianiu dla przedszkoli
+48;134000;524;1086;Na rolkach do pracy - połączenie dzielnic śródmiejskich
+116;21000;465;1084;Modernizacja trasy biegowej parkrun w Krakowie.
+11;300000;627;1083;Elektroniczne tablice informacyjne przy głównych arteriach
+114;195000;528;1061;przystańMAM! - stworzenie miejsc dla osób z małymi dziećmi
+45;400000;532;980;Asocjacja Promotorów Radosnego Ptaka - szlaki ornitologiczne
+64;31000;546;970;Kultura w zasięgu ręku seniora
+115;1000000;508;953;NOWY PLAC ZABAW NA PLANTACH PRZY DWORCU GŁÓWNYM
+85;1780000;470;948;Mobilne kapsuły inhalacyjne2019-nowa jakość zdrowego oddechu
+107;2400000;352;943;Poprawa bezpieczeństwa na ul.Rącznej
+69;2400000;468;909;Które Rondo Mogilskie?
+121;844000;437;899;Parking dla mieszkańców i pacjentów przychodni - Kozłówek
+41;50000;507;877;Drzewa dla Cmentarza Rakowickiego
+33;238500;423;840;Centrum Mechatroniki i Robotyki
+68;720000;395;826;Budowa boiska wielofunkcyjnego w sercu Czyżyńskich osiedli
+94;451000;438;807;Miejski Relaks
+66;318560;306;789;STUDENT Z WERWĄ - bezpłatne zajęcia dla studentów
+84;192000;446;766;Zazieleńmy Bulwar Wołyński!
+50;1000000;344;739;Park rozrywki na Chełmie
+102;576000;417;729;Samoobsługowy Kraków
+75;2270000;385;724;Strzelanie - bawi i uczy
+111;650000;367;721;Plac zabaw na Kurdwanowie - bezpiecznie i kreatywnie
+47;369800;424;710;SMOK vs SMOG - THERMOS CUBE 59 solarna altanka maluszka
+2;140000;332;677;"Cykl zawodów biegowych ""Moja przygoda z bieganiem"" "
+86;46000;384;675;Spływ kajakowy po Rudawie – nowa atrakcja dla krakowian
+99;2400000;350;639;Zaparkuj w Podgórzu
+29;180000;352;626;Siłownia pod chmurką przy Kopcu Kosciuszki
+109;482360;326;623;Roztańczony Kraków
+105;220000;299;620;Bieńczycki Psi Wybieg
+88;120000;313;579;Remont chodnika w ul.Kobierzyńskiej
+79;150000;287;577;LEKKI TORNISTER = ZDROWE DZIECKO
+46;619300;293;564;Stop utonięciom!- Bezpiecznie nad wodą w Krakowie.
+43;550000;253;555;Bezpiecznie do Lidla, (nie) połamcie sobie nóg!
+74;199200;310;545;Zdrowy Kraków - siła kobiet!
+13;1500000;291;537;Poskaczmy razem !!! - kolejne TRAMPOLINY w Bieńczycach
+59;46000;213;504;Szkolenie żeglarskie kadr drużyn żeglarskich w Krakowie
+82;1000000;237;472;Odnowa i zagospodarowanie parku przy ul. Tomickiego
+38;25000;281;471;Dzieci tkwiące tylko w sieci, mają w głowie same śmieci
+104;140300;237;467;Budowa ogólnodostępnego placu zabaw przy ul. Cechowej 57
+21;88500;247;443;Akademia Decjusza
+110;800000;284;407;Młynówka Królewska i Stara Krowodrza - Trasa Historyczna
+30;25000;244;404;Kino dla Seniora - 2500 darmowych biletów do Kina Paradox
+108;1400000;201;382;Budowa brodzika dla dzieci na basenie Wandzianka
+20;60000;212;375;Solarny kącik wypoczynku w ogrodzie przy Krupniczej 38
+16;25000;196;353;„Pełnia życia, pełnia sił”
+71;125000;186;316; Kopiec Kościuszki - Pomnikiem Historii
+98;25200;174;302;Duzi Ratownicy
+73;58000;161;301;Święto Cykliczne 2019
+119;53300;132;271;Teatr Rodz-INNY
+54;40220;143;258;Super Rodzic
+77;905000;131;255;Doświetlamy Planty Bieńczyckie
+93;100000;130;243;Zaczarowana scena w ogrodzie przy Krupniczej 38
+14;2260000;115;224;POMOŻECIE ... ? Przebudujmy WSPÓLNIE ul. Wojciechowskiego
+25;78000;93;186;Dzień z pasją motywacją  samodyscypliną-warsztaty dla dzieci
+96;190000;109;183;Kochasz swój kraj to po nim nie bazgraj - kampania społeczna
+28;35500;81;166;Spotkania ze sztuką cyrkową, aktywny kraków
+118;147600;78;156;Klimatyzacja dla klubu Jędruś na os. Centrum A
+100;165500;82;152;Hutniczek Robotniczek czyli Szlakiem Odkrywców Nowej Huty
+40;75600;83;149;Warsztaty wprowadzające w świat nowoczesnej elektroniki
+32;120000;77;121;Rewitalizacja zieleni przy budynku os. Sportowe 24 Kraków
+24;76000;62;116;"I INTEGRACYJNE ZAWODY PŁYWACKIE ""FAMILY RACE – KRAKÓW 2019"" "
+49;65000;61;101;KRK nasz Kraków. Miejsce spotkań
+113;46800;63;96;Cały ten zgiełk
+31;298000;54;94;"Uwertura koncertowa ""Cracovia"" "
+37;28000;53;83;" ""Co nas uszczęśliwia w Krakowie"" - Konkurs fotograficzny"
+57;25000;26;43;Krakowskie hulanie na gościńcu i wyścig na 1 kilometr
+VOTES
+voter_id;vote;voting_method;district
+0;34,74,23;paper;PODGÓRZE DUCHACKIE
+1;20,34,17;internet;GRZEGÓRZKI
+2;17,23,11;internet;NOWA HUTA
+3;18,3,34;internet;CZYŻYNY
+4;97,120,117;paper;NOWA HUTA
+5;22,19,95;internet;PODGÓRZE DUCHACKIE
+6;19,7,26;internet;BIEŻANÓW-PROKOCIM
+7;3,34,83;internet;CZYŻYNY
+8;23,48,74;paper;ZWIERZYNIEC
+9;43,61,56;paper;WZGÓRZA KRZESŁAWICKIE
+10;56,39,12;internet;CZYŻYNY
+11;67,94,49;internet;KROWODRZA
+12;8,16,13;internet;BIEŻANÓW-PROKOCIM
+13;23,86,102;internet;NOWA HUTA
+14;63,83,23;paper;PODGÓRZE
+15;120,87,106;paper;DĘBNIKI
+16;9,23,70;internet;NOWA HUTA
+17;120,87,106;paper;DĘBNIKI
+18;18,4,55;internet;PRĄDNIK BIAŁY
+19;39,9,23;paper;MISTRZEJOWICE
+20;69,103,23;internet;DĘBNIKI
+21;60,72,66;paper;ZWIERZYNIEC
+22;97,120,117;paper;NOWA HUTA
+23;56,18,61;paper;WZGÓRZA KRZESŁAWICKIE
+24;42,29,36;internet;ZWIERZYNIEC
+25;80,39,10;paper;BIEŻANÓW-PROKOCIM
+26;119,23,33;internet;PODGÓRZE DUCHACKIE
+27;120,72,26;internet;PODGÓRZE
+28;33,121,104;internet;SWOSZOWICE
+29;6,75,13;paper;BRONOWICE
+30;78,4,5;internet;STARE MIASTO
+31;29,36,41;internet;ZWIERZYNIEC
+32;23,123,102;internet;ŁAGIEWNIKI-BOREK FAŁĘCKI
+33;103,106,83;internet;DĘBNIKI
+34;3,7,10;paper;PRĄDNIK CZERWONY
+35;83,61,75;internet;PRĄDNIK CZERWONY
+36;4,41,21;internet;STARE MIASTO
+37;7,23,115;paper;STARE MIASTO
+38;34,42,78;internet;PODGÓRZE
+39;103,17,119;internet;STARE MIASTO
+40;2,4,10;internet;WZGÓRZA KRZESŁAWICKIE
+41;121,19,95;internet;BIEŻANÓW-PROKOCIM
+42;95,75,111;paper;PODGÓRZE DUCHACKIE
+43;84,101,83;internet;PODGÓRZE
+44;4,36,41;internet;KROWODRZA
+""")
+
+    instance, profile = parse_pabulib("test.pb")
+    os.remove("test.pb")
+    assert len(instance) == 123
+    assert instance.budget_limit == 8000100
+    assert len(profile) == 45
+    assert len(profile[44]) == 3
+    assert len(profile[4]) == 3
+
+    assert profile[44] == [instance.get_project("4"), instance.get_project("36"), instance.get_project("41")]
