@@ -1,9 +1,13 @@
 """
 Tools to work with PaBuLib instances.
 """
+from copy import deepcopy
+from fractions import Fraction
 
+from pbvoting.fractions import as_frac
 from pbvoting.instance.pbinstance import PBInstance, Project
-from pbvoting.instance.profile import ApprovalProfile, ApprovalBallot
+from pbvoting.instance.profile import Profile, ApprovalProfile, ApprovalBallot, CardinalProfile, CumulativeProfile, \
+    OrdinalProfile, CardinalBallot, OrdinalBallot
 
 import csv
 import os
@@ -15,13 +19,13 @@ def parse_pabulib(file_path):
         Parameters
         ----------
             file_path : str
-            Path to the PaBuLib file to be parsed.
+                Path to the PaBuLib file to be parsed.
         Returns
         -------
             Tuple of pbvoting.instances.instance.PBInstance and pbvoting.instances.profile.Profile
     """
     instance = PBInstance()
-    profile = ApprovalProfile()
+    ballots = []
     instance.file_path = file_path
     instance.file_name = os.path.basename(file_path)
 
@@ -38,21 +42,44 @@ def parse_pabulib(file_path):
             elif section == "projects":
                 p = Project(project_name=row[0])
                 instance.project_meta[p] = dict()
-                for it, key in enumerate(header[1:]):
-                    instance.project_meta[p][key.strip()] = row[it + 1].strip()
-                p.cost = float(instance.project_meta[p]["cost"].replace(",", "."))
+                for i in range(len(row)):
+                    instance.project_meta[p][header[i].strip()] = row[i].strip()
+                p.cost = Fraction(instance.project_meta[p]["cost"].replace(",", "."))
                 instance.add(p)
             elif section == "votes":
-                if instance.meta["vote_type"] != "approval":
-                    raise NotImplementedError("The PaBuLib parser cannot parse non-approval profiles for now.")
-                ballot = ApprovalBallot()
-                for it, key in enumerate(header[1:]):
-                    ballot.meta[key.strip()] = row[it + 1].strip()
-                for project_name in row[it + 1].split(","):
-                    ballot.add(instance.get_project(project_name))
-                profile.append(ballot)
+                ballot_meta = {}
+                for i in range(len(row)):
+                    ballot_meta[header[i].strip()] = row[i].strip()
+                if instance.meta["vote_type"] == "approval":
+                    ballot = ApprovalBallot()
+                    for project_name in ballot_meta["vote"].split(","):
+                        ballot.add(instance.get_project(project_name))
+                elif instance.meta["vote_type"] in ("scoring", "cumulative"):
+                    ballot = CardinalBallot()
+                    points = ballot_meta["points"].split(',')
+                    for index, project_name in enumerate(ballot_meta["vote"].split(",")):
+                        ballot[instance.get_project(project_name)] = Fraction(points[index].strip())
+                elif instance.meta["vote_type"] == "ordinal":
+                    ballot = OrdinalBallot()
+                    for project_name in ballot_meta["vote"].split(","):
+                        ballot.append(instance.get_project(project_name))
+                else:
+                    raise NotImplementedError("The PaBuLib parser cannot parse {} profiles for now.".format(
+                        instance.meta["vote_type"]))
+                ballot.meta = ballot_meta
+                ballots.append(ballot)
+
+    profile = None
+    if instance.meta["vote_type"] == "approval":
+        profile = ApprovalProfile(deepcopy(ballots))
+    elif instance.meta["vote_type"] == "scoring":
+        profile = CardinalProfile(deepcopy(ballots))
+    elif instance.meta["vote_type"] == "cumulative":
+        profile = CumulativeProfile(deepcopy(ballots))
+    elif instance.meta["vote_type"] == "ordinal":
+        profile = OrdinalProfile(deepcopy(ballots))
 
     # We retrieve the budget limit from the meta information
-    instance.budget_limit = float(instance.meta["budget"].replace(",", "."))
+    instance.budget_limit = Fraction(instance.meta["budget"].replace(",", "."))
 
     return instance, profile

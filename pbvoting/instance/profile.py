@@ -46,7 +46,7 @@ class Profile(list):
     def __init__(self, iterable=(), instance=None):
         super(Profile, self).__init__(iterable)
         if instance is None:
-            instance = PBInstance
+            instance = PBInstance()
         self.instance = instance
 
     def __add__(self, value):
@@ -55,12 +55,12 @@ class Profile(list):
     def __mul__(self, value):
         return Profile(list.__mul__(self, value), instance=self.instance)
 
-    def __getitem__(self, item):
-        result = list.__getitem__(self, item)
-        try:
-            return Profile(result, instance=self.instance)
-        except TypeError:
-            return result
+    # def __getitem__(self, item):
+    #     result = list.__getitem__(self, item)
+    #     try:
+    #         return Profile(result, instance=self.instance)
+    #     except TypeError:
+    #         return result
 
 
 class ApprovalBallot(set, Ballot):
@@ -77,9 +77,6 @@ class ApprovalBallot(set, Ballot):
     def __init__(self, approved=(), name="", meta=None):
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
-
-#    def __contains__(self, item):
-#        return super(ApprovalBallot, self).__contains__(item)
 
     # This allows set method returning copies of a set to work with PBInstances
     @classmethod
@@ -222,19 +219,70 @@ def get_all_approval_profiles(instance, num_agents):
     return combinations_with_replacement(powerset(instance.projects), num_agents)
 
 
-class CardinalBallot(Ballot):
+class CardinalBallot(dict, Ballot):
     """
         A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
         subclass of `pbvoting.instance.profile.Ballot`.
         Attributes
         ----------
-            scores : dict of projects: score
+            iterable : dict of projects: score
                 The score assigned to the projects. The keys are the projects and map to the score.
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, scores=None, name="", meta=None):
-        super(CardinalBallot, self).__init__(name=name, meta=meta)
-        if scores is None:
-            scores = dict()
-        self.scores = scores
+    def __init__(self, iterable=(), name="", meta=None):
+        dict.__init__(self, iterable)
+        Ballot.__init__(self, name=name, meta=meta)
+
+
+class CardinalProfile(Profile):
+    """
+    A profile of cardinal ballots. Inherits from `pbvoting.instance.profile.Profile`.
+    Attributes
+    ----------
+    """
+
+    def __init__(self, iterable=(), instance=None):
+        super(CardinalProfile, self).__init__(iterable=iterable, instance=instance)
+
+
+class CumulativeProfile(Profile):
+    """
+    A profile of cardinal ballots. Inherits from `pbvoting.instance.profile.Profile`.
+    Attributes
+    ----------
+    """
+
+    def __init__(self, iterable=(), instance=None):
+        super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance)
+
+
+class OrdinalBallot(list, Ballot):
+    def __init__(self, iterable=(), name="", meta=None):
+        list.__init__(iterable)
+        Ballot.__init__(name=name, meta=meta)
+
+    def __add__(self, value):
+        return OrdinalBallot(list.__add__(self, value))
+
+    def __mul__(self, value):
+        return OrdinalBallot(list.__mul__(self, value))
+
+    def __getitem__(self, item):
+        result = list.__getitem__(self, item)
+        try:
+            return OrdinalBallot(result)
+        except TypeError:
+            return result
+
+
+class OrdinalProfile(Profile):
+    """
+    A profile of cardinal ballots. Inherits from `pbvoting.instance.profile.Profile`.
+    Attributes
+    ----------
+    """
+
+    def __init__(self, iterable=(), instance=None):
+        super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance)
+
