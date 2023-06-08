@@ -43,24 +43,42 @@ class Profile(list):
                 The instance with respect to which the profile is defined.
     """
 
-    def __init__(self, iterable=(), instance=None):
+    def __init__(self, iterable=(), instance=None, ballot_validation=True):
         super(Profile, self).__init__(iterable)
         if instance is None:
             instance = PBInstance()
         self.instance = instance
+        self.ballot_validation = ballot_validation
+        self.ballot_type = None
+
+    def validate_ballot(self, ballot):
+        if self.ballot_validation and self.ballot_type is not None and type(ballot) != self.ballot_type:
+            raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
+                                                                                            self.__class__.__name__))
 
     def __add__(self, value):
-        return Profile(list.__add__(self, value), instance=self.instance)
+        return Profile(list.__add__(self, value), instance=self.instance, ballot_validation=self.ballot_validation)
 
     def __mul__(self, value):
-        return Profile(list.__mul__(self, value), instance=self.instance)
+        return Profile(list.__mul__(self, value), instance=self.instance, ballot_validation=self.ballot_validation)
 
-    # def __getitem__(self, item):
-    #     result = list.__getitem__(self, item)
-    #     try:
-    #         return Profile(result, instance=self.instance)
-    #     except TypeError:
-    #         return result
+    def __setitem__(self, index, item):
+        self.validate_ballot(item)
+        super().__setitem__(index, item)
+
+    def insert(self, index, item):
+        self.validate_ballot(item)
+        super().insert(index, item)
+
+    def append(self, item):
+        self.validate_ballot(item)
+        super().append(item)
+
+    def extend(self, other):
+        if isinstance(other, type(self)):
+            super().extend(other)
+        else:
+            super().extend(item for item in other)
 
 
 class ApprovalBallot(set, Ballot):
@@ -69,14 +87,16 @@ class ApprovalBallot(set, Ballot):
         is a subclass of `pbvoting.instance.profile.Ballot`.
         Attributes
         ----------
-            approved : collection of projects
-                The approved projects.
-                Defaults to the empty set.
     """
 
-    def __init__(self, approved=(), name="", meta=None):
+    def __init__(self, approved=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
+                 legal_min_cost=None, legal_max_cost=None):
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_cost = legal_min_cost
+        self.legal_max_cost = legal_max_cost
 
     # This allows set method returning copies of a set to work with PBInstances
     @classmethod
@@ -85,7 +105,9 @@ class ApprovalBallot(set, Ballot):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, set) and not hasattr(result, 'foo'):
-                    result = cls(approved=result, name=self.name, meta=self.meta)
+                    result = cls(approved=result, name=self.name, meta=self.meta,
+                                 legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length,
+                                 legal_min_cost=self.legal_min_cost, legal_max_cost=self.legal_max_cost)
                 return result
 
             inner.fn_name = name
@@ -110,8 +132,17 @@ class ApprovalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None):
-        super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance)
+    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+        super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
+        self.ballot_type = ApprovalBallot
+
+    def __add__(self, value):
+        return ApprovalProfile(list.__add__(self, value), instance=self.instance,
+                               ballot_validation=self.ballot_validation)
+
+    def __mul__(self, value):
+        return ApprovalProfile(list.__mul__(self, value), instance=self.instance,
+                               ballot_validation=self.ballot_validation)
 
     def approval_score(self, project):
         """
@@ -230,9 +261,14 @@ class CardinalBallot(dict, Ballot):
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, iterable=(), name="", meta=None):
+    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
+                 legal_min_score=None, legal_max_score=None):
         dict.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_score = legal_min_score
+        self.legal_max_score = legal_max_score
 
 
 class CardinalProfile(Profile):
@@ -242,8 +278,40 @@ class CardinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None):
-        super(CardinalProfile, self).__init__(iterable=iterable, instance=instance)
+    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+        super(CardinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
+        self.ballot_type = CardinalBallot
+
+    def __add__(self, value):
+        return CardinalProfile(list.__add__(self, value), instance=self.instance,
+                               ballot_validation=self.ballot_validation)
+
+    def __mul__(self, value):
+        return CardinalProfile(list.__mul__(self, value), instance=self.instance,
+                               ballot_validation=self.ballot_validation)
+
+
+class CumulativeBallot(CardinalBallot):
+    """
+        A cumulative ballot, that is, a ballot in which the voter has indicated a score for every project using a
+        total number of points allocated to the voter. It is a subclass of `pbvoting.instance.profile.Ballot`.
+        Attributes
+        ----------
+            iterable : dict of projects: score
+                The score assigned to the projects. The keys are the projects and map to the score.
+                Defaults to the empty dictionary.
+    """
+
+    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
+                 legal_min_score=None, legal_max_score=None, legal_min_total_score=None, legal_max_total_score=None):
+        dict.__init__(self, iterable)
+        CardinalBallot.__init__(self, name=name, meta=meta)
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_score = legal_min_score
+        self.legal_max_score = legal_max_score
+        self.legal_min_total_score = legal_min_total_score
+        self.legal_max_total_score = legal_max_total_score
 
 
 class CumulativeProfile(Profile):
@@ -253,25 +321,40 @@ class CumulativeProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None):
-        super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance)
+    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+        super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance,
+                                                ballot_validation=ballot_validation)
+        self.ballot_type = CumulativeBallot
+
+    def __add__(self, value):
+        return CumulativeProfile(list.__add__(self, value), instance=self.instance,
+                                 ballot_validation=self.ballot_validation)
+
+    def __mul__(self, value):
+        return CumulativeProfile(list.__mul__(self, value), instance=self.instance,
+                                 ballot_validation=self.ballot_validation)
 
 
 class OrdinalBallot(list, Ballot):
-    def __init__(self, iterable=(), name="", meta=None):
+    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None, ):
         list.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
 
     def __add__(self, value):
-        return OrdinalBallot(list.__add__(self, value))
+        return OrdinalBallot(list.__add__(self, value), name=self.name, meta=self.meta,
+                             legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length)
 
     def __mul__(self, value):
-        return OrdinalBallot(list.__mul__(self, value))
+        return OrdinalBallot(list.__mul__(self, value), name=self.name, meta=self.meta,
+                             legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length)
 
     def __getitem__(self, item):
         result = list.__getitem__(self, item)
         try:
-            return OrdinalBallot(result)
+            return OrdinalBallot(result, name=self.name, meta=self.meta, legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length)
         except TypeError:
             return result
 
@@ -283,6 +366,14 @@ class OrdinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None):
-        super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance)
+    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+        super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
+        self.ballot_type = OrdinalBallot
 
+    def __add__(self, value):
+        return OrdinalProfile(list.__add__(self, value), instance=self.instance,
+                              ballot_validation=self.ballot_validation)
+
+    def __mul__(self, value):
+        return OrdinalProfile(list.__mul__(self, value), instance=self.instance,
+                              ballot_validation=self.ballot_validation)

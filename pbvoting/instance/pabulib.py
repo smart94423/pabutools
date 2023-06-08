@@ -4,10 +4,9 @@ Tools to work with PaBuLib instances.
 from copy import deepcopy
 from fractions import Fraction
 
-from pbvoting.fractions import as_frac
 from pbvoting.instance.pbinstance import PBInstance, Project
-from pbvoting.instance.profile import Profile, ApprovalProfile, ApprovalBallot, CardinalProfile, CumulativeProfile, \
-    OrdinalProfile, CardinalBallot, OrdinalBallot
+from pbvoting.instance.profile import ApprovalProfile, ApprovalBallot, CardinalProfile, CumulativeProfile, \
+    OrdinalProfile, CardinalBallot, OrdinalBallot, CumulativeBallot
 
 import csv
 import os
@@ -47,15 +46,20 @@ def parse_pabulib(file_path):
                 p.cost = Fraction(instance.project_meta[p]["cost"].replace(",", "."))
                 instance.add(p)
             elif section == "votes":
-                ballot_meta = {}
+                ballot_meta = dict()
                 for i in range(len(row)):
                     ballot_meta[header[i].strip()] = row[i].strip()
                 if instance.meta["vote_type"] == "approval":
                     ballot = ApprovalBallot()
                     for project_name in ballot_meta["vote"].split(","):
                         ballot.add(instance.get_project(project_name))
-                elif instance.meta["vote_type"] in ("scoring", "cumulative"):
+                elif instance.meta["vote_type"] == "scoring":
                     ballot = CardinalBallot()
+                    points = ballot_meta["points"].split(',')
+                    for index, project_name in enumerate(ballot_meta["vote"].split(",")):
+                        ballot[instance.get_project(project_name)] = Fraction(points[index].strip())
+                elif instance.meta["vote_type"] == "cumulative":
+                    ballot = CumulativeBallot()
                     points = ballot_meta["points"].split(',')
                     for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                         ballot[instance.get_project(project_name)] = Fraction(points[index].strip())

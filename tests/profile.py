@@ -1,8 +1,8 @@
 from pbvoting.instance.pbinstance import Project, PBInstance
-from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
+from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile, CardinalBallot
 
 
-def test_profile():
+def test_approval_profile():
     projects = [Project("p" + str(i), cost=2) for i in range(10)]
     instance = PBInstance(projects, budget_limit=1)
     b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
@@ -22,6 +22,17 @@ def test_profile():
     assert profile.is_trivial() is True
     instance.budget_limit = 3
     assert profile.is_trivial() is False
+
+    card_ballot = CardinalBallot({projects[1]: 5, projects[2]: 2})
+    try:
+        profile.append(card_ballot)
+    except TypeError:
+        pass
+
+    profile.ballot_validation = False
+    profile.append(card_ballot)
+
+
 
 
 def test_approval_ballot():
