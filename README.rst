@@ -104,7 +104,6 @@ ensure consistency of the ballots in a profile.
     b = {1, 2, 3}
     profile.validate_ballot(b)   # The validator, would raise a TypeError here
 
-
 Approval Profiles
 ~~~~~~~~~~~~~~~~~
 
@@ -112,3 +111,73 @@ When submitting approval ballots, voters submit a set of projects they
 approve of. Approval ballots are represented through the class
 :code:`ApprovalBallot` that inherits both from :code:`set` and from
 :code:`Ballot`.
+
+A profile of approval ballots, i.e., an approval profile, is instantiated
+from the class :code:`ApprovalProfile`. It inherits from :code:`Profile`.
+The type for the ballot validator is by default set to :code:`ApprovalBallot`.
+
+.. code-block:: python
+
+    projects = [Project("p{}".format(i), 1) for i in range(10)]
+    b1 = ApprovalBallot(projects[:3])   # Approval ballot containing the first 3 projects
+    b2 = ApprovalBallot(projects[1:5])
+    profile = ApprovalProfile([b1, b2])
+    b3 = ApprovalBallot({projects[0], projects[8]})
+    profile.append(b3)
+
+Several additional methods are provided in the :code:`ApprovalProfile` class.
+
+.. code-block:: python
+
+    profile.approval_score(p1)   # The approval score of a project, i.e., the number of approvers
+    profile.is_party_list()   # Boolean indicating if the profile is party_list
+
+
+Cardinal Profiles
+~~~~~~~~~~~~~~~~~
+
+See the classes :code:`CardinalBallot` and :code:`CardinalProfile`.
+
+
+Cumulative Profiles
+~~~~~~~~~~~~~~~~~~~
+
+See the classes :code:`CumulativeBallot` and :code:`CumulativeProfile`.
+
+Ordinal Profiles
+~~~~~~~~~~~~~~~~
+
+See the classes :code:`OrdinalBallot` and :code:`OrdinalProfile`.
+
+Pabulib
+-------
+
+We provide the function :code:`pbvoting.instance.parse_pabulib`.
+
+
+Satisfaction
+------------
+
+See the module :code:`pbvoting.instance.satisfaction`. Note that there are
+many pre-defined satisfaction functions.
+
+Rules
+-----
+
+See the module :code:`pbvoting.rules`.
+
+
+Approximation of Social Welfare Optimum
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See the module :code:`pbvoting.rules.greedywelfare`.
+
+Method of equal shares
+~~~~~~~~~~~~~~~~~~~~~~
+
+See the module :code:`pbvoting.rules.mes`.
+
+Tie-Breaking
+~~~~~~~~~~~~
+
+See the module :code:`pbvoting.tiebreaking`.
