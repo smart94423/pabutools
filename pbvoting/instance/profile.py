@@ -52,7 +52,7 @@ class Profile(list):
         self.ballot_type = None
 
     def validate_ballot(self, ballot):
-        if self.ballot_validation and self.ballot_type is not None and type(ballot) != self.ballot_type:
+        if self.ballot_validation and self.ballot_type is not None and not issubclass(type(ballot), self.ballot_type):
             raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
                                                                                             self.__class__.__name__))
 

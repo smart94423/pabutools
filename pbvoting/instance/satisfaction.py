@@ -14,8 +14,8 @@ class Satisfaction:
                 The instance.
             profile : pbvoting.instance.profile.Profile
                 The profile.
-            ballot : pbvoting.instance.profile.ApprovalBallot
-                The approval ballot.
+            ballot : pbvoting.instance.profile.Ballot
+                The ballot.
     """
 
     def __init__(self, instance, profile, ballot):
@@ -77,6 +77,36 @@ class FunctionalSatisfaction(Satisfaction):
         return self.func(self.instance, self.profile, self.ballot, projects)
 
 
+def cc_sat_func(instance, profile, ballot, projects):
+    return as_frac(int(any(p in ballot for p in projects)))
+
+
+class CC_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
+
+
+def cost_sqrt_sat_func(instance, profile, ballot, projects):
+    return as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
+
+
+class Cost_Sqrt_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Cost_Sqrt_Sat, self).__init__(instance, profile, ballot, cost_sqrt_sat_func)
+
+
+def log_sat_func(instance, profile, ballot, projects):
+    return as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
+
+
+class Log_Sat(FunctionalSatisfaction):
+
+    def __init__(self, instance, profile, ballot):
+        super(Log_Sat, self).__init__(instance, profile, ballot, log_sat_func)
+
+
 class AdditiveSatisfaction(Satisfaction):
     """
         Class representing additive satisfaction functions, that is, satisfaction functions for which the total
@@ -91,7 +121,7 @@ class AdditiveSatisfaction(Satisfaction):
             ballot : pbvoting.instance.profile.ApprovalBallot
                 The approval ballot.
             func : function
-                A function taking as input an instance, a profile, a ballot and a subset of projects, and returning
+                A function taking as input an instance, a profile, a ballot and a project, and returning
                 the score as a fraction.
         Attributes
         ----------
@@ -157,43 +187,85 @@ class Effort_Sat(AdditiveSatisfaction):
         super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
 
 
-def cc_sat_func(instance, profile, ballot, projects):
-    return as_frac(int(any(p in ballot for p in projects)))
+def additive_card_sat_func(instance, profile, ballot, project):
+    return ballot[project]
 
 
-class CC_Sat(FunctionalSatisfaction):
-
-    def __init__(self, instance, profile, ballot):
-        super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
-
-
-def cost_sqrt_sat_func(instance, profile, ballot, projects):
-    return as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
-
-
-class Cost_Sqrt_Sat(FunctionalSatisfaction):
+class Additive_Cardinal_Sat(AdditiveSatisfaction):
 
     def __init__(self, instance, profile, ballot):
-        super(Cost_Sqrt_Sat, self).__init__(instance, profile, ballot, cost_sqrt_sat_func)
+        super(Additive_Cardinal_Sat, self).__init__(instance, profile, ballot, additive_card_sat_func)
 
 
-def log_sat_func(instance, profile, ballot, projects):
-    return as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
+class PositionalSatisfaction(Satisfaction):
+    """
+        Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.
+        For a set of projects, the total satisfaction is additive.
+    Parameters
+        ----------
+            instance : pbvoting.instance.pbinstance.PBInstance
+                The instance.
+            profile : pbvoting.instance.profile.Profile
+                The profile.
+            ballot : pbvoting.instance.profile.OrdinalBallot
+                The ordinal ballot.
+            func : function
+                A function taking as input an instance, a ballot and a subset of projects, and returning the score
+                as a fraction.
+        Attributes
+        ----------
+            func : function
+                A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
+                score of the subset of projects as a fraction.
+    """
+
+    def __init__(self, instance, profile, ballot, positional_func, aggregation_func):
+        super(PositionalSatisfaction, self).__init__(instance, profile, ballot)
+        self.positional_func = positional_func
+        self.aggregation_func = aggregation_func
+        self.instance = instance
+
+    def sat(self, projects):
+        """
+            Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
+            by the inner function specified at initialisation.
+            Parameters
+            ----------
+                projects : set of pbvoting.instance.pbinstance.Project
+                    The set of projects.
+            Returns
+            -------
+                float
+        """
+        scores = [self.positional_func(self.ballot, project) for project in projects]
+        return self.aggregation_func(self.instance, self.profile, self.ballot, scores)
 
 
-class Log_Sat(FunctionalSatisfaction):
+def borda_sat_func(ballot, project):
+    if project not in ballot:
+        return 0
+    return len(ballot) - ballot.index(project)
+
+
+class Additive_Borda_Sat(PositionalSatisfaction):
 
     def __init__(self, instance, profile, ballot):
-        super(Log_Sat, self).__init__(instance, profile, ballot, log_sat_func)
+        super(Additive_Borda_Sat, self).__init__(instance, profile, ballot, borda_sat_func, sum)
 
 
-class SatisfactionProfile(Profile):
+class SatisfactionProfile(list):
     """
         A profile of satisfaction functions, one per voter.
-         Inherits from `pbvoting.instance.profile.Profile`.
         Attributes
         ----------
     """
 
     def __init__(self, iterable=(), instance=None):
-        super(SatisfactionProfile, self).__init__(iterable=iterable, instance=instance)
+        super(SatisfactionProfile, self).__init__(iterable=iterable)
+        self.instance = instance
+
+    def __add__(self, value):
+        return Profile(list.__add__(self, value), instance=self.instance)
+
+    def __mul__(self, value):
+        return Profile(list.__mul__(self, value), instance=self.instance)
