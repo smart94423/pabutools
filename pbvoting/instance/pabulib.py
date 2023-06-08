@@ -73,15 +73,54 @@ def parse_pabulib(file_path):
                 ballot.meta = ballot_meta
                 ballots.append(ballot)
 
+    legal_min_length = instance.meta.get("min_length", None)
+    if legal_min_length == 1:
+        legal_min_length = None
+    legal_max_length = instance.meta.get("max_length", None)
+    if legal_max_length == len(instance):
+        legal_max_length = None
+    legal_min_cost = instance.meta.get("min_sum_cost", None)
+    if legal_min_cost == 0:
+        legal_min_cost = None
+    legal_max_cost = instance.meta.get("max_sum_cost", None)
+    if legal_max_cost == instance.budget_limit:
+        legal_max_cost = None
+    legal_min_total_score = instance.meta.get("min_sum_points", None)
+    if legal_min_total_score == 0:
+        legal_min_total_score = None
+    legal_max_total_score = instance.meta.get("max_sum_points", None)
+    legal_min_score = instance.meta.get("min_points", None)
+    if legal_min_score == 0:
+        legal_min_score = None
+    legal_max_score = instance.meta.get("max_points", None)
+    if legal_max_total_score is not None and legal_max_score == legal_max_total_score:
+        legal_max_score = None
+
     profile = None
     if instance.meta["vote_type"] == "approval":
-        profile = ApprovalProfile(deepcopy(ballots))
+        profile = ApprovalProfile(deepcopy(ballots),
+                                  legal_min_length=legal_min_length,
+                                  legal_max_length=legal_max_length,
+                                  legal_min_cost=legal_min_cost,
+                                  legal_max_cost=legal_max_cost)
     elif instance.meta["vote_type"] == "scoring":
-        profile = CardinalProfile(deepcopy(ballots))
+        profile = CardinalProfile(deepcopy(ballots),
+                                  legal_min_length=legal_min_length,
+                                  legal_max_length=legal_max_length,
+                                  legal_min_score=legal_min_score,
+                                  legal_max_score=legal_max_score)
     elif instance.meta["vote_type"] == "cumulative":
-        profile = CumulativeProfile(deepcopy(ballots))
+        profile = CumulativeProfile(deepcopy(ballots),
+                                    legal_min_length=legal_min_length,
+                                    legal_max_length=legal_max_length,
+                                    legal_min_score=legal_min_score,
+                                    legal_max_score=legal_max_score,
+                                    legal_min_total_score=legal_min_total_score,
+                                    legal_max_total_score=legal_max_total_score)
     elif instance.meta["vote_type"] == "ordinal":
-        profile = OrdinalProfile(deepcopy(ballots))
+        profile = OrdinalProfile(deepcopy(ballots),
+                                 legal_min_length=legal_min_length,
+                                 legal_max_length=legal_max_length)
 
     # We retrieve the budget limit from the meta information
     instance.budget_limit = Fraction(instance.meta["budget"].replace(",", "."))

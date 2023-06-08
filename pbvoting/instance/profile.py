@@ -89,14 +89,9 @@ class ApprovalBallot(set, Ballot):
         ----------
     """
 
-    def __init__(self, approved=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
-                 legal_min_cost=None, legal_max_cost=None):
+    def __init__(self, approved=(), name="", meta=None):
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_cost = legal_min_cost
-        self.legal_max_cost = legal_max_cost
 
     # This allows set method returning copies of a set to work with PBInstances
     @classmethod
@@ -105,9 +100,7 @@ class ApprovalBallot(set, Ballot):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, set) and not hasattr(result, 'foo'):
-                    result = cls(approved=result, name=self.name, meta=self.meta,
-                                 legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length,
-                                 legal_min_cost=self.legal_min_cost, legal_max_cost=self.legal_max_cost)
+                    result = cls(approved=result, name=self.name, meta=self.meta)
                 return result
 
             inner.fn_name = name
@@ -132,17 +125,30 @@ class ApprovalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
+                 legal_min_cost=None, legal_max_cost=None):
         super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = ApprovalBallot
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_cost = legal_min_cost
+        self.legal_max_cost = legal_max_cost
 
     def __add__(self, value):
         return ApprovalProfile(list.__add__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation)
+                               ballot_validation=self.ballot_validation,
+                               legal_min_length=self.legal_min_length,
+                               legal_max_length=self.legal_max_length,
+                               legal_min_cost=self.legal_min_cost,
+                               legal_max_cost=self.legal_max_cost)
 
     def __mul__(self, value):
         return ApprovalProfile(list.__mul__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation)
+                               ballot_validation=self.ballot_validation,
+                               legal_min_length=self.legal_min_length,
+                               legal_max_length=self.legal_max_length,
+                               legal_min_cost=self.legal_min_cost,
+                               legal_max_cost=self.legal_max_cost)
 
     def approval_score(self, project):
         """
@@ -261,14 +267,9 @@ class CardinalBallot(dict, Ballot):
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
-                 legal_min_score=None, legal_max_score=None):
+    def __init__(self, iterable=(), name="", meta=None):
         dict.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_score = legal_min_score
-        self.legal_max_score = legal_max_score
 
 
 class CardinalProfile(Profile):
@@ -278,17 +279,30 @@ class CardinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
+                 legal_min_score=None, legal_max_score=None):
         super(CardinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = CardinalBallot
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_score = legal_min_score
+        self.legal_max_score = legal_max_score
 
     def __add__(self, value):
         return CardinalProfile(list.__add__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation)
+                               ballot_validation=self.ballot_validation,
+                               legal_min_length=self.legal_min_length,
+                               legal_max_length=self.legal_max_length,
+                               legal_min_score=self.legal_min_score,
+                               legal_max_score=self.legal_max_score)
 
     def __mul__(self, value):
         return CardinalProfile(list.__mul__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation)
+                               ballot_validation=self.ballot_validation,
+                               legal_min_length=self.legal_min_length,
+                               legal_max_length=self.legal_max_length,
+                               legal_min_score=self.legal_min_score,
+                               legal_max_score=self.legal_max_score)
 
 
 class CumulativeBallot(CardinalBallot):
@@ -302,16 +316,9 @@ class CumulativeBallot(CardinalBallot):
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None,
-                 legal_min_score=None, legal_max_score=None, legal_min_total_score=None, legal_max_total_score=None):
+    def __init__(self, iterable=(), name="", meta=None):
         dict.__init__(self, iterable)
         CardinalBallot.__init__(self, name=name, meta=meta)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_score = legal_min_score
-        self.legal_max_score = legal_max_score
-        self.legal_min_total_score = legal_min_total_score
-        self.legal_max_total_score = legal_max_total_score
 
 
 class CumulativeProfile(Profile):
@@ -321,42 +328,50 @@ class CumulativeProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
+                 legal_min_score=None, legal_max_score=None, legal_min_total_score=None, legal_max_total_score=None):
         super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance,
                                                 ballot_validation=ballot_validation)
         self.ballot_type = CumulativeBallot
 
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_score = legal_min_score
+        self.legal_max_score = legal_max_score
+        self.legal_min_total_score = legal_min_total_score
+        self.legal_max_total_score = legal_max_total_score
+
     def __add__(self, value):
         return CumulativeProfile(list.__add__(self, value), instance=self.instance,
-                                 ballot_validation=self.ballot_validation)
+                                 ballot_validation=self.ballot_validation,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_score=self.legal_min_score,
+                                 legal_max_score=self.legal_max_score,
+                                 legal_min_total_score=self.legal_min_total_score,
+                                 legal_max_total_score=self.legal_max_total_score)
 
     def __mul__(self, value):
         return CumulativeProfile(list.__mul__(self, value), instance=self.instance,
-                                 ballot_validation=self.ballot_validation)
+                                 ballot_validation=self.ballot_validation,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_score=self.legal_min_score,
+                                 legal_max_score=self.legal_max_score,
+                                 legal_min_total_score=self.legal_min_total_score,
+                                 legal_max_total_score=self.legal_max_total_score)
 
 
 class OrdinalBallot(list, Ballot):
-    def __init__(self, iterable=(), name="", meta=None, legal_min_length=None, legal_max_length=None, ):
+    def __init__(self, iterable=(), name="", meta=None):
         list.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
 
     def __add__(self, value):
-        return OrdinalBallot(list.__add__(self, value), name=self.name, meta=self.meta,
-                             legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length)
+        return OrdinalBallot(list.__add__(self, value), name=self.name, meta=self.meta)
 
     def __mul__(self, value):
-        return OrdinalBallot(list.__mul__(self, value), name=self.name, meta=self.meta,
-                             legal_min_length=self.legal_min_length, legal_max_length=self.legal_max_length)
-
-    def __getitem__(self, item):
-        result = list.__getitem__(self, item)
-        try:
-            return OrdinalBallot(result, name=self.name, meta=self.meta, legal_min_length=self.legal_min_length,
-                                 legal_max_length=self.legal_max_length)
-        except TypeError:
-            return result
+        return OrdinalBallot(list.__mul__(self, value), name=self.name, meta=self.meta)
 
 
 class OrdinalProfile(Profile):
@@ -366,14 +381,22 @@ class OrdinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None,
+                 legal_max_length=None):
         super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = OrdinalBallot
 
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+
     def __add__(self, value):
         return OrdinalProfile(list.__add__(self, value), instance=self.instance,
-                              ballot_validation=self.ballot_validation)
+                              ballot_validation=self.ballot_validation,
+                              legal_min_length=self.legal_min_length,
+                              legal_max_length=self.legal_max_length)
 
     def __mul__(self, value):
         return OrdinalProfile(list.__mul__(self, value), instance=self.instance,
-                              ballot_validation=self.ballot_validation)
+                              ballot_validation=self.ballot_validation,
+                              legal_min_length=self.legal_min_length,
+                              legal_max_length=self.legal_max_length)
