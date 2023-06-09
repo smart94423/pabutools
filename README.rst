@@ -253,6 +253,39 @@ for instance.
 Satisfaction
 ------------
 
+Many concepts, including celebrated PB rules, are not using the ballots
+directly but rather proxies for the satisfaction of the voters that are
+deduced from the ballots.
+
+We provide many satifaction functions, and flexible ways to create new ones.
+A satisfaction function is a class that inherits from :code:`Satisfaction`,
+i.e., a class initialised for a given instance, profile, and ballot and
+that implements a :code:`sat` method that is used to compute the
+satisfaction.
+
+We also provide more specific ways of defining satisfaction function.
+The class :code:`FunctionalSatisfaction` corresponds to satisfaction
+function that are defined by a function taking as argument an instance,
+a profile, a ballot and a set of projects. We illustrate its use by
+defining the Chamberlin-Courant satisfaction function with approval
+(equals to 1 if at least one approved project is selected and
+0 otherwise).
+
+.. code-block:: python
+
+    from pbvoting.instance import FunctionalSatisfaction
+
+    def cc_sat_func(instance, profile, ballot, projects):
+        return int(any(p in ballot for p in projects))
+
+
+    class CC_Sat(FunctionalSatisfaction):
+
+        def __init__(self, instance, profile, ballot):
+            super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
+
+
+
 See the module :code:`pbvoting.instance.satisfaction`. Note that there are
 many pre-defined satisfaction functions.
 

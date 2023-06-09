@@ -28,6 +28,7 @@ def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation
             list of pbvoting.instance.pbinstance.Project if resolute, list of the previous if irresolute
     """
 
+    # Largely inspired from equalshares.net
     projects = set(instance)
     for project in budget_allocation:
         projects.remove(project)
