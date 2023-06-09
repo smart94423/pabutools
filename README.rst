@@ -46,6 +46,8 @@ class :code:`Project` that stores a project' name and cost
 
 .. code-block:: python
 
+    from pbvoting.instance import PBInstance, Project
+
     instance = PBInstance()   # There are many optional parameters
     p1 = Project("p1", 1)   # The constructor takes name and cost of the project
     instance.add(p1)   # Use the set methods to add/delete projects to an instance
@@ -97,6 +99,8 @@ ensure consistency of the ballots in a profile.
 
 .. code-block:: python
 
+    from pbvoting.instance import PBInstance, Profile, Ballot
+
     instance = PBInstance()
     profile = Profile(instance=instance)
     profile.ballot_validation = True   # Boolean (de)activating the validation of the ballot type
@@ -118,12 +122,16 @@ The type for the ballot validator is by default set to :code:`ApprovalBallot`.
 
 .. code-block:: python
 
+    from pbvoting.instance import Project, ApprovalBallot, ApprovalProfile
+
     projects = [Project("p{}".format(i), 1) for i in range(10)]
     b1 = ApprovalBallot(projects[:3])   # Approval ballot containing the first 3 projects
+    b1.add(projects[4])   # Add project to approval ballot
     b2 = ApprovalBallot(projects[1:5])
     profile = ApprovalProfile([b1, b2])
     b3 = ApprovalBallot({projects[0], projects[8]})
     profile.append(b3)
+    b1 in profile   # Tests membership, returns True here
 
 Several additional methods are provided in the :code:`ApprovalProfile` class.
 
@@ -136,18 +144,59 @@ Several additional methods are provided in the :code:`ApprovalProfile` class.
 Cardinal Profiles
 ~~~~~~~~~~~~~~~~~
 
-See the classes :code:`CardinalBallot` and :code:`CardinalProfile`.
+When asked for cardinal ballots, voters are asked to associate each project
+with a score. Cardinal ballots are represented using the class
+:code:`CardinalBallot`. It inherits directly from the Python
+:code:`dict` class and our :code:`Ballot` class.
 
+A profile of cardinal ballots, i.e., a cardinal profile, is instantiated
+through the :code:`CardinalProfile` class. It inherits from the
+:code:`Profile` class and validates ballot types using
+:code:`CardinalBallot`.
+
+.. code-block:: python
+
+    from pbvoting.instance import Project, CardinalBallot, CardinalProfile
+
+    projects = [Project("p{}".format(i), 1) for i in range(10)]
+    b1 = CardinalBallot({projects[1]: 5, projects[2]: 0)   # Cardinal ballot scoring 5 for p1 and 0 for p2
+    b2 = CardinalBallot()
+    b2[projects[0]] = 9   # Assign score to p0
+    profile = CardinalProfile([b1, b2])
 
 Cumulative Profiles
 ~~~~~~~~~~~~~~~~~~~
 
-See the classes :code:`CumulativeBallot` and :code:`CumulativeProfile`.
+Cumulative ballots correspond to a specific type of cardinal ballots where
+the voters are allocated a specific number of points that they can
+distribute among the projects. The class :code:`CumulativeBallot`
+is used to deal with cumulative ballots. It inherits from
+:code:`CardinalBallot` and thus also from the Python class
+:code:`dict`.
+
+As before, a profile of cumulative ballots is defined in the class
+:code:`CumulativeProfile` that inherits from the :code:`Profile` class
+(and act thus as a list).
 
 Ordinal Profiles
 ~~~~~~~~~~~~~~~~
 
-See the classes :code:`OrdinalBallot` and :code:`OrdinalProfile`.
+When ordinal ballots are used, voters are asked to order the projects
+based on their preferences. The class :code:`OrdinalBallot` represents
+such ballots. It inherits from the Python class :code:`list` and our
+class :code:`Ballot`.
+
+Ordinal profiles are handled by the class :code:`OrdinalProfile`.
+
+.. code-block:: python
+
+    from pbvoting.instance import Project, OrdinalBallot, OrdinalProfile
+
+    projects = [Project("p{}".format(i), 1) for i in range(10)]
+    b1 = OrdinalBallot((projects[0], projects[4], projects[2]))   # Ordinal ballot ranking p0 > p4 > p2
+    b1.append(projects[1])   # The ballot becomes p0 > p4 > p2 > p1
+    profile = CardinalProfile()
+    profile.append(b1)
 
 Pabulib
 -------
