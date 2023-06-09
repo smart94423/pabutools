@@ -351,7 +351,7 @@ them below.
 - :code:`Cost_Sat` defines the satisfaction as the total cost of the approved and selected projects.
 - :code:`Effort_Sat` defines the satisfaction as the total share of a voter
 - :code:`Additive_Cardinal_Sat` defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.
-- :code:`Additive_Borda_Sat`defines the satisfaction as the sum of the Borda scores of the selected projects.
+- :code:`Additive_Borda_Sat` defines the satisfaction as the sum of the Borda scores of the selected projects.
 
 Rules
 -----
