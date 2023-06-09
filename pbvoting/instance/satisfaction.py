@@ -36,6 +36,24 @@ class Satisfaction:
         """
 
 
+class SatisfactionProfile(list):
+    """
+        A profile of satisfaction functions, one per voter.
+        Attributes
+        ----------
+    """
+
+    def __init__(self, iterable=(), instance=None):
+        super(SatisfactionProfile, self).__init__(iterable=iterable)
+        self.instance = instance
+
+    def __add__(self, value):
+        return Profile(list.__add__(self, value), instance=self.instance)
+
+    def __mul__(self, value):
+        return Profile(list.__mul__(self, value), instance=self.instance)
+
+
 class FunctionalSatisfaction(Satisfaction):
     """
         Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.
@@ -252,20 +270,3 @@ class Additive_Borda_Sat(PositionalSatisfaction):
     def __init__(self, instance, profile, ballot):
         super(Additive_Borda_Sat, self).__init__(instance, profile, ballot, borda_sat_func, sum)
 
-
-class SatisfactionProfile(list):
-    """
-        A profile of satisfaction functions, one per voter.
-        Attributes
-        ----------
-    """
-
-    def __init__(self, iterable=(), instance=None):
-        super(SatisfactionProfile, self).__init__(iterable=iterable)
-        self.instance = instance
-
-    def __add__(self, value):
-        return Profile(list.__add__(self, value), instance=self.instance)
-
-    def __mul__(self, value):
-        return Profile(list.__mul__(self, value), instance=self.instance)
