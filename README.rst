@@ -159,7 +159,7 @@ through the :code:`CardinalProfile` class. It inherits from the
     from pbvoting.instance import Project, CardinalBallot, CardinalProfile
 
     projects = [Project("p{}".format(i), 1) for i in range(10)]
-    b1 = CardinalBallot({projects[1]: 5, projects[2]: 0)   # Cardinal ballot scoring 5 for p1 and 0 for p2
+    b1 = CardinalBallot({projects[1]: 5, projects[2]: 0})   # Cardinal ballot scoring 5 for p1 and 0 for p2
     b2 = CardinalBallot()
     b2[projects[0]] = 9   # Assign score to p0
     profile = CardinalProfile([b1, b2])
@@ -201,8 +201,54 @@ Ordinal profiles are handled by the class :code:`OrdinalProfile`.
 Pabulib
 -------
 
-We provide the function :code:`pbvoting.instance.parse_pabulib`.
+We provide full support of the PB data hosted on the
+`pabulib <http://pabulib.org/>`_ website. The function
+:code:`pbvoting.instance.parse_pabulib` can be used to parse a file
+formatted according to the pabulib format. It returns the instance
+and the profile, using the suitable profile class given the ballot
+format in the data.
 
+.. code-block:: python
+
+    from pbvoting.instance import parse_pabulib
+
+    instance, profile = parse_pabulib("path_to_the_file")
+
+Pabulib files provide a whole range of metadata, not all of which are
+relevant to everyone. These metadata are stored in the :code:`meta`
+members of the instance and profile classes.
+
+.. code-block:: python
+
+    instance, profile = parse_pabulib("path_to_the_file")
+    instance.meta   # The meta dict is populated with all the metadata described in the file
+    instance.project_meta    # The project_meta dict is populated with the metadata related to the projects
+    for ballot in profile:
+        ballot.meta    # The meta dict populated with the metadata corresponding to the ballot
+
+There are several metadata that are stored as members of the relevant
+classes. These for instance include all the constraints (when known)
+the voters faced when submitting their ballots. It includes the minimum
+length of a ballot, or the number of points that have to be distributed
+for instance.
+
+.. code-block:: python
+
+    ### For ApprovalProfile, CardinalProfile, CumulativeProfile and OrdinalProfile
+    profile.legal_min_length   # Imposed minimum length of the ballots in the profile
+    profile.legal_max_length   # Imposed maximum length of the ballots in the profile
+
+    ### For ApprovalProfile only
+    profile.legal_min_cost   # Imposed minimum total cost of the ballots in the profile
+    profile.legal_max_cost   # Imposed maximum total cost of the ballots in the profile
+
+    ### For CardinalProfile and CumulativeProfile
+    profile.legal_min_score   # Imposed minimum score assigned to a project for the ballots in the profile
+    profile.legal_max_score   # Imposed maximum score assigned to a project for the ballots in the profile
+
+    ### For CumulativeProfile only
+    profile.legal_min_total_score   # Imposed minimum total scores for the ballots in the profile
+    profile.legal_max_total_score   # Imposed maximum total scores for the ballots in the profile
 
 Satisfaction
 ------------
