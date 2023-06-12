@@ -253,8 +253,105 @@ for instance.
 Satisfaction
 ------------
 
-See the module :code:`pbvoting.instance.satisfaction`. Note that there are
-many pre-defined satisfaction functions.
+Many concepts, including celebrated PB rules, are not using the ballots
+directly but rather proxies for the satisfaction of the voters that are
+deduced from the ballots.
+
+We provide many satifaction functions, and flexible ways to create new ones.
+A satisfaction function is a class that inherits from :code:`Satisfaction`,
+i.e., a class initialised for a given instance, profile, and ballot and
+that implements a :code:`sat` method that is used to compute the
+satisfaction.
+
+Functional Satisfaction Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We also provide more specific ways of defining satisfaction function.
+The class :code:`FunctionalSatisfaction` corresponds to satisfaction
+function that are defined by a function taking as argument an instance,
+a profile, a ballot and a set of projects. We illustrate its use by
+defining the Chamberlin-Courant satisfaction function with approval
+(equals to 1 if at least one approved project is selected and
+0 otherwise).
+
+.. code-block:: python
+
+    from pbvoting.instance import FunctionalSatisfaction
+
+    def cc_sat_func(instance, profile, ballot, projects):
+        return int(any(p in ballot for p in projects))
+
+
+    class CC_Sat(FunctionalSatisfaction):
+
+        def __init__(self, instance, profile, ballot):
+            super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
+
+
+Additive Satisfaction Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another important set of satisfaction functions are the additive ones,
+i.e., the ones for which the satisfaction for a set of projects is
+equal to the satisfaction of each individual project. The class
+:code:`AdditiveSatisfaction` implements them. It inherits from the
+:code:`Satisfaction` class and its constructor takes as a parameter
+a function mapping instance, profile, ballot and project to a score.
+We illustrate its use by presenting how to define the cardinality
+satisfaction function.
+
+.. code-block:: python
+
+    def cardinality_sat_func(instance, profile, ballot, project):
+        return int(project in ballot)
+
+
+    class Cardinality_Sat(AdditiveSatisfaction):
+
+        def __init__(self, instance, profile, ballot):
+            super(Cardinality_Sat, self).__init__(instance, profile, ballot, cardinality_sat_func)
+
+
+Positional Satisfaction Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Positional satisfaction functions are to be used with ordinal ballots.
+When using them, the satisfaction of a voter is a function of the
+position of the projects in the ballot of the voter. The class
+:code:`PositionalSatisfaction` implements them. The constructor takes
+as parameters two functions: one mapping ballots and projects to a score,
+and a second one aggregating the individual scores for sets of projects.
+We illustrate its usage by defining the additive Borda satisfaction
+function.
+
+.. code-block:: python
+
+    def borda_sat_func(ballot, project):
+        if project not in ballot:
+            return 0
+        return len(ballot) - ballot.index(project)
+
+
+    class Additive_Borda_Sat(PositionalSatisfaction):
+
+        def __init__(self, instance, profile, ballot):
+            super(Additive_Borda_Sat, self).__init__(instance, profile, ballot, borda_sat_func, sum)
+
+Satisfaction Functions Already Defined
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As we have seen above, several satisfaction functions are already defined
+in the library and can be imported from :code:`pbvoting.instance`. We list
+them below.
+
+- :code:`CC_Sat` implements the Chamberlin-Courant satisfaction function for approval ballots.
+- :code:`Cost_Sqrt_Sat` defines the satisfaction as the square root of the total cost of the selected and approed projects.
+- :code:`Log_Sat` defines the satisfaction as the log of the total cost of the approved and selected projects.
+- :code:`Cardinality_Sat` defines the satisfaction as the number of approved and selected projects.
+- :code:`Cost_Sat` defines the satisfaction as the total cost of the approved and selected projects.
+- :code:`Effort_Sat` defines the satisfaction as the total share of a voter
+- :code:`Additive_Cardinal_Sat` defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.
+- :code:`Additive_Borda_Sat` defines the satisfaction as the sum of the Borda scores of the selected projects.
 
 Rules
 -----
