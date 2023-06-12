@@ -7,7 +7,11 @@ from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile, CC
 from pbvoting.utils import gini_coefficient
 
 
-def avg_satisfaction(instance: PBInstance, profile: ApprovalProfile, budget_allocation: Iterable[Project], satisfaction: type[Satisfaction]) -> float:
+def avg_satisfaction(instance: PBInstance,
+                     profile: ApprovalProfile,
+                     budget_allocation: Iterable[Project],
+                     satisfaction: type[Satisfaction]
+                     ) -> float:
     """Computes the average satisfaction for a given instance, profile and satisfaction function
         Parameters
         ----------
@@ -33,12 +37,19 @@ def avg_satisfaction(instance: PBInstance, profile: ApprovalProfile, budget_allo
 
 
 
-def percent_non_empty_handed(instance: PBInstance, profile: ApprovalProfile, budget_allocation: Iterable[Project]) -> float:
+def percent_non_empty_handed(instance: PBInstance,
+                             profile: ApprovalProfile,
+                             budget_allocation: Iterable[Project]
+                             ) -> float:
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
 
-def gini_coefficient_of_satisfaction(instance: PBInstance, profile: ApprovalProfile, budget_allocation: Iterable[Project], satisfaction: type[Satisfaction], invert=False) -> float:
+def gini_coefficient_of_satisfaction(instance: PBInstance,
+                                     profile: ApprovalProfile,
+                                     budget_allocation: Iterable[Project],
+                                     satisfaction: type[Satisfaction],
+                                     invert: bool=False) -> float:
     voter_satisfactions = np.array([satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile], dtype=float)
     if invert:
         return 1 - gini_coefficient(voter_satisfactions)
