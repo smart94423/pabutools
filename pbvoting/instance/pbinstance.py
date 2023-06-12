@@ -20,6 +20,10 @@ class Project:
             cost : fraction, optional
                 The cost of the project.
                 Defaults to `0.0`
+            categories: set, optional
+                set of categories that the project fits into
+            targets: set, optional
+                set of target groups that the project is targeting
     """
 
     def __str__(self):
@@ -28,9 +32,11 @@ class Project:
     def __repr__(self):
         return self.__str__()
 
-    def __init__(self, project_name="", cost=0.0):
+    def __init__(self, project_name="", cost=0.0, categories=set(), targets=set()):
         self.name = project_name
         self.cost = as_frac(cost)
+        self.categories = categories
+        self.targets = targets
 
     def __eq__(self, other):
         if isinstance(other, Project):
@@ -88,6 +94,10 @@ class PBInstance(set):
             budget_limit : float, optional
                 The budget limit of the instance.
                 Defaults to `0.0`.
+            categories: set, optional
+                set of categories that the projects can be assigned to
+            targets: set, optional
+                set of target groups that the project can be targeting
             file_path : str, optional
                 If the instance has been parsed from a file, the path to the file. Otherwise, the empty string.
                 Defaults to `""`.
@@ -104,7 +114,7 @@ class PBInstance(set):
                 strings. Values are dictionary of strings.
         """
 
-    def __init__(self, s=(), budget_limit=None, file_path=None, file_name=None,  parsing_errors=None, meta=None,
+    def __init__(self, s=(), budget_limit=None, categories=None, targets=None, file_path=None, file_name=None,  parsing_errors=None, meta=None,
                  project_meta=None):
         super(PBInstance, self).__init__(s)
 
@@ -114,6 +124,20 @@ class PBInstance(set):
             else:
                 budget_limit = 0.0
         self.budget_limit = budget_limit
+
+        if categories is None:
+            if hasattr(s, "categories"):
+                categories = s.categories
+            else:
+                categories = set()
+        self.categories = categories
+
+        if targets is None:
+            if hasattr(s, "targets"):
+                targets = s.targets
+            else:
+                targets = set()
+        self.targets = targets
 
         if file_path is None:
             if hasattr(s, "file_path"):

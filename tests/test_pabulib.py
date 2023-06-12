@@ -60,19 +60,20 @@ voter_id;age;sex;voting_method;vote
 103942;54;M;internet;427
 104255;53;F;internet;427""")
 
-    # instance, profile = parse_pabulib("test.pb")
-    # os.remove("test.pb")
-    # assert len(instance) == 4
-    # assert instance.budget_limit == 51195
-    # assert len(profile) == 27
-    # assert len(profile[0]) == 1
-    # assert len(profile[4]) == 4
-    # for p in profile[0]:
-    #     assert p.name == "427"
-    #     assert p.cost == 15995
-    # assert profile.approval_score(instance.get_project("427")) == 16
-    # assert len(profile.approved_projects()) == 4
-
+    instance, profile = parse_pabulib("test.pb")
+    os.remove("test.pb")
+    assert len(instance) == 4
+    assert instance.budget_limit == 51195
+    assert len(profile) == 27
+    assert len(profile[0]) == 1
+    assert len(profile[4]) == 4
+    for p in profile[0]:
+        assert p.name == "427"
+        assert p.cost == 15995
+    assert profile.approval_score(instance.get_project("427")) == 16
+    assert len(profile.approved_projects()) == 4
+    assert len(instance.categories) == 5
+    assert len(instance.targets) == 5
 
 def test_cumulative():
     with open("test.pb", "w", encoding="utf-8") as f:
@@ -158,6 +159,8 @@ voter_id;vote;points
     assert profile[4][projects[11]] == 1
     assert profile[4][projects[13]] == 1
     assert profile[4][projects[20]] == 1
+    assert len(instance.categories) == 0
+    assert len(instance.targets) == 0
 
 def test_ordinal():
     with open("test.pb", "w", encoding="utf-8") as f:

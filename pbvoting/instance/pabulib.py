@@ -25,6 +25,7 @@ def parse_pabulib(file_path):
     """
     instance = PBInstance()
     ballots = []
+    optional_sets = {"category": set(), "target": set()}
     instance.file_path = file_path
     instance.file_name = os.path.basename(file_path)
 
@@ -42,7 +43,13 @@ def parse_pabulib(file_path):
                 p = Project(project_name=row[0])
                 instance.project_meta[p] = dict()
                 for i in range(len(row)):
-                    instance.project_meta[p][header[i].strip()] = row[i].strip()
+                    key = header[i].strip()
+                    if key in ["category", "target"] and row[i].strip().lower() != "none":
+                        instance.project_meta[p][key] = [entry.strip() for entry in row[i].split(",")]
+                        p.__setattr__(key, set(instance.project_meta[p][key]))
+                        optional_sets[key].update(instance.project_meta[p][key])
+                    else:
+                        instance.project_meta[p][key] = row[i].strip()
                 p.cost = Fraction(instance.project_meta[p]["cost"].replace(",", "."))
                 instance.add(p)
             elif section == "votes":
@@ -124,5 +131,9 @@ def parse_pabulib(file_path):
 
     # We retrieve the budget limit from the meta information
     instance.budget_limit = Fraction(instance.meta["budget"].replace(",", "."))
+
+    # We add the category and target information that we collected from the projects
+    instance.categories = optional_sets["category"]
+    instance.targets = optional_sets["target"]
 
     return instance, profile
