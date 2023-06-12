@@ -8,6 +8,8 @@ from .instance import *
 from .pabulib import *
 from .profile import *
 from .rule import *
+from .properties import *
+from .utils import *
 
 
 @pytest.fixture
@@ -36,4 +38,6 @@ def test_content(response):
     test_greedy_welfare_approval()
     test_mes_approval()
 
+    test_satisfaction_properties()
 
+    test_gini()
