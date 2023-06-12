@@ -4,12 +4,12 @@
 
 import pytest
 
-from .instance import *
-from .pabulib import *
-from .profile import *
-from .rule import *
-from .properties import *
-from .utils import *
+from .test_instance import *
+from .test_pabulib import *
+from .test_profile import *
+from .test_rule import *
+from .test_properties import *
+from .test_utils import *
 
 
 @pytest.fixture
