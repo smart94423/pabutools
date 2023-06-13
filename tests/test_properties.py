@@ -1,3 +1,4 @@
+from pbvoting.fractions import frac
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile, OrdinalBallot, OrdinalProfile
 from pbvoting.instance.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
@@ -17,8 +18,8 @@ def test_satisfaction_properties():
     budget_allocation = [projects[0], projects[1],projects[8],projects[9]]
     
     assert(avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17)
-    assert(percent_non_empty_handed(instance, app_profile, budget_allocation) == 0.75)
-    assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat) == 0.35)
+    assert(percent_non_empty_handed(instance, app_profile, budget_allocation) == frac(3,4))
+    assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat) == frac(7,20))
 
 
     ord_ball_1 = OrdinalBallot([projects[0], projects[1], projects[2], projects[3]])
@@ -55,6 +56,7 @@ def test_proportionality_properties():
     app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3])
     budget_allocation = [projects[0], projects[2]]
 
+    print(category_proportionality(instance, app_profile, budget_allocation))
     assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31./162)
 
 
