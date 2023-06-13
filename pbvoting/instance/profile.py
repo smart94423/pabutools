@@ -87,7 +87,7 @@ class Profile(list):
             super().extend(item for item in other)
 
 
-class ApprovalBallot(set, Ballot):
+class ApprovalBallot(set[Project], Ballot):
     """
         An approval ballot, that is, a ballot in which the voter has indicated the projects that they approve of. It
         is a subclass of `pbvoting.instance.profile.Ballot`.
