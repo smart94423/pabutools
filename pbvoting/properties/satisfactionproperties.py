@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from fractions import Fraction 
+from fractions import Fraction
 
 import numpy as np
 from pbvoting.instance.pbinstance import PBInstance, Project
@@ -32,10 +32,10 @@ def avg_satisfaction(instance: PBInstance,
     #     sat_profile = [satisfaction for ballot in profile]
     # else:
     #     sat_profile = satisfaction
-    
-    voter_satisfactions = np.array([satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
-    return np.mean(voter_satisfactions)
 
+    voter_satisfactions = np.array(
+        [satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
+    return np.mean(voter_satisfactions)
 
 
 def percent_non_empty_handed(instance: PBInstance,
@@ -45,13 +45,14 @@ def percent_non_empty_handed(instance: PBInstance,
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
-
 def gini_coefficient_of_satisfaction(instance: PBInstance,
                                      profile: ApprovalProfile,
                                      budget_allocation: Iterable[Project],
                                      satisfaction: type[Satisfaction],
-                                     invert: bool=False) -> Fraction | float:
-    voter_satisfactions = np.array([satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
+                                     invert: bool = False
+                                     ) -> Fraction | float:
+    voter_satisfactions = np.array(
+        [satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
     if invert:
         return 1 - gini_coefficient(voter_satisfactions)
     return gini_coefficient(voter_satisfactions)

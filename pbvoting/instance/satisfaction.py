@@ -55,7 +55,7 @@ class SatisfactionProfile(list):
                  profile: Profile = None,
                  sat_class: type[Satisfaction] = None
                  ) -> None:
-        super(SatisfactionProfile, self).__init__(iterable=iterable)
+        super(SatisfactionProfile, self).__init__(iterable)
         self.instance = instance
         if profile is None:
             if sat_class is not None:

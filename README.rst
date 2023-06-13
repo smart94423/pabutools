@@ -281,7 +281,7 @@ provided as input of a rule.
     # We define a satisfaction function:
     class MySatisfaction(Satisfaction):
         def sat(self, projects):
-        return 100 if "p1" in projects else len(projects)
+            return 100 if "p1" in projects else len(projects)
     # We populate the satisfaction profile
     for ballot in profile:
         sat_profile.append(MySatisfaction(instance, profile, ballot))
