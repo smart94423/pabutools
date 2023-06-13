@@ -220,6 +220,8 @@ members of the instance and profile classes.
 
 .. code-block:: python
 
+    from pbvoting.instance import parse_pabulib
+
     instance, profile = parse_pabulib("path_to_the_file")
     instance.meta   # The meta dict is populated with all the metadata described in the file
     instance.project_meta    # The project_meta dict is populated with the metadata related to the projects
@@ -261,7 +263,48 @@ We provide many satifaction functions, and flexible ways to create new ones.
 A satisfaction function is a class that inherits from :code:`Satisfaction`,
 i.e., a class initialised for a given instance, profile, and ballot and
 that implements a :code:`sat` method that is used to compute the
-satisfaction.
+satisfaction. Since a satisfaction function corresponds to a single ballot,
+we also provide a :code:`SatisfactionProfile` class. This class inherits
+from the Python class :code:`list` and implements a satisfaction profile.
+
+The typical workflow is thus to gather the ballots in a profile, then
+convert it into a collection of satisfaction functions, that are finally
+provided as input of a rule.
+
+.. code-block:: python
+
+    from pbvoting.instance import  SatisfactionProfile, Satisfaction
+    from pbvoting.instance import parse_pabulib
+
+    instance, profile = parse_pabulib("path_to_the_file")
+    sat_profile = SatisfactionProfile(instance=instance)
+    # We define a satisfaction function:
+    class MySatisfaction(Satisfaction):
+        def sat(self, projects):
+        return 100 if "p1" in projects else len(projects)
+    # We populate the satisfaction profile
+    for ballot in profile:
+        sat_profile.append(MySatisfaction(instance, profile, ballot))
+    # The satisfaction profile is ready for use
+    outcome = rule(sat_profile)
+
+Because the above can be tedious, we provide simpler ways to define the
+satisfaction profile. Several widely used satisfaction functions are also
+directly provided.
+
+.. code-block:: python
+
+    from pbvoting.instance import  SatisfactionProfile, Cardinality_Sat
+    from pbvoting.instance import parse_pabulib
+
+    instance, profile = parse_pabulib("path_to_the_file")
+    # If a profile and a sat_class are given to the constructor, the satisfaction profile
+    # is directly initialised with one instance of the sat_class per ballot in the profile.
+    sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=Cardinality_Sat)
+    # The satisfaction profile is ready for use
+    outcome = rule(sat_profile)
+
+We now present useful tools we provide to define satisfaction functions.
 
 Functional Satisfaction Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
