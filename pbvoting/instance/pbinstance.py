@@ -1,6 +1,7 @@
 """
 Instances.
 """
+from math import ceil
 from pbvoting.fractions import as_frac
 from pbvoting.utils import powerset
 
@@ -302,5 +303,5 @@ def get_random_instance(num_projects, min_cost, max_cost):
     inst = PBInstance()
     inst.update([Project(project_name=str(p), cost=random.randint(round(min_cost), round(max_cost))) for p in range(
         round(num_projects))])
-    inst.budget_limit = random.randint(min([p.cost for p in inst]), sum([p.cost for p in inst]))
+    inst.budget_limit = random.randint(ceil(min([p.cost for p in inst])), ceil(sum([p.cost for p in inst])))
     return inst

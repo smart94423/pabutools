@@ -1,10 +1,8 @@
-from collections.abc import Iterable 
+from collections.abc import Iterable
 
 import numpy as np
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.instance.profile import ApprovalProfile
-from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile, CC_Sat, Cost_Sat
-
 
 def category_proportionality(instance: PBInstance,
                              profile: ApprovalProfile,
@@ -42,5 +40,5 @@ def category_proportionality(instance: PBInstance,
         mean_square_diff += (proportional_allocated_cost_per_category[category] - proportional_app_cost_per_category[category])**2
     mean_square_diff /= len(categories)
     
-    return np.exp(-float(mean_square_diff))
+    return np.exp(-float(mean_square_diff)) 
 
