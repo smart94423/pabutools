@@ -34,8 +34,6 @@ class TestProfile(TestCase):
         profile.append(card_ballot)
 
 
-
-
     def test_approval_ballot(self):
         p1 = Project("p1", 1)
         p2 = Project("p2", 2)

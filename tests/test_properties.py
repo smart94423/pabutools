@@ -3,8 +3,8 @@ from pbvoting.fractions import frac
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile, OrdinalBallot, OrdinalProfile
 from pbvoting.instance.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
-from pbvoting.properties.satisfactionproperties import *
-from pbvoting.properties.proportionality import *
+from pbvoting.analysis.votersatisfaction import *
+from pbvoting.analysis.categoryanalysis import *
 
 class TestProperties(TestCase):
     def test_satisfaction_properties(self):
@@ -30,6 +30,7 @@ class TestProperties(TestCase):
         ord_profile = OrdinalProfile([ord_ball_1, ord_ball_2, ord_ball_3, ord_ball_4])
 
         assert(avg_satisfaction(instance, ord_profile, budget_allocation, Additive_Borda_Sat) == 2.75)
+
 
     def test_proportionality_properties(self):
         projects = [
