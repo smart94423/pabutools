@@ -1,7 +1,8 @@
+from pbvoting.instance import Project, Profile, PBInstance
 from pbvoting.tiebreaking.rule import TieBreakingRule
 
 
-def lexicographic_untie(instance, profile, project):
+def lexicographic_untie(instance: PBInstance, profile: Profile, project: Project):
     """
         Unties projects based on their name.
         Parameters

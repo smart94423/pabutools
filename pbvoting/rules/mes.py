@@ -1,3 +1,5 @@
+from copy import copy, deepcopy
+
 from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.fractions import frac
 
@@ -28,49 +30,74 @@ def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation
             list of pbvoting.instance.pbinstance.Project if resolute, list of the previous if irresolute
     """
 
-    # Largely inspired from equalshares.net
-    projects = set(instance)
-    for project in budget_allocation:
-        projects.remove(project)
-    budgets = {i: initial_budget for i in range(len(profile))}
-    selection = []
-    total_scores = {proj: sum(sat.sat([proj]) for sat in sat_profile) for proj in projects}
-    for project, score in total_scores.items():
-        if score <= 0 or project.cost == 0:
-            projects.remove(project)
-    supporters = {proj: [i for i in range(len(profile)) if sat_profile[i].sat([proj]) > 0] for proj in projects}
-    affordabilities = {proj: frac(proj.cost, total_scores[proj]) for proj in projects}
-    while True:
-        selected_project = None
+    def aux(inst, prof, sats, tie, projects, budgets, alloc, total_scores, supporters, prev_affordability,
+            all_allocs, resolute):
+        tied_projects = []
         best_afford = float('inf')
-        for project in sorted(projects, key=lambda proj: affordabilities[proj]):
-            if affordabilities[project] > best_afford:
+        for project in sorted(projects, key=lambda p: prev_affordability[p]):
+            if prev_affordability[project] > best_afford:  # best possible afford for this round isn't good enough
                 break
-            if sum(budgets[i] for i in supporters[project]) < project.cost: # unaffordable, can delete
+            if sum(budgets[i] for i in supporters[project]) < project.cost:  # unaffordable, can delete
                 projects.remove(project)
                 continue
-            supporters[project].sort(key=lambda i: budgets[i] / sat_profile[i].sat([project]))
+            supporters[project].sort(key=lambda i: budgets[i] / sats[i].sat([project]))
             paid_so_far = 0
             denominator = total_scores[project]
             for j in range(len(supporters[project])):
                 rho = frac(project.cost - paid_so_far, denominator)
-                if rho * sat_profile[supporters[project][j]].sat([project]) <= budgets[supporters[project][j]]:
-                    # found best rho for this candidate
-                    affordabilities[project] = rho
+                if rho * sats[supporters[project][j]].sat([project]) <= budgets[supporters[project][j]]:
+                    # found the best rho for this candidate
+                    prev_affordability[project] = rho
                     if rho < best_afford:
                         best_afford = rho
-                        selected_project = project
+                        tied_projects = [project]
+                    elif rho == best_afford:
+                        tied_projects.append(project)
                     break
                 paid_so_far += budgets[supporters[project][j]]
-                denominator -= sat_profile[supporters[project][j]].sat([project])
-        if not selected_project:
-            break
-        selection.append(selected_project)
-        projects.remove(selected_project)
-        for i in supporters[selected_project]:
-            budgets[i] -= min(budgets[i], best_afford * sat_profile[i].sat([selected_project]))
+                denominator -= sats[supporters[project][j]].sat([project])
+        if not tied_projects:
+            alloc.sort()
+            if alloc not in all_allocs:
+                all_allocs.append(alloc)
+        else:
+            tied_projects = tie.order(inst, prof, tied_projects)
+            if resolute:
+                tied_projects = tied_projects[:1]
+            for selected_project in tied_projects:
+                new_alloc = copy(alloc)
+                new_alloc.append(selected_project)
+                new_projects = copy(projects)
+                new_projects.remove(selected_project)
+                new_budgets = deepcopy(budgets)
+                for i in supporters[selected_project]:
+                    new_budgets[i] -= min(budgets[i], best_afford * sats[i].sat([selected_project]))
+                new_afford = deepcopy(prev_affordability)
+                aux(inst, prof, sats, tie, new_projects, new_budgets, new_alloc, total_scores, supporters, new_afford,
+                    all_allocs, resolute)
 
-    return selection
+    # Adapted from equalshares.net
+    initial_projects = set(instance)
+    for proj in budget_allocation:
+        initial_projects.remove(proj)
+    initial_budgets = {i: initial_budget for i in range(len(profile))}
+    selection = []
+    scores = {proj: sum(sat.sat([proj]) for sat in sat_profile) for proj in initial_projects}
+    for proj, score in scores.items():
+        if score <= 0 or proj.cost == 0:
+            initial_projects.remove(proj)
+    supps = {proj: [i for i in range(len(profile)) if sat_profile[i].sat([proj]) > 0] for proj in initial_projects}
+    initial_affordability = {proj: frac(proj.cost, scores[proj]) for proj in initial_projects}
+    initial_budget_allocation = copy(budget_allocation)
+    all_budget_allocations = []
+
+    aux(instance, profile, sat_profile, tie_breaking, initial_projects, initial_budgets, initial_budget_allocation,
+        scores, supps, initial_affordability, all_budget_allocations, resoluteness)
+
+    if resoluteness:
+        return all_budget_allocations[0]
+    else:
+        return all_budget_allocations
 
 
 def method_of_equal_shares(instance, profile, satisfaction=None, sat_profile=None, tie_breaking=lexico_tie_breaking,
