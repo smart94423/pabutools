@@ -40,5 +40,5 @@ def category_proportionality(instance: PBInstance,
         mean_square_diff += (proportional_allocated_cost_per_category[category] - proportional_app_cost_per_category[category])**2
     mean_square_diff /= len(categories)
     
-    return np.exp(-mean_square_diff) 
+    return np.exp(-float(mean_square_diff)) 
 
