@@ -1,6 +1,8 @@
 """
 Instances.
 """
+from collections.abc import Iterable, Generator
+from fractions import Fraction
 from math import ceil
 from pbvoting.fractions import as_frac
 from pbvoting.utils import powerset
@@ -33,7 +35,12 @@ class Project:
     def __repr__(self):
         return self.__str__()
 
-    def __init__(self, project_name="", cost=0.0, categories=set(), targets=set()):
+    def __init__(self,
+                 project_name: str="",
+                 cost: Fraction=as_frac(0),
+                 categories: set[str]=set(),
+                 targets: set[str]=set()
+                 ) -> None:
         self.name = project_name
         self.cost = as_frac(cost)
         self.categories = categories
@@ -62,7 +69,7 @@ class Project:
         return hash(self.name)
 
 
-def total_cost(projects):
+def total_cost(projects: Iterable[Project]) -> Fraction:
     """
         Returns the total cost of a collection of projects, summing the cost of its content.
         Parameters
@@ -71,7 +78,7 @@ def total_cost(projects):
                 An iterable of projects.
         Returns
         -------
-            float
+            fraction.Fraction
     """
     res = 0
     for p in projects:
@@ -79,7 +86,7 @@ def total_cost(projects):
     return res
 
 
-class PBInstance(set):
+class PBInstance(set[Project]):
     """
         Participatory Budgeting (PB) instances.
         An instance contains the projects, their cost and the budget limit. Importantly, the profile is not part of
@@ -95,9 +102,9 @@ class PBInstance(set):
             budget_limit : float, optional
                 The budget limit of the instance.
                 Defaults to `0.0`.
-            categories: set, optional
+            categories: set[str], optional
                 set of categories that the projects can be assigned to
-            targets: set, optional
+            targets: set[str], optional
                 set of target groups that the project can be targeting
             file_path : str, optional
                 If the instance has been parsed from a file, the path to the file. Otherwise, the empty string.
@@ -115,8 +122,17 @@ class PBInstance(set):
                 strings. Values are dictionary of strings.
         """
 
-    def __init__(self, s=(), budget_limit=None, categories=None, targets=None, file_path=None, file_name=None,  parsing_errors=None, meta=None,
-                 project_meta=None):
+    def __init__(self,
+                 s: Iterable[Project]=(),
+                 budget_limit: float|None=None,
+                 categories: set[str]|None=None,
+                 targets: set[str]|None=None,
+                 file_path: str|None=None,
+                 file_name: str|None=None,
+                 parsing_errors: bool|None=None,
+                 meta: dict|None=None,
+                 project_meta: dict|None=None
+                 ) -> None:
         super(PBInstance, self).__init__(s)
 
         if budget_limit is None:
@@ -175,13 +191,13 @@ class PBInstance(set):
                 project_meta = dict()
         self.project_meta = project_meta
 
-    def get_project(self, project_name):
+    def get_project(self, project_name: str) -> Project:
         for p in self:
             if p.name == project_name:
                 return p
         raise KeyError("No project with name {} found in the instance.".format(project_name))
 
-    def budget_allocations(self):
+    def budget_allocations(self) -> Generator[Iterable[Project], None, None]:
         """
             Returns a generator of all the feasible budget allocations of the instance.
             Returns
@@ -192,7 +208,7 @@ class PBInstance(set):
             if self.is_feasible(b):
                 yield b
 
-    def is_trivial(self):
+    def is_trivial(self) -> bool:
         """
             Tests if the instance is trivial, meaning that either all projects can be selected without
             exceeding the budget limit, or that no project can be selected.
@@ -202,7 +218,7 @@ class PBInstance(set):
         """
         return (total_cost(self) <= self.budget_limit) or (self.budget_limit <= min([p.cost for p in self]))
 
-    def is_feasible(self, projects):
+    def is_feasible(self, projects: Iterable[Project]) -> bool:
         """
             Tests if a given set of projects is feasible, meaning that its total cost does not exceed the budget
             limit.
@@ -216,7 +232,7 @@ class PBInstance(set):
         """
         return total_cost(projects) <= self.budget_limit
 
-    def is_exhaustive(self, projects):
+    def is_exhaustive(self, projects: Iterable[Project]) -> bool:
         """
             Tests if a given set of projects is exhaustive, meaning that no additional project could be added without
             violating the budget limit. Note that we do not explicitly check for feasibility first.
@@ -234,7 +250,7 @@ class PBInstance(set):
                 return False
         return True
 
-    def copy(self):
+    def copy(self) -> 'PBInstance':
         """
             Returns a copy of the instance.
             Returns
@@ -282,7 +298,7 @@ PBInstance._wrap_methods(['__ror__', 'difference_update', '__isub__',
                           ])
 
 
-def get_random_instance(num_projects, min_cost, max_cost):
+def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> PBInstance:
     """
         Generates a random instance. Costs and budget limit are integers. The cost are selected uniformly between
         min_cost and max_cost. The budget limit is sample form a uniform between the minimum cost of a project

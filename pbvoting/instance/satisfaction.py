@@ -26,12 +26,12 @@ class Satisfaction:
         self.profile = profile
         self.ballot = ballot
 
-    def sat(self, projects: set[Project]) -> float:
+    def sat(self, projects: Iterable[Project]) -> float:
         """
             Returns the satisfaction of a voter with a given approval ballot for a given subset of projects.
             Parameters
             ----------
-                projects : set of pbvoting.instance.pbinstance.Project
+                projects : iterable of pbvoting.instance.pbinstance.Project
                     The set of projects.
             Returns
             -------
@@ -78,7 +78,7 @@ class FunctionalSatisfaction(Satisfaction):
                 score of the subset of projects as a fraction.
     """
 
-    def __init__(self, instance, profile, ballot: ApprovalBallot, func: Callable[[PBInstance, Ballot, Profile, set[Project]], Fraction]):
+    def __init__(self, instance, profile, ballot: ApprovalBallot, func: Callable[[PBInstance, Profile, ApprovalBallot, set[Project]], Fraction]):
         super(FunctionalSatisfaction, self).__init__(instance, profile, ballot)
         self.func = func
         self.instance = instance
@@ -151,12 +151,12 @@ class AdditiveSatisfaction(Satisfaction):
                 the project as a fraction.
     """
 
-    def __init__(self, instance: PBInstance, profile: Profile, ballot: ApprovalBallot, func: Callable[[PBInstance, Profile, Ballot, Project], Fraction]):
+    def __init__(self, instance: PBInstance, profile: Profile, ballot: ApprovalBallot, func: Callable[[PBInstance, Profile, ApprovalBallot, Project], Fraction]):
         super(AdditiveSatisfaction, self).__init__(instance, profile, ballot)
         self.func = func
         self.scores = dict()
 
-    def get_score(self, project: set[Project]) -> Fraction:
+    def get_score(self, project: Project) -> Fraction:
         if project in self.scores:
             return self.scores[project]
         score = self.func(self.instance, self.profile, self.ballot, project)

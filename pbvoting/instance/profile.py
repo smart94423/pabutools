@@ -2,11 +2,13 @@
 Preference profiles and voters.
 """
 
+from fractions import Fraction
 import random
 
+from collections.abc import Iterable, Generator
 from itertools import combinations_with_replacement
 
-from pbvoting.instance.pbinstance import PBInstance
+from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.utils import powerset
 
 
@@ -24,7 +26,7 @@ class Ballot:
                 strings. Could for instance store the gender of the voter, their location etc...
     """
 
-    def __init__(self, name="", meta=None):
+    def __init__(self, name: str="", meta: dict|None=None):
         if meta is None:
             meta = dict()
         self.meta = meta
@@ -43,7 +45,11 @@ class Profile(list):
                 The instance with respect to which the profile is defined.
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True):
+    def __init__(self, 
+                 iterable: Iterable[Ballot]=(),
+                 instance: PBInstance|None=None,
+                 ballot_validation: bool=True
+                 ) -> None:
         super(Profile, self).__init__(iterable)
         if instance is None:
             instance = PBInstance()
@@ -51,7 +57,7 @@ class Profile(list):
         self.ballot_validation = ballot_validation
         self.ballot_type = None
 
-    def validate_ballot(self, ballot):
+    def validate_ballot(self, ballot: Ballot) -> None:
         if self.ballot_validation and self.ballot_type is not None and not issubclass(type(ballot), self.ballot_type):
             raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
                                                                                             self.__class__.__name__))
@@ -66,15 +72,15 @@ class Profile(list):
         self.validate_ballot(item)
         super().__setitem__(index, item)
 
-    def insert(self, index, item):
+    def insert(self, index: int, item: Ballot) -> None:
         self.validate_ballot(item)
         super().insert(index, item)
 
-    def append(self, item):
+    def append(self, item: Ballot) -> None:
         self.validate_ballot(item)
         super().append(item)
 
-    def extend(self, other):
+    def extend(self, other: 'Profile') -> None:
         if isinstance(other, type(self)):
             super().extend(other)
         else:
@@ -89,7 +95,11 @@ class ApprovalBallot(set, Ballot):
         ----------
     """
 
-    def __init__(self, approved=(), name="", meta=None):
+    def __init__(self,
+                 approved: Iterable[Project]=(),
+                 name: str="",
+                 meta: dict|None=None
+                 ) -> None:
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
 
@@ -125,8 +135,14 @@ class ApprovalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
-                 legal_min_cost=None, legal_max_cost=None):
+    def __init__(self,
+                 iterable: Iterable[ApprovalBallot]=(),
+                 instance: PBInstance|None=None,
+                 ballot_validation: bool=True,
+                 legal_min_length: int|None=None,
+                 legal_max_length: int|None=None,
+                 legal_min_cost: Fraction|None=None,
+                 legal_max_cost: Fraction|None=None):
         super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = ApprovalBallot
         self.legal_min_length = legal_min_length
@@ -150,7 +166,7 @@ class ApprovalProfile(Profile):
                                legal_min_cost=self.legal_min_cost,
                                legal_max_cost=self.legal_max_cost)
 
-    def approval_score(self, project):
+    def approval_score(self, project: Project) -> int:
         """
             Returns the approval score of a project, that is, the number of voters who approved of it.
             Parameters
@@ -167,7 +183,7 @@ class ApprovalProfile(Profile):
                 approval_score += 1
         return approval_score
 
-    def is_trivial(self):
+    def is_trivial(self) -> bool:
         """
             Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost
             that exceeds the budget limit.
@@ -177,7 +193,7 @@ class ApprovalProfile(Profile):
         """
         return all(project.cost > self.instance.budget_limit for project in self.approved_projects())
 
-    def approved_projects(self):
+    def approved_projects(self) -> set[Project]:
         """
         A set of all projects approved by at least one voter.
         Returns
@@ -189,7 +205,7 @@ class ApprovalProfile(Profile):
             approved_projects.update(ballot)
         return approved_projects
 
-    def is_party_list(self):
+    def is_party_list(self) -> bool:
         """
         Check whether this profile is a party-list profile.
         In a party-list profile all approval sets are either disjoint or equal.
@@ -200,7 +216,7 @@ class ApprovalProfile(Profile):
         return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
 
 
-def get_random_approval_ballot(projects, name="RandomAppBallot"):
+def get_random_approval_ballot(projects: Iterable[Project], name: str="RandomAppBallot") -> ApprovalBallot:
     """
         Generates a random approval ballot in which each project is approved with probability 0.5.
         Parameters
@@ -220,7 +236,7 @@ def get_random_approval_ballot(projects, name="RandomAppBallot"):
     return ballot
 
 
-def get_random_approval_profile(instance, num_agents):
+def get_random_approval_profile(instance: PBInstance, num_agents: int) -> ApprovalProfile:
     """
         Generates a random approval profile in which approval ballots are such that each project is approved with
         probability 0.5.
@@ -240,7 +256,7 @@ def get_random_approval_profile(instance, num_agents):
     return profile
 
 
-def get_all_approval_profiles(instance, num_agents):
+def get_all_approval_profiles(instance: PBInstance, num_agents: int):
     """
         Returns a generator over all the possible profile for a given instance of a given length.
         Parameters
@@ -253,10 +269,10 @@ def get_all_approval_profiles(instance, num_agents):
         -------
             pbvoting.instance.profile.ApprovalBallot
     """
-    return combinations_with_replacement(powerset(instance.projects), num_agents)
+    return combinations_with_replacement(powerset(instance), num_agents)
 
 
-class CardinalBallot(dict, Ballot):
+class CardinalBallot(dict[Project,Fraction], Ballot):
     """
         A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
         subclass of `pbvoting.instance.profile.Ballot`.
@@ -267,7 +283,10 @@ class CardinalBallot(dict, Ballot):
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, iterable=(), name="", meta=None):
+    def __init__(self,
+                 iterable: Iterable[dict[Project,Fraction]]=(),
+                 name: str="",
+                 meta: dict|None=None):
         dict.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
 
@@ -279,8 +298,15 @@ class CardinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
-                 legal_min_score=None, legal_max_score=None):
+    def __init__(self, 
+                 iterable: Iterable[CardinalBallot]=(),
+                 instance: PBInstance|None=None,
+                 ballot_validation: bool=True,
+                 legal_min_length: int|None=None,
+                 legal_max_length: int|None=None,
+                 legal_min_score: Fraction|None=None, 
+                 legal_max_score: Fraction|None=None
+                 ) -> None:
         super(CardinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = CardinalBallot
         self.legal_min_length = legal_min_length
@@ -316,7 +342,10 @@ class CumulativeBallot(CardinalBallot):
                 Defaults to the empty dictionary.
     """
 
-    def __init__(self, iterable=(), name="", meta=None):
+    def __init__(self,
+                 iterable: Iterable[dict[Project,Fraction]]=(),
+                 name: str="",
+                 meta: dict|None=None):
         dict.__init__(self, iterable)
         CardinalBallot.__init__(self, name=name, meta=meta)
 
@@ -328,8 +357,17 @@ class CumulativeProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None, legal_max_length=None,
-                 legal_min_score=None, legal_max_score=None, legal_min_total_score=None, legal_max_total_score=None):
+    def __init__(self,
+                 iterable: Iterable[CumulativeBallot]=(),
+                 instance: PBInstance|None=None,
+                 ballot_validation: bool=True,
+                 legal_min_length: int|None=None,
+                 legal_max_length: int|None=None,
+                 legal_min_score: Fraction|None=None,
+                 legal_max_score: Fraction|None=None,
+                 legal_min_total_score: Fraction|None=None,
+                 legal_max_total_score: Fraction|None=None
+                 ) -> None:
         super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance,
                                                 ballot_validation=ballot_validation)
         self.ballot_type = CumulativeBallot
@@ -363,7 +401,11 @@ class CumulativeProfile(Profile):
 
 
 class OrdinalBallot(list, Ballot):
-    def __init__(self, iterable=(), name="", meta=None):
+    def __init__(self,
+                 iterable: Iterable[Project]=(),
+                 name: str="",
+                 meta: dict|None=None
+                 ) -> None:
         list.__init__(self, iterable)
         Ballot.__init__(self, name=name, meta=meta)
 
@@ -381,8 +423,13 @@ class OrdinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, iterable=(), instance=None, ballot_validation=True, legal_min_length=None,
-                 legal_max_length=None):
+    def __init__(self,
+                 iterable: Iterable[OrdinalBallot]=(),
+                 instance: PBInstance|None=None,
+                 ballot_validation: bool=True,
+                 legal_min_length: int|None=None,
+                 legal_max_length: int|None=None
+                 ) -> None:
         super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = OrdinalBallot
 
