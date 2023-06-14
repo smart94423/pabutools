@@ -330,7 +330,6 @@ class CardinalProfile(Profile):
                                legal_min_score=self.legal_min_score,
                                legal_max_score=self.legal_max_score)
 
-
     def score(self, project: Project) -> Fraction:
         """
             Returns the score of a project, that is, the sum of scores received from all voters.
@@ -347,6 +346,7 @@ class CardinalProfile(Profile):
             if project in ballot:
                 score += ballot[project]
         return score
+
 
 class CumulativeBallot(CardinalBallot):
     """

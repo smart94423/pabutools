@@ -134,17 +134,23 @@ class TestProfile(TestCase):
 
         profile.legal_min_length = 1
         profile.legal_max_length = 5
-        profile.legal_min_cost = 10
-        print(profile.legal_max_cost)
-        profile.legal_max_cost = 100
-
+        profile.legal_min_score = 3
+        profile.legal_max_score = 100
         profile += [b3, b4]
         assert profile[2] == b3
         assert profile[3] == b4
+        assert profile.legal_min_length == 1
+        assert profile.legal_max_length == 5
+        assert profile.legal_min_score == 3
+        assert profile.legal_max_score == 100
         profile *= 10
         assert len(profile) == 40
         assert profile[0] == profile[4] == profile[8] == profile[12]
         assert profile[1] == profile[5] == profile[9] == profile[13]
         assert profile[2] == profile[6] == profile[10] == profile[14]
         assert profile[3] == profile[7] == profile[11] == profile[15]
+        assert profile.legal_min_length == 1
+        assert profile.legal_max_length == 5
+        assert profile.legal_min_score == 3
+        assert profile.legal_max_score == 100
 
