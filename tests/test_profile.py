@@ -10,12 +10,26 @@ class TestProfile(TestCase):
         b2 = Ballot()
         b3 = Ballot()
 
-        profile += [b1, b2]
+        profile += Profile([b1, b2])
         assert len(profile) == 2
         profile *= 3
         assert len(profile) == 6
         profile.append(b3)
         assert len(profile) == 7
+        profile.insert(1, b1)
+        assert profile[1] == b1
+        assert profile[2] == b2
+        assert len(profile) == 8
+        profile.__setitem__(0, b3)
+        assert profile[0] == b3
+        profile.extend(Profile([b1, b1]))
+        assert len(profile) == 10
+        assert profile[-1] == b1
+        assert profile[-2] == b1
+        profile.extend((b2, b2,))
+        assert len(profile) == 12
+        assert profile[-1] == b2
+        assert profile[-2] == b2
 
     def test_approval_ballot(self):
         p1 = Project("p1", 1)
@@ -136,7 +150,7 @@ class TestProfile(TestCase):
         profile.legal_max_length = 5
         profile.legal_min_score = 3
         profile.legal_max_score = 100
-        profile += [b3, b4]
+        profile += CardinalProfile([b3, b4])
         assert profile[2] == b3
         assert profile[3] == b4
         assert profile.legal_min_length == 1
@@ -183,7 +197,7 @@ class TestProfile(TestCase):
         profile.legal_max_score = 10
         profile.legal_min_total_score = 1
         profile.legal_max_total_score = 1000
-        profile += [b4]
+        profile += CumulativeProfile([b4,])
         assert profile[3] == b4
         assert profile.legal_min_length == 6
         assert profile.legal_max_length == 7
@@ -231,7 +245,7 @@ class TestProfile(TestCase):
         b3 = OrdinalBallot([projects[2], projects[3], projects[7]])
         profile = OrdinalProfile((b1, b2, b3), instance=instance)
         assert len(profile) == 3
-        profile += [b1, b2]
+        profile += OrdinalProfile([b1, b2])
         assert profile.instance == instance
         assert len(profile) == 5
         profile *= 5
