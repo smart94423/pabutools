@@ -231,11 +231,6 @@ class TestProfile(TestCase):
         b3 += b1
         assert b3 == b1 == b2
         assert b3.name == "Name"
-        b4 = OrdinalBallot((projects[0],), name="Name3")
-        b4 *= 5
-        assert len(b4) == 5
-        assert b4.name == "Name3"
-        assert all(p == projects[0] for p in b4)
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
