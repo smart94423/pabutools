@@ -89,10 +89,10 @@ class TestAnalysis(TestCase):
         app_ball_3 = ApprovalBallot([projects[1]])
         app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3])
         
-        assert avg_ballot_length(app_profile) == frac(5, 3)
-        assert median_ballot_length(app_profile) == 2
-        assert avg_ballot_cost(app_profile) == 3
-        assert median_ballot_cost(app_profile) == 3
+        assert avg_ballot_length(instance, app_profile) == frac(5, 3)
+        assert median_ballot_length(instance, app_profile) == 2
+        assert avg_ballot_cost(instance, app_profile) == 3
+        assert median_ballot_cost(instance, app_profile) == 3
         assert avg_approval_score(instance, app_profile) == frac(5, 3)
         assert median_approval_score(instance, app_profile) == 2
 
