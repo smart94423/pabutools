@@ -1,4 +1,6 @@
 from unittest import TestCase
+from pbvoting.analysis.instanceproperties import *
+from pbvoting.analysis.profileproperties import *
 from pbvoting.fractions import frac
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile, OrdinalBallot, OrdinalProfile
@@ -6,7 +8,7 @@ from pbvoting.instance.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardina
 from pbvoting.analysis.votersatisfaction import *
 from pbvoting.analysis.categoryanalysis import *
 
-class TestProperties(TestCase):
+class TestAnalysis(TestCase):
     def test_satisfaction_properties(self):
         projects = [Project(str(i), 10+i) for i in range(10)]
         instance = PBInstance(projects, budget_limit=90)
@@ -61,4 +63,33 @@ class TestProperties(TestCase):
         assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31./162)
 
 
+    def test_instance_properties(self):
+        projects = [
+            Project("p1", cost=1),
+            Project("p2", cost=2),
+            Project("p3", cost=6),
+        ]
+        instance = PBInstance(projects, budget_limit=6)
+                
+        assert sum_project_cost(instance) == 9
+        assert avg_project_cost(instance) == 3
+        assert median_project_cost(instance) == 2
+        assert funding_scarcity(instance) == frac(3,2)
         
+    def test_profile_properties(self):
+        projects = [
+            Project("p1", cost=1),
+            Project("p2", cost=2),
+            Project("p3", cost=3),
+        ]
+        instance = PBInstance(projects, budget_limit=3)
+        app_ball_1 = ApprovalBallot([projects[0], projects[1]])
+        app_ball_2 = ApprovalBallot([projects[0], projects[2]])
+        app_ball_3 = ApprovalBallot([projects[1]])
+        profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3])
+        
+        assert avg_ballot_length(profile) == frac(5,3)
+        assert median_ballot_length(profile) == 2
+        assert avg_ballot_cost(profile) == 3
+        assert avg_ballot_cost(profile) == 3
+

@@ -1,10 +1,11 @@
 import numpy as np
 from pbvoting.instance.pbinstance import *
 from pbvoting.instance.profile import *
+from ..fractions import as_frac
 
 def avg_ballot_length(profile: Profile) -> int:
     """average ballot length in a profile"""
-    return np.average([len(ballot) for ballot in profile])
+    return np.average([as_frac(len(ballot)) for ballot in profile])
 
 def median_ballot_length(profile: Profile) -> int:
     """median ballot length in a profile"""
