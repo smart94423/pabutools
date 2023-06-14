@@ -154,3 +154,56 @@ class TestProfile(TestCase):
         assert profile.legal_min_score == 3
         assert profile.legal_max_score == 100
 
+    def test_cumulative_ballot(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        instance = PBInstance(projects, budget_limit=1)
+        b1 = CumulativeBallot({projects[1]: 4, projects[2]: 5, projects[3]: 7, projects[4]: 57, projects[5]: -41})
+        assert b1[projects[1]] == 4
+        assert b1[projects[2]] == 5
+        assert b1[projects[3]] == 7
+        assert b1[projects[4]] == 57
+        assert b1[projects[5]] == -41
+
+    def test_cumulative_profile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        instance = PBInstance(projects, budget_limit=1)
+        b1 = CumulativeBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
+        b2 = CumulativeBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
+        b3 = CumulativeBallot({projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
+        b4 = CumulativeBallot({projects[1]: 2, projects[2]: 8, projects[3]: 16872, projects[4]: 77, projects[5]: -457851})
+        profile = CumulativeProfile((b1, b2, b3), instance=instance)
+        assert len(profile) == 3
+        assert profile[0] == b1
+        assert profile[1] == b2
+        assert profile[2] == b3
+
+        profile.legal_min_length = 6
+        profile.legal_max_length = 7
+        profile.legal_min_score = 6
+        profile.legal_max_score = 10
+        profile.legal_min_total_score = 1
+        profile.legal_max_total_score = 1000
+        profile += [b4]
+        assert profile[3] == b4
+        assert profile.legal_min_length == 6
+        assert profile.legal_max_length == 7
+        assert profile.legal_min_score == 6
+        assert profile.legal_max_score == 10
+        assert profile.legal_min_total_score == 1
+        assert profile.legal_max_total_score == 1000
+        profile *= 4
+        assert len(profile) == 16
+        assert profile[0] == profile[4] == profile[8] == profile[12]
+        assert profile[1] == profile[5] == profile[9] == profile[13]
+        assert profile[2] == profile[6] == profile[10] == profile[14]
+        assert profile[3] == profile[7] == profile[11] == profile[15]
+        assert profile[3] == b4
+        assert profile.legal_min_length == 6
+        assert profile.legal_max_length == 7
+        assert profile.legal_min_score == 6
+        assert profile.legal_max_score == 10
+        assert profile.legal_min_total_score == 1
+        assert profile.legal_max_total_score == 1000
+
+
+
