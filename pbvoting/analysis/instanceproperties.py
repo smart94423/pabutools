@@ -11,8 +11,9 @@ def sum_project_cost(instance: PBInstance) -> Fraction:
 
 def funding_scarcity(instance: PBInstance) -> Fraction:
     """ratio of total cost of all projects to the budget limit"""
-    return sum_project_cost(instance) / instance.budget_limit
-
+    if instance.budget_limit > 0:
+        return sum_project_cost(instance) / instance.budget_limit
+    raise Exception("funding scarcity can only be calculated for projects with budget limit > 0")
 
 def avg_project_cost(instance: PBInstance) -> Fraction:
     """average cost of all projects of an instance"""

@@ -92,7 +92,7 @@ class TestAnalysis(TestCase):
         assert avg_ballot_length(app_profile) == frac(5,3)
         assert median_ballot_length(app_profile) == 2
         assert avg_ballot_cost(app_profile) == 3
-        assert avg_ballot_cost(app_profile) == 3
+        assert median_ballot_cost(app_profile) == 3
         assert avg_approval_score(instance, app_profile) == frac(5,3)
         assert median_approval_score(instance, app_profile) == 2
 
@@ -101,6 +101,6 @@ class TestAnalysis(TestCase):
         card_ball_3 = CardinalBallot({projects[1]: 3})
         card_profile = CardinalProfile([card_ball_1, card_ball_2, card_ball_3])
 
-        assert avg_project_score(instance, card_profile) == 4
-        assert median_project_score(instance, card_profile) == 3
+        assert avg_total_score(instance, card_profile) == 4
+        assert median_total_score(instance, card_profile) == 3
 
