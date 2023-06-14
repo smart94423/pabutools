@@ -13,8 +13,8 @@ class TestInstance(TestCase):
         inst.update(projects[:7])
         assert len(inst) == 7
         inst.file_name = "File_Name"
-        print(inst)
-        print(inst.__repr__())
+        inst.__str__()
+        inst.__repr__()
 
         inst2 = PBInstance()
         inst2.update(projects)
@@ -74,8 +74,8 @@ class TestInstance(TestCase):
         project = Project("p", 10)
         assert project == Project("p", 2)
         assert project == "p"
-        print(project)
-        print(project.__repr__())
+        project.__str__()
+        project.__repr__()
         assert not project == PBInstance()
         assert project <= "p"
         assert project <= Project("z")

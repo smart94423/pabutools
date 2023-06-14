@@ -13,9 +13,9 @@ def fixed_size_subsets(iterable, size):
 
 def gini_coefficient(values):
     values = np.asarray(values)
-    if (np.any(values < 0)):
+    if np.any(values < 0):
         raise Exception("Negative values not supported by gini coefficient implementation.")
-    if (np.all(values == 0)):
+    if np.all(values == 0):
         return 0
     n = len(values)
     sorted_values = np.sort(values)
