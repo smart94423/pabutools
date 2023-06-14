@@ -42,10 +42,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
     - name: Run tests with pytest and collect coverage
-      run: pytest tests --cov
+      run: python -m coverage run -m unittest
         
     - name: Upload coverage reports to Codecov
-      run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov -t ${{ secrets.TEST_PYPI_API_TOKEN }}
+      uses: codecov/codecov-action@v3
+        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
