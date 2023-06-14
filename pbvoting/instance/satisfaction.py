@@ -141,7 +141,7 @@ def cost_sqrt_sat_func(instance: PBInstance,
                        ballot: ApprovalBallot,
                        projects: Iterable[Project]
                        ) -> Fraction:
-    return number_as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
+    return number_as_frac(np.sqrt(float(total_cost([p for p in projects if p in ballot]))))
 
 
 class Cost_Sqrt_Sat(FunctionalSatisfaction):
@@ -155,7 +155,7 @@ def log_sat_func(instance: PBInstance,
                  ballot: ApprovalBallot,
                  projects: Iterable[Project]
                  ) -> Fraction:
-    return number_as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
+    return number_as_frac(np.log(float(1 + total_cost([p for p in projects if p in ballot]))))
 
 
 class Log_Sat(FunctionalSatisfaction):
@@ -256,7 +256,7 @@ def effort_sat_func(instance: PBInstance,
                     ballot: ApprovalBallot,
                     project: Project
                     ) -> Fraction:
-    return frac(project.cost, sum(project in b for b in profile))
+    return int(project in ballot) * frac(project.cost, sum(project in b for b in profile))
 
 
 class Effort_Sat(AdditiveSatisfaction):
@@ -273,7 +273,7 @@ def additive_card_sat_func(instance: PBInstance,
                            ballot: CardinalBallot,
                            project: Project
                            ) -> Fraction:
-    return ballot[project]
+    return ballot.get(project, 0)
 
 
 class Additive_Cardinal_Sat(AdditiveSatisfaction):
@@ -339,7 +339,7 @@ class PositionalSatisfaction(Satisfaction):
 def borda_sat_func(ballot: OrdinalBallot, project: Project) -> int:
     if project not in ballot:
         return 0
-    return len(ballot) - ballot.index(project)
+    return len(ballot) - ballot.index(project) - 1
 
 
 class Additive_Borda_Sat(PositionalSatisfaction):

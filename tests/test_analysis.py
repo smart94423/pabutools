@@ -31,7 +31,7 @@ class TestAnalysis(TestCase):
         ord_ball_4 = OrdinalBallot([projects[8], projects[9]])
         ord_profile = OrdinalProfile([ord_ball_1, ord_ball_2, ord_ball_3, ord_ball_4])
 
-        assert(avg_satisfaction(instance, ord_profile, budget_allocation, Additive_Borda_Sat) == 2.75)
+        assert(avg_satisfaction(instance, ord_profile, budget_allocation, Additive_Borda_Sat) == 1.5)
 
 
     def test_proportionality_properties(self):
