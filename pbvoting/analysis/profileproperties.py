@@ -1,12 +1,13 @@
+import profile
 import numpy as np
 from pbvoting.instance.pbinstance import *
 from pbvoting.instance.profile import *
-from ..fractions import as_frac
+from ..fractions import number_as_frac
 
 
-def avg_ballot_length(profile: Profile) -> int:
+def avg_ballot_length(profile: Profile) -> Fraction:
     """average ballot length in a profile"""
-    return np.average([as_frac(len(ballot)) for ballot in profile])
+    return np.average([number_as_frac(len(ballot)) for ballot in profile])
 
 
 def median_ballot_length(profile: Profile) -> int:
@@ -27,3 +28,23 @@ def avg_ballot_cost(profile: ApprovalProfile) -> Fraction:
 def median_ballot_cost(profile: ApprovalProfile) -> Fraction:
     """median ballot cost in an approval profile"""
     return np.median([ballot_cost(ballot) for ballot in profile])
+
+
+def avg_approval_score(instance: PBInstance, profile: ApprovalProfile) -> Fraction:
+    """average approval score of all projects in the instance"""
+    return np.average([number_as_frac(profile.approval_score(project)) for project in instance])
+
+
+def median_approval_score(instance: PBInstance, profile: ApprovalProfile) -> Fraction:
+    """median approval score of all projects in the instance"""
+    return np.median([profile.approval_score(project) for project in instance])
+
+
+def avg_project_score(instance: PBInstance, profile: CumulativeProfile | CardinalProfile) -> Fraction:
+    """average score of all projects in the instance"""
+    return np.average([profile.score(project) for project in instance])
+
+
+def median_project_score(instance: PBInstance, profile: CumulativeProfile | CardinalProfile) -> Fraction:
+    """median score of all projects in the instance"""
+    return np.median([profile.score(project) for project in instance])
