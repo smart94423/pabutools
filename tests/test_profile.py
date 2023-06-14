@@ -205,5 +205,37 @@ class TestProfile(TestCase):
         assert profile.legal_min_total_score == 1
         assert profile.legal_max_total_score == 1000
 
+    def test_ordinal_ballot(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
+        b2 = OrdinalBallot()
+        b2.append(projects[0])
+        b2.append(projects[1])
+        b2.append(projects[2])
+        assert b1 == b2
+        b3 = OrdinalBallot(name="Name")
+        b3 += b1
+        assert b3 == b1 == b2
+        assert b3.name == "Name"
+        b4 = OrdinalBallot((projects[0],), name="Name3")
+        b4 *= 5
+        assert len(b4) == 5
+        assert b4.name == "Name3"
+        assert all(p == projects[0] for p in b4)
+
+    def test_ordinal_profile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        instance = PBInstance(projects, budget_limit=1)
+        b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
+        b2 = OrdinalBallot([projects[4], projects[5], projects[3]])
+        b3 = OrdinalBallot([projects[2], projects[3], projects[7]])
+        profile = OrdinalProfile((b1, b2, b3), instance=instance)
+        assert len(profile) == 3
+        profile += [b1, b2]
+        assert profile.instance == instance
+        assert len(profile) == 5
+        profile *= 5
+        assert profile.instance == instance
+        assert len(profile) == 25
 
 
