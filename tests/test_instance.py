@@ -12,6 +12,9 @@ class TestInstance(TestCase):
         assert len(inst) == 2
         inst.update(projects[:7])
         assert len(inst) == 7
+        inst.file_name = "File_Name"
+        print(inst)
+        print(inst.__repr__())
 
         inst2 = PBInstance()
         inst2.update(projects)
@@ -23,6 +26,10 @@ class TestInstance(TestCase):
         inst = PBInstance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
         assert inst.budget_limit == 2
         assert len(inst) == 3
+        try:
+            inst.get_project("name_that_does_not_appear")
+        except KeyError:
+            pass
         p1 = inst.get_project("p1")
         assert p1.name == "p1"
         assert p1.cost == 2
@@ -43,9 +50,35 @@ class TestInstance(TestCase):
         inst = get_random_instance(10.9, 1.1, 10.8)
         assert len(inst) == 11
 
+        inst.categories = {"Cat1", "Cat2", "Cat3"}
+        inst.targets = {"Targ1", "Targ2", "Targ3"}
+        inst.file_path = "path"
+        inst.file_name = "name"
+        inst.parsing_errors = False
+        inst2 = PBInstance(inst)
+        assert inst2.budget_limit == inst.budget_limit
+        assert inst2.categories == inst.categories
+        assert inst2.targets == inst.targets
+        assert inst2.file_path == inst.file_path
+        assert inst2.file_name == inst.file_name
+        assert inst2.parsing_errors == inst.parsing_errors
+        assert inst2.meta == inst.meta
+        assert inst2.project_meta == inst.project_meta
+
+        inst3 = inst.copy()
+        assert inst3 == inst
+
     def test_projects(self):
         projects = [Project("p{}".format(i), 1) for i in range(10)]
         assert total_cost(projects) == 10
         project = Project("p", 10)
         assert project == Project("p", 2)
         assert project == "p"
+        print(project)
+        print(project.__repr__())
+        assert not project == PBInstance()
+        assert project <= "p"
+        assert project <= Project("z")
+        assert project < "z"
+        assert project < Project("z")
+

@@ -493,12 +493,12 @@ voter_id;vote;voting_method;district
                 vote_type;approval
                 min_length;1
                 max_length;6
-                min_cost;0
+                min_sum_cost;0
+                max_sum_cost;800010000
                 min_sum_points;0
                 max_sum_points;100
                 min_points;0
                 max_points;100
-                max_cost;800010000
                 PROJECTS
                 project_id;cost;votes;score;name
                 1;1725000;6512;14142;Zielony pochłaniacz smogu dla każdej dzielnicy!
@@ -512,8 +512,8 @@ voter_id;vote;voting_method;district
         os.remove("test.pb")
         assert instance.meta["min_length"] == "1"
         assert instance.meta["max_length"] == "6"
-        assert instance.meta["min_cost"] == "0"
-        assert instance.meta["max_cost"] == "800010000"
+        assert instance.meta["min_sum_cost"] == "0"
+        assert instance.meta["max_sum_cost"] == "800010000"
         assert profile.legal_min_length is None
         assert profile.legal_max_length is None
         assert profile.legal_min_cost is None
