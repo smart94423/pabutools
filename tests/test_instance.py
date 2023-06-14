@@ -12,7 +12,9 @@ class TestInstance(TestCase):
         assert len(inst) == 2
         inst.update(projects[:7])
         assert len(inst) == 7
+        inst.file_name = "File_Name"
         print(inst)
+        print(inst.__repr__())
 
         inst2 = PBInstance()
         inst2.update(projects)
@@ -63,6 +65,9 @@ class TestInstance(TestCase):
         assert inst2.meta == inst.meta
         assert inst2.project_meta == inst.project_meta
 
+        inst3 = inst.copy()
+        assert inst3 == inst
+
     def test_projects(self):
         projects = [Project("p{}".format(i), 1) for i in range(10)]
         assert total_cost(projects) == 10
@@ -70,6 +75,7 @@ class TestInstance(TestCase):
         assert project == Project("p", 2)
         assert project == "p"
         print(project)
+        print(project.__repr__())
         assert not project == PBInstance()
         assert project <= "p"
         assert project <= Project("z")
