@@ -45,5 +45,7 @@ jobs:
       run: python -m coverage run -m unittest
         
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${{ secrets.TEST_PYPI_API_TOKEN }}
