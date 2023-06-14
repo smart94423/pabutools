@@ -1,6 +1,6 @@
-
 from unittest import TestCase
 from pbvoting.instance.pbinstance import *
+
 
 class TestInstance(TestCase):
     def test_instance_as_set(self):
@@ -18,7 +18,6 @@ class TestInstance(TestCase):
         inst3 = inst.union(inst2)
         assert len(inst3) == 10
         assert type(inst3) == PBInstance
-
 
     def test_instance(self):
         inst = PBInstance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
@@ -44,11 +43,9 @@ class TestInstance(TestCase):
         inst = get_random_instance(10.9, 1.1, 10.8)
         assert len(inst) == 11
 
-
     def test_projects(self):
         projects = [Project("p{}".format(i), 1) for i in range(10)]
         assert total_cost(projects) == 10
         project = Project("p", 10)
         assert project == Project("p", 2)
         assert project == "p"
-
