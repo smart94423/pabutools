@@ -222,6 +222,8 @@ class TestProfile(TestCase):
     def test_ordinal_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
+        b1.__repr__()
+        b1.__str__()
         b2 = OrdinalBallot()
         b2.append(projects[0])
         b2.append(projects[1])
@@ -231,6 +233,16 @@ class TestProfile(TestCase):
         b3 += b1
         assert b3 == b1 == b2
         assert b3.name == "Name"
+
+        try:
+            b3.index(123)
+        except ValueError:
+            pass
+
+        assert OrdinalBallot([projects[0], projects[1], projects[2]]) == [projects[0], projects[1], projects[2]]
+        assert OrdinalBallot([projects[0], projects[1], projects[2]]) != [projects[0], projects[1]]
+        assert OrdinalBallot([projects[0], projects[2], projects[1]]) != [projects[0], projects[1], projects[2]]
+
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
