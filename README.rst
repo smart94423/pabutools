@@ -5,11 +5,11 @@ PBvoting
 .. inclusion-marker-badges-begin
 
 .. image:: https://github.com/Simon-Rey/pbvoting/workflows/build/badge.svg?branch=main
-        :target: https://github.com/PrefLib/preflibtools/actions?query=workflow%3Abuild
+        :target: https://github.com/Simon-Rey/pbvoting/actions?query=workflow%3Abuild
         :alt: Build Status
 
 .. image:: https://codecov.io/gh/Simon-Rey/pbvoting/branch/main/graphs/badge.svg
-        :target: https://codecov.io/gh/PrefLib/preflibtools/tree/main
+        :target: https://codecov.io/gh/Simon-Rey/pbvoting/tree/main
         :alt: Code Coverage
 
 Overview
