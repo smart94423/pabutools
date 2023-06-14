@@ -331,6 +331,23 @@ class CardinalProfile(Profile):
                                legal_max_score=self.legal_max_score)
 
 
+    def score(self, project: Project) -> Fraction:
+        """
+            Returns the score of a project, that is, the sum of scores received from all voters.
+            Parameters
+            ----------
+                project : pbvoting.instance.instance.Project
+                    The project.
+            Returns
+            -------
+                Fraction
+        """
+        score = 0
+        for ballot in self:
+            if project in ballot:
+                score += ballot[project]
+        return score
+
 class CumulativeBallot(CardinalBallot):
     """
         A cumulative ballot, that is, a ballot in which the voter has indicated a score for every project using a
@@ -350,7 +367,7 @@ class CumulativeBallot(CardinalBallot):
         CardinalBallot.__init__(self, name=name, meta=meta)
 
 
-class CumulativeProfile(Profile):
+class CumulativeProfile(CardinalProfile):
     """
     A profile of cardinal ballots. Inherits from `pbvoting.instance.profile.Profile`.
     Attributes
