@@ -36,10 +36,10 @@ class Project:
         return self.__str__()
 
     def __init__(self,
-                 project_name: str="",
-                 cost: Fraction=as_frac(0),
-                 categories: set[str]=set(),
-                 targets: set[str]=set()
+                 project_name: str = "",
+                 cost: Fraction = as_frac(0),
+                 categories: set[str] = set(),
+                 targets: set[str] = set()
                  ) -> None:
         self.name = project_name
         self.cost = as_frac(cost)
@@ -123,15 +123,15 @@ class PBInstance(set[Project]):
         """
 
     def __init__(self,
-                 s: Iterable[Project]=(),
-                 budget_limit: float|None=None,
-                 categories: set[str]|None=None,
-                 targets: set[str]|None=None,
-                 file_path: str|None=None,
-                 file_name: str|None=None,
-                 parsing_errors: bool|None=None,
-                 meta: dict|None=None,
-                 project_meta: dict|None=None
+                 s: Iterable[Project] = (),
+                 budget_limit: float | None = None,
+                 categories: set[str] | None = None,
+                 targets: set[str] | None = None,
+                 file_path: str | None = None,
+                 file_name: str | None = None,
+                 parsing_errors: bool | None = None,
+                 meta: dict | None = None,
+                 project_meta: dict | None = None
                  ) -> None:
         super(PBInstance, self).__init__(s)
 
