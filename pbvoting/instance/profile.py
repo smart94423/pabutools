@@ -2,11 +2,11 @@
 Preference profiles and voters.
 """
 
+from collections.abc import Iterable
 from fractions import Fraction
-import random
+from itertools import product
 
-from collections.abc import Iterable, Generator
-from itertools import combinations_with_replacement
+import random
 
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.utils import powerset
@@ -26,7 +26,7 @@ class Ballot:
                 strings. Could for instance store the gender of the voter, their location etc...
     """
 
-    def __init__(self, name: str="", meta: dict|None=None):
+    def __init__(self, name: str = "", meta: dict | None = None):
         if meta is None:
             meta = dict()
         self.meta = meta
@@ -45,10 +45,10 @@ class Profile(list):
                 The instance with respect to which the profile is defined.
     """
 
-    def __init__(self, 
-                 iterable: Iterable[Ballot]=(),
-                 instance: PBInstance|None=None,
-                 ballot_validation: bool=True
+    def __init__(self,
+                 iterable: Iterable[Ballot] = (),
+                 instance: PBInstance | None = None,
+                 ballot_validation: bool = True
                  ) -> None:
         super(Profile, self).__init__(iterable)
         if instance is None:
@@ -96,28 +96,29 @@ class ApprovalBallot(set[Project], Ballot):
     """
 
     def __init__(self,
-                 approved: Iterable[Project]=(),
-                 name: str="",
-                 meta: dict|None=None
+                 approved: Iterable[Project] = (),
+                 name: str = "",
+                 meta: dict | None = None
                  ) -> None:
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
 
     # This allows set method returning copies of a set to work with PBInstances
+    # See https://stackoverflow.com/questions/798442/what-is-the-correct-or-best-way-to-subclass-the-python-set-class-adding-a-new
     @classmethod
-    def _wrap_methods(cls, names):
-        def wrap_method_closure(name):
-            def inner(self, *args):
-                result = getattr(super(cls, self), name)(*args)
-                if isinstance(result, set) and not hasattr(result, 'foo'):
+    def _wrap_methods(cls, methods):
+        def wrap_method_closure(method):
+            def inner_method(self, *args):
+                result = getattr(super(cls, self), method)(*args)
+                if isinstance(result, set) and not hasattr(result, 'name'):
                     result = cls(approved=result, name=self.name, meta=self.meta)
                 return result
 
-            inner.fn_name = name
-            setattr(cls, name, inner)
+            inner_method.fn_name = method
+            setattr(cls, method, inner_method)
 
-        for n in names:
-            wrap_method_closure(n)
+        for m in methods:
+            wrap_method_closure(m)
 
 
 ApprovalBallot._wrap_methods(['__ror__', 'difference_update', '__isub__',
@@ -136,13 +137,13 @@ class ApprovalProfile(Profile):
     """
 
     def __init__(self,
-                 iterable: Iterable[ApprovalBallot]=(),
-                 instance: PBInstance|None=None,
-                 ballot_validation: bool=True,
-                 legal_min_length: int|None=None,
-                 legal_max_length: int|None=None,
-                 legal_min_cost: Fraction|None=None,
-                 legal_max_cost: Fraction|None=None):
+                 iterable: Iterable[ApprovalBallot] = (),
+                 instance: PBInstance | None = None,
+                 ballot_validation: bool = True,
+                 legal_min_length: int | None = None,
+                 legal_max_length: int | None = None,
+                 legal_min_cost: Fraction | None = None,
+                 legal_max_cost: Fraction | None = None):
         super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = ApprovalBallot
         self.legal_min_length = legal_min_length
@@ -216,7 +217,7 @@ class ApprovalProfile(Profile):
         return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
 
 
-def get_random_approval_ballot(projects: Iterable[Project], name: str="RandomAppBallot") -> ApprovalBallot:
+def get_random_approval_ballot(projects: Iterable[Project], name: str = "RandomAppBallot") -> ApprovalBallot:
     """
         Generates a random approval ballot in which each project is approved with probability 0.5.
         Parameters
@@ -269,25 +270,25 @@ def get_all_approval_profiles(instance: PBInstance, num_agents: int):
         -------
             pbvoting.instance.profile.ApprovalBallot
     """
-    return combinations_with_replacement(powerset(instance), num_agents)
+    return product(powerset(instance), repeat=num_agents)
 
 
-class CardinalBallot(dict[Project,Fraction], Ballot):
+class CardinalBallot(dict[Project, Fraction], Ballot):
     """
         A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
         subclass of `pbvoting.instance.profile.Ballot`.
         Attributes
         ----------
-            iterable : dict of projects: score
+            d : dict of projects: score
                 The score assigned to the projects. The keys are the projects and map to the score.
                 Defaults to the empty dictionary.
     """
 
     def __init__(self,
-                 iterable: Iterable[dict[Project,Fraction]]=(),
-                 name: str="",
-                 meta: dict|None=None):
-        dict.__init__(self, iterable)
+                 d: dict[Project, Fraction] = (),
+                 name: str = "",
+                 meta: dict | None = None):
+        dict.__init__(self, d)
         Ballot.__init__(self, name=name, meta=meta)
 
 
@@ -298,14 +299,14 @@ class CardinalProfile(Profile):
     ----------
     """
 
-    def __init__(self, 
-                 iterable: Iterable[CardinalBallot]=(),
-                 instance: PBInstance|None=None,
-                 ballot_validation: bool=True,
-                 legal_min_length: int|None=None,
-                 legal_max_length: int|None=None,
-                 legal_min_score: Fraction|None=None, 
-                 legal_max_score: Fraction|None=None
+    def __init__(self,
+                 iterable: Iterable[CardinalBallot] = (),
+                 instance: PBInstance | None = None,
+                 ballot_validation: bool = True,
+                 legal_min_length: int | None = None,
+                 legal_max_length: int | None = None,
+                 legal_min_score: Fraction | None = None,
+                 legal_max_score: Fraction | None = None
                  ) -> None:
         super(CardinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = CardinalBallot
@@ -330,7 +331,6 @@ class CardinalProfile(Profile):
                                legal_min_score=self.legal_min_score,
                                legal_max_score=self.legal_max_score)
 
-
     def score(self, project: Project) -> Fraction:
         """
             Returns the score of a project, that is, the sum of scores received from all voters.
@@ -348,6 +348,7 @@ class CardinalProfile(Profile):
                 score += ballot[project]
         return score
 
+
 class CumulativeBallot(CardinalBallot):
     """
         A cumulative ballot, that is, a ballot in which the voter has indicated a score for every project using a
@@ -360,9 +361,9 @@ class CumulativeBallot(CardinalBallot):
     """
 
     def __init__(self,
-                 iterable: Iterable[dict[Project,Fraction]]=(),
-                 name: str="",
-                 meta: dict|None=None):
+                 iterable: Iterable[dict[Project, Fraction]] = (),
+                 name: str = "",
+                 meta: dict | None = None):
         dict.__init__(self, iterable)
         CardinalBallot.__init__(self, name=name, meta=meta)
 
@@ -375,15 +376,15 @@ class CumulativeProfile(CardinalProfile):
     """
 
     def __init__(self,
-                 iterable: Iterable[CumulativeBallot]=(),
-                 instance: PBInstance|None=None,
-                 ballot_validation: bool=True,
-                 legal_min_length: int|None=None,
-                 legal_max_length: int|None=None,
-                 legal_min_score: Fraction|None=None,
-                 legal_max_score: Fraction|None=None,
-                 legal_min_total_score: Fraction|None=None,
-                 legal_max_total_score: Fraction|None=None
+                 iterable: Iterable[CumulativeBallot] = (),
+                 instance: PBInstance | None = None,
+                 ballot_validation: bool = True,
+                 legal_min_length: int | None = None,
+                 legal_max_length: int | None = None,
+                 legal_min_score: Fraction | None = None,
+                 legal_max_score: Fraction | None = None,
+                 legal_min_total_score: Fraction | None = None,
+                 legal_max_total_score: Fraction | None = None
                  ) -> None:
         super(CumulativeProfile, self).__init__(iterable=iterable, instance=instance,
                                                 ballot_validation=ballot_validation)
@@ -417,20 +418,46 @@ class CumulativeProfile(CardinalProfile):
                                  legal_max_total_score=self.legal_max_total_score)
 
 
-class OrdinalBallot(list, Ballot):
+class OrdinalBallot(dict, Ballot):
+
     def __init__(self,
-                 iterable: Iterable[Project]=(),
-                 name: str="",
-                 meta: dict|None=None
+                 iterable: Iterable[Project] = (),
+                 name: str = "",
+                 meta: dict | None = None
                  ) -> None:
-        list.__init__(self, iterable)
+        dict.__init__(self, {e: None for e in iterable})
         Ballot.__init__(self, name=name, meta=meta)
 
-    def __add__(self, value):
-        return OrdinalBallot(list.__add__(self, value), name=self.name, meta=self.meta)
+    def append(self, element):
+        self[element] = None
 
-    def __mul__(self, value):
-        return OrdinalBallot(list.__mul__(self, value), name=self.name, meta=self.meta)
+    def __add__(self, other):
+        result = OrdinalBallot(self, name=self.name, meta=self.meta)
+        for e in other:
+            result[e] = None
+        return result
+
+    def index(self, element):
+        i = 0
+        for e in self:
+            if e == element:
+                return i
+            i += 1
+        raise ValueError("{} is not in the ballot".format(element))
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        for e1, e2 in zip(self, other):
+            if e1 != e2:
+                return False
+        return True
+
+    def __repr__(self):
+        return list(self.keys()).__repr__()
+
+    def __str__(self):
+        return list(self.keys()).__str__()
 
 
 class OrdinalProfile(Profile):
@@ -441,11 +468,11 @@ class OrdinalProfile(Profile):
     """
 
     def __init__(self,
-                 iterable: Iterable[OrdinalBallot]=(),
-                 instance: PBInstance|None=None,
-                 ballot_validation: bool=True,
-                 legal_min_length: int|None=None,
-                 legal_max_length: int|None=None
+                 iterable: Iterable[OrdinalBallot] = (),
+                 instance: PBInstance | None = None,
+                 ballot_validation: bool = True,
+                 legal_min_length: int | None = None,
+                 legal_max_length: int | None = None
                  ) -> None:
         super(OrdinalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation)
         self.ballot_type = OrdinalBallot
