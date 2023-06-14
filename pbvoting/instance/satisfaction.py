@@ -2,7 +2,7 @@ import numpy as np
 from fractions import Fraction
 from collections.abc import Callable, Iterable
 
-from pbvoting.fractions import as_frac, frac
+from pbvoting.fractions import number_as_frac, frac
 from pbvoting.instance.pbinstance import PBInstance, Project, total_cost
 from pbvoting.instance.profile import Profile, Ballot, ApprovalBallot, OrdinalBallot, CardinalBallot
 
@@ -127,7 +127,7 @@ def cc_sat_func(instance: PBInstance,
                 ballot: ApprovalBallot,
                 projects: Iterable[Project]
                 ) -> Fraction:
-    return as_frac(int(any(p in ballot for p in projects)))
+    return number_as_frac(int(any(p in ballot for p in projects)))
 
 
 class CC_Sat(FunctionalSatisfaction):
@@ -141,7 +141,7 @@ def cost_sqrt_sat_func(instance: PBInstance,
                        ballot: ApprovalBallot,
                        projects: Iterable[Project]
                        ) -> Fraction:
-    return as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
+    return number_as_frac(np.sqrt(total_cost([p for p in projects if p in ballot])))
 
 
 class Cost_Sqrt_Sat(FunctionalSatisfaction):
@@ -155,7 +155,7 @@ def log_sat_func(instance: PBInstance,
                  ballot: ApprovalBallot,
                  projects: Iterable[Project]
                  ) -> Fraction:
-    return as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
+    return number_as_frac(np.log(1 + total_cost([p for p in projects if p in ballot])))
 
 
 class Log_Sat(FunctionalSatisfaction):
@@ -228,7 +228,7 @@ def cardinality_sat_func(instance: PBInstance,
                          ballot: ApprovalBallot,
                          project: Project
                          ) -> Fraction:
-    return as_frac(int(project in ballot))
+    return number_as_frac(int(project in ballot))
 
 
 class Cardinality_Sat(AdditiveSatisfaction):
@@ -242,7 +242,7 @@ def cost_sat_func(instance: PBInstance,
                   ballot: ApprovalBallot,
                   project: Project
                   ) -> Fraction:
-    return as_frac(int(project in ballot) * project.cost)
+    return number_as_frac(int(project in ballot) * project.cost)
 
 
 class Cost_Sat(AdditiveSatisfaction):

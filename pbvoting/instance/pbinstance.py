@@ -4,7 +4,7 @@ Instances.
 from collections.abc import Iterable, Generator
 from fractions import Fraction
 from math import ceil
-from pbvoting.fractions import as_frac
+from pbvoting.fractions import number_as_frac
 from pbvoting.utils import powerset
 
 from copy import deepcopy
@@ -37,12 +37,12 @@ class Project:
 
     def __init__(self,
                  project_name: str = "",
-                 cost: Fraction = as_frac(0),
+                 cost: Fraction = number_as_frac(0),
                  categories: set[str] = set(),
                  targets: set[str] = set()
                  ) -> None:
         self.name = project_name
-        self.cost = as_frac(cost)
+        self.cost = number_as_frac(cost)
         self.categories = categories
         self.targets = targets
 

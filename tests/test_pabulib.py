@@ -3,6 +3,7 @@ from pbvoting.instance.pabulib import parse_pabulib
 
 import os
 
+
 class TestPabulib(TestCase):
     def test_approval(self):
         with open("test.pb", "w", encoding="utf-8") as f:
@@ -162,6 +163,77 @@ voter_id;vote;points
         assert profile[4][projects[20]] == 1
         assert len(instance.categories) == 0
         assert len(instance.targets) == 0
+
+    def test_scoring(self):
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write("""META
+key;value
+description;Municipal PB in Toulouse
+country;France
+unit;Toulouse
+instance;2019
+num_projects;30
+num_votes;1494
+budget;1000000
+vote_type;scoring
+rule;greedy
+date_begin;11.09.2019
+date_end;15.10.2019
+language;french
+edition;1
+PROJECTS
+project_id;cost;public_id;proposer;subunit;name;votes
+1;7000;12;Julie 21;ARENES;Compostons ensemble !;215
+2;35000;25;Conseil Citoyen;BELLEFONTAINE MILAN;Panneau d'affichage électronique extérieur;26
+3;50000;19;Felix;ARENES;Eclairage public d’un chemin piéton-vélo rue Ella Maillart;92
+4;390000;23;Perrine;PRADETTES;Tous à la Ramée à vélo ! A pied, en trottinette et rollers !;471
+5;168000;1;Les usagers du parc;NEGRENEYS;Le parc des Anges vu par ses usagers;205
+6;5000;10;Raymonde RENAUD;EMPALOT;Grillades et chaises longues;92
+7;20000;5;A/KARIM;EMPALOT;Agir pour le sport Bien être ensemble à Empalot;99
+8;110000;29;Conseil Citoyen;MILAN;Embellissement et aménagement d’un chemin piétonnier;45
+9;270000;15;MOI;CEPIERES BEAUREGARD;Toilettes Publiques Jardin du Barry;65
+10;2000;8;FonkDave;TROIS COCUS LA VACHE;Halte aux moustiques !;287
+11;110000;22;Association Holons de Garonne;BELLEFONTAINE;Traversée : sculpture pour le bassin de Candilis (avec l'étanchéification du bassin);88
+12;4000;20;Yamina;BAFAPATABOR;Cultivons la solidarité !;59
+13;107000;2;Association Jardin Partagé;MARAICHERS;Un jardin urbain innovant pour mieux vivre ensemble au coeur des Maraîchers.  Jardinons, innovons, protégeons, partageons !;305
+14;5000;27;Gilles Couralet;BELLEFONTAINE MILAN;Securisation de la route de Seysses;55
+15;164000;4;Jardivert;TROIS COCUS LA VACHE;Création du jardin partagé des 3 Cocus;161
+16;45000;28;Ahlam et Kafine;MIRAIL UNIVERSITE;Parc enfant sécurisé pour moins de 3 ans;332
+17;29000;14;(R.E.R.S) Réseau d'Echanges Réciproques et de Savoirs;BAGATELLE;Complément d'équipement du parc de la Gironde;31
+18;15000;24;Flo et Marie-Hélène;PRADETTES;Parcours de Santé à Viollet le duc;142
+19;160000;7;Habitants et Associations Solidaires Unis pour Réussir Empalot HASURE;EMPALOT;Une halle couverte;55
+20;2000;13;COPROPRIETE HIPPODROME;CEPIERE BEAUREGARD;Nichoirs pour mésanges;278
+21;85000;17;Nielda;BAGATELLE FAOURETTE;Sécurité durable autour du Tunnel Vestrepain;69
+22;241000;3;Les habitants de Negreneys;NEGRENEYS;projet d'aménagement des jardins de Negreneys;120
+23;35000;26;Centre Social Bellefontaine;BELLEFONTAINE;Embellir et protéger les abords du jardin du Tintoret;44
+24;10000;30;Mairie de Toulouse;REYNERIE;Panneau d’affichage pour les infos du quartier;34
+25;44000;6;Convivialité Gloire Soupetard;SOUPETARD;Aire de convivialité et de jeux;90
+26;25000;9;Conseil Citoyen Soupetard-La Gloire;SOUPETARD;Espace inter associatif / Maison des projets et services;58
+27;10000;18;Comité de l'Ecoquartier Cartoucherie;CEPIERE BEAUREGARD;Panneau d'affichage pour les informations du quartier;68
+28;100000;11;Comité de l'Ecocartoucherie;CEPIERE BEAUREGARD;Equipement sportifs pour enfants et adolescents;163
+29;199000;21;Christian Moretto + Richard SL + Malik Beldjoudi;PRADETTES;Des jardins aux Pradettes;234
+30;5000;16;Association 2Pieds 2Roues;BAFAPATABOR;Stations vélos : atelier de réparation et de gonflage;269
+VOTES
+voter_id;vote;points
+0;10,11,13,9;2,2,2,1
+1;6,25,5,22;3,2,1,1
+2;22,3,20;3,2,2
+3;14,23,2;3,3,1
+4;5,10,11,13,20;3,1,1,1,1
+5;1,25,5,7,29;2,2,1,1,1
+6;5,10,13,20,30;3,1,1,1,1
+7;6,7;3,3
+8;14,8,2,4;3,2,1,1
+9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
+10;6,7;3,3
+11;2,14,8;3,3,1""")
+
+        instance, profile = parse_pabulib("test.pb")
+        os.remove("test.pb")
+
+        assert profile[0][instance.get_project("10")] == 2
+        assert profile[0][instance.get_project("9")] == 1
+        assert profile[11][instance.get_project("8")] == 1
 
     def test_ordinal(self):
         with open("test.pb", "w", encoding="utf-8") as f:
@@ -365,3 +437,122 @@ voter_id;vote;voting_method;district
         assert len(profile[4]) == 3
 
         assert profile[44] == [instance.get_project("4"), instance.get_project("36"), instance.get_project("41")]
+
+    def test_wrong_type(self):
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write("""META
+                key;value
+                description;Municipal PB in Kraków
+                country;Poland
+                unit;Kraków
+                instance;2018
+                num_projects;123
+                num_votes;32958
+                budget;8000100
+                vote_type;SQKJHGLUHDFVJHFVIEUDFKEF
+                rule;greedy
+                date_begin;16.06.2018
+                date_end;30.06.2018
+                min_length;3
+                max_length;3
+                language;polish
+                edition;5
+                PROJECTS
+                project_id;cost;votes;score;name
+                23;1725000;6512;14142;Zielony pochłaniacz smogu dla każdej dzielnicy!
+                26;1700000;3780;8153;Tężnia solankowa
+                18;2400030;2817;6068;CZYŻBY ZAPOMNIANO O ZALEWIE NOWOHUCKIM... i NOWEJ HUCIE ?
+                120;296310;2687;5762;Bezpieczny ratownik - Bezpieczny Krakowianin
+                95;1500000;2574;5069;Kąpielisko nad Bagrami Wielkimi - plaża i toalety
+                34;2400000;2167;5033;ZIELONA KRUPNICZA, CZYLI ULICA PRZYJAZNA DLA MIESZKAŃCÓW
+                VOTES
+                voter_id;vote;voting_method;district
+                0;34,74,23;paper;PODGÓRZE DUCHACKIE
+                1;20,34,17;internet;GRZEGÓRZKI
+                2;17,23,11;internet;NOWA HUTA
+                3;18,3,34;internet;CZYŻYNY
+                4;97,120,117;paper;NOWA HUTA
+            """)
+
+        try:
+            _, _ = parse_pabulib("test.pb")
+        except NotImplementedError:
+            pass
+        finally:
+            os.remove("test.pb")
+
+    def test_legal_defaults(self):
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write("""META
+                key;value
+                description;Municipal PB in Kraków
+                country;Poland
+                unit;Kraków
+                instance;2018
+                budget;8000100
+                vote_type;approval
+                min_length;1
+                max_length;6
+                min_cost;0
+                min_sum_points;0
+                max_sum_points;100
+                min_points;0
+                max_points;100
+                max_cost;800010000
+                PROJECTS
+                project_id;cost;votes;score;name
+                1;1725000;6512;14142;Zielony pochłaniacz smogu dla każdej dzielnicy!
+                2;1700000;3780;8153;Tężnia solankowa
+                3;2400030;2817;6068;CZYŻBY ZAPOMNIANO O ZALEWIE NOWOHUCKIM... i NOWEJ HUCIE ?
+                VOTES
+                voter_id;vote;voting_method;district
+                0;1,2,3;paper;PODGÓRZE DUCHACKIE
+            """)
+        instance, profile = parse_pabulib("test.pb")
+        os.remove("test.pb")
+        assert instance.meta["min_length"] == "1"
+        assert instance.meta["max_length"] == "6"
+        assert instance.meta["min_cost"] == "0"
+        assert instance.meta["max_cost"] == "800010000"
+        assert profile.legal_min_length is None
+        assert profile.legal_max_length is None
+        assert profile.legal_min_cost is None
+        assert profile.legal_max_cost is None
+
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write("""META
+                key;value
+                description;Municipal PB in Kraków
+                country;Poland
+                unit;Kraków
+                instance;2018
+                budget;8000100
+                vote_type;cumulative
+                min_length;1
+                max_length;6
+                min_cost;0
+                min_sum_points;0
+                max_sum_points;100
+                min_points;0
+                max_points;100
+                max_cost;800010000
+                PROJECTS
+                project_id;cost;votes;score;name
+                1;1725000;6512;14142;Zielony pochłaniacz smogu dla każdej dzielnicy!
+                2;1700000;3780;8153;Tężnia solankowa
+                3;2400030;2817;6068;CZYŻBY ZAPOMNIANO O ZALEWIE NOWOHUCKIM... i NOWEJ HUCIE ?
+                VOTES
+                voter_id;vote;points
+                0;1,2,3;1,2,3
+            """)
+        instance, profile = parse_pabulib("test.pb")
+        os.remove("test.pb")
+
+        assert instance.meta["min_points"] == "0"
+        assert instance.meta["max_points"] == "100"
+        assert instance.meta["max_sum_points"] == "100"
+        assert profile.legal_min_score is None
+        assert profile.legal_max_score is None
+        assert profile.legal_min_total_score is None
+        assert profile.legal_max_total_score == 100
+

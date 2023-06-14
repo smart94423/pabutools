@@ -2,8 +2,8 @@
 Tools to work with PaBuLib instances.
 """
 from copy import deepcopy
-from fractions import Fraction
 
+from pbvoting.fractions import str_as_frac
 from pbvoting.instance.pbinstance import PBInstance, Project
 from pbvoting.instance.profile import ApprovalProfile, ApprovalBallot, CardinalProfile, CumulativeProfile, \
     OrdinalProfile, CardinalBallot, OrdinalBallot, CumulativeBallot
@@ -34,13 +34,15 @@ def parse_pabulib(file_path):
         header = []
         reader = csv.reader(csvfile, delimiter=';')
         for row in reader:
+            if len(row) == 1 and len(row[0].strip()) == 0:
+                continue
             if str(row[0]).strip().lower() in ["meta", "projects", "votes"]:
                 section = str(row[0]).strip().lower()
                 header = next(reader)
             elif section == "meta":
-                instance.meta[row[0]] = row[1].strip()
+                instance.meta[row[0].strip()] = row[1].strip()
             elif section == "projects":
-                p = Project(project_name=row[0])
+                p = Project(project_name=row[0].strip())
                 instance.project_meta[p] = dict()
                 for i in range(len(row)):
                     key = header[i].strip()
@@ -50,7 +52,7 @@ def parse_pabulib(file_path):
                         optional_sets[key].update(instance.project_meta[p][key])
                     else:
                         instance.project_meta[p][key] = row[i].strip()
-                p.cost = Fraction(instance.project_meta[p]["cost"].replace(",", "."))
+                p.cost = str_as_frac(instance.project_meta[p]["cost"].replace(",", "."))
                 instance.add(p)
             elif section == "votes":
                 ballot_meta = dict()
@@ -64,12 +66,12 @@ def parse_pabulib(file_path):
                     ballot = CardinalBallot()
                     points = ballot_meta["points"].split(',')
                     for index, project_name in enumerate(ballot_meta["vote"].split(",")):
-                        ballot[instance.get_project(project_name)] = Fraction(points[index].strip())
+                        ballot[instance.get_project(project_name)] = str_as_frac(points[index].strip())
                 elif instance.meta["vote_type"] == "cumulative":
                     ballot = CumulativeBallot()
                     points = ballot_meta["points"].split(',')
                     for index, project_name in enumerate(ballot_meta["vote"].split(",")):
-                        ballot[instance.get_project(project_name)] = Fraction(points[index].strip())
+                        ballot[instance.get_project(project_name)] = str_as_frac(points[index].strip())
                 elif instance.meta["vote_type"] == "ordinal":
                     ballot = OrdinalBallot()
                     for project_name in ballot_meta["vote"].split(","):
@@ -81,27 +83,43 @@ def parse_pabulib(file_path):
                 ballots.append(ballot)
 
     legal_min_length = instance.meta.get("min_length", None)
-    if legal_min_length == 1:
-        legal_min_length = None
+    if legal_min_length is not None:
+        legal_min_length = int(legal_min_length)
+        if legal_min_length == 1:
+            legal_min_length = None
     legal_max_length = instance.meta.get("max_length", None)
-    if legal_max_length == len(instance):
-        legal_max_length = None
+    if legal_max_length is not None:
+        legal_max_length = int(legal_max_length)
+        if legal_max_length >= len(instance):
+            legal_max_length = None
     legal_min_cost = instance.meta.get("min_sum_cost", None)
-    if legal_min_cost == 0:
-        legal_min_cost = None
+    if legal_min_cost is not None:
+        legal_min_cost = str_as_frac(legal_min_cost)
+        if legal_min_cost == 0:
+            legal_min_cost = None
     legal_max_cost = instance.meta.get("max_sum_cost", None)
-    if legal_max_cost == instance.budget_limit:
-        legal_max_cost = None
+    if legal_max_cost is not None:
+        legal_max_cost = str_as_frac(legal_max_cost)
+        if legal_max_cost >= instance.budget_limit:
+            legal_max_cost = None
     legal_min_total_score = instance.meta.get("min_sum_points", None)
-    if legal_min_total_score == 0:
-        legal_min_total_score = None
+    if legal_min_total_score is not None:
+        legal_min_total_score = str_as_frac(legal_min_total_score)
+        if legal_min_total_score == 0:
+            legal_min_total_score = None
     legal_max_total_score = instance.meta.get("max_sum_points", None)
+    if legal_max_total_score is not None:
+        legal_max_total_score = str_as_frac(legal_max_total_score)
     legal_min_score = instance.meta.get("min_points", None)
-    if legal_min_score == 0:
-        legal_min_score = None
+    if legal_min_score is not None:
+        legal_min_score = str_as_frac(legal_min_score)
+        if legal_min_score == 0:
+            legal_min_score = None
     legal_max_score = instance.meta.get("max_points", None)
-    if legal_max_total_score is not None and legal_max_score == legal_max_total_score:
-        legal_max_score = None
+    if legal_max_score is not None:
+        legal_max_score = str_as_frac(legal_max_score)
+        if legal_max_score == legal_max_total_score:
+            legal_max_score = None
 
     profile = None
     if instance.meta["vote_type"] == "approval":
@@ -130,7 +148,7 @@ def parse_pabulib(file_path):
                                  legal_max_length=legal_max_length)
 
     # We retrieve the budget limit from the meta information
-    instance.budget_limit = Fraction(instance.meta["budget"].replace(",", "."))
+    instance.budget_limit = str_as_frac(instance.meta["budget"].replace(",", "."))
 
     # We add the category and target information that we collected from the projects
     instance.categories = optional_sets["category"]
