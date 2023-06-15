@@ -6,7 +6,7 @@ from pbvoting.instance.profile import Profile
 from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile
 from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.fractions import frac
-from pbvoting.tiebreaking.rule import TieBreakingRule
+from pbvoting.tiebreaking import TieBreakingRule
 
 
 def mes_scheme(instance: PBInstance,

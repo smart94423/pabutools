@@ -1,8 +1,8 @@
 from copy import deepcopy
 from unittest import TestCase
 
-from pbvoting.instance import get_random_instance, get_random_approval_profile, ApprovalProfile, CardinalProfile, \
-    OrdinalProfile
+from pbvoting.instance.profile import ApprovalProfile, CardinalProfile, OrdinalProfile, get_random_approval_profile
+from pbvoting.instance.pbinstance import get_random_instance
 from pbvoting.instance.satisfaction import *
 
 
