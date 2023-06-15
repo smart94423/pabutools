@@ -2,24 +2,42 @@ import profile
 from unittest import TestCase
 from pbvoting.fractions import frac
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
-from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat
+from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat
 from pbvoting.instance.pbinstance import Project, PBInstance
 from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
-from pbvoting.rules.greedywelfare import greedy_welfare_approval
+from pbvoting.rules.greedywelfare import greedy_welfare
+from pbvoting.rules.maxwelfare import max_welfare
 from pbvoting.rules.mes import method_of_equal_shares
 
 
 class TestRule(TestCase):
-    def test_greedy_welfare_approval(self):
+    def test_greedy_welfare(self):
         projects = [Project("p1", 1), Project("p2", 3), Project("p3", 2), Project("p4", 1)]
         instance = PBInstance(projects, budget_limit=3)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         profile = ApprovalProfile([b1, b2], instance=instance)
-        assert greedy_welfare_approval(instance, profile, sat_class=Cost_Sat) == ["p1", "p3"]
-        assert greedy_welfare_approval(instance, profile, sat_class=Cardinality_Sat) == ["p1", "p4"]
+        assert greedy_welfare(instance, profile, sat_class=Cost_Sat) == ["p1", "p3"]
+        assert greedy_welfare(instance, profile, sat_class=Cardinality_Sat) == ["p1", "p4"]
         irresolute_out = [["p1", "p3"], ["p1", "p4"], ["p2"], ["p3", "p4"]]
-        assert greedy_welfare_approval(instance, profile, sat_class=Cost_Sat, resoluteness=False) == irresolute_out
+        assert greedy_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=False) == irresolute_out
+
+    def test_max_welfare(self):
+        projects = [Project("p1", 1), Project("p2", 3), Project("p3", 2), Project("p4", 1)]
+        instance = PBInstance(projects, budget_limit=3)
+        b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
+        b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
+        profile = ApprovalProfile([b1, b2], instance=instance)
+        assert max_welfare(instance, profile, sat_class=Cost_Sat) in [[projects[0], projects[2]],
+                                                                      [projects[2], projects[3]], [projects[1]]]
+        assert max_welfare(instance, profile, sat_class=Cardinality_Sat) in [[projects[0], projects[2]], projects[2:],
+                                                                             [projects[0], projects[3]]]
+
+        irresolute_out = sorted([[projects[0], projects[2]], [projects[2], projects[3]], [projects[1]]])
+        assert sorted(max_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=False)) == irresolute_out
+        assert sorted(max_welfare(instance, profile, sat_class=Effort_Sat, resoluteness=False)) == irresolute_out
+        irresolute_out = sorted([[projects[0], projects[2]], projects[2:], [projects[0], projects[3]]])
+        assert sorted(max_welfare(instance, profile, sat_class=Cardinality_Sat, resoluteness=False)) == irresolute_out
 
     def test_mes_approval(self):
         projects = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
@@ -107,7 +125,7 @@ class TestRule(TestCase):
         budget_allocation_mes_iterated = completion_by_rule_combination(instance,
                                                                         profile,
                                                                         [method_of_equal_shares,
-                                                                         greedy_welfare_approval],
+                                                                         greedy_welfare],
                                                                         [{"sat_class": Cost_Sat},
                                                                          {"sat_class": Cost_Sat}])
         assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[1]]
@@ -115,9 +133,9 @@ class TestRule(TestCase):
         self.assertRaises(Exception, lambda: completion_by_rule_combination(instance,
                                                                             profile,
                                                                             [method_of_equal_shares,
-                                                                             greedy_welfare_approval],
+                                                                             greedy_welfare],
                                                                             [{"sat_class": Cost_Sat}]))
         self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
                                                                              profile,
                                                                              [method_of_equal_shares,
-                                                                              greedy_welfare_approval]))
+                                                                              greedy_welfare]))

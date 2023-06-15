@@ -131,15 +131,15 @@ def greedy_scheme_additive(instance: PBInstance,
     return selection
 
 
-def greedy_welfare_approval(instance: PBInstance,
-                            profile: Profile,
-                            sat_class: type[Satisfaction] = None,
-                            sat_profile: SatisfactionProfile = None,
-                            is_sat_additive: bool = False,
-                            tie_breaking: TieBreakingRule = lexico_tie_breaking,
-                            resoluteness: bool = True,
-                            initial_budget_allocation: Iterable[Project] = None
-                            ) -> Iterable[Project] | Iterable[Iterable[Project]]:
+def greedy_welfare(instance: PBInstance,
+                   profile: Profile,
+                   sat_class: type[Satisfaction] = None,
+                   sat_profile: SatisfactionProfile = None,
+                   is_sat_additive: bool = False,
+                   tie_breaking: TieBreakingRule = lexico_tie_breaking,
+                   resoluteness: bool = True,
+                   initial_budget_allocation: Iterable[Project] = None
+                   ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
         lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would

@@ -238,6 +238,8 @@ class TestProfile(TestCase):
 
         assert b1 != [projects[0]]
         assert b1 != [projects[0], projects[1], projects[3]]
+        assert not b1 == [projects[0]]
+        assert not b1 == [projects[0], projects[1], projects[3]]
 
         try:
             b3.index(123)
