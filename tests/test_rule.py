@@ -3,6 +3,7 @@ from pbvoting.fractions import frac
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
 from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat
 from pbvoting.instance.pbinstance import Project, PBInstance
+from pbvoting.rules.phragmen import sequential_phragmen
 from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
 from pbvoting.rules.greedywelfare import greedy_welfare
 from pbvoting.rules.maxwelfare import max_welfare
@@ -40,6 +41,35 @@ class TestRule(TestCase):
 
         assert sorted(max_welfare(instance, ApprovalProfile(), sat_class=Cardinality_Sat, resoluteness=False)) == \
                sorted([sorted(list(b)) for b in instance.budget_allocations()])
+
+    def test_phragmen(self):
+        projects = [
+            Project("a", 1),
+            Project("b", 1),
+            Project("c", 1),
+            Project("d", 1),
+            Project("e", 1),
+            Project("f", 1),
+            Project("g", 1),
+        ]
+        instance = PBInstance(projects, budget_limit=4)
+        profile = ApprovalProfile(
+            [
+                ApprovalBallot({projects[0], projects[1]}),
+                ApprovalBallot({projects[0], projects[1]}),
+                ApprovalBallot({projects[0], projects[1]}),
+                ApprovalBallot({projects[0], projects[2]}),
+                ApprovalBallot({projects[0], projects[2]}),
+                ApprovalBallot({projects[0], projects[2]}),
+                ApprovalBallot({projects[0], projects[3]}),
+                ApprovalBallot({projects[0], projects[3]}),
+                ApprovalBallot({projects[1], projects[2], projects[5]}),
+                ApprovalBallot({projects[4]}),
+                ApprovalBallot({projects[5]}),
+                ApprovalBallot({projects[6]})
+            ]
+        )
+        assert sequential_phragmen(instance, profile) == projects[:4]
 
     def test_mes_approval(self):
         projects = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]

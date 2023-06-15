@@ -13,6 +13,7 @@ def max_welfare_scheme(instance: PBInstance,
     score = {p: sum(sat.sat([p]) for sat in sat_profile) for p in instance}
 
     mip_model = Model("MaxWelfare")
+    mip_model.verbose = 0
     p_vars = {p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p))
               for p in instance if p not in initial_budget_allocation}
 
