@@ -1,7 +1,10 @@
+import profile
 from unittest import TestCase
+from pbvoting.fractions import frac
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
 from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat
 from pbvoting.instance.pbinstance import Project, PBInstance
+from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
 from pbvoting.rules.greedywelfare import greedy_welfare_approval
 from pbvoting.rules.mes import method_of_equal_shares
 
@@ -26,5 +29,78 @@ class TestRule(TestCase):
         b3 = ApprovalBallot({projects[1], projects[2], projects[3]})
         b4 = ApprovalBallot({projects[2]})
         profile = ApprovalProfile([b1, b2, b3, b4], instance=instance)
-        assert method_of_equal_shares(instance, profile, satisfaction=Cost_Sat) == ["p0", "p2"]
-        assert method_of_equal_shares(instance, profile, satisfaction=Cardinality_Sat) == ["p0", "p1", "p3"]
+        assert method_of_equal_shares(instance, profile, sat_class=Cost_Sat) == ["p0", "p2"]
+        assert method_of_equal_shares(instance, profile, sat_class=Cardinality_Sat) == ["p0", "p1", "p3"]
+
+
+    def test_iterated_exhaustion(self):
+        projects = [
+            Project("a", 1),
+            Project("b", 1),
+            Project("c", 1),
+            Project("d", 1),
+            Project("e", 1),
+            Project("f", 1),
+            Project("g", 1),
+        ]
+        instance = PBInstance(projects, budget_limit=4)
+        profile = ApprovalProfile(
+            [
+                ApprovalBallot({projects[0], projects[1]}), 
+                ApprovalBallot({projects[0], projects[1]}), 
+                ApprovalBallot({projects[0], projects[1]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[3]}), 
+                ApprovalBallot({projects[0], projects[3]}), 
+                ApprovalBallot({projects[1], projects[2], projects[5]}), 
+                ApprovalBallot({projects[4]}), 
+                ApprovalBallot({projects[5]}), 
+                ApprovalBallot({projects[6]})
+            ]
+        )
+        budget_allocation_mes = method_of_equal_shares(instance, profile, Cost_Sat)
+        assert budget_allocation_mes == [projects[0]]
+        
+        budget_allocation_mes_iterated = exhaustion_by_budget_increase(instance,
+                                                                       profile,
+                                                                       method_of_equal_shares,
+                                                                       {"sat_class": Cost_Sat},
+                                                                       budget_step=frac(1,24))
+        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[3]]
+
+
+    def test_completion(self):
+        projects = [
+            Project("a", 1),
+            Project("b", 2),
+            Project("c", 2),
+            Project("d", 1),
+            Project("e", 1),
+            Project("f", 1),
+            Project("g", 1),
+        ]
+        instance = PBInstance(projects, budget_limit=5)
+        profile = ApprovalProfile(
+            [
+                ApprovalBallot({projects[0], projects[1]}), 
+                ApprovalBallot({projects[0], projects[1]}), 
+                ApprovalBallot({projects[0]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[2]}), 
+                ApprovalBallot({projects[0], projects[3]}), 
+                ApprovalBallot({projects[0], projects[3]}), 
+                ApprovalBallot({projects[5]}), 
+                ApprovalBallot({projects[4]})
+            ]
+        )
+        budget_allocation_mes = method_of_equal_shares(instance, profile, Cost_Sat)
+        assert budget_allocation_mes == [projects[0]]
+        
+        budget_allocation_mes_iterated = completion_by_rule_combination(instance,
+                                                                        profile,
+                                                                        [method_of_equal_shares, greedy_welfare_approval],
+                                                                        [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}])
+        assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[1]]

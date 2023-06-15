@@ -1,10 +1,22 @@
 from copy import copy, deepcopy
-
+from collections.abc import Iterable
+from fractions import Fraction
+from pbvoting.instance.pbinstance import PBInstance, Project
+from pbvoting.instance.profile import Profile
+from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile
 from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.fractions import frac
+from pbvoting.tiebreaking.rule import TieBreakingRule
 
 
-def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation, tie_breaking, resoluteness=True):
+def mes_scheme(instance: PBInstance,
+               profile: Profile,
+               sat_profile: SatisfactionProfile,
+               initial_budget: Fraction,
+               budget_allocation: Iterable[Project],
+               tie_breaking: TieBreakingRule,
+               resoluteness=True
+               ) -> list[Project] | list[list[Project]]:
     """
         The inner algorithm to compute the outcome of the method of equal shares (MES). See equalshares.net for more
         details on this voting rule.
@@ -100,8 +112,14 @@ def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation
         return all_budget_allocations
 
 
-def method_of_equal_shares(instance, profile, sat_class=None, sat_profile=None, tie_breaking=lexico_tie_breaking,
-                           resoluteness=True, initial_budget_allocation=None):
+def method_of_equal_shares(instance: PBInstance,
+                           profile: Profile,
+                           sat_class: type[Satisfaction] = None,
+                           sat_profile: SatisfactionProfile = None,
+                           tie_breaking: TieBreakingRule = lexico_tie_breaking,
+                           resoluteness: bool = True,
+                           initial_budget_allocation: Iterable[Project] = None
+                           ) -> list[Project] | list[list[Project]]:
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
         lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would
@@ -130,7 +148,7 @@ def method_of_equal_shares(instance, profile, sat_class=None, sat_profile=None, 
                 A potential initial budget allocation.
         Returns
         -------
-            set of pbvoting.instance.pbinstance.Project
+            list of pbvoting.instance.pbinstance.Project
     """
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)
