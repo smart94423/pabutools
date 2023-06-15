@@ -1,6 +1,7 @@
 from unittest import TestCase
 from pbvoting.utils import *
 
+
 class TestUtils(TestCase):
     def test_gini(self):
         test_1 = [0,0,0,0,100]

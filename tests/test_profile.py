@@ -60,7 +60,7 @@ class TestProfile(TestCase):
         assert profile.is_party_list() is True
         b4 = ApprovalBallot((projects[4], projects[5]))
         b5 = ApprovalBallot((projects[4], projects[5]))
-        profile += [b4, b5]
+        profile = profile.__add__([b4, b5])
         assert len(profile) == 5
         assert profile.is_party_list() is True
         b6 = ApprovalBallot([projects[0], projects[4]])
@@ -85,7 +85,7 @@ class TestProfile(TestCase):
         profile.legal_min_cost = 10
         profile.legal_max_cost = 100
         profile2 = ApprovalProfile([b1, b2, b3])
-        profile3 = profile + profile2
+        profile3 = profile.__add__(profile2)
         assert len(profile3) == 10
         assert profile3[0] == b1
         assert profile3[1] == b2
@@ -121,8 +121,8 @@ class TestProfile(TestCase):
 
         new_inst = PBInstance([Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3)
         assert len(set(get_all_approval_profiles(new_inst, 1))) == 8
-        assert len(set(get_all_approval_profiles(new_inst, 2))) == 8*8
-        assert len(set(get_all_approval_profiles(new_inst, 3))) == 8*8*8
+        assert len(set(get_all_approval_profiles(new_inst, 2))) == 8 * 8
+        assert len(set(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
 
     def test_cardinal_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -150,7 +150,7 @@ class TestProfile(TestCase):
         profile.legal_max_length = 5
         profile.legal_min_score = 3
         profile.legal_max_score = 100
-        profile += CardinalProfile([b3, b4])
+        profile = profile.__add__(CardinalProfile([b3, b4]))
         assert profile[2] == b3
         assert profile[3] == b4
         assert profile.legal_min_length == 1
@@ -183,8 +183,10 @@ class TestProfile(TestCase):
         instance = PBInstance(projects, budget_limit=1)
         b1 = CumulativeBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
         b2 = CumulativeBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
-        b3 = CumulativeBallot({projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
-        b4 = CumulativeBallot({projects[1]: 2, projects[2]: 8, projects[3]: 16872, projects[4]: 77, projects[5]: -457851})
+        b3 = CumulativeBallot(
+            {projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
+        b4 = CumulativeBallot(
+            {projects[1]: 2, projects[2]: 8, projects[3]: 16872, projects[4]: 77, projects[5]: -457851})
         profile = CumulativeProfile((b1, b2, b3), instance=instance)
         assert len(profile) == 3
         assert profile[0] == b1
@@ -197,7 +199,7 @@ class TestProfile(TestCase):
         profile.legal_max_score = 10
         profile.legal_min_total_score = 1
         profile.legal_max_total_score = 1000
-        profile += CumulativeProfile([b4,])
+        profile = profile.__add__(CumulativeProfile([b4]))
         assert profile[3] == b4
         assert profile.legal_min_length == 6
         assert profile.legal_max_length == 7
@@ -243,7 +245,6 @@ class TestProfile(TestCase):
         assert OrdinalBallot([projects[0], projects[1], projects[2]]) != [projects[0], projects[1]]
         assert OrdinalBallot([projects[0], projects[2], projects[1]]) != [projects[0], projects[1], projects[2]]
 
-
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         instance = PBInstance(projects, budget_limit=1)
@@ -252,11 +253,9 @@ class TestProfile(TestCase):
         b3 = OrdinalBallot([projects[2], projects[3], projects[7]])
         profile = OrdinalProfile((b1, b2, b3), instance=instance)
         assert len(profile) == 3
-        profile += OrdinalProfile([b1, b2])
+        profile = profile.__add__(OrdinalProfile([b1, b2]))
         assert profile.instance == instance
         assert len(profile) == 5
         profile *= 5
         assert profile.instance == instance
         assert len(profile) == 25
-
-
