@@ -138,7 +138,7 @@ def greedy_welfare(instance: PBInstance,
                    is_sat_additive: bool = False,
                    tie_breaking: TieBreakingRule = lexico_tie_breaking,
                    resoluteness: bool = True,
-                   initial_budget_allocation: Iterable[Project] = []
+                   initial_budget_allocation: Iterable[Project] = None
                    ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
@@ -173,8 +173,10 @@ def greedy_welfare(instance: PBInstance,
         -------
             set of pbvoting.instance.pbinstance.Project
     """
-    budget_allocation = list(initial_budget_allocation)
-
+    if initial_budget_allocation is not None:
+        budget_allocation = list(initial_budget_allocation)
+    else:
+        budget_allocation = []
     if sat_class is None:
         if sat_profile is None:
             raise ValueError("Satisfaction and sat_profile cannot both be None.")
