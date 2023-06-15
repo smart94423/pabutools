@@ -7,14 +7,10 @@ def powerset(iterable):
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def fixed_size_subsets(iterable, size):
-    return combinations(iterable, size)
-
-
 def gini_coefficient(values):
     values = np.asarray(values)
     if np.any(values < 0):
-        raise Exception("Negative values not supported by gini coefficient implementation.")
+        raise ValueError("Negative values not supported by gini coefficient implementation.")
     if np.all(values == 0):
         return 0
     n = len(values)
