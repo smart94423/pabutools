@@ -23,6 +23,7 @@ class TestAnalysis(TestCase):
         assert(avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17)
         assert(percent_non_empty_handed(instance, app_profile, budget_allocation) == frac(3,4))
         assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat) == frac(7,20))
+        assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat, invert=True) == 1-frac(7,20))
 
 
         ord_ball_1 = OrdinalBallot([projects[0], projects[1], projects[2], projects[3]])
@@ -62,6 +63,17 @@ class TestAnalysis(TestCase):
 
         assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31./162)
 
+        projects = [
+            Project("p1", cost=1),
+            Project("p2", cost=2),
+        ]
+        instance = PBInstance(projects, budget_limit=90)
+        app_ball_1 = ApprovalBallot([projects[0], projects[1]])
+        app_ball_2 = ApprovalBallot([projects[0], projects[1]])
+        app_profile = ApprovalProfile([app_ball_1, app_ball_2])
+        budget_allocation = [projects[0], projects[1]]
+
+        self.assertRaises(ValueError, lambda: category_proportionality(instance, app_profile, budget_allocation))
 
     def test_instance_properties(self):
         projects = [
@@ -76,6 +88,9 @@ class TestAnalysis(TestCase):
         assert median_project_cost(instance) == 2
         assert funding_scarcity(instance) == frac(3,2)
         assert std_dev_project_cost(instance) == np.sqrt(14./3)
+
+        instance = PBInstance(projects)
+        self.assertRaises(ValueError, lambda: funding_scarcity(instance) == frac(3,2))
         
     def test_profile_properties(self):
         projects = [

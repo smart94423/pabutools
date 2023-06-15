@@ -11,7 +11,7 @@ def category_proportionality(instance: PBInstance,
                              ) -> float:
     categories = list(instance.categories)
     if len(categories) == 0:
-        raise Exception("Category proportionality can only be computed for instances with categories.")
+        raise ValueError("Category proportionality can only be computed for instances with categories.")
 
     proportional_allocated_cost_per_category = {category: 0. for category in categories}
     allocated_cost_per_category = {category: 0. for category in categories}
