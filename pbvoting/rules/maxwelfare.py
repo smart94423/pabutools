@@ -10,7 +10,6 @@ def max_welfare_scheme(instance: PBInstance,
                        sat_profile: SatisfactionProfile,
                        initial_budget_allocation: Iterable[Project],
                        resoluteness: bool = True) -> Iterable[Project] | Iterable[Iterable[Project]]:
-
     score = {p: sum(sat.sat([p]) for sat in sat_profile) for p in instance}
 
     mip_model = Model("MaxWelfare")
@@ -32,15 +31,21 @@ def max_welfare_scheme(instance: PBInstance,
 
     mip_model += xsum(p_vars[p] * score[p] for p in p_vars) == opt_value
     while True:
-        mip_model += xsum(p_vars[p] for p in previous_partial_alloc) <= len(previous_partial_alloc) - 1
+        # See http://yetanothermathprogrammingconsultant.blogspot.com/2011/10/integer-cuts.html
+        mip_model += xsum(1 - p_vars[p] for p in previous_partial_alloc) + \
+                     xsum(p_vars[p] for p in p_vars if p not in previous_partial_alloc) >= 1
+        mip_model += xsum(p_vars[p] for p in previous_partial_alloc) - \
+                     xsum(p_vars[p] for p in p_vars if p not in previous_partial_alloc) <= len(previous_partial_alloc) - 1
+
 
         opt_status = mip_model.optimize()
         if opt_status != mip.OptimizationStatus.OPTIMAL:
             break
 
         previous_partial_alloc = [p for p in instance if p_vars[p].x >= 0.99]
-        all_partial_allocs.append(previous_partial_alloc)
-    return [sorted(partial_alloc) + list(initial_budget_allocation) for partial_alloc in all_partial_allocs]
+        if previous_partial_alloc not in all_partial_allocs:
+            all_partial_allocs.append(previous_partial_alloc)
+    return [sorted(partial_alloc + list(initial_budget_allocation)) for partial_alloc in all_partial_allocs]
 
 
 def max_welfare(instance: PBInstance,

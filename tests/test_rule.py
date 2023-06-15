@@ -38,6 +38,9 @@ class TestRule(TestCase):
         irresolute_out = sorted([[projects[0], projects[2]], projects[2:], [projects[0], projects[3]]])
         assert sorted(max_welfare(instance, profile, sat_class=Cardinality_Sat, resoluteness=False)) == irresolute_out
 
+        assert sorted(max_welfare(instance, ApprovalProfile(), sat_class=Cardinality_Sat, resoluteness=False)) == \
+               sorted([sorted(list(b)) for b in instance.budget_allocations()])
+
     def test_mes_approval(self):
         projects = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
         instance = PBInstance(projects, budget_limit=4)
