@@ -70,6 +70,14 @@ class TestRule(TestCase):
                                                                        budget_step=frac(1,24))
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[3]]
 
+        budget_allocation_mes_iterated_big_steps = exhaustion_by_budget_increase(instance,
+                                                                                 profile,
+                                                                                 method_of_equal_shares,
+                                                                                 {"sat_class": Cost_Sat},
+                                                                                 budget_step=5)
+        assert budget_allocation_mes_iterated_big_steps == [projects[0]]
+
+
 
     def test_completion(self):
         projects = [
@@ -104,3 +112,11 @@ class TestRule(TestCase):
                                                                         [method_of_equal_shares, greedy_welfare_approval],
                                                                         [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}])
         assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[1]]
+
+        self.assertRaises(Exception, lambda: completion_by_rule_combination(instance,
+                                                                            profile,
+                                                                            [method_of_equal_shares, greedy_welfare_approval],
+                                                                            [{"sat_class": Cost_Sat}]))
+        self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
+                                                                             profile,
+                                                                             [method_of_equal_shares, greedy_welfare_approval]))
