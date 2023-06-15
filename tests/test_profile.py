@@ -10,7 +10,7 @@ class TestProfile(TestCase):
         b2 = Ballot()
         b3 = Ballot()
 
-        profile += Profile([b1, b2])
+        profile = profile.__add__(Profile([b1, b2]))
         assert len(profile) == 2
         profile *= 3
         assert len(profile) == 6
@@ -235,6 +235,9 @@ class TestProfile(TestCase):
         b3 += b1
         assert b3 == b1 == b2
         assert b3.name == "Name"
+
+        assert b1 != [projects[0]]
+        assert b1 != [projects[0], projects[1], projects[3]]
 
         try:
             b3.index(123)

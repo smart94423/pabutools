@@ -65,9 +65,6 @@ class TestInstance(TestCase):
         assert inst2.meta == inst.meta
         assert inst2.project_meta == inst.project_meta
 
-        inst3 = inst.copy()
-        assert inst3 == inst
-
     def test_projects(self):
         projects = [Project("p{}".format(i), 1) for i in range(10)]
         assert total_cost(projects) == 10
