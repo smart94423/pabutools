@@ -1,4 +1,3 @@
-import profile
 from unittest import TestCase
 from pbvoting.fractions import frac
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
