@@ -100,7 +100,7 @@ def mes_scheme(instance, profile, sat_profile, initial_budget, budget_allocation
         return all_budget_allocations
 
 
-def method_of_equal_shares(instance, profile, satisfaction=None, sat_profile=None, tie_breaking=lexico_tie_breaking,
+def method_of_equal_shares(instance, profile, sat_class=None, sat_profile=None, tie_breaking=lexico_tie_breaking,
                            resoluteness=True, initial_budget_allocation=None):
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
@@ -137,12 +137,12 @@ def method_of_equal_shares(instance, profile, satisfaction=None, sat_profile=Non
     else:
         budget_allocation = []
 
-    if satisfaction is None:
+    if sat_class is None:
         if sat_profile is None:
-            raise ValueError("satisfaction and sat_profile cannot both be None")
+            raise ValueError("sat_class and sat_profile cannot both be None")
     else:
         if sat_profile is None:
-            sat_profile = [satisfaction(instance, profile, ballot) for ballot in profile]
+            sat_profile = [sat_class(instance, profile, ballot) for ballot in profile]
 
     return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation,
                       tie_breaking, resoluteness=resoluteness)
