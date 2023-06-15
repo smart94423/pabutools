@@ -118,7 +118,7 @@ def method_of_equal_shares(instance: PBInstance,
                            sat_profile: SatisfactionProfile = None,
                            tie_breaking: TieBreakingRule = lexico_tie_breaking,
                            resoluteness: bool = True,
-                           initial_budget_allocation: Iterable[Project] = None
+                           initial_budget_allocation: Iterable[Project] = []
                            ) -> list[Project] | list[list[Project]]:
     """
         General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
@@ -150,10 +150,7 @@ def method_of_equal_shares(instance: PBInstance,
         -------
             list of pbvoting.instance.pbinstance.Project
     """
-    if initial_budget_allocation is not None:
-        budget_allocation = list(initial_budget_allocation)
-    else:
-        budget_allocation = []
+    budget_allocation = list(initial_budget_allocation)
 
     if sat_class is None:
         if sat_profile is None:
