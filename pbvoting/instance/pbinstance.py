@@ -250,15 +250,6 @@ class PBInstance(set[Project]):
                 return False
         return True
 
-    def copy(self) -> 'PBInstance':
-        """
-            Returns a copy of the instance.
-            Returns
-            -------
-                pbvoting.instances.instance.PBInstance
-        """
-        return PBInstance(s=self, meta=deepcopy(self.meta))
-
     def __str__(self):
         res = "Instance "
         if self.file_name:
