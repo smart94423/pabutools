@@ -66,7 +66,7 @@ class TestAnalysis(TestCase):
         app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3])
         budget_allocation = [projects[0], projects[2]]
 
-        assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31./162)
+        assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31. / 162)
 
         projects = [
             Project("p1", cost=1),
@@ -91,11 +91,11 @@ class TestAnalysis(TestCase):
         assert sum_project_cost(instance) == 9
         assert avg_project_cost(instance) == 3
         assert median_project_cost(instance) == 2
-        assert funding_scarcity(instance) == frac(3,2)
-        assert std_dev_project_cost(instance) == np.sqrt(14./3)
+        assert funding_scarcity(instance) == frac(3, 2)
+        assert std_dev_project_cost(instance) == np.sqrt(14. / 3)
 
         instance = PBInstance(projects)
-        self.assertRaises(ValueError, lambda: funding_scarcity(instance) == frac(3,2))
+        self.assertRaises(ValueError, lambda: funding_scarcity(instance) == frac(3, 2))
         
     def test_profile_properties(self):
         projects = [

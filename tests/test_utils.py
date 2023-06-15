@@ -9,4 +9,4 @@ class TestUtils(TestCase):
         test_2 = [0,0,0,0,0]
         assert(gini_coefficient(test_2) == 0) 
         test_3 = [-10,0,10]
-        self.assertRaises(Exception, lambda: gini_coefficient(test_3))
+        self.assertRaises(ValueError, lambda: gini_coefficient(test_3))
