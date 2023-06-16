@@ -105,6 +105,7 @@ def test_elections():
             test_election.irr_results_sat[rule][sat_class] = sorted([p])
     for rule in ALL_NON_SAT_RULES:
         test_election.irr_results_non_sat[rule] = sorted([p])
+    res.append(test_election)
 
     # Running example from Lackner & Skowron 2023
     p = [
@@ -281,7 +282,7 @@ class TestRule(TestCase):
                                                                          greedy_welfare],
                                                                         [{"sat_class": Cost_Sat},
                                                                          {"sat_class": Cost_Sat}])
-        assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[1]]
+        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
 
         self.assertRaises(Exception, lambda: completion_by_rule_combination(instance,
                                                                             profile,

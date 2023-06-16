@@ -128,7 +128,7 @@ def greedy_scheme_additive(instance: PBInstance,
             selection.append(project)
             remaining_budget -= project.cost
 
-    return selection
+    return sorted(selection)
 
 
 def greedy_welfare(instance: PBInstance,
