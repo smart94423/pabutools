@@ -3,7 +3,7 @@ from collections.abc import Iterable
 import mip
 from mip import Model, xsum, maximize, BINARY
 
-from pbvoting.instance import PBInstance, Profile, Satisfaction, SatisfactionProfile, Project
+from pbvoting.instance import PBInstance, Profile, Satisfaction, SatisfactionProfile, Project, total_cost
 
 
 def max_welfare_scheme(instance: PBInstance,
@@ -19,15 +19,16 @@ def max_welfare_scheme(instance: PBInstance,
 
     mip_model.objective = maximize(xsum(p_vars[p] * score[p] for p in p_vars))
 
-    mip_model += xsum(p_vars[p] * p.cost for p in p_vars) <= instance.budget_limit
+    available_budget = instance.budget_limit - total_cost(initial_budget_allocation)
+    mip_model += xsum(p_vars[p] * p.cost for p in p_vars) <= available_budget
 
     mip_model.optimize()
     opt_value = mip_model.objective_value
 
     if resoluteness:
-        return sorted([p for p in instance if p_vars[p].x >= 0.99] + list(initial_budget_allocation))
+        return sorted([p for p in p_vars if p_vars[p].x >= 0.99] + list(initial_budget_allocation))
 
-    previous_partial_alloc = [p for p in instance if p_vars[p].x >= 0.99]
+    previous_partial_alloc = [p for p in p_vars if p_vars[p].x >= 0.99]
     all_partial_allocs = [previous_partial_alloc]
 
     mip_model += xsum(p_vars[p] * score[p] for p in p_vars) == opt_value
@@ -43,7 +44,7 @@ def max_welfare_scheme(instance: PBInstance,
         if opt_status != mip.OptimizationStatus.OPTIMAL:
             break
 
-        previous_partial_alloc = [p for p in instance if p_vars[p].x >= 0.99]
+        previous_partial_alloc = [p for p in p_vars if p_vars[p].x >= 0.99]
         if previous_partial_alloc not in all_partial_allocs:
             all_partial_allocs.append(previous_partial_alloc)
     return [sorted(partial_alloc + list(initial_budget_allocation)) for partial_alloc in all_partial_allocs]

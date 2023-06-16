@@ -121,7 +121,7 @@ def greedy_scheme_additive(instance: PBInstance,
     # We sort based on a tuple to ensure ties are broken as intended
     ordered_projects = sorted(projects, key=lambda p: (-satisfaction_density(p), projects.index(p)))
 
-    selection = []
+    selection = list(budget_allocation)
     remaining_budget = instance.budget_limit - total_cost(budget_allocation)
     for project in ordered_projects:
         if project.cost <= remaining_budget:

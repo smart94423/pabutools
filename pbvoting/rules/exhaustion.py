@@ -35,7 +35,7 @@ def completion_by_rule_combination(instance: PBInstance,
     else:
         budget_allocation = []
     for index, rule in enumerate(rule_sequence):
-        budget_allocation += rule(instance, profile, initial_budget_allocation=budget_allocation, **rule_params[index])
+        budget_allocation = rule(instance, profile, initial_budget_allocation=budget_allocation, **rule_params[index])
         if instance.is_exhaustive(budget_allocation):
             break
     return budget_allocation

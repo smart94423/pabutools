@@ -17,11 +17,12 @@ ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat
 
 class TestElection:
 
-    def __init__(self, name="", projects=None, instance=None, profile=None):
+    def __init__(self, name="", projects=None, instance=None, profile=None, initial_alloc=None):
         self.name = name
         self.projects = projects
         self.instance = instance
         self.profile = profile
+        self.initial_alloc = initial_alloc
         self.irr_results_sat = dict()
         for rule in ALL_SAT_RULES:
             self.irr_results_sat[rule] = dict()
@@ -68,7 +69,6 @@ def test_elections():
     inst = PBInstance(p, budget_limit=3)
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     test_election = TestElection("EmptyProfile", p, inst, prof)
-
     for sat_class in ALL_SAT:
         test_election.irr_results_sat[max_welfare][sat_class] = sorted(
             [sorted(list(b)) for b in inst.budget_allocations()])
@@ -78,6 +78,33 @@ def test_elections():
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = [[]]
     test_election.irr_results_non_sat[sequential_phragmen] = [[p[0]], [p[1]], [p[2]], [p[3]]]
     res.append(test_election)
+
+    # Empty profile with initial alloc
+    p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
+    inst = PBInstance(p, budget_limit=3)
+    prof = ApprovalProfile([ApprovalBallot()], instance=inst)
+    initial_alloc = p[:1]
+    test_election = TestElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
+    for sat_class in ALL_SAT:
+        test_election.irr_results_sat[max_welfare][sat_class] = sorted(
+            [sorted(list(b)) for b in inst.budget_allocations() if p[0] in b])
+        test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
+            [sorted(list(b)) for b in inst.budget_allocations()
+             if p[0] in b and inst.is_exhaustive(b)])
+        test_election.irr_results_sat[method_of_equal_shares][sat_class] = [initial_alloc]
+    test_election.irr_results_non_sat[sequential_phragmen] = [initial_alloc]
+    res.append(test_election)
+
+    # All affordable
+    p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
+    inst = PBInstance(p, budget_limit=7)
+    prof = ApprovalProfile([ApprovalBallot(p)], instance=inst)
+    test_election = TestElection("AllAfford", p, inst, prof)
+    for rule in ALL_SAT_RULES:
+        for sat_class in ALL_SAT:
+            test_election.irr_results_sat[rule][sat_class] = sorted([p])
+    for rule in ALL_NON_SAT_RULES:
+        test_election.irr_results_non_sat[rule] = sorted([p])
 
     # Running example from Lackner & Skowron 2023
     p = [
@@ -120,33 +147,38 @@ def run_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         for sat_class in test_election.irr_results_sat[rule]:
             if test_election.irr_results_sat[rule][sat_class] is not None:
-                print("\n===================== {} - {} =====================".format(rule.__name__,
-                                                                                     sat_class.__name__))
-                print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
-                                                                 test_election.profile))
+                # print("\n===================== {} - {} =====================".format(rule.__name__,
+                #                                                                      sat_class.__name__))
+                # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+                #                                                  test_election.profile))
                 resolute_out = rule(test_election.instance, test_election.profile, sat_class=sat_class,
-                                    resoluteness=True)
+                                    resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
                 irresolute_out = sorted(rule(test_election.instance, test_election.profile, sat_class=sat_class,
-                                             resoluteness=False))
-                print("Irres outcome:  {}".format(irresolute_out))
-                print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
+                                             resoluteness=False, initial_budget_allocation=test_election.initial_alloc))
+                # print("Res outcome:  {}".format(resolute_out))
+                # print("Irres outcome:  {}".format(irresolute_out))
+                # print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
                 assert resolute_out in test_election.irr_results_sat[rule][sat_class]
                 assert resolute_out == rule(test_election.instance, test_election.profile, resoluteness=True,
                                             sat_profile=SatisfactionProfile(profile=test_election.profile,
-                                                                            sat_class=sat_class))
+                                                                            sat_class=sat_class),
+                                            initial_budget_allocation=test_election.initial_alloc)
                 assert irresolute_out == test_election.irr_results_sat[rule][sat_class]
 
 
 def run_non_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         if test_election.irr_results_non_sat[rule] is not None:
-            print("\n===================== {} =====================".format(rule.__name__))
-            print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
-                                                             test_election.profile))
-            resolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=True))
-            irresolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=False))
-            print("Irres outcome:  {}".format(irresolute_out))
-            print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
+            # print("\n===================== {} =====================".format(rule.__name__))
+            # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+            #                                                  test_election.profile))
+            resolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=True,
+                                       initial_budget_allocation=test_election.initial_alloc))
+            irresolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=False,
+                                         initial_budget_allocation=test_election.initial_alloc))
+            # print("Res outcome:  {}".format(resolute_out))
+            # print("Irres outcome:  {}".format(irresolute_out))
+            # print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
             assert resolute_out in test_election.irr_results_non_sat[rule]
             assert irresolute_out == test_election.irr_results_non_sat[rule]
 
@@ -155,15 +187,21 @@ class TestRule(TestCase):
 
     def test_greedy_welfare(self):
         run_sat_rule(greedy_welfare)
+        with self.assertRaises(ValueError):
+            greedy_welfare(PBInstance(), ApprovalProfile())
 
     def test_max_welfare(self):
         run_sat_rule(max_welfare)
+        with self.assertRaises(ValueError):
+            max_welfare(PBInstance(), ApprovalProfile())
 
     def test_phragmen(self):
         run_non_sat_rule(sequential_phragmen)
 
     def test_mes_approval(self):
         run_sat_rule(method_of_equal_shares)
+        with self.assertRaises(ValueError):
+            method_of_equal_shares(PBInstance(), ApprovalProfile())
 
     def test_iterated_exhaustion(self):
         projects = [

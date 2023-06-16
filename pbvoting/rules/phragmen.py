@@ -10,7 +10,7 @@ from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 def sequential_phragmen(instance: PBInstance,
                         profile: ApprovalProfile,
                         initial_loads: list[Fraction] = None,
-                        budget_allocation: Iterable[Project] = None,
+                        initial_budget_allocation: Iterable[Project] = None,
                         tie_breaking: TieBreakingRule = lexico_tie_breaking,
                         resoluteness: bool = True
                         ) -> list[Project] | list[list[Project]]:
@@ -26,7 +26,7 @@ def sequential_phragmen(instance: PBInstance,
                 The profile of satisfaction functions.
             initial_loads : list[Fraction]
                 The initial load distribution of the voters.
-            budget_allocation : collection of pbvoting.instance.pbinstance.Project
+            initial_budget_allocation : collection of pbvoting.instance.pbinstance.Project
                 An initial budget allocation, typically empty.
             tie_breaking : pbvoting.rules.tiebreaking.TieBreakingRule
                 The tie-breaking rule used.
@@ -84,15 +84,15 @@ def sequential_phragmen(instance: PBInstance,
 
     if initial_loads is None:
         initial_loads = [number_as_frac(0) for _ in range(len(profile))]
-    if budget_allocation is None:
-        budget_allocation = []
-    current_cost = total_cost(budget_allocation)
+    if initial_budget_allocation is None:
+        initial_budget_allocation = []
+    current_cost = total_cost(initial_budget_allocation)
 
-    projects = set(p for p in instance if p not in budget_allocation and p.cost <= instance.budget_limit)
+    projects = set(p for p in instance if p not in initial_budget_allocation and p.cost <= instance.budget_limit)
     approval_scores = {project: profile.approval_score(project) for project in instance}
 
     all_budget_allocations = []
-    aux(instance, profile, projects, initial_loads, approval_scores, budget_allocation, current_cost,
+    aux(instance, profile, projects, initial_loads, approval_scores, initial_budget_allocation, current_cost,
         all_budget_allocations, resoluteness)
 
     if resoluteness:
