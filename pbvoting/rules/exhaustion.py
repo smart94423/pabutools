@@ -1,4 +1,4 @@
-from copy import deepcopy
+from copy import deepcopy, copy
 from profile import Profile
 from collections.abc import Iterable, Callable
 from pbvoting.instance.pbinstance import PBInstance, Project
@@ -70,9 +70,12 @@ def exhaustion_by_budget_increase(instance: PBInstance,
         rule_params = {}
     current_instance = deepcopy(instance)
     if initial_budget_allocation is not None:
-        previous_budget_allocation = list(initial_budget_allocation)
+        initial_budget_allocation = list(initial_budget_allocation)
+        previous_budget_allocation = copy(initial_budget_allocation)
     else:
         previous_budget_allocation = []
+        initial_budget_allocation = []
+    rule_params['initial_budget_allocation'] = initial_budget_allocation
     while True:
         budget_allocation = rule(current_instance, profile, **rule_params)
         if not instance.is_feasible(budget_allocation):

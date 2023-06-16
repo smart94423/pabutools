@@ -241,12 +241,24 @@ class TestRule(TestCase):
                                                                        budget_step=frac(1, 24))
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[3]]
 
+        budget_allocation_mes_iterated = exhaustion_by_budget_increase(instance,
+                                                                       profile,
+                                                                       method_of_equal_shares,
+                                                                       {"sat_class": Cost_Sat},
+                                                                       budget_step=frac(1, 24),
+                                                                       initial_budget_allocation=[projects[6]])
+        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[6]]
+
         budget_allocation_mes_iterated_big_steps = exhaustion_by_budget_increase(instance,
                                                                                  profile,
                                                                                  method_of_equal_shares,
                                                                                  {"sat_class": Cost_Sat},
                                                                                  budget_step=5)
         assert budget_allocation_mes_iterated_big_steps == [projects[0]]
+
+        self.assertRaises(ValueError, lambda: exhaustion_by_budget_increase(instance,
+                                                                            profile,
+                                                                            method_of_equal_shares))
 
     def test_completion(self):
         projects = [
