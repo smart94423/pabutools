@@ -284,12 +284,8 @@ class TestRule(TestCase):
                                                                          {"sat_class": Cost_Sat}])
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
 
-        self.assertRaises(Exception, lambda: completion_by_rule_combination(instance,
-                                                                            profile,
-                                                                            [method_of_equal_shares,
-                                                                             greedy_welfare],
-                                                                            [{"sat_class": Cost_Sat}]))
         self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
                                                                              profile,
                                                                              [method_of_equal_shares,
-                                                                              greedy_welfare]))
+                                                                              greedy_welfare],
+                                                                             [{"sat_class": Cost_Sat}]))
