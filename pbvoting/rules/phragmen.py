@@ -2,8 +2,8 @@ from collections.abc import Iterable
 from copy import deepcopy
 from fractions import Fraction
 
-from pbvoting.fractions import number_as_frac
-from pbvoting.instance import PBInstance, SatisfactionProfile, Project, total_cost, ApprovalProfile
+from pbvoting.fractions import number_as_frac, frac
+from pbvoting.instance import PBInstance, Project, total_cost, ApprovalProfile
 from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 
@@ -41,18 +41,25 @@ def sequential_phragmen(instance: PBInstance,
     def aux(inst, prof, projs, load, scores, alloc, cost, allocs, resolute):
         if len(projs) == 0:
             alloc.sort()
-            allocs.append(alloc)
+            if alloc not in allocs:
+                allocs.append(alloc)
         else:
             approvers_load = {project: sum(load[i] for i in range(len(prof)) if project in prof[i])
                               for project in projs}
-            new_maxload = {project: Fraction(approvers_load[project] + project.cost, scores[project])
-                           for project in projs}
+            new_maxload = dict()
+            for project in projs:
+                if scores[project] == 0:
+                    new_maxload[project] = float('inf')
+                else:
+                    new_maxload[project] = frac(approvers_load[project] + project.cost, scores[project])
             min_new_maxload = min(new_maxload.values())
 
             tied_projects = [project for project in projs if new_maxload[project] == min_new_maxload]
             new_cost = [cost + project.cost for project in tied_projects]
             if any(c > inst.budget_limit for c in new_cost):
-                allocs.append(alloc)
+                alloc.sort()
+                if alloc not in allocs:
+                    allocs.append(alloc)
             else:
                 tied_projects = tie_breaking.order(instance, profile, tied_projects)
                 if resolute:
@@ -83,9 +90,6 @@ def sequential_phragmen(instance: PBInstance,
 
     projects = set(p for p in instance if p not in budget_allocation and p.cost <= instance.budget_limit)
     approval_scores = {project: profile.approval_score(project) for project in instance}
-    for project in instance:
-        if approval_scores[project] == 0 and project in projects:
-            projects.remove(project)
 
     all_budget_allocations = []
     aux(instance, profile, projects, initial_loads, approval_scores, budget_allocation, current_cost,

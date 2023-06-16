@@ -256,7 +256,10 @@ def effort_sat_func(instance: PBInstance,
                     ballot: ApprovalBallot,
                     project: Project
                     ) -> Fraction:
-    return int(project in ballot) * frac(project.cost, sum(project in b for b in profile))
+    projects = [project for b in profile if project in b]
+    if projects:
+        return int(project in ballot) * frac(project.cost, len(projects))
+    return number_as_frac(0)
 
 
 class Effort_Sat(AdditiveSatisfaction):

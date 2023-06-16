@@ -1,7 +1,8 @@
 from unittest import TestCase
 from pbvoting.fractions import frac
 from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
-from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat
+from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
+    SatisfactionProfile
 from pbvoting.instance.pbinstance import Project, PBInstance
 from pbvoting.rules.phragmen import sequential_phragmen
 from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
@@ -9,78 +10,160 @@ from pbvoting.rules.greedywelfare import greedy_welfare
 from pbvoting.rules.maxwelfare import max_welfare
 from pbvoting.rules.mes import method_of_equal_shares
 
+ALL_SAT_RULES = [greedy_welfare, max_welfare, method_of_equal_shares]
+ALL_NON_SAT_RULES = [sequential_phragmen]
+ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat]
+
+
+class TestElection:
+
+    def __init__(self, name="", projects=None, instance=None, profile=None):
+        self.name = name
+        self.projects = projects
+        self.instance = instance
+        self.profile = profile
+        self.irr_results_sat = dict()
+        for rule in ALL_SAT_RULES:
+            self.irr_results_sat[rule] = dict()
+            for sat in ALL_SAT:
+                self.irr_results_sat[rule][sat] = None
+        self.irr_results_non_sat = dict()
+        for rule in ALL_NON_SAT_RULES:
+            self.irr_results_non_sat[rule] = None
+
+
+def test_elections():
+    res = []
+
+    # Approval example 1
+    p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
+    inst = PBInstance(p, budget_limit=3)
+    prof = ApprovalProfile([
+        ApprovalBallot((p[0], p[1], p[2], p[3])),
+        ApprovalBallot((p[0], p[1], p[2], p[3])),
+    ], instance=inst)
+    test_election = TestElection("AppEx_1", p, inst, prof)
+    test_election.irr_results_sat[greedy_welfare][Cost_Sat] = sorted([[p[0], p[2]], [p[0], p[3]], [p[1]], [p[2], p[3]]])
+    test_election.irr_results_sat[greedy_welfare][Cardinality_Sat] = sorted([[p[0], p[3]]])
+    test_election.irr_results_sat[max_welfare][Cost_Sat] = sorted([[p[0], p[2]], [p[1]], [p[2], p[3]]])
+    test_election.irr_results_sat[max_welfare][Cardinality_Sat] = sorted([[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]])
+    res.append(test_election)
+
+    # Approval example 2
+    p = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
+    inst = PBInstance(p, budget_limit=4)
+    prof = ApprovalProfile([
+        ApprovalBallot({p[0]}),
+        ApprovalBallot({p[1], p[2], p[3]}),
+        ApprovalBallot({p[1], p[2], p[3]}),
+        ApprovalBallot({p[2]})
+    ], instance=inst)
+    test_election = TestElection("AppEx_2", p, inst, prof)
+    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
+    res.append(test_election)
+
+    # Empty profile
+    p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
+    inst = PBInstance(p, budget_limit=3)
+    prof = ApprovalProfile([ApprovalBallot()], instance=inst)
+    test_election = TestElection("EmptyProfile", p, inst, prof)
+
+    for sat_class in ALL_SAT:
+        test_election.irr_results_sat[max_welfare][sat_class] = sorted(
+            [sorted(list(b)) for b in inst.budget_allocations()])
+        test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
+            [sorted(list(b)) for b in inst.budget_allocations()
+             if inst.is_exhaustive(b)])
+        test_election.irr_results_sat[method_of_equal_shares][sat_class] = [[]]
+    test_election.irr_results_non_sat[sequential_phragmen] = [[p[0]], [p[1]], [p[2]], [p[3]]]
+    res.append(test_election)
+
+    # Running example from Lackner & Skowron 2023
+    p = [
+        Project("a", 1),
+        Project("b", 1),
+        Project("c", 1),
+        Project("d", 1),
+        Project("e", 1),
+        Project("f", 1),
+        Project("g", 1),
+    ]
+    inst = PBInstance(p, budget_limit=4)
+    prof = ApprovalProfile([
+        ApprovalBallot({p[0], p[1]}),
+        ApprovalBallot({p[0], p[1]}),
+        ApprovalBallot({p[0], p[1]}),
+        ApprovalBallot({p[0], p[2]}),
+        ApprovalBallot({p[0], p[2]}),
+        ApprovalBallot({p[0], p[2]}),
+        ApprovalBallot({p[0], p[3]}),
+        ApprovalBallot({p[0], p[3]}),
+        ApprovalBallot({p[1], p[2], p[5]}),
+        ApprovalBallot({p[4]}),
+        ApprovalBallot({p[5]}),
+        ApprovalBallot({p[6]})
+    ], instance=inst)
+    test_election = TestElection("RunningEx LackSkow23", p, inst, prof)
+    test_election.irr_results_non_sat[sequential_phragmen] = sorted([p[:4]])
+    for sat_class in [Cost_Sat, Cardinality_Sat, Cost_Sqrt_Sat, Log_Sat]:
+        test_election.irr_results_sat[method_of_equal_shares][sat_class] = sorted([[p[0]]])
+    res.append(test_election)
+
+    return res
+
+
+ALL_TEST_ELECTIONS = test_elections()
+
+
+def run_sat_rule(rule):
+    for test_election in ALL_TEST_ELECTIONS:
+        for sat_class in test_election.irr_results_sat[rule]:
+            if test_election.irr_results_sat[rule][sat_class] is not None:
+                print("\n===================== {} - {} =====================".format(rule.__name__,
+                                                                                     sat_class.__name__))
+                print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+                                                                 test_election.profile))
+                resolute_out = rule(test_election.instance, test_election.profile, sat_class=sat_class,
+                                    resoluteness=True)
+                irresolute_out = sorted(rule(test_election.instance, test_election.profile, sat_class=sat_class,
+                                             resoluteness=False))
+                print("Irres outcome:  {}".format(irresolute_out))
+                print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
+                assert resolute_out in test_election.irr_results_sat[rule][sat_class]
+                assert resolute_out == rule(test_election.instance, test_election.profile, resoluteness=True,
+                                            sat_profile=SatisfactionProfile(profile=test_election.profile,
+                                                                            sat_class=sat_class))
+                assert irresolute_out == test_election.irr_results_sat[rule][sat_class]
+
+
+def run_non_sat_rule(rule):
+    for test_election in ALL_TEST_ELECTIONS:
+        if test_election.irr_results_non_sat[rule] is not None:
+            print("\n===================== {} =====================".format(rule.__name__))
+            print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+                                                             test_election.profile))
+            resolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=True))
+            irresolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=False))
+            print("Irres outcome:  {}".format(irresolute_out))
+            print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
+            assert resolute_out in test_election.irr_results_non_sat[rule]
+            assert irresolute_out == test_election.irr_results_non_sat[rule]
+
 
 class TestRule(TestCase):
+
     def test_greedy_welfare(self):
-        projects = [Project("p1", 1), Project("p2", 3), Project("p3", 2), Project("p4", 1)]
-        instance = PBInstance(projects, budget_limit=3)
-        b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        profile = ApprovalProfile([b1, b2], instance=instance)
-        assert greedy_welfare(instance, profile, sat_class=Cost_Sat) == ["p1", "p3"]
-        assert greedy_welfare(instance, profile, sat_class=Cardinality_Sat) == ["p1", "p4"]
-        irresolute_out = [["p1", "p3"], ["p1", "p4"], ["p2"], ["p3", "p4"]]
-        assert greedy_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=False) == irresolute_out
+        run_sat_rule(greedy_welfare)
 
     def test_max_welfare(self):
-        projects = [Project("p1", 1), Project("p2", 3), Project("p3", 2), Project("p4", 1)]
-        instance = PBInstance(projects, budget_limit=3)
-        b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        profile = ApprovalProfile([b1, b2], instance=instance)
-        assert max_welfare(instance, profile, sat_class=Cost_Sat) in [[projects[0], projects[2]],
-                                                                      [projects[2], projects[3]], [projects[1]]]
-        assert max_welfare(instance, profile, sat_class=Cardinality_Sat) in [[projects[0], projects[2]], projects[2:],
-                                                                             [projects[0], projects[3]]]
-
-        irresolute_out = sorted([[projects[0], projects[2]], [projects[2], projects[3]], [projects[1]]])
-        assert sorted(max_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=False)) == irresolute_out
-        assert sorted(max_welfare(instance, profile, sat_class=Effort_Sat, resoluteness=False)) == irresolute_out
-        irresolute_out = sorted([[projects[0], projects[2]], projects[2:], [projects[0], projects[3]]])
-        assert sorted(max_welfare(instance, profile, sat_class=Cardinality_Sat, resoluteness=False)) == irresolute_out
-
-        assert sorted(max_welfare(instance, ApprovalProfile(), sat_class=Cardinality_Sat, resoluteness=False)) == \
-               sorted([sorted(list(b)) for b in instance.budget_allocations()])
+        run_sat_rule(max_welfare)
 
     def test_phragmen(self):
-        projects = [
-            Project("a", 1),
-            Project("b", 1),
-            Project("c", 1),
-            Project("d", 1),
-            Project("e", 1),
-            Project("f", 1),
-            Project("g", 1),
-        ]
-        instance = PBInstance(projects, budget_limit=4)
-        profile = ApprovalProfile(
-            [
-                ApprovalBallot({projects[0], projects[1]}),
-                ApprovalBallot({projects[0], projects[1]}),
-                ApprovalBallot({projects[0], projects[1]}),
-                ApprovalBallot({projects[0], projects[2]}),
-                ApprovalBallot({projects[0], projects[2]}),
-                ApprovalBallot({projects[0], projects[2]}),
-                ApprovalBallot({projects[0], projects[3]}),
-                ApprovalBallot({projects[0], projects[3]}),
-                ApprovalBallot({projects[1], projects[2], projects[5]}),
-                ApprovalBallot({projects[4]}),
-                ApprovalBallot({projects[5]}),
-                ApprovalBallot({projects[6]})
-            ]
-        )
-        assert sequential_phragmen(instance, profile) == projects[:4]
+        run_non_sat_rule(sequential_phragmen)
 
     def test_mes_approval(self):
-        projects = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
-        instance = PBInstance(projects, budget_limit=4)
-        b1 = ApprovalBallot({projects[0]})
-        b2 = ApprovalBallot({projects[1], projects[2], projects[3]})
-        b3 = ApprovalBallot({projects[1], projects[2], projects[3]})
-        b4 = ApprovalBallot({projects[2]})
-        profile = ApprovalProfile([b1, b2, b3, b4], instance=instance)
-        assert method_of_equal_shares(instance, profile, sat_class=Cost_Sat) == ["p0", "p2"]
-        assert method_of_equal_shares(instance, profile, sat_class=Cardinality_Sat) == ["p0", "p1", "p3"]
+        run_sat_rule(method_of_equal_shares)
 
     def test_iterated_exhaustion(self):
         projects = [

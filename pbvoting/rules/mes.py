@@ -93,13 +93,13 @@ def mes_scheme(instance: PBInstance,
     for proj in budget_allocation:
         initial_projects.remove(proj)
     initial_budgets = {i: initial_budget for i in range(len(profile))}
-    selection = []
     scores = {proj: sum(sat.sat([proj]) for sat in sat_profile) for proj in initial_projects}
     for proj, score in scores.items():
-        if score <= 0 or proj.cost == 0:
+        if score < 0 or proj.cost == 0:
             initial_projects.remove(proj)
     supps = {proj: [i for i in range(len(profile)) if sat_profile[i].sat([proj]) > 0] for proj in initial_projects}
-    initial_affordability = {proj: frac(proj.cost, scores[proj]) for proj in initial_projects}
+    initial_affordability = {proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float('inf')
+                             for proj in initial_projects}
     initial_budget_allocation = copy(budget_allocation)
     all_budget_allocations = []
 
