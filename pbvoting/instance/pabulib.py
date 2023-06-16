@@ -25,7 +25,7 @@ def parse_pabulib(file_path):
     """
     instance = PBInstance()
     ballots = []
-    optional_sets = {"category": set(), "target": set()}
+    optional_sets = {"categories": set(), "targets": set()}
     instance.file_path = file_path
     instance.file_name = os.path.basename(file_path)
 
@@ -42,18 +42,26 @@ def parse_pabulib(file_path):
             elif section == "meta":
                 instance.meta[row[0].strip()] = row[1].strip()
             elif section == "projects":
-                p = Project(project_name=row[0].strip())
-                instance.project_meta[p] = dict()
+                p = Project()
+                project_meta = dict()
                 for i in range(len(row)):
                     key = header[i].strip()
-                    if key in ["category", "target"] and row[i].strip().lower() != "none":
-                        instance.project_meta[p][key] = [entry.strip() for entry in row[i].split(",")]
-                        p.__setattr__(key, set(instance.project_meta[p][key]))
-                        optional_sets[key].update(instance.project_meta[p][key])
+                    p.name = row[0].strip()
+                    if key in ["category", "categories"]:
+                        if row[i].strip().lower() != "none":
+                            project_meta["categories"] = [entry.strip() for entry in row[i].split(",")]
+                            p.categories = set(project_meta["categories"])
+                            optional_sets["categories"].update(project_meta["categories"])
+                    elif key in ["target", "targets"]:
+                        if row[i].strip().lower() != "none":
+                            project_meta["targets"] = [entry.strip() for entry in row[i].split(",")]
+                            p.targets = set(project_meta["targets"])
+                            optional_sets["targets"].update(project_meta["targets"])
                     else:
-                        instance.project_meta[p][key] = row[i].strip()
-                p.cost = str_as_frac(instance.project_meta[p]["cost"].replace(",", "."))
+                        project_meta[key] = row[i].strip()
+                p.cost = str_as_frac(project_meta["cost"].replace(",", "."))
                 instance.add(p)
+                instance.project_meta[p] = project_meta
             elif section == "votes":
                 ballot_meta = dict()
                 for i in range(len(row)):
@@ -151,7 +159,7 @@ def parse_pabulib(file_path):
     instance.budget_limit = str_as_frac(instance.meta["budget"].replace(",", "."))
 
     # We add the category and target information that we collected from the projects
-    instance.categories = optional_sets["category"]
-    instance.targets = optional_sets["target"]
+    instance.categories = optional_sets["categories"]
+    instance.targets = optional_sets["targets"]
 
     return instance, profile
