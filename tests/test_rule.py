@@ -256,7 +256,6 @@ class TestRule(TestCase):
             Project("d", 1),
             Project("e", 1),
             Project("f", 1),
-            Project("g", 1),
         ]
         instance = PBInstance(projects, budget_limit=5)
         profile = ApprovalProfile(
@@ -283,9 +282,22 @@ class TestRule(TestCase):
                                                                         [{"sat_class": Cost_Sat},
                                                                          {"sat_class": Cost_Sat}])
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
+        budget_allocation_mes_iterated = completion_by_rule_combination(instance,
+                                                                        profile,
+                                                                        [method_of_equal_shares,
+                                                                         greedy_welfare],
+                                                                        [{"sat_class": Cost_Sat},
+                                                                         {"sat_class": Cost_Sat}],
+                                                                        initial_budget_allocation=[projects[5]])
+        assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[3], projects[5]]
 
         self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
                                                                              profile,
                                                                              [method_of_equal_shares,
                                                                               greedy_welfare],
                                                                              [{"sat_class": Cost_Sat}]))
+
+        self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
+                                                                             profile,
+                                                                             [method_of_equal_shares,
+                                                                              greedy_welfare]))
