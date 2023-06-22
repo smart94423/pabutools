@@ -1,3 +1,5 @@
+import time
+
 from copy import copy
 from collections.abc import Iterable
 

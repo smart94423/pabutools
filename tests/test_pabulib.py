@@ -556,3 +556,4 @@ voter_id;vote;voting_method;district
         assert profile.legal_min_total_score is None
         assert profile.legal_max_total_score == 100
 
+
