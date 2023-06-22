@@ -47,25 +47,25 @@ def parse_pabulib(file_path):
                 for i in range(len(row)):
                     key = header[i].strip()
                     p.name = row[0].strip()
-                    if key in ["category", "categories"]:
-                        if row[i].strip().lower() != "none":
+                    if row[i].strip().lower() != "none":
+                        if key in ["category", "categories"]:
                             project_meta["categories"] = [entry.strip() for entry in row[i].split(",")]
                             p.categories = set(project_meta["categories"])
                             optional_sets["categories"].update(project_meta["categories"])
-                    elif key in ["target", "targets"]:
-                        if row[i].strip().lower() != "none":
+                        elif key in ["target", "targets"]:
                             project_meta["targets"] = [entry.strip() for entry in row[i].split(",")]
                             p.targets = set(project_meta["targets"])
                             optional_sets["targets"].update(project_meta["targets"])
-                    else:
-                        project_meta[key] = row[i].strip()
+                        else:
+                            project_meta[key] = row[i].strip()
                 p.cost = str_as_frac(project_meta["cost"].replace(",", "."))
                 instance.add(p)
                 instance.project_meta[p] = project_meta
             elif section == "votes":
                 ballot_meta = dict()
                 for i in range(len(row)):
-                    ballot_meta[header[i].strip()] = row[i].strip()
+                    if row[i].strip().lower() != "none":
+                        ballot_meta[header[i].strip()] = row[i].strip()
                 if instance.meta["vote_type"] == "approval":
                     ballot = ApprovalBallot()
                     for project_name in ballot_meta["vote"].split(","):
