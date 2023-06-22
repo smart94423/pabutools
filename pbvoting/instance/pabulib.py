@@ -70,20 +70,26 @@ def parse_pabulib(file_path):
                     ballot = ApprovalBallot()
                     for project_name in ballot_meta["vote"].split(","):
                         ballot.add(instance.get_project(project_name))
+                    ballot_meta.pop("vote")
                 elif instance.meta["vote_type"] == "scoring":
                     ballot = CardinalBallot()
                     points = ballot_meta["points"].split(',')
                     for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                         ballot[instance.get_project(project_name)] = str_as_frac(points[index].strip())
+                    ballot_meta.pop("vote")
+                    ballot_meta.pop("points")
                 elif instance.meta["vote_type"] == "cumulative":
                     ballot = CumulativeBallot()
                     points = ballot_meta["points"].split(',')
                     for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                         ballot[instance.get_project(project_name)] = str_as_frac(points[index].strip())
+                    ballot_meta.pop("vote")
+                    ballot_meta.pop("points")
                 elif instance.meta["vote_type"] == "ordinal":
                     ballot = OrdinalBallot()
                     for project_name in ballot_meta["vote"].split(","):
                         ballot.append(instance.get_project(project_name))
+                    ballot_meta.pop("vote")
                 else:
                     raise NotImplementedError("The PaBuLib parser cannot parse {} profiles for now.".format(
                         instance.meta["vote_type"]))
