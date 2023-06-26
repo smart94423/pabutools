@@ -7,8 +7,6 @@ from math import ceil
 from pbvoting.fractions import number_as_frac
 from pbvoting.utils import powerset
 
-from copy import deepcopy
-
 import random
 
 
@@ -86,7 +84,7 @@ def total_cost(projects: Iterable[Project]) -> Fraction:
     return res
 
 
-class PBInstance(set[Project]):
+class Instance(set[Project]):
     """
         Participatory Budgeting (PB) instances.
         An instance contains the projects, their cost and the budget limit. Importantly, the profile is not part of
@@ -133,7 +131,7 @@ class PBInstance(set[Project]):
                  meta: dict | None = None,
                  project_meta: dict | None = None
                  ) -> None:
-        super(PBInstance, self).__init__(s)
+        super(Instance, self).__init__(s)
 
         if budget_limit is None:
             if hasattr(s, "budget_limit"):
@@ -281,15 +279,15 @@ class PBInstance(set[Project]):
             wrap_method_closure(n)
 
 
-PBInstance._wrap_methods(['__ror__', 'difference_update', '__isub__',
+Instance._wrap_methods(['__ror__', 'difference_update', '__isub__',
                           'symmetric_difference', '__rsub__', '__and__', '__rand__', 'intersection',
                           'difference', '__iand__', 'union', '__ixor__',
                           'symmetric_difference_update', '__or__', 'copy', '__rxor__',
                           'intersection_update', '__xor__', '__ior__', '__sub__',
-                          ])
+                        ])
 
 
-def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> PBInstance:
+def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> Instance:
     """
         Generates a random instance. Costs and budget limit are integers. The cost are selected uniformly between
         min_cost and max_cost. The budget limit is sample form a uniform between the minimum cost of a project
@@ -307,7 +305,7 @@ def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> PBIn
         -------
             pbvoting.instances.instance.PBInstance
     """
-    inst = PBInstance()
+    inst = Instance()
     inst.update([Project(project_name=str(p), cost=random.randint(round(min_cost), round(max_cost))) for p in range(
         round(num_projects))])
     inst.budget_limit = random.randint(ceil(min([p.cost for p in inst])), ceil(sum([p.cost for p in inst])))

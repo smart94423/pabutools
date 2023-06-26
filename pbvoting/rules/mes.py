@@ -159,7 +159,7 @@ def method_of_equal_shares(instance: Instance,
             raise ValueError("sat_class and sat_profile cannot both be None")
     else:
         if sat_profile is None:
-            sat_profile = [sat_class(instance, profile, ballot) for ballot in profile]
+            sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=sat_class)
 
     return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation,
                       tie_breaking, resoluteness=resoluteness)
