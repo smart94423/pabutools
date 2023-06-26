@@ -1,10 +1,12 @@
+from collections import Counter
+
 import numpy as np
 from fractions import Fraction
 from collections.abc import Callable, Iterable
 
 from pbvoting.fractions import number_as_frac, frac
 from pbvoting.instance.pbinstance import PBInstance, Project, total_cost
-from pbvoting.instance.profile import Profile, Ballot, ApprovalBallot, OrdinalBallot, CardinalBallot
+from pbvoting.instance.profile import MultiProfile, Profile, Ballot, ApprovalBallot, OrdinalBallot, CardinalBallot
 
 
 class Satisfaction:
@@ -28,6 +30,9 @@ class Satisfaction:
         self.instance = instance
         self.profile = profile
         self.ballot = ballot
+
+    def __hash__(self):
+        return self.ballot.__hash__()
 
     def sat(self, projects: Iterable[Project]) -> float:
         """
@@ -78,6 +83,63 @@ class SatisfactionProfile(list):
 
     def __mul__(self, value):
         return SatisfactionProfile(list.__mul__(self, value), instance=self.instance)
+
+
+class SatisfactionMultiProfile(Counter):
+    """
+        A profile of satisfaction functions, one per voter.
+        Attributes
+        ----------
+    """
+
+    def __init__(self,
+                 d: dict[Satisfaction, int] = None,
+                 instance: PBInstance = None,
+                 profile: Profile = None,
+                 multiprofile: MultiProfile = None,
+                 sat_class: type[Satisfaction] = None
+                 ) -> None:
+        if d is None:
+            d = {}
+        super(SatisfactionMultiProfile, self).__init__(d)
+        self.instance = instance
+        if profile is None and multiprofile is None:
+            if sat_class is not None:
+                raise TypeError("If you provide a satisfaction class, you need to also provide a profile or a "
+                                "multiprofile.")
+        else:
+            if sat_class is None:
+                raise TypeError("If you provide a profile or a multiprofile, you need to also provide a satisfaction"
+                                " class.")
+            else:
+                if profile is not None:
+                    self.append_from_profile(profile, sat_class)
+                if multiprofile is not None:
+                    self.append_from_multiprofile(multiprofile, sat_class)
+
+    def append_from_profile(self,
+                            profile: Profile = None,
+                            sat_class: type[Satisfaction] = None
+                            ):
+        for ballot in profile:
+            self.append(sat_class(self.instance, profile, ballot))
+
+    def append_from_multiprofile(self,
+                                 profile: MultiProfile = None,
+                                 sat_class: type[Satisfaction] = None
+                                 ):
+        for ballot, multiplicity in profile.items():
+            sat = sat_class(self.instance, profile, ballot)
+            if sat in self:
+                self[sat] += multiplicity
+            else:
+                self[sat] = multiplicity
+
+    def append(self, element):
+        if element in self:
+            self[element] += 1
+        else:
+            self[element] = 1
 
 
 class FunctionalSatisfaction(Satisfaction):

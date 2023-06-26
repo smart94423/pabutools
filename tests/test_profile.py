@@ -72,10 +72,10 @@ class TestProfile(TestCase):
         assert profile.is_trivial() is False
 
         card_ballot = CardinalBallot({projects[1]: 5, projects[2]: 2})
-        try:
+        with self.assertRaises(TypeError):
             profile.append(card_ballot)
-        except TypeError:
-            pass
+        with self.assertRaises(TypeError):
+            ApprovalProfile((card_ballot))
 
         profile.ballot_validation = False
         profile.append(card_ballot)
