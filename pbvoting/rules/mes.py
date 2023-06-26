@@ -1,15 +1,15 @@
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from fractions import Fraction
-from pbvoting.instance.pbinstance import PBInstance, Project
-from pbvoting.instance.profile import Profile
-from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile
+from pbvoting.election.instance import Instance, Project
+from pbvoting.election.profile import Profile
+from pbvoting.election.satisfaction import Satisfaction, SatisfactionProfile
 from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.fractions import frac
 from pbvoting.tiebreaking import TieBreakingRule
 
 
-def mes_scheme(instance: PBInstance,
+def mes_scheme(instance: Instance,
                profile: Profile,
                sat_profile: SatisfactionProfile,
                initial_budget: Fraction,
@@ -93,7 +93,7 @@ def mes_scheme(instance: PBInstance,
     for proj in budget_allocation:
         initial_projects.remove(proj)
     initial_budgets = {i: initial_budget for i in range(len(profile))}
-    scores = {proj: sum(sat.sat([proj]) for sat in sat_profile) for proj in initial_projects}
+    scores = {proj: sat_profile.total_satisfaction([proj]) for proj in initial_projects}
     for proj, score in scores.items():
         if score <= 0 or proj.cost == 0:
             initial_projects.remove(proj)
@@ -112,7 +112,7 @@ def mes_scheme(instance: PBInstance,
         return all_budget_allocations
 
 
-def method_of_equal_shares(instance: PBInstance,
+def method_of_equal_shares(instance: Instance,
                            profile: Profile,
                            sat_class: type[Satisfaction] = None,
                            sat_profile: SatisfactionProfile = None,

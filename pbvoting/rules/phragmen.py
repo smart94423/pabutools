@@ -3,11 +3,11 @@ from copy import deepcopy
 from fractions import Fraction
 
 from pbvoting.fractions import number_as_frac, frac
-from pbvoting.instance import PBInstance, Project, total_cost, ApprovalProfile
+from pbvoting.election import Instance, Project, total_cost, ApprovalProfile
 from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 
-def sequential_phragmen(instance: PBInstance,
+def sequential_phragmen(instance: Instance,
                         profile: ApprovalProfile,
                         initial_loads: list[Fraction] = None,
                         initial_budget_allocation: Iterable[Project] = None,

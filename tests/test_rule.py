@@ -1,9 +1,9 @@
 from unittest import TestCase
 from pbvoting.fractions import frac
-from pbvoting.instance.profile import ApprovalBallot, ApprovalProfile
-from pbvoting.instance.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
-    SatisfactionProfile
-from pbvoting.instance.pbinstance import Project, PBInstance
+from pbvoting.election.profile import ApprovalBallot, ApprovalProfile
+from pbvoting.election.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
+    SatisfactionProfile, SatisfactionMultiProfile
+from pbvoting.election.instance import Project, Instance
 from pbvoting.rules.phragmen import sequential_phragmen
 from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
 from pbvoting.rules.greedywelfare import greedy_welfare
@@ -38,7 +38,7 @@ def test_elections():
 
     # Approval example 1
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
-    inst = PBInstance(p, budget_limit=3)
+    inst = Instance(p, budget_limit=3)
     prof = ApprovalProfile([
         ApprovalBallot((p[0], p[1], p[2], p[3])),
         ApprovalBallot((p[0], p[1], p[2], p[3])),
@@ -52,7 +52,7 @@ def test_elections():
 
     # Approval example 2
     p = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
-    inst = PBInstance(p, budget_limit=4)
+    inst = Instance(p, budget_limit=4)
     prof = ApprovalProfile([
         ApprovalBallot({p[0]}),
         ApprovalBallot({p[1], p[2], p[3]}),
@@ -66,7 +66,7 @@ def test_elections():
 
     # Empty profile
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
-    inst = PBInstance(p, budget_limit=3)
+    inst = Instance(p, budget_limit=3)
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     test_election = TestElection("EmptyProfile", p, inst, prof)
     for sat_class in ALL_SAT:
@@ -81,7 +81,7 @@ def test_elections():
 
     # Empty profile with initial alloc
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
-    inst = PBInstance(p, budget_limit=3)
+    inst = Instance(p, budget_limit=3)
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     initial_alloc = p[:1]
     test_election = TestElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
@@ -97,7 +97,7 @@ def test_elections():
 
     # All affordable
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
-    inst = PBInstance(p, budget_limit=7)
+    inst = Instance(p, budget_limit=7)
     prof = ApprovalProfile([ApprovalBallot(p)], instance=inst)
     test_election = TestElection("AllAfford", p, inst, prof)
     for rule in ALL_SAT_RULES:
@@ -117,7 +117,7 @@ def test_elections():
         Project("f", 1),
         Project("g", 1),
     ]
-    inst = PBInstance(p, budget_limit=4)
+    inst = Instance(p, budget_limit=4)
     prof = ApprovalProfile([
         ApprovalBallot({p[0], p[1]}),
         ApprovalBallot({p[0], p[1]}),
@@ -189,12 +189,22 @@ class TestRule(TestCase):
     def test_greedy_welfare(self):
         run_sat_rule(greedy_welfare)
         with self.assertRaises(ValueError):
-            greedy_welfare(PBInstance(), ApprovalProfile())
+            greedy_welfare(Instance(), ApprovalProfile())
+
+    def test_greedy_multisat(self):
+        for test_election in ALL_TEST_ELECTIONS:
+            sat_profile = SatisfactionProfile(profile=test_election.profile, sat_class=Cost_Sat)
+            outcome1 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
+                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+            sat_multiprofile = SatisfactionMultiProfile(profile=test_election.profile, sat_class=Cost_Sat)
+            outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
+                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+            assert outcome1 == outcome2
 
     def test_max_welfare(self):
         run_sat_rule(max_welfare)
         with self.assertRaises(ValueError):
-            max_welfare(PBInstance(), ApprovalProfile())
+            max_welfare(Instance(), ApprovalProfile())
 
     def test_phragmen(self):
         run_non_sat_rule(sequential_phragmen)
@@ -202,7 +212,7 @@ class TestRule(TestCase):
     def test_mes_approval(self):
         run_sat_rule(method_of_equal_shares)
         with self.assertRaises(ValueError):
-            method_of_equal_shares(PBInstance(), ApprovalProfile())
+            method_of_equal_shares(Instance(), ApprovalProfile())
 
     def test_iterated_exhaustion(self):
         projects = [
@@ -214,7 +224,7 @@ class TestRule(TestCase):
             Project("f", 1),
             Project("g", 1),
         ]
-        instance = PBInstance(projects, budget_limit=4)
+        instance = Instance(projects, budget_limit=4)
         profile = ApprovalProfile(
             [
                 ApprovalBallot({projects[0], projects[1]}),
@@ -269,7 +279,7 @@ class TestRule(TestCase):
             Project("e", 1),
             Project("f", 1),
         ]
-        instance = PBInstance(projects, budget_limit=5)
+        instance = Instance(projects, budget_limit=5)
         profile = ApprovalProfile(
             [
                 ApprovalBallot({projects[0], projects[1]}),

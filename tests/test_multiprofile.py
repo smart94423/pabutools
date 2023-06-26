@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from pbvoting.instance import SatisfactionMultiProfile, Cost_Sat
-from pbvoting.instance.profile import *
+from pbvoting.election import SatisfactionMultiProfile, Cost_Sat
+from pbvoting.election.profile import *
 
 
 class TestMultiProfile(TestCase):

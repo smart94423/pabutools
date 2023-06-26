@@ -1,9 +1,9 @@
 from copy import deepcopy
 from unittest import TestCase
 
-from pbvoting.instance.profile import ApprovalProfile, CardinalProfile, OrdinalProfile, get_random_approval_profile
-from pbvoting.instance.pbinstance import get_random_instance
-from pbvoting.instance.satisfaction import *
+from pbvoting.election.profile import ApprovalProfile, CardinalProfile, OrdinalProfile, get_random_approval_profile
+from pbvoting.election.instance import get_random_instance
+from pbvoting.election.satisfaction import *
 
 
 class TestSatisfaction(TestCase):
@@ -30,7 +30,7 @@ class TestSatisfaction(TestCase):
 
     def test_cc_sat(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = deepcopy(b1)
         b3 = ApprovalBallot((projects[0], projects[1]))
@@ -44,7 +44,7 @@ class TestSatisfaction(TestCase):
 
     def test_sqrt_sat(self):
         projects = [Project("p1", 9), Project("p2", 4), Project("p3", 5), Project("p4", 16)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         profile = ApprovalProfile([b1], instance=instance)
         sat_profile = SatisfactionProfile(profile=profile, sat_class=Cost_Sqrt_Sat)
@@ -53,7 +53,7 @@ class TestSatisfaction(TestCase):
 
     def test_log_sat(self):
         projects = [Project("p1", 0), Project("p2", 4), Project("p3", 4), Project("p4", 9)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         profile = ApprovalProfile([b1], instance=instance)
         sat_profile = SatisfactionProfile(profile=profile, sat_class=Log_Sat)
@@ -62,7 +62,7 @@ class TestSatisfaction(TestCase):
 
     def test_card_sat(self):
         projects = [Project("p1", 9), Project("p2", 4), Project("p3", 5), Project("p4", 16)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1]))
         profile = ApprovalProfile([b1, b2], instance=instance)
@@ -74,7 +74,7 @@ class TestSatisfaction(TestCase):
 
     def test_cost_sat(self):
         projects = [Project("p1", 9), Project("p2", 4), Project("p3", 5), Project("p4", 16)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1]))
         profile = ApprovalProfile([b1, b2], instance=instance)
@@ -86,7 +86,7 @@ class TestSatisfaction(TestCase):
 
     def test_effot_sat(self):
         projects = [Project("p1", 8), Project("p2", 4), Project("p3", 5), Project("p4", 16)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1]))
         profile = ApprovalProfile([b1, b2], instance=instance)

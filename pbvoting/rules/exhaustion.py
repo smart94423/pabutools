@@ -1,10 +1,10 @@
 from copy import deepcopy, copy
 from profile import Profile
 from collections.abc import Iterable, Callable
-from pbvoting.instance.pbinstance import PBInstance, Project
+from pbvoting.election.instance import Instance, Project
 
 
-def completion_by_rule_combination(instance: PBInstance,
+def completion_by_rule_combination(instance: Instance,
                                    profile: Profile,
                                    rule_sequence: Iterable[Callable],
                                    rule_params: Iterable[dict] = None,
@@ -42,7 +42,7 @@ def completion_by_rule_combination(instance: PBInstance,
     return budget_allocation
 
 
-def exhaustion_by_budget_increase(instance: PBInstance,
+def exhaustion_by_budget_increase(instance: Instance,
                                   profile: Profile,
                                   rule: Callable,
                                   rule_params=None,

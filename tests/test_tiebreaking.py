@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pbvoting.instance.profile import ApprovalProfile, ApprovalBallot
+from pbvoting.election.profile import ApprovalProfile, ApprovalBallot
 from pbvoting.tiebreaking import *
 
 
@@ -8,7 +8,7 @@ class TestTieBreaking(TestCase):
 
     def test_tie_breaking_rules(self):
         p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1), Project("p4", 7), Project("p5", 5)]
-        instance = PBInstance(p)
+        instance = Instance(p)
         profile = ApprovalProfile([ApprovalBallot([p[2], p[3]]), ApprovalBallot([p[2], p[4]]), ApprovalBallot(p),
                                    ApprovalBallot([p[2], p[3]])])
 

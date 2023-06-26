@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pbvoting.instance.pabulib import parse_pabulib
+from pbvoting.election.pabulib import parse_pabulib
 
 import os
 

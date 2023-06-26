@@ -3,8 +3,8 @@ from unittest import TestCase
 from pbvoting.analysis.instanceproperties import *
 from pbvoting.analysis.profileproperties import *
 from pbvoting.fractions import frac
-from pbvoting.instance.profile import ApprovalBallot, OrdinalBallot, OrdinalProfile
-from pbvoting.instance.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
+from pbvoting.election.profile import ApprovalBallot, OrdinalBallot, OrdinalProfile
+from pbvoting.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
 from pbvoting.analysis.votersatisfaction import *
 from pbvoting.analysis.category import *
 
@@ -12,7 +12,7 @@ from pbvoting.analysis.category import *
 class TestAnalysis(TestCase):
     def test_satisfaction_properties(self):
         projects = [Project(str(i), 10 + i) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=90)
+        instance = Instance(projects, budget_limit=90)
         app_ball_1 = ApprovalBallot([projects[0], projects[1], projects[2], projects[3]])
         app_ball_2 = ApprovalBallot([projects[0]])
         app_ball_3 = ApprovalBallot([projects[5], projects[6]])
@@ -46,7 +46,7 @@ class TestAnalysis(TestCase):
             Project("p1", cost=1, categories={"c1", "c2"}),
             Project("p2", cost=2, categories={"c1", "c2"}),
         ]
-        instance = PBInstance(projects, budget_limit=90, categories={"c1", "c2", "c3"})
+        instance = Instance(projects, budget_limit=90, categories={"c1", "c2", "c3"})
         app_ball_1 = ApprovalBallot([projects[0], projects[1]])
         app_ball_2 = ApprovalBallot([projects[0], projects[1]])
         app_profile = ApprovalProfile([app_ball_1, app_ball_2])
@@ -59,7 +59,7 @@ class TestAnalysis(TestCase):
             Project("p2", cost=2, categories={"c2", "c3"}),
             Project("p3", cost=2, categories=set())
         ]
-        instance = PBInstance(projects, budget_limit=90, categories={"c1", "c2", "c3", "c4"})
+        instance = Instance(projects, budget_limit=90, categories={"c1", "c2", "c3", "c4"})
         app_ball_1 = ApprovalBallot([projects[0], projects[1]])
         app_ball_2 = ApprovalBallot([projects[0]])
         app_ball_3 = ApprovalBallot([projects[1]])
@@ -72,7 +72,7 @@ class TestAnalysis(TestCase):
             Project("p1", cost=1),
             Project("p2", cost=2),
         ]
-        instance = PBInstance(projects, budget_limit=90)
+        instance = Instance(projects, budget_limit=90)
         app_ball_1 = ApprovalBallot([projects[0], projects[1]])
         app_ball_2 = ApprovalBallot([projects[0], projects[1]])
         app_profile = ApprovalProfile([app_ball_1, app_ball_2])
@@ -86,7 +86,7 @@ class TestAnalysis(TestCase):
             Project("p2", cost=2),
             Project("p3", cost=6),
         ]
-        instance = PBInstance(projects, budget_limit=6)
+        instance = Instance(projects, budget_limit=6)
 
         assert sum_project_cost(instance) == 9
         assert avg_project_cost(instance) == 3
@@ -94,7 +94,7 @@ class TestAnalysis(TestCase):
         assert funding_scarcity(instance) == frac(3, 2)
         assert std_dev_project_cost(instance) == np.sqrt(14. / 3)
 
-        instance = PBInstance(projects)
+        instance = Instance(projects)
         self.assertRaises(ValueError, lambda: funding_scarcity(instance) == frac(3, 2))
         
     def test_profile_properties(self):
@@ -103,7 +103,7 @@ class TestAnalysis(TestCase):
             Project("p2", cost=2),
             Project("p3", cost=3),
         ]
-        instance = PBInstance(projects, budget_limit=3)
+        instance = Instance(projects, budget_limit=3)
         app_ball_1 = ApprovalBallot([projects[0], projects[1]])
         app_ball_2 = ApprovalBallot([projects[0], projects[2]])
         app_ball_3 = ApprovalBallot([projects[1]])

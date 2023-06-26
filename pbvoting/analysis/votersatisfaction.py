@@ -2,13 +2,13 @@ from collections.abc import Iterable
 from fractions import Fraction
 
 import numpy as np
-from pbvoting.instance.pbinstance import PBInstance, Project
-from pbvoting.instance.profile import ApprovalProfile
-from pbvoting.instance.satisfaction import Satisfaction, SatisfactionProfile, CC_Sat
+from pbvoting.election.instance import Instance, Project
+from pbvoting.election.profile import ApprovalProfile
+from pbvoting.election.satisfaction import Satisfaction, SatisfactionProfile, CC_Sat
 from pbvoting.utils import gini_coefficient
 
 
-def avg_satisfaction(instance: PBInstance,
+def avg_satisfaction(instance: Instance,
                      profile: ApprovalProfile,
                      budget_allocation: Iterable[Project],
                      satisfaction: type[Satisfaction]
@@ -38,14 +38,14 @@ def avg_satisfaction(instance: PBInstance,
     return np.mean(voter_satisfactions)
 
 
-def percent_non_empty_handed(instance: PBInstance,
+def percent_non_empty_handed(instance: Instance,
                              profile: ApprovalProfile,
                              budget_allocation: Iterable[Project]
                              ) -> Fraction | float:
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
-def gini_coefficient_of_satisfaction(instance: PBInstance,
+def gini_coefficient_of_satisfaction(instance: Instance,
                                      profile: ApprovalProfile,
                                      budget_allocation: Iterable[Project],
                                      satisfaction: type[Satisfaction],

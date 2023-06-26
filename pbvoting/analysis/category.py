@@ -1,11 +1,11 @@
 from collections.abc import Iterable
 
 import numpy as np
-from pbvoting.instance.pbinstance import PBInstance, Project
-from pbvoting.instance.profile import ApprovalProfile
+from pbvoting.election.instance import Instance, Project
+from pbvoting.election.profile import ApprovalProfile
 
 
-def category_proportionality(instance: PBInstance,
+def category_proportionality(instance: Instance,
                              profile: ApprovalProfile,
                              budget_allocation: Iterable[Project],
                              ) -> float:

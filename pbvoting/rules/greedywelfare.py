@@ -4,13 +4,13 @@ from copy import copy
 from collections.abc import Iterable
 
 from pbvoting.fractions import number_as_frac, frac
-from pbvoting.instance.pbinstance import PBInstance, total_cost, Project
-from pbvoting.instance.profile import Profile
-from pbvoting.instance.satisfaction import AdditiveSatisfaction, SatisfactionProfile, Satisfaction
+from pbvoting.election.instance import Instance, total_cost, Project
+from pbvoting.election.profile import Profile
+from pbvoting.election.satisfaction import AdditiveSatisfaction, SatisfactionProfile, Satisfaction
 from pbvoting.tiebreaking import lexico_tie_breaking, TieBreakingRule
 
 
-def greedy_scheme(instance: PBInstance,
+def greedy_scheme(instance: Instance,
                   profile: Profile,
                   sat_profile: SatisfactionProfile,
                   budget_allocation: Iterable[Project],
@@ -58,11 +58,11 @@ def greedy_scheme(instance: PBInstance,
                 for sat in sats:
                     total_marginal_score += frac(sat.sat(new_alloc) - sat.sat(alloc), project.cost)
 
-                    if best_marginal_score is None or total_marginal_score > best_marginal_score:
-                        best_marginal_score = total_marginal_score
-                        argmax_marginal_score = [project]
-                    elif total_marginal_score == best_marginal_score:
-                        argmax_marginal_score.append(project)
+                if best_marginal_score is None or total_marginal_score > best_marginal_score:
+                    best_marginal_score = total_marginal_score
+                    argmax_marginal_score = [project]
+                elif total_marginal_score == best_marginal_score:
+                    argmax_marginal_score.append(project)
 
             tied_projects = tie.order(inst, prof, argmax_marginal_score)
             if resolute:
@@ -81,7 +81,7 @@ def greedy_scheme(instance: PBInstance,
         return all_budget_allocations
 
 
-def greedy_scheme_additive(instance: PBInstance,
+def greedy_scheme_additive(instance: Instance,
                            profile: Profile,
                            sat_profile: SatisfactionProfile,
                            budget_allocation: Iterable[Project],
@@ -118,7 +118,7 @@ def greedy_scheme_additive(instance: PBInstance,
     projects = tie_breaking.order(instance, profile, projects)
 
     def satisfaction_density(proj):
-        return frac(sum(sat.sat([proj]) for sat in sat_profile), proj.cost)
+        return frac(sat_profile.total_satisfaction([proj]), proj.cost)
 
     # We sort based on a tuple to ensure ties are broken as intended
     ordered_projects = sorted(projects, key=lambda p: (-satisfaction_density(p), projects.index(p)))
@@ -133,7 +133,7 @@ def greedy_scheme_additive(instance: PBInstance,
     return sorted(selection)
 
 
-def greedy_welfare(instance: PBInstance,
+def greedy_welfare(instance: Instance,
                    profile: Profile,
                    sat_class: type[Satisfaction] = None,
                    sat_profile: SatisfactionProfile = None,

@@ -1,8 +1,8 @@
 from collections.abc import Callable, Iterable
 from fractions import Fraction
 
-from pbvoting.instance.profile import Profile
-from pbvoting.instance.pbinstance import PBInstance, Project
+from pbvoting.election.profile import Profile
+from pbvoting.election.instance import Instance, Project
 
 
 class TieBreakingRule:
@@ -22,11 +22,11 @@ class TieBreakingRule:
             project will be sorted.
     """
 
-    def __init__(self, func: Callable[[PBInstance, Profile, Project], Fraction]):
+    def __init__(self, func: Callable[[Instance, Profile, Project], Fraction]):
         self.func = func
 
     def order(self,
-              instance: PBInstance,
+              instance: Instance,
               profile: Profile,
               projects: Iterable[Project],
               key: Callable[..., Project] = lambda x: x):
@@ -50,7 +50,7 @@ class TieBreakingRule:
         return sorted(list(projects), key=lambda project: self.func(instance, profile, key(project)))
 
     def untie(self,
-              instance: PBInstance,
+              instance: Instance,
               profile: Profile,
               projects: Iterable[Project],
               key: Callable[..., Project] = lambda x: x):

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pbvoting.instance.profile import *
+from pbvoting.election.profile import *
 
 
 class TestProfile(TestCase):
@@ -52,7 +52,7 @@ class TestProfile(TestCase):
 
     def test_approval_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b3 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
@@ -119,14 +119,14 @@ class TestProfile(TestCase):
         random_profile = get_random_approval_profile(instance, 10)
         assert len(random_profile) == 10
 
-        new_inst = PBInstance([Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3)
+        new_inst = Instance([Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3)
         assert len(set(get_all_approval_profiles(new_inst, 1))) == 8
         assert len(set(get_all_approval_profiles(new_inst, 2))) == 8 * 8
         assert len(set(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
 
     def test_cardinal_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = CardinalBallot({projects[1]: 100, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
         assert b1[projects[1]] == 100
         assert b1[projects[2]] == 74
@@ -136,7 +136,7 @@ class TestProfile(TestCase):
 
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = CardinalBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
         b2 = CardinalBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
         b3 = CardinalBallot({projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
@@ -170,7 +170,7 @@ class TestProfile(TestCase):
 
     def test_cumulative_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = CumulativeBallot({projects[1]: 4, projects[2]: 5, projects[3]: 7, projects[4]: 57, projects[5]: -41})
         assert b1[projects[1]] == 4
         assert b1[projects[2]] == 5
@@ -180,7 +180,7 @@ class TestProfile(TestCase):
 
     def test_cumulative_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = CumulativeBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
         b2 = CumulativeBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
         b3 = CumulativeBallot(
@@ -252,7 +252,7 @@ class TestProfile(TestCase):
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = PBInstance(projects, budget_limit=1)
+        instance = Instance(projects, budget_limit=1)
         b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
         b2 = OrdinalBallot([projects[4], projects[5], projects[3]])
         b3 = OrdinalBallot([projects[2], projects[3], projects[7]])

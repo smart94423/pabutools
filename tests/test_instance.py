@@ -1,10 +1,10 @@
 from unittest import TestCase
-from pbvoting.instance.pbinstance import *
+from pbvoting.election.instance import *
 
 
 class TestInstance(TestCase):
     def test_instance_as_set(self):
-        inst = PBInstance()
+        inst = Instance()
         projects = [Project("p{}".format(i), 1) for i in range(10)]
         inst.add(projects[0])
         assert len(inst) == 1
@@ -16,14 +16,14 @@ class TestInstance(TestCase):
         inst.__str__()
         inst.__repr__()
 
-        inst2 = PBInstance()
+        inst2 = Instance()
         inst2.update(projects)
         inst3 = inst.union(inst2)
         assert len(inst3) == 10
-        assert type(inst3) == PBInstance
+        assert type(inst3) == Instance
 
     def test_instance(self):
-        inst = PBInstance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
+        inst = Instance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
         assert inst.budget_limit == 2
         assert len(inst) == 3
         try:
@@ -55,7 +55,7 @@ class TestInstance(TestCase):
         inst.file_path = "path"
         inst.file_name = "name"
         inst.parsing_errors = False
-        inst2 = PBInstance(inst)
+        inst2 = Instance(inst)
         assert inst2.budget_limit == inst.budget_limit
         assert inst2.categories == inst.categories
         assert inst2.targets == inst.targets
@@ -73,7 +73,7 @@ class TestInstance(TestCase):
         assert project == "p"
         project.__str__()
         project.__repr__()
-        assert not project == PBInstance()
+        assert not project == Instance()
         assert project <= "p"
         assert project <= Project("z")
         assert project < "z"
