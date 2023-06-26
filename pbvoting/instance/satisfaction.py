@@ -113,21 +113,15 @@ class SatisfactionMultiProfile(Counter):
                                 " class.")
             else:
                 if profile is not None:
-                    self.append_from_profile(profile, sat_class)
+                    self.extend_from_profile(profile, sat_class)
                 if multiprofile is not None:
-                    self.append_from_multiprofile(multiprofile, sat_class)
+                    self.extend_from_multiprofile(multiprofile, sat_class)
 
-    def append_from_profile(self,
-                            profile: Profile = None,
-                            sat_class: type[Satisfaction] = None
-                            ):
+    def extend_from_profile(self, profile: Profile, sat_class: type[Satisfaction]):
         for ballot in profile:
-            self.append(sat_class(self.instance, profile, ballot))
+            self.append(sat_class(self.instance, profile, ballot.freeze()))
 
-    def append_from_multiprofile(self,
-                                 profile: MultiProfile = None,
-                                 sat_class: type[Satisfaction] = None
-                                 ):
+    def extend_from_multiprofile(self, profile: MultiProfile, sat_class: type[Satisfaction]):
         for ballot, multiplicity in profile.items():
             sat = sat_class(self.instance, profile, ballot)
             if sat in self:

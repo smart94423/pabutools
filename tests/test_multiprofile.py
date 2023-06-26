@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from pbvoting.instance import SatisfactionMultiProfile, Cost_Sat
 from pbvoting.instance.profile import *
 
 
@@ -49,3 +50,12 @@ class TestMultiProfile(TestCase):
         assert b[projects[2]] == 4
         with self.assertRaises(ValueError):
             b[projects[3]] = 5
+
+    def test_sat_multiprofile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        multiprofile = ApprovalMultiProfile([FrozenApprovalBallot(projects[:2])] * 4)
+        profile = ApprovalProfile([ApprovalBallot(projects[:5])] * 10)
+        multiprofile.extend(profile)
+
+        sat_multi = SatisfactionMultiProfile(multiprofile=multiprofile, sat_class=Cost_Sat)
+        sat_multi.extend_from_profile(profile, Cost_Sat)

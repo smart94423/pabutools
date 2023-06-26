@@ -611,9 +611,12 @@ class MultiProfile(Counter):
         else:
             self[element] = 1
 
-    def append_from_profile(self, profile: Profile):
-        for ballot in profile:
-            self.append(self.ballot_type(ballot))
+    def extend(self, iterable: Iterable[FrozenBallot] | Iterable[Ballot]):
+        for ballot in iterable:
+            if issubclass(type(ballot), Ballot):
+                self.append(ballot.freeze())
+            else:
+                self.append(ballot)
 
 
 class FrozenApprovalBallot(tuple[Project], FrozenBallot):
@@ -651,7 +654,7 @@ class ApprovalMultiProfile(MultiProfile):
         super(ApprovalMultiProfile, self).__init__(iterable=iterable, instance=instance,
                                                    ballot_validation=ballot_validation, ballot_type=ballot_type)
         if profile is not None:
-            self.append_from_profile(profile)
+            self.extend(profile)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_cost = legal_min_cost
@@ -692,7 +695,7 @@ class CardinalMultiProfile(MultiProfile):
         super(CardinalMultiProfile, self).__init__(iterable=iterable, instance=instance,
                                                    ballot_validation=ballot_validation, ballot_type=ballot_type)
         if profile is not None:
-            self.append_from_profile(profile)
+            self.extend(profile)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_score = legal_min_score
@@ -738,7 +741,7 @@ class CumulativeMultiProfile(CardinalMultiProfile):
         super(CumulativeMultiProfile, self).__init__(iterable=iterable, instance=instance,
                                                      ballot_validation=ballot_validation, ballot_type=ballot_type)
         if profile is not None:
-            self.append_from_profile(profile)
+            self.extend(profile)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_score = legal_min_score
@@ -785,6 +788,6 @@ class OrdinalMultiProfile(MultiProfile):
         super(OrdinalMultiProfile, self).__init__(iterable=iterable, instance=instance,
                                                   ballot_validation=ballot_validation, ballot_type=ballot_type)
         if profile is not None:
-            self.append_from_profile(profile)
+            self.extend(profile)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
