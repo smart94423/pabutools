@@ -313,3 +313,7 @@ class TestRule(TestCase):
                                                                              profile,
                                                                              [method_of_equal_shares,
                                                                               greedy_welfare]))
+
+        completion_by_rule_combination(instance, profile, [exhaustion_by_budget_increase, greedy_welfare],
+                                       [{'rule': method_of_equal_shares,
+                                         'rule_params': {'sat_class': Cost_Sat}}, {'sat_class': Cost_Sat}])
