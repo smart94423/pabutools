@@ -291,6 +291,11 @@ class CardinalBallot(dict[Project, Fraction], Ballot):
         dict.__init__(self, d)
         Ballot.__init__(self, name=name, meta=meta)
 
+    def complete(self, projects, default_score):
+        for project in projects:
+            if project not in self:
+                self[project] = default_score
+
 
 class CardinalProfile(Profile):
     """
@@ -347,6 +352,10 @@ class CardinalProfile(Profile):
             if project in ballot:
                 score += ballot[project]
         return score
+
+    def complete(self, projects, default_score):
+        for ballot in self:
+            ballot.complete(projects, default_score)
 
 
 class CumulativeBallot(CardinalBallot):
