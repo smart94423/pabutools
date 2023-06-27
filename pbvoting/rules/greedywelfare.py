@@ -119,7 +119,10 @@ def greedy_scheme_additive(instance: Instance,
     projects = tie_breaking.order(instance, profile, projects)
 
     def satisfaction_density(proj):
-        return frac(sat_profile.total_satisfaction([proj]), proj.cost)
+        total_sat = sat_profile.total_satisfaction([proj])
+        if total_sat > 0:
+            return frac(total_sat, proj.cost)
+        return 0
 
     # We sort based on a tuple to ensure ties are broken as intended
     ordered_projects = sorted(projects, key=lambda p: (-satisfaction_density(p), projects.index(p)))

@@ -5,6 +5,7 @@ from fractions import Fraction
 
 from pbvoting.election import Project
 
+
 class Ballot:
     """
         A ballot.
@@ -27,7 +28,6 @@ class Ballot:
 
     def freeze(self):
         pass
-
 
 
 class ApprovalBallot(set[Project], Ballot):
@@ -73,6 +73,7 @@ ApprovalBallot._wrap_methods(['__ror__', 'difference_update', '__isub__',
                               'symmetric_difference_update', '__or__', 'copy', '__rxor__',
                               'intersection_update', '__xor__', '__ior__', '__sub__',
                               ])
+
 
 def get_random_approval_ballot(projects: Iterable[Project], name: str = "RandomAppBallot") -> ApprovalBallot:
     """
@@ -121,7 +122,6 @@ class CardinalBallot(dict[Project, Fraction], Ballot):
 
     def freeze(self):
         return FrozenCardinalBallot(self)
-
 
 
 class CumulativeBallot(CardinalBallot):
@@ -218,7 +218,6 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
         return tuple.__hash__(self)
 
 
-
 class FrozenCardinalBallot(dict[Project, Fraction], FrozenBallot):
 
     def __init__(self,
@@ -235,7 +234,6 @@ class FrozenCardinalBallot(dict[Project, Fraction], FrozenBallot):
         return tuple.__hash__(tuple(self.keys()))
 
 
-
 class FrozenCumulativeBallot(dict[Project, Fraction], FrozenBallot):
 
     def __init__(self,
@@ -250,6 +248,7 @@ class FrozenCumulativeBallot(dict[Project, Fraction], FrozenBallot):
 
     def __hash__(self):
         return tuple.__hash__(tuple(self.keys()))
+
 
 class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
 
@@ -271,4 +270,3 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
 
     def __hash__(self):
         return tuple.__hash__(self)
-

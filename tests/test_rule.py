@@ -64,6 +64,21 @@ def test_elections():
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
     res.append(test_election)
 
+    # Approval example 3 - With app score 0
+    p = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09), Project("p4", 1.09),
+         Project("p5", 1.09)]
+    inst = Instance(p, budget_limit=4)
+    prof = ApprovalProfile([
+        ApprovalBallot({p[0]}),
+        ApprovalBallot({p[1], p[2], p[3]}),
+        ApprovalBallot({p[1], p[2], p[3]}),
+        ApprovalBallot({p[2]})
+    ], instance=inst)
+    test_election = TestElection("AppEx_2", p, inst, prof)
+    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
+    res.append(test_election)
+
     # Empty profile
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
     inst = Instance(p, budget_limit=3)
