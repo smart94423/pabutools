@@ -46,6 +46,9 @@ class Profile(list):
             raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
                                                                                             self.__class__.__name__))
 
+    def multiplicity(self, element):
+        return 1
+
     def as_multiprofile(self):
         pass
 
@@ -410,6 +413,9 @@ class MultiProfile(Counter):
         if self.ballot_validation and self.ballot_type is not None and not issubclass(type(ballot), self.ballot_type):
             raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
                                                                                             self.__class__.__name__))
+
+    def multiplicty(self, element):
+        return self[element]
 
     def __setitem__(self, key, value):
         self.validate_ballot(key)

@@ -3,7 +3,7 @@ import time
 from copy import copy
 from collections.abc import Iterable
 
-from pbvoting.fractions import number_as_frac, frac
+from pbvoting.fractions import frac
 from pbvoting.election.instance import Instance, total_cost, Project
 from pbvoting.election.profile import Profile
 from pbvoting.election.satisfaction import AdditiveSatisfaction, SatisfactionProfile, Satisfaction, \
@@ -55,7 +55,7 @@ def greedy_scheme(instance: Instance,
             argmax_marginal_score = []
             for project in feasible:
                 new_alloc = copy(alloc) + [project]
-                total_marginal_score = number_as_frac(0)
+                total_marginal_score = 0
                 for sat in sats:
                     total_marginal_score += frac(sat.sat(new_alloc) - sat.sat(alloc), project.cost)
 

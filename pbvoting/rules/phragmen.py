@@ -2,13 +2,13 @@ from collections.abc import Iterable
 from copy import deepcopy
 from fractions import Fraction
 
-from pbvoting.fractions import number_as_frac, frac
-from pbvoting.election import Instance, Project, total_cost, ApprovalProfile
+from pbvoting.fractions import frac
+from pbvoting.election import Instance, Project, total_cost, ApprovalProfile, ApprovalMultiProfile
 from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 
 def sequential_phragmen(instance: Instance,
-                        profile: ApprovalProfile,
+                        profile: ApprovalProfile | ApprovalMultiProfile,
                         initial_loads: list[Fraction] = None,
                         initial_budget_allocation: Iterable[Project] = None,
                         tie_breaking: TieBreakingRule = lexico_tie_breaking,
@@ -20,10 +20,8 @@ def sequential_phragmen(instance: Instance,
         ----------
             instance : pbvoting.instance.pbinstance.PBInstance
                 The instance.
-            profile : pbvoting.instance.profile.ApprovalProfile
+            profile : pbvoting.instance.profile.ApprovalProfile | pbvoting.instance.profile.ApprovalMultiProfile
                 The profile.
-            sat_profile : pbvoting.instance.pbinstance.SatisfactionProfile
-                The profile of satisfaction functions.
             initial_loads : list[Fraction]
                 The initial load distribution of the voters.
             initial_budget_allocation : collection of pbvoting.instance.pbinstance.Project
@@ -44,8 +42,8 @@ def sequential_phragmen(instance: Instance,
             if alloc not in allocs:
                 allocs.append(alloc)
         else:
-            approvers_load = {project: sum(load[i] for i in range(len(prof)) if project in prof[i])
-                              for project in projs}
+            approvers_load = {project: sum(load[i] * prof.multiplicity(ballot) for i, ballot in enumerate(prof)
+                                           if project in ballot) for project in projs}
             new_maxload = dict()
             for project in projs:
                 if scores[project] == 0:
@@ -61,11 +59,11 @@ def sequential_phragmen(instance: Instance,
                 if alloc not in allocs:
                     allocs.append(alloc)
             else:
-                tied_projects = tie_breaking.order(instance, profile, tied_projects)
+                tied_projects = tie_breaking.order(inst, prof, tied_projects)
                 if resolute:
                     selected_project = tied_projects[0]
-                    for i in range(len(prof)):
-                        if selected_project in prof[i]:
+                    for i, ballot in enumerate(prof):
+                        if selected_project in ballot:
                             load[i] = new_maxload[selected_project]
                     alloc.append(selected_project)
                     projs.remove(selected_project)
@@ -73,8 +71,8 @@ def sequential_phragmen(instance: Instance,
                 else:
                     for selected_project in tied_projects:
                         new_load = deepcopy(load)
-                        for i in range(len(prof)):
-                            if selected_project in prof[i]:
+                        for i, ballot in enumerate(prof):
+                            if selected_project in ballot:
                                 new_load[i] = new_maxload[selected_project]
                         new_alloc = deepcopy(alloc) + [selected_project]
                         new_cost = cost + selected_project.cost
@@ -83,7 +81,7 @@ def sequential_phragmen(instance: Instance,
                         aux(inst, prof, new_projs, new_load, scores, new_alloc, new_cost, allocs, resolute)
 
     if initial_loads is None:
-        initial_loads = [number_as_frac(0) for _ in range(len(profile))]
+        initial_loads = [0 for _ in range(len(profile))]
     if initial_budget_allocation is None:
         initial_budget_allocation = []
     current_cost = total_cost(initial_budget_allocation)

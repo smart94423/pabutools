@@ -8,6 +8,7 @@ import pandas as pd
 
 from pbvoting.election import parse_pabulib, SatisfactionMultiProfile, Cost_Sat, SatisfactionProfile
 from pbvoting.rules import greedy_welfare
+from pbvoting.rules.maxwelfare import max_welfare
 
 
 def multiproifle_gain(folder_path, csv_file="multiprofile_gain.csv", recompute=False):
@@ -58,7 +59,7 @@ def multiproifle_gain(folder_path, csv_file="multiprofile_gain.csv", recompute=F
     plt.show()
 
 
-def multiprofile_runtime(folder_path, rules, csv_file="multiprofile_runtime.csv", recompute=False):
+def multiprofile_runtime(folder_path, rules, rule_params, csv_file="multiprofile_runtime.csv", recompute=False):
     print("============== Multiprofile Gain Analysis ==============")
 
     if not recompute and os.path.isfile(os.path.join("csv", csv_file)):
@@ -75,13 +76,13 @@ def multiprofile_runtime(folder_path, rules, csv_file="multiprofile_runtime.csv"
                 sat_profile = SatisfactionProfile(profile=profile, sat_class=Cost_Sat)
                 sat_multiprofile = SatisfactionMultiProfile(profile=profile, sat_class=Cost_Sat)
 
-                for rule in rules:
+                for index, rule in enumerate(rules):
                     profile_time = time.time()
-                    rule(instance, profile, sat_profile=sat_profile, is_sat_additive=True, resoluteness=True)
+                    rule(instance, profile, sat_profile=sat_profile, resoluteness=True, **rule_params[index])
                     profile_time = time.time() - profile_time
                     multiprofile_time = time.time()
-                    outcome2 = rule(instance, profile, sat_profile=sat_multiprofile, is_sat_additive=True,
-                                    resoluteness=True)
+                    outcome2 = rule(instance, profile, sat_profile=sat_multiprofile, resoluteness=True,
+                                    **rule_params[index])
                     multiprofile_time = time.time() - multiprofile_time
 
                     data["file"].append(file)
@@ -104,8 +105,9 @@ def multiprofile_runtime(folder_path, rules, csv_file="multiprofile_runtime.csv"
     sns.set_theme()
 
     for rule in rules:
+
         g = sns.boxplot(
-            data=data,
+            data=data[data["rule"] == rule.__name__],
             x="avg_vote_length_cat",
             y="time_gains_percent",
         )
@@ -115,7 +117,7 @@ def multiprofile_runtime(folder_path, rules, csv_file="multiprofile_runtime.csv"
         plt.show()
 
         g = sns.boxplot(
-            data=data,
+            data=data[data["rule"] == rule.__name__],
             x="avg_vote_length_cat",
             y="time_gains",
         )
@@ -128,6 +130,9 @@ if __name__ == "__main__":
     recompute = False
     # recompute = True
 
-    multiproifle_gain("all_app_pabulib", recompute=recompute)
+    # multiproifle_gain("all_app_pabulib", recompute=recompute)
 
-    multiprofile_runtime("all_app_pabulib", [greedy_welfare], recompute=recompute)
+    multiprofile_runtime("all_app_pabulib",
+                         [greedy_welfare, max_welfare],
+                         [{"is_sat_additive": True}, {}],
+                         recompute=recompute)

@@ -4,7 +4,6 @@ Instances.
 from collections.abc import Iterable, Generator
 from fractions import Fraction
 from math import ceil
-from pbvoting.fractions import number_as_frac
 from pbvoting.utils import powerset
 
 import random
@@ -35,12 +34,12 @@ class Project:
 
     def __init__(self,
                  project_name: str = "",
-                 cost: Fraction = number_as_frac(0),
+                 cost: Fraction = 0,
                  categories: set[str] = set(),
                  targets: set[str] = set()
                  ) -> None:
         self.name = project_name
-        self.cost = number_as_frac(cost)
+        self.cost = cost
         self.categories = categories
         self.targets = targets
 
