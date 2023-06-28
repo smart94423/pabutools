@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from fractions import Fraction
 from pbvoting.election.instance import Instance, Project
 from pbvoting.election.profile import Profile
-from pbvoting.election.satisfaction import Satisfaction, SatisfactionProfile
+from pbvoting.election.satisfaction import SatisfactionMeasure, SatisfactionProfile
 from pbvoting.tiebreaking import lexico_tie_breaking
 from pbvoting.fractions import frac
 from pbvoting.tiebreaking import TieBreakingRule
@@ -114,7 +114,7 @@ def mes_scheme(instance: Instance,
 
 def method_of_equal_shares(instance: Instance,
                            profile: Profile,
-                           sat_class: type[Satisfaction] = None,
+                           sat_class: type[SatisfactionMeasure] = None,
                            sat_profile: SatisfactionProfile = None,
                            tie_breaking: TieBreakingRule = lexico_tie_breaking,
                            resoluteness: bool = True,

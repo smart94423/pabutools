@@ -3,7 +3,7 @@ from collections.abc import Iterable
 import mip
 from mip import Model, xsum, maximize, BINARY
 
-from pbvoting.election import Instance, Profile, Satisfaction, SatisfactionProfile, Project, total_cost
+from pbvoting.election import Instance, Profile, SatisfactionMeasure, SatisfactionProfile, Project, total_cost
 
 
 def max_welfare_scheme(instance: Instance,
@@ -52,7 +52,7 @@ def max_welfare_scheme(instance: Instance,
 
 def max_welfare(instance: Instance,
                 profile: Profile,
-                sat_class: type[Satisfaction] = None,
+                sat_class: type[SatisfactionMeasure] = None,
                 sat_profile: SatisfactionProfile = None,
                 resoluteness: bool = True,
                 initial_budget_allocation: Iterable[Project] = None

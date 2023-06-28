@@ -5,7 +5,7 @@ import numpy as np
 
 from pbvoting.election.instance import Instance, Project
 from pbvoting.election.profile import ApprovalProfile
-from pbvoting.election.satisfaction import Satisfaction, CC_Sat
+from pbvoting.election.satisfaction import SatisfactionMeasure, CC_Sat
 from pbvoting.fractions import frac
 
 from pbvoting.utils import gini_coefficient, mean_generator
@@ -14,7 +14,7 @@ from pbvoting.utils import gini_coefficient, mean_generator
 def avg_satisfaction(instance: Instance,
                      profile: ApprovalProfile,
                      budget_allocation: Iterable[Project],
-                     satisfaction: type[Satisfaction]
+                     satisfaction: type[SatisfactionMeasure]
                      ) -> Number | float:
     """Computes the average satisfaction for a given instance, profile and satisfaction function
         Parameters
@@ -45,7 +45,7 @@ def percent_non_empty_handed(instance: Instance,
 def gini_coefficient_of_satisfaction(instance: Instance,
                                      profile: ApprovalProfile,
                                      budget_allocation: Iterable[Project],
-                                     satisfaction: type[Satisfaction],
+                                     satisfaction: type[SatisfactionMeasure],
                                      invert: bool = False
                                      ) -> Number | float:
     voter_satisfactions = np.array([frac(satisfaction(instance, profile, ballot).sat(budget_allocation))

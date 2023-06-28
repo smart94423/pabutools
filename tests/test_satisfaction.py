@@ -1,8 +1,11 @@
 from copy import deepcopy
 from unittest import TestCase
 
+import numpy as np
+
 from pbvoting.election.profile import ApprovalProfile, CardinalProfile, OrdinalProfile, get_random_approval_profile
-from pbvoting.election.instance import get_random_instance
+from pbvoting.election.instance import Instance, Project, get_random_instance
+from pbvoting.election.ballot import ApprovalBallot, CardinalBallot, OrdinalBallot
 from pbvoting.election.satisfaction import *
 
 
@@ -56,7 +59,7 @@ class TestSatisfaction(TestCase):
         instance = Instance(projects, budget_limit=1)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         profile = ApprovalProfile([b1], instance=instance)
-        sat_profile = SatisfactionProfile(profile=profile, sat_class=Log_Sat)
+        sat_profile = SatisfactionProfile(profile=profile, sat_class=Cost_Log_Sat)
         assert sat_profile[0].sat([projects[0]]) == 0
         assert sat_profile[0].sat(projects[1:4]) == np.log(1 + 4 + 4 + 9)
 

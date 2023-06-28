@@ -2,7 +2,7 @@ from unittest import TestCase
 from pbvoting.fractions import frac
 from pbvoting.election.profile import ApprovalProfile
 from pbvoting.election.ballot import ApprovalBallot
-from pbvoting.election.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
+from pbvoting.election.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
     SatisfactionProfile, SatisfactionMultiProfile
 from pbvoting.election.instance import Project, Instance
 from pbvoting.rules.phragmen import sequential_phragmen
@@ -13,7 +13,7 @@ from pbvoting.rules.mes import method_of_equal_shares
 
 ALL_SAT_RULES = [greedy_welfare, max_welfare, method_of_equal_shares]
 ALL_NON_SAT_RULES = [sequential_phragmen]
-ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat]
+ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat]
 
 
 class TestElection:
@@ -150,7 +150,7 @@ def test_elections():
     ], instance=inst)
     test_election = TestElection("RunningEx LackSkow23", p, inst, prof)
     test_election.irr_results_non_sat[sequential_phragmen] = sorted([p[:4]])
-    for sat_class in [Cost_Sat, Cardinality_Sat, Cost_Sqrt_Sat, Log_Sat]:
+    for sat_class in [Cost_Sat, Cardinality_Sat, Cost_Sqrt_Sat, Cost_Log_Sat]:
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = sorted([[p[0]]])
     res.append(test_election)
 
