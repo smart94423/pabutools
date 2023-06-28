@@ -6,12 +6,37 @@ from pbvoting.election.instance import Project
 from pbvoting.election.ballot.ballot import Ballot, FrozenBallot
 
 
+class FrozenApprovalBallot(tuple[Project], FrozenBallot):
+
+    def __init__(self,
+                 approved: Iterable[Project] = (),
+                 name: str = "",
+                 meta: dict | None = None
+                 ) -> None:
+        tuple.__init__(self)
+        FrozenBallot.__init__(self, name, meta)
+
+    def __new__(cls,
+                approved: Iterable[Project] = (),
+                name: str = "",
+                meta: dict | None = None):
+        return super(FrozenApprovalBallot, cls).__new__(cls, tuple(approved))
+
+    def __hash__(self):
+        return tuple.__hash__(self)
+
+
 class ApprovalBallot(set[Project], Ballot):
     """
         An approval ballot, that is, a ballot in which the voter has indicated the projects that they approve of. It
-        is a subclass of `pbvoting.instance.profile.Ballot`.
+        is a subclass of the Python class `set` and of the abstract class `Ballot`.
         Attributes
         ----------
+            name : str
+                The identifier of the ballot.
+            meta : dict
+                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+                strings. Could for instance store the gender of the voter, their location etc...
     """
 
     def __init__(self,
@@ -19,14 +44,32 @@ class ApprovalBallot(set[Project], Ballot):
                  name: str = "",
                  meta: dict | None = None
                  ) -> None:
+        """
+            Parameters
+            ----------
+                approved: Iterable[Project], optional (defaults to `()`)
+                    Approved projects
+                name : str, optional (defaults to `""`)
+                    The identifier of the ballot.
+                meta : dict, optional (defaults to `dict()`)
+                    Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+                    strings. Could for instance store the gender of the voter, their location etc...
+        """
         set.__init__(self, approved)
         Ballot.__init__(self, name, meta)
 
-    def freeze(self):
+    def freeze(self) -> FrozenApprovalBallot:
+        """
+            Returns the frozen approval ballot (that is hashable) corresponding to the ballot.
+
+            Returns
+            -------
+                FrozenApprovalBallot
+                    The frozen approval ballot
+        """
         return FrozenApprovalBallot(self, name=self.name, meta=self.meta)
 
-    # This allows set method returning copies of a set to work with PBInstances
-    # See https://stackoverflow.com/questions/798442/what-is-the-correct-or-best-way-to-subclass-the-python-set-class-adding-a-new
+    # Ensures that methods returning copies of sets cast back into ApprovalBallot
     @classmethod
     def _wrap_methods(cls, methods):
         def wrap_method_closure(method):
@@ -54,38 +97,20 @@ ApprovalBallot._wrap_methods(['__ror__', 'difference_update', '__isub__',
 def get_random_approval_ballot(projects: Iterable[Project], name: str = "RandomAppBallot") -> ApprovalBallot:
     """
         Generates a random approval ballot in which each project is approved with probability 0.5.
+
         Parameters
         ----------
-            projects : collection of pbvoting.instance.instance.Project
-                The set of all the projects.
-            name : str
-                The identifier of the ballot. Default is `"RandomAppBallot"`.
+            projects : Iterable[Project]
+                A collection of projects
+            name : str, optional (defaults to `"RandomAppBallot"`)
+                The identifier of the ballot.
         Returns
         -------
-            pbvoting.instance.profile.ApprovalBallot
+            ApprovalBallot
+                The approval ballot
     """
     ballot = ApprovalBallot(name=name)
     for p in projects:
         if random.random() > 0.5:
             ballot.add(p)
     return ballot
-
-
-class FrozenApprovalBallot(tuple[Project], FrozenBallot):
-
-    def __init__(self,
-                 approved: Iterable[Project] = (),
-                 name: str = "",
-                 meta: dict | None = None
-                 ) -> None:
-        tuple.__init__(self)
-        FrozenBallot.__init__(self, name, meta)
-
-    def __new__(cls,
-                approved: Iterable[Project] = (),
-                name: str = "",
-                meta: dict | None = None):
-        return super(FrozenApprovalBallot, cls).__new__(cls, tuple(approved))
-
-    def __hash__(self):
-        return tuple.__hash__(self)

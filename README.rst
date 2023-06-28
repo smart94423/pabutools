@@ -47,7 +47,7 @@ A PB instance describes all the elements that define the elections.
 It includes the projects that are being voted on, together with the
 budget limit.
 
-The main class here is :code:`PBInstance`. This class inherits
+The main class here is :code:`Instance`. This class inherits
 from the Python class :code:`set` and behaves as a set of projects,
 with additional information. Projects are instantiations of the
 class :code:`Project` that stores a project' name and cost
@@ -55,9 +55,9 @@ class :code:`Project` that stores a project' name and cost
 
 .. code-block:: python
 
-    from pbvoting.instance import PBInstance, Project
+    from pbvoting.election import Instance, Project
 
-    instance = PBInstance()   # There are many optional parameters
+    instance = Instance()   # There are many optional parameters
     p1 = Project("p1", 1)   # The constructor takes name and cost of the project
     instance.add(p1)   # Use the set methods to add/delete projects to an instance
     p2 = Project("p2", 1)
@@ -108,9 +108,9 @@ ensure consistency of the ballots in a profile.
 
 .. code-block:: python
 
-    from pbvoting.instance import PBInstance, Profile, Ballot
+    from pbvoting.election import Instance, Profile, Ballot
 
-    instance = PBInstance()
+    instance = Instance()
     profile = Profile(instance=instance)
     profile.ballot_validation = True   # Boolean (de)activating the validation of the ballot type
     profile.ballot_type = Ballot   # The type used for the ballot validation
@@ -131,7 +131,7 @@ The type for the ballot validator is by default set to :code:`ApprovalBallot`.
 
 .. code-block:: python
 
-    from pbvoting.instance import Project, ApprovalBallot, ApprovalProfile
+    from pbvoting.election import Project, ApprovalBallot, ApprovalProfile
 
     projects = [Project("p{}".format(i), 1) for i in range(10)]
     b1 = ApprovalBallot(projects[:3])   # Approval ballot containing the first 3 projects
@@ -165,7 +165,7 @@ through the :code:`CardinalProfile` class. It inherits from the
 
 .. code-block:: python
 
-    from pbvoting.instance import Project, CardinalBallot, CardinalProfile
+    from pbvoting.election import Project, CardinalBallot, CardinalProfile
 
     projects = [Project("p{}".format(i), 1) for i in range(10)]
     b1 = CardinalBallot({projects[1]: 5, projects[2]: 0})   # Cardinal ballot scoring 5 for p1 and 0 for p2
@@ -199,7 +199,7 @@ Ordinal profiles are handled by the class :code:`OrdinalProfile`.
 
 .. code-block:: python
 
-    from pbvoting.instance import Project, OrdinalBallot, OrdinalProfile
+    from pbvoting.election import Project, OrdinalBallot, OrdinalProfile
 
     projects = [Project("p{}".format(i), 1) for i in range(10)]
     b1 = OrdinalBallot((projects[0], projects[4], projects[2]))   # Ordinal ballot ranking p0 > p4 > p2
@@ -212,14 +212,14 @@ Pabulib
 
 We provide full support of the PB data hosted on the
 `pabulib <http://pabulib.org/>`_ website. The function
-:code:`pbvoting.instance.parse_pabulib` can be used to parse a file
+:code:`pbvoting.election.parse_pabulib` can be used to parse a file
 formatted according to the pabulib format. It returns the instance
 and the profile, using the suitable profile class given the ballot
 format in the data.
 
 .. code-block:: python
 
-    from pbvoting.instance import parse_pabulib
+    from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
 
@@ -229,7 +229,7 @@ members of the instance and profile classes.
 
 .. code-block:: python
 
-    from pbvoting.instance import parse_pabulib
+    from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
     instance.meta   # The meta dict is populated with all the metadata described in the file
@@ -282,13 +282,13 @@ provided as input of a rule.
 
 .. code-block:: python
 
-    from pbvoting.instance import  SatisfactionProfile, Satisfaction
-    from pbvoting.instance import parse_pabulib
+    from pbvoting.election import SatisfactionProfile, SatisfactionMeasure
+    from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
     sat_profile = SatisfactionProfile(instance=instance)
     # We define a satisfaction function:
-    class MySatisfaction(Satisfaction):
+    class MySatisfaction(SatisfactionMeasure):
         def sat(self, projects):
             return 100 if "p1" in projects else len(projects)
     # We populate the satisfaction profile
@@ -303,8 +303,8 @@ directly provided.
 
 .. code-block:: python
 
-    from pbvoting.instance import  SatisfactionProfile, Cardinality_Sat
-    from pbvoting.instance import parse_pabulib
+    from pbvoting.election import SatisfactionProfile, Cardinality_Sat
+    from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
     # If a profile and a sat_class are given to the constructor, the satisfaction profile
@@ -328,7 +328,7 @@ defining the Chamberlin-Courant satisfaction function with approval
 
 .. code-block:: python
 
-    from pbvoting.instance import FunctionalSatisfaction
+    from pbvoting.election import FunctionalSatisfaction
 
     def cc_sat_func(instance, profile, ballot, projects):
         return int(any(p in ballot for p in projects))
@@ -393,12 +393,12 @@ Satisfaction Functions Already Defined
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As we have seen above, several satisfaction functions are already defined
-in the library and can be imported from :code:`pbvoting.instance`. We list
+in the library and can be imported from :code:`pbvoting.election`. We list
 them below.
 
 - :code:`CC_Sat` implements the Chamberlin-Courant satisfaction function for approval ballots.
 - :code:`Cost_Sqrt_Sat` defines the satisfaction as the square root of the total cost of the selected and approed projects.
-- :code:`Log_Sat` defines the satisfaction as the log of the total cost of the approved and selected projects.
+- :code:`Cost_Log_Sat` defines the satisfaction as the log of the total cost of the approved and selected projects.
 - :code:`Cardinality_Sat` defines the satisfaction as the number of approved and selected projects.
 - :code:`Cost_Sat` defines the satisfaction as the total cost of the approved and selected projects.
 - :code:`Effort_Sat` defines the satisfaction as the total share of a voter
