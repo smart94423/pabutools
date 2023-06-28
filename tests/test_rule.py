@@ -75,7 +75,7 @@ def test_elections():
         ApprovalBallot({p[1], p[2], p[3]}),
         ApprovalBallot({p[2]})
     ], instance=inst)
-    test_election = TestElection("AppEx_2", p, inst, prof)
+    test_election = TestElection("AppEx_3", p, inst, prof)
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
     res.append(test_election)
@@ -211,10 +211,10 @@ class TestRule(TestCase):
         for test_election in ALL_TEST_ELECTIONS:
             sat_profile = SatisfactionProfile(profile=test_election.profile, sat_class=Cost_Sat)
             outcome1 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
-                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+                                      resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
             sat_multiprofile = SatisfactionMultiProfile(profile=test_election.profile, sat_class=Cost_Sat)
-            outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
-                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+            outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_multiprofile,
+                                      resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
             assert outcome1 == outcome2
 
     def test_max_welfare(self):

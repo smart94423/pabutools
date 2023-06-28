@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 from collections import Counter
 
 from pbvoting.election.satisfaction.satisfactionmeasure import SatisfactionMeasure, GroupSatisfactionMeasure
 from pbvoting.election.instance import Instance
-from pbvoting.election.profile import Profile, MultiProfile
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile, MultiProfile
 
 
-class SatisfactionProfile(list, SatisfactionMeasure):
+class SatisfactionProfile(list, GroupSatisfactionMeasure):
     """
         A profile of satisfaction functions, one per voter.
         Attributes

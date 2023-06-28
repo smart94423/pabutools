@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
 
 from pbvoting.election.instance import Instance, Project
-from pbvoting.election.profile import Profile
 from pbvoting.election.ballot import Ballot
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile
 
 
 class SatisfactionMeasure(ABC):
@@ -45,6 +50,12 @@ class SatisfactionMeasure(ABC):
         if isinstance(other, SatisfactionMeasure):
             return self.ballot < other.ballot
         return False
+
+    def __str__(self):
+        return "SAT[{}]".format(self.ballot)
+
+    def __repr__(self):
+        return "SAT[{}]".format(self.ballot)
 
     @abstractmethod
     def sat(self, projects: Iterable[Project]) -> float:

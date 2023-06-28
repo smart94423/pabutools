@@ -55,9 +55,8 @@ def greedy_scheme(instance: Instance,
             argmax_marginal_score = []
             for project in feasible:
                 new_alloc = copy(alloc) + [project]
-                total_marginal_score = 0
-                for sat in sats:
-                    total_marginal_score += frac(sat.sat(new_alloc) - sat.sat(alloc), project.cost)
+                total_marginal_score = frac(sats.total_satisfaction(new_alloc) - sats.total_satisfaction(alloc),
+                                            project.cost)
 
                 if best_marginal_score is None or total_marginal_score > best_marginal_score:
                     best_marginal_score = total_marginal_score
@@ -188,7 +187,7 @@ def greedy_welfare(instance: Instance,
             raise ValueError("Satisfaction and sat_profile cannot both be None.")
     else:
         if sat_profile is None:
-            sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=sat_class)
+            sat_profile = profile.as_sat_profile(sat_class)
             is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
 
     if is_sat_additive:

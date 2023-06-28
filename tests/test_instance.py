@@ -3,6 +3,7 @@ from pbvoting.election.instance import *
 
 
 class TestInstance(TestCase):
+
     def test_instance_as_set(self):
         inst = Instance()
         projects = [Project("p{}".format(i), 1) for i in range(10)]

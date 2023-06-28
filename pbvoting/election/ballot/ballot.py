@@ -1,7 +1,13 @@
 from abc import ABC, abstractmethod
 
 
-class FrozenBallot(ABC):
+class AbstractBallot(ABC):
+    """
+        Abstract class representing the ballots, i.e., the information submitted by the voters.
+    """
+
+
+class FrozenBallot(AbstractBallot):
     """
         Abstract class representing frozen ballots, i.e., ballots that are hashable. In general the Ballot class
         should be preferred over this one but hashable ballots can be useful (typically for `MultiProfile`).
@@ -31,7 +37,7 @@ class FrozenBallot(ABC):
         self.name = name
 
 
-class Ballot(ABC):
+class Ballot(AbstractBallot):
     """
         Abstract class representing the ballots, i.e., the information submitted by the voters.
 
@@ -54,6 +60,8 @@ class Ballot(ABC):
                     Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
                     strings. Could for instance store the gender of the voter, their location etc...
         """
+        ABC.__init__(self)
+        AbstractBallot.__init__(self)
         if meta is None:
             meta = dict()
         self.meta = meta

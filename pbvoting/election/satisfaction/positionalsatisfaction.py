@@ -1,10 +1,16 @@
+from __future__ import annotations
+
 from collections.abc import Callable, Iterable
 from numbers import Number
 
 from pbvoting.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pbvoting.election.ballot import OrdinalBallot
 from pbvoting.election.instance import Instance, Project
-from pbvoting.election.profile import Profile
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile, MultiProfile
+
 
 
 class PositionalSatisfaction(SatisfactionMeasure):

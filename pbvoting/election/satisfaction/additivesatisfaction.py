@@ -1,11 +1,17 @@
+from __future__ import annotations
+
 from collections.abc import Callable, Iterable
 from numbers import Number
 
 from pbvoting.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pbvoting.election.ballot import ApprovalBallot, CardinalBallot
 from pbvoting.election.instance import Instance, Project, total_cost
-from pbvoting.election.profile import Profile
 from pbvoting.fractions import frac
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile, MultiProfile
 
 
 class AdditiveSatisfaction(SatisfactionMeasure):
@@ -110,7 +116,7 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
 
     def __init__(self, instance: Instance, profile: Profile, ballot: ApprovalBallot):
         super(Relative_Cardinality_Sat, self).__init__(instance, profile, ballot, relative_cardinality_sat_func)
-        
+
         self.max_budget_allocation_card = self.compute_max_budget_allocation_card(ballot, instance.budget_limit)
 
     def compute_max_budget_allocation_card(self, ballot, budget_limit):
@@ -146,7 +152,7 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
 
     def __init__(self, instance: Instance, profile: Profile, ballot: ApprovalBallot):
         super(Relative_Cost_Sat, self).__init__(instance, profile, ballot, relative_cost_sat_func)
-        
+
         self.max_budget_allocation_cost = self.compute_max_budget_allocation_cost(ballot, instance.budget_limit)
 
     def compute_max_budget_allocation_cost(self, ballot, budget_limit):
@@ -164,10 +170,10 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
 
 
 def relative_cost_unbounded_sat_func(instance: Instance,
-                  profile: Profile,
-                  ballot: ApprovalBallot,
-                  project: Project
-                  ) -> Number:
+                                     profile: Profile,
+                                     ballot: ApprovalBallot,
+                                     project: Project
+                                     ) -> Number:
     return frac(int(project in ballot) * project.cost, total_cost([p for p in ballot if p in ballot]))
 
 
@@ -213,4 +219,3 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
                  ballot: CardinalBallot
                  ) -> None:
         super(Additive_Cardinal_Sat, self).__init__(instance, profile, ballot, additive_card_sat_func)
-
