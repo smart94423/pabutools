@@ -4,10 +4,26 @@ from pbvoting.election.instance import Project
 from numbers import Number
 
 
+class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
+
+    def __init__(self,
+                 d: dict[Project, Number] = (),
+                 name: str = "",
+                 meta: dict | None = None):
+        dict.__init__(self, d)
+        FrozenBallot.__init__(self, name=name, meta=meta)
+
+    def __setitem__(self, key, value):
+        raise ValueError("You cannot set values of a FrozenCardinalBallot")
+
+    def __hash__(self):
+        return tuple.__hash__(tuple(self.keys()))
+
+
 class CardinalBallot(dict[Project, Number], Ballot):
     """
         A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
-        subclass of `pbvoting.instance.profile.Ballot`.
+        subclass of `Ballot`.
         Attributes
         ----------
             d : dict of projects: score
@@ -31,19 +47,3 @@ class CardinalBallot(dict[Project, Number], Ballot):
 
     def freeze(self):
         return FrozenCardinalBallot(self)
-
-
-class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
-
-    def __init__(self,
-                 d: dict[Project, Number] = (),
-                 name: str = "",
-                 meta: dict | None = None):
-        dict.__init__(self, d)
-        FrozenBallot.__init__(self, name=name, meta=meta)
-
-    def __setitem__(self, key, value):
-        raise ValueError("You cannot set values of a FrozenCardinalBallot")
-
-    def __hash__(self):
-        return tuple.__hash__(tuple(self.keys()))
