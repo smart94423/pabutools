@@ -1,12 +1,13 @@
 from collections import Counter
 
 import numpy as np
-from fractions import Fraction
+from numbers import Number
 from collections.abc import Callable, Iterable
 
 from pbvoting.fractions import frac
 from pbvoting.election.instance import Instance, Project, total_cost
-from pbvoting.election.profile import MultiProfile, Profile, Ballot, ApprovalBallot, OrdinalBallot, CardinalBallot
+from pbvoting.election.profile import MultiProfile, Profile
+from pbvoting.election.ballot import Ballot, ApprovalBallot, OrdinalBallot, CardinalBallot
 
 
 class Satisfaction:
@@ -186,7 +187,7 @@ class FunctionalSatisfaction(Satisfaction):
     """
 
     def __init__(self, instance, profile, ballot: ApprovalBallot,
-                 func: Callable[[Instance, Profile, ApprovalBallot, Iterable[Project]], Fraction]):
+                 func: Callable[[Instance, Profile, ApprovalBallot, Iterable[Project]], Number]):
         super(FunctionalSatisfaction, self).__init__(instance, profile, ballot)
         self.func = func
         self.instance = instance
@@ -210,7 +211,7 @@ def cc_sat_func(instance: Instance,
                 profile: Profile,
                 ballot: ApprovalBallot,
                 projects: Iterable[Project]
-                ) -> Fraction:
+                ) -> Number:
     return int(any(p in ballot for p in projects))
 
 
@@ -224,7 +225,7 @@ def cost_sqrt_sat_func(instance: Instance,
                        profile: Profile,
                        ballot: ApprovalBallot,
                        projects: Iterable[Project]
-                       ) -> Fraction:
+                       ) -> Number:
     return np.sqrt(float(total_cost([p for p in projects if p in ballot])))
 
 
@@ -238,7 +239,7 @@ def log_sat_func(instance: Instance,
                  profile: Profile,
                  ballot: ApprovalBallot,
                  projects: Iterable[Project]
-                 ) -> Fraction:
+                 ) -> Number:
     return np.log(float(1 + total_cost([p for p in projects if p in ballot])))
 
 
@@ -261,7 +262,7 @@ class AdditiveSatisfaction(Satisfaction):
                 The profile.
             ballot : pbvoting.instance.profile.Ballot
                 The approval ballot.
-            func : Callable[[PBInstance, Profile, Ballot, Project], Fraction]
+            func : Callable[[PBInstance, Profile, Ballot, Project], Number]
                 A function taking as input an instance, a profile, a ballot and a project, and returning
                 the score as a fraction.
         Attributes
@@ -275,7 +276,7 @@ class AdditiveSatisfaction(Satisfaction):
                  instance: Instance,
                  profile: Profile,
                  ballot: ApprovalBallot,
-                 func: Callable[[Instance, Profile, ApprovalBallot, Project], Fraction]
+                 func: Callable[[Instance, Profile, ApprovalBallot, Project], Number]
                  ) -> None:
         super(AdditiveSatisfaction, self).__init__(instance, profile, ballot)
         self.func = func
@@ -283,7 +284,7 @@ class AdditiveSatisfaction(Satisfaction):
 
     def get_score(self,
                   project: Project
-                  ) -> Fraction:
+                  ) -> Number:
         if project in self.scores:
             return self.scores[project]
         score = self.func(self.instance, self.profile, self.ballot, project)
@@ -292,7 +293,7 @@ class AdditiveSatisfaction(Satisfaction):
 
     def sat(self,
             projects: Iterable[Project]
-            ) -> Fraction:
+            ) -> Number:
         """
             Returns the satisfaction of a voter with a given approval ballot for a given subset of projects. The
             satisfaction is additive, it is thus defines as the sum of the score of the projects under consideration.
@@ -325,7 +326,7 @@ def cost_sat_func(instance: Instance,
                   profile: Profile,
                   ballot: ApprovalBallot,
                   project: Project
-                  ) -> Fraction:
+                  ) -> Number:
     return int(project in ballot) * project.cost
 
 
@@ -339,7 +340,7 @@ def effort_sat_func(instance: Instance,
                     profile: Profile,
                     ballot: ApprovalBallot,
                     project: Project
-                    ) -> Fraction:
+                    ) -> Number:
     projects = [project for b in profile if project in b]
     if projects:
         return int(project in ballot) * frac(project.cost, len(projects))
@@ -359,7 +360,7 @@ def additive_card_sat_func(instance: Instance,
                            profile: Profile,
                            ballot: CardinalBallot,
                            project: Project
-                           ) -> Fraction:
+                           ) -> Number:
     return ballot.get(project, 0)
 
 
@@ -399,8 +400,8 @@ class PositionalSatisfaction(Satisfaction):
                  instance: Instance,
                  profile: Profile,
                  ballot: OrdinalBallot,
-                 positional_func: Callable[[OrdinalBallot, Project], Fraction],
-                 aggregation_func: Callable[[Iterable[Fraction]], Fraction]):
+                 positional_func: Callable[[OrdinalBallot, Project], Number],
+                 aggregation_func: Callable[[Iterable[Number]], Number]):
         super(PositionalSatisfaction, self).__init__(instance, profile, ballot)
         self.positional_func = positional_func
         self.aggregation_func = aggregation_func

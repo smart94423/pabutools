@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from pbvoting.election.profile import ApprovalProfile, ApprovalBallot
+from pbvoting.election.profile import ApprovalProfile
+from pbvoting.election.ballot import ApprovalBallot
 from pbvoting.tiebreaking import *
 
 

@@ -5,8 +5,8 @@ from copy import deepcopy
 
 from pbvoting.fractions import str_as_frac
 from pbvoting.election.instance import Instance, Project
-from pbvoting.election.profile import ApprovalProfile, ApprovalBallot, CardinalProfile, CumulativeProfile, \
-    OrdinalProfile, CardinalBallot, OrdinalBallot, CumulativeBallot
+from pbvoting.election.ballot import ApprovalBallot, CardinalBallot, OrdinalBallot, CumulativeBallot
+from pbvoting.election.profile import ApprovalProfile, CardinalProfile, CumulativeProfile, OrdinalProfile
 
 import csv
 import os

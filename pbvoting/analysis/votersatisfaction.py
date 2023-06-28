@@ -1,18 +1,21 @@
 from collections.abc import Iterable
-from fractions import Fraction
+from numbers import Number
 
 import numpy as np
+
 from pbvoting.election.instance import Instance, Project
 from pbvoting.election.profile import ApprovalProfile
-from pbvoting.election.satisfaction import Satisfaction, SatisfactionProfile, CC_Sat
-from pbvoting.utils import gini_coefficient
+from pbvoting.election.satisfaction import Satisfaction, CC_Sat
+from pbvoting.fractions import frac
+
+from pbvoting.utils import gini_coefficient, mean_generator
 
 
 def avg_satisfaction(instance: Instance,
                      profile: ApprovalProfile,
                      budget_allocation: Iterable[Project],
                      satisfaction: type[Satisfaction]
-                     ) -> Fraction | float:
+                     ) -> Number | float:
     """Computes the average satisfaction for a given instance, profile and satisfaction function
         Parameters
         ----------
@@ -28,20 +31,14 @@ def avg_satisfaction(instance: Instance,
         Returns
         -------
             average satisfaction"""
-    # if issubclass(type(satisfaction), Satisfaction):
-    #     sat_profile = [satisfaction for ballot in profile]
-    # else:
-    #     sat_profile = satisfaction
 
-    voter_satisfactions = np.array(
-        [satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
-    return np.mean(voter_satisfactions)
+    return mean_generator(satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile)
 
 
 def percent_non_empty_handed(instance: Instance,
                              profile: ApprovalProfile,
                              budget_allocation: Iterable[Project]
-                             ) -> Fraction | float:
+                             ) -> Number | float:
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
@@ -50,9 +47,9 @@ def gini_coefficient_of_satisfaction(instance: Instance,
                                      budget_allocation: Iterable[Project],
                                      satisfaction: type[Satisfaction],
                                      invert: bool = False
-                                     ) -> Fraction | float:
-    voter_satisfactions = np.array(
-        [satisfaction(instance, profile, ballot).sat(budget_allocation) for ballot in profile])
+                                     ) -> Number | float:
+    voter_satisfactions = np.array([frac(satisfaction(instance, profile, ballot).sat(budget_allocation))
+                                    for ballot in profile])
     if invert:
         return 1 - gini_coefficient(voter_satisfactions)
     return gini_coefficient(voter_satisfactions)

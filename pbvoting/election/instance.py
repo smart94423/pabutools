@@ -2,9 +2,9 @@
 Instances.
 """
 from collections.abc import Iterable, Generator
-from fractions import Fraction
-from math import ceil
 from pbvoting.utils import powerset
+from numbers import Number
+from math import ceil
 
 import random
 
@@ -34,10 +34,14 @@ class Project:
 
     def __init__(self,
                  project_name: str = "",
-                 cost: Fraction = 0,
-                 categories: set[str] = set(),
-                 targets: set[str] = set()
+                 cost: Number = 0,
+                 categories=None,
+                 targets=None
                  ) -> None:
+        if targets is None:
+            targets = {}
+        if categories is None:
+            categories = {}
         self.name = project_name
         self.cost = cost
         self.categories = categories
@@ -66,7 +70,7 @@ class Project:
         return hash(self.name)
 
 
-def total_cost(projects: Iterable[Project]) -> Fraction:
+def total_cost(projects: Iterable[Project]) -> Number:
     """
         Returns the total cost of a collection of projects, summing the cost of its content.
         Parameters
@@ -77,10 +81,7 @@ def total_cost(projects: Iterable[Project]) -> Fraction:
         -------
             fraction.Fraction
     """
-    res = 0
-    for p in projects:
-        res += p.cost
-    return res
+    return sum(p.cost for p in projects)
 
 
 class Instance(set[Project]):

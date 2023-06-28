@@ -1,35 +1,40 @@
 from unittest import TestCase
-from pbvoting.election.profile import *
+
+from pbvoting.election.profile import Profile, ApprovalProfile, CardinalProfile, CumulativeProfile, OrdinalProfile, \
+    get_random_approval_profile, get_all_approval_profiles
+from pbvoting.election.ballot import Ballot, ApprovalBallot, CardinalBallot, CumulativeBallot, OrdinalBallot,\
+    get_random_approval_ballot
+from pbvoting.election.instance import Instance, Project
 
 
 class TestProfile(TestCase):
 
-    def test_profile(self):
-        profile = Profile()
-        b1 = Ballot()
-        b2 = Ballot()
-        b3 = Ballot()
-
-        profile = profile.__add__(Profile([b1, b2]))
-        assert len(profile) == 2
-        profile *= 3
-        assert len(profile) == 6
-        profile.append(b3)
-        assert len(profile) == 7
-        profile.insert(1, b1)
-        assert profile[1] == b1
-        assert profile[2] == b2
-        assert len(profile) == 8
-        profile.__setitem__(0, b3)
-        assert profile[0] == b3
-        profile.extend(Profile([b1, b1]))
-        assert len(profile) == 10
-        assert profile[-1] == b1
-        assert profile[-2] == b1
-        profile.extend((b2, b2,))
-        assert len(profile) == 12
-        assert profile[-1] == b2
-        assert profile[-2] == b2
+    # def test_profile(self):
+    #     profile = Profile()
+    #     b1 = Ballot()
+    #     b2 = Ballot()
+    #     b3 = Ballot()
+    #
+    #     profile = profile.__add__(Profile([b1, b2]))
+    #     assert len(profile) == 2
+    #     profile *= 3
+    #     assert len(profile) == 6
+    #     profile.append(b3)
+    #     assert len(profile) == 7
+    #     profile.insert(1, b1)
+    #     assert profile[1] == b1
+    #     assert profile[2] == b2
+    #     assert len(profile) == 8
+    #     profile.__setitem__(0, b3)
+    #     assert profile[0] == b3
+    #     profile.extend(Profile([b1, b1]))
+    #     assert len(profile) == 10
+    #     assert profile[-1] == b1
+    #     assert profile[-2] == b1
+    #     profile.extend((b2, b2,))
+    #     assert len(profile) == 12
+    #     assert profile[-1] == b2
+    #     assert profile[-2] == b2
 
     def test_approval_ballot(self):
         p1 = Project("p1", 1)

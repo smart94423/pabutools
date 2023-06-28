@@ -5,7 +5,7 @@ from collections.abc import Iterable
 
 from pbvoting.fractions import frac
 from pbvoting.election.instance import Instance, total_cost, Project
-from pbvoting.election.profile import Profile
+from pbvoting.election.profile import Profile, MultiProfile
 from pbvoting.election.satisfaction import AdditiveSatisfaction, SatisfactionProfile, Satisfaction, \
     SatisfactionMultiProfile
 from pbvoting.tiebreaking import lexico_tie_breaking, TieBreakingRule
@@ -83,7 +83,7 @@ def greedy_scheme(instance: Instance,
 
 
 def greedy_scheme_additive(instance: Instance,
-                           profile: Profile,
+                           profile: Profile | MultiProfile,
                            sat_profile: SatisfactionProfile,
                            budget_allocation: Iterable[Project],
                            tie_breaking: TieBreakingRule,
@@ -138,7 +138,7 @@ def greedy_scheme_additive(instance: Instance,
 
 
 def greedy_welfare(instance: Instance,
-                   profile: Profile,
+                   profile: Profile | MultiProfile,
                    sat_class: type[Satisfaction] = None,
                    sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
                    is_sat_additive: bool = False,

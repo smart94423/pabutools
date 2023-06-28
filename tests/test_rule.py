@@ -1,6 +1,7 @@
 from unittest import TestCase
 from pbvoting.fractions import frac
-from pbvoting.election.profile import ApprovalBallot, ApprovalProfile
+from pbvoting.election.profile import ApprovalProfile
+from pbvoting.election.ballot import ApprovalBallot
 from pbvoting.election.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
     SatisfactionProfile, SatisfactionMultiProfile
 from pbvoting.election.instance import Project, Instance
@@ -281,9 +282,8 @@ class TestRule(TestCase):
                                                                                  budget_step=5)
         assert budget_allocation_mes_iterated_big_steps == [projects[0]]
 
-        self.assertRaises(ValueError, lambda: exhaustion_by_budget_increase(instance,
-                                                                            profile,
-                                                                            method_of_equal_shares))
+        with self.assertRaises(ValueError):
+            exhaustion_by_budget_increase(instance, profile, method_of_equal_shares)
 
     def test_completion(self):
         projects = [
@@ -328,16 +328,12 @@ class TestRule(TestCase):
                                                                         initial_budget_allocation=[projects[5]])
         assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[3], projects[5]]
 
-        self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
-                                                                             profile,
-                                                                             [method_of_equal_shares,
-                                                                              greedy_welfare],
-                                                                             [{"sat_class": Cost_Sat}]))
+        with self.assertRaises(ValueError):
+            completion_by_rule_combination(instance, profile, [method_of_equal_shares, greedy_welfare],
+                                           [{"sat_class": Cost_Sat}])
 
-        self.assertRaises(ValueError, lambda: completion_by_rule_combination(instance,
-                                                                             profile,
-                                                                             [method_of_equal_shares,
-                                                                              greedy_welfare]))
+        with self.assertRaises(ValueError):
+            completion_by_rule_combination(instance, profile, [method_of_equal_shares, greedy_welfare])
 
         completion_by_rule_combination(instance, profile, [exhaustion_by_budget_increase, greedy_welfare],
                                        [{'rule': method_of_equal_shares,

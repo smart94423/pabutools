@@ -2,11 +2,13 @@ from unittest import TestCase
 
 from pbvoting.analysis.instanceproperties import *
 from pbvoting.analysis.profileproperties import *
-from pbvoting.fractions import frac
-from pbvoting.election.profile import ApprovalBallot, OrdinalBallot, OrdinalProfile
-from pbvoting.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
 from pbvoting.analysis.votersatisfaction import *
 from pbvoting.analysis.category import *
+
+from pbvoting.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
+from pbvoting.election.ballot import ApprovalBallot, OrdinalBallot, CardinalBallot
+from pbvoting.election.profile import OrdinalProfile
+from pbvoting.fractions import frac
 
 
 class TestAnalysis(TestCase):
@@ -78,7 +80,8 @@ class TestAnalysis(TestCase):
         app_profile = ApprovalProfile([app_ball_1, app_ball_2])
         budget_allocation = [projects[0], projects[1]]
 
-        self.assertRaises(ValueError, lambda: category_proportionality(instance, app_profile, budget_allocation))
+        with self.assertRaises(ValueError):
+            category_proportionality(instance, app_profile, budget_allocation)
 
     def test_instance_properties(self):
         projects = [
@@ -95,7 +98,8 @@ class TestAnalysis(TestCase):
         assert std_dev_project_cost(instance) == np.sqrt(14. / 3)
 
         instance = Instance(projects)
-        self.assertRaises(ValueError, lambda: funding_scarcity(instance) == frac(3, 2))
+        with self.assertRaises(ValueError):
+            funding_scarcity(instance)
         
     def test_profile_properties(self):
         projects = [

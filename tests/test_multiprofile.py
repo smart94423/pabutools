@@ -1,7 +1,11 @@
 from unittest import TestCase
 
-from pbvoting.election import SatisfactionMultiProfile, Cost_Sat
-from pbvoting.election.profile import *
+from pbvoting.election.satisfaction import SatisfactionMultiProfile, Cost_Sat
+from pbvoting.election.profile import MultiProfile, ApprovalMultiProfile, CardinalMultiProfile, \
+    CumulativeMultiProfile, OrdinalMultiProfile, ApprovalProfile
+from pbvoting.election.ballot import FrozenApprovalBallot, FrozenCardinalBallot, \
+    FrozenCumulativeBallot, FrozenOrdinalBallot, ApprovalBallot
+from pbvoting.election.instance import Project
 
 
 class TestMultiProfile(TestCase):
