@@ -1,6 +1,8 @@
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from fractions import Fraction
+
+from pbvoting.election import MultiProfile, SatisfactionMultiProfile
 from pbvoting.election.instance import Instance, Project
 from pbvoting.election.profile import Profile
 from pbvoting.election.satisfaction import SatisfactionMeasure, SatisfactionProfile
@@ -97,7 +99,7 @@ def mes_scheme(instance: Instance,
     for proj, score in scores.items():
         if score <= 0 or proj.cost == 0:
             initial_projects.remove(proj)
-    supps = {proj: [i for i in range(len(profile)) if sat_profile[i].sat([proj]) > 0] for proj in initial_projects}
+    supps = {proj: [i for i, sat in enumerate(sat_profile) if sat.sat([proj]) > 0] for proj in initial_projects}
     initial_affordability = {proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float('inf')
                              for proj in initial_projects}
     initial_budget_allocation = copy(budget_allocation)
@@ -113,9 +115,9 @@ def mes_scheme(instance: Instance,
 
 
 def method_of_equal_shares(instance: Instance,
-                           profile: Profile,
+                           profile: Profile | MultiProfile,
                            sat_class: type[SatisfactionMeasure] = None,
-                           sat_profile: SatisfactionProfile = None,
+                           sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
                            tie_breaking: TieBreakingRule = lexico_tie_breaking,
                            resoluteness: bool = True,
                            initial_budget_allocation: Iterable[Project] = None
@@ -159,7 +161,7 @@ def method_of_equal_shares(instance: Instance,
             raise ValueError("sat_class and sat_profile cannot both be None")
     else:
         if sat_profile is None:
-            sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=sat_class)
+            sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
     return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation,
                       tie_breaking, resoluteness=resoluteness)

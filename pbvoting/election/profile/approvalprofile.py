@@ -167,3 +167,19 @@ class ApprovalMultiProfile(MultiProfile):
         self.legal_min_cost = legal_min_cost
         self.legal_max_cost = legal_max_cost
 
+    def approval_score(self, project: Project) -> int:
+        """
+            Returns the approval score of a project, that is, the number of voters who approved of it.
+            Parameters
+            ----------
+                project : pbvoting.instance.instance.Project
+                    The project.
+            Returns
+            -------
+                int
+        """
+        approval_score = 0
+        for ballot, multiplicity in self.items():
+            if project in ballot:
+                approval_score += multiplicity
+        return approval_score

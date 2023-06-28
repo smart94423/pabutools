@@ -17,9 +17,8 @@ class Project:
             name : str, optional
                 The name of the project.
                 Defaults to `""`
-            cost : fraction, optional
+            cost : Number, optional (defaults to `0`)
                 The cost of the project.
-                Defaults to `0.0`
             categories: set, optional
                 set of categories that the project fits into
             targets: set, optional
@@ -79,7 +78,8 @@ def total_cost(projects: Iterable[Project]) -> Number:
                 An iterable of projects.
         Returns
         -------
-            fraction.Fraction
+            Number
+                The total cost
     """
     return sum(p.cost for p in projects)
 

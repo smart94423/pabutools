@@ -1,5 +1,3 @@
-import time
-
 from copy import copy
 from collections.abc import Iterable
 
@@ -13,7 +11,7 @@ from pbvoting.tiebreaking import lexico_tie_breaking, TieBreakingRule
 
 def greedy_scheme(instance: Instance,
                   profile: Profile,
-                  sat_profile: SatisfactionProfile,
+                  sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
                   budget_allocation: Iterable[Project],
                   tie_breaking: TieBreakingRule,
                   resoluteness: bool = True
@@ -83,7 +81,7 @@ def greedy_scheme(instance: Instance,
 
 def greedy_scheme_additive(instance: Instance,
                            profile: Profile | MultiProfile,
-                           sat_profile: SatisfactionProfile,
+                           sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
                            budget_allocation: Iterable[Project],
                            tie_breaking: TieBreakingRule,
                            resoluteness: bool = True
