@@ -282,13 +282,13 @@ provided as input of a rule.
 
 .. code-block:: python
 
-    from pbvoting.election import  SatisfactionProfile, Satisfaction
+    from pbvoting.election import SatisfactionProfile, SatisfactionMeasure
     from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
     sat_profile = SatisfactionProfile(instance=instance)
     # We define a satisfaction function:
-    class MySatisfaction(Satisfaction):
+    class MySatisfaction(SatisfactionMeasure):
         def sat(self, projects):
             return 100 if "p1" in projects else len(projects)
     # We populate the satisfaction profile
@@ -303,7 +303,7 @@ directly provided.
 
 .. code-block:: python
 
-    from pbvoting.election import  SatisfactionProfile, Cardinality_Sat
+    from pbvoting.election import SatisfactionProfile, Cardinality_Sat
     from pbvoting.election import parse_pabulib
 
     instance, profile = parse_pabulib("path_to_the_file")
