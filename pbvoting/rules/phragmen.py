@@ -7,6 +7,17 @@ from pbvoting.election import Instance, Project, total_cost, ApprovalProfile, Ap
 from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 
+class PhragmenVoter:
+
+    def __init__(self, ballot, load, multiplicity):
+        self.ballot = ballot
+        self.load = load
+        self.multiplicity = multiplicity
+
+    def total_load(self):
+        return self.multiplicity * self.load
+
+
 def sequential_phragmen(instance: Instance,
                         profile: ApprovalProfile | ApprovalMultiProfile,
                         initial_loads: list[Number] = None,
@@ -36,61 +47,70 @@ def sequential_phragmen(instance: Instance,
             list of pbvoting.instance.pbinstance.Project if resolute, list of the previous if irresolute
     """
 
-    def aux(inst, prof, projs, load, scores, alloc, cost, allocs, resolute):
-        if len(projs) == 0:
+    def aux(inst, projects, prof, voters, supporters, approval_scores, alloc, cost, allocs, resolute):
+        if len(projects) == 0:
             alloc.sort()
             if alloc not in allocs:
                 allocs.append(alloc)
         else:
-            approvers_load = {project: sum(load[i] * prof.multiplicity(ballot) for i, ballot in enumerate(prof)
-                                           if project in ballot) for project in projs}
-            new_maxload = dict()
-            for project in projs:
-                if scores[project] == 0:
-                    new_maxload[project] = float('inf')
+            min_new_maxload = None
+            arg_min_new_maxload = None
+            for project in projects:
+                if approval_scores[project] == 0:
+                    new_maxload = float('inf')
                 else:
-                    new_maxload[project] = frac(approvers_load[project] + project.cost, scores[project])
-            min_new_maxload = min(new_maxload.values())
+                    new_maxload = frac(sum(voters[i].total_load() for i in supporters[project]) + project.cost,
+                                       approval_scores[project])
+                if min_new_maxload is None or new_maxload < min_new_maxload:
+                    min_new_maxload = new_maxload
+                    arg_min_new_maxload = [project]
+                elif min_new_maxload == new_maxload:
+                    arg_min_new_maxload.append(project)
 
-            tied_projects = [project for project in projs if new_maxload[project] == min_new_maxload]
-            new_cost = [cost + project.cost for project in tied_projects]
-            if any(c > inst.budget_limit for c in new_cost):
+            if any(cost + project.cost > inst.budget_limit for project in arg_min_new_maxload):
                 alloc.sort()
                 if alloc not in allocs:
                     allocs.append(alloc)
             else:
-                tied_projects = tie_breaking.order(inst, prof, tied_projects)
+                tied_projects = tie_breaking.order(inst, prof, arg_min_new_maxload)
                 if resolute:
                     selected_project = tied_projects[0]
-                    for i, ballot in enumerate(prof):
-                        if selected_project in ballot:
-                            load[i] = new_maxload[selected_project]
+                    for voter in voters:
+                        if selected_project in voter.ballot:
+                            voter.load = min_new_maxload
                     alloc.append(selected_project)
-                    projs.remove(selected_project)
-                    aux(inst, prof, projs, load, scores, alloc, cost + selected_project.cost, allocs, resolute)
+                    projects.remove(selected_project)
+                    aux(inst, projects, prof, voters, supporters, approval_scores, alloc, cost + selected_project.cost,
+                        allocs, resolute)
                 else:
                     for selected_project in tied_projects:
-                        new_load = deepcopy(load)
-                        for i, ballot in enumerate(prof):
-                            if selected_project in ballot:
-                                new_load[i] = new_maxload[selected_project]
+                        new_voters = deepcopy(voters)
+                        for voter in new_voters:
+                            if selected_project in voter.ballot:
+                                voter.load = min_new_maxload
                         new_alloc = deepcopy(alloc) + [selected_project]
                         new_cost = cost + selected_project.cost
-                        new_projs = deepcopy(projs)
+                        new_projs = deepcopy(projects)
                         new_projs.remove(selected_project)
-                        aux(inst, prof, new_projs, new_load, scores, new_alloc, new_cost, allocs, resolute)
+                        aux(inst, new_projs, prof, new_voters, supporters, approval_scores, new_alloc, new_cost, allocs,
+                            resolute)
 
-    if initial_loads is None:
-        initial_loads = [0 for _ in range(len(profile))]
     if initial_budget_allocation is None:
         initial_budget_allocation = []
     current_cost = total_cost(initial_budget_allocation)
 
-    projects = set(p for p in instance if p not in initial_budget_allocation and p.cost <= instance.budget_limit)
-    approval_scores = {project: profile.approval_score(project) for project in instance}
+    initial_projects = set(p for p in instance if p not in initial_budget_allocation and p.cost <= instance.budget_limit)
+
+    if initial_loads is None:
+        voters_details = [PhragmenVoter(b, 0, profile.multiplicity(b)) for b in profile]
+    else:
+        voters_details = [PhragmenVoter(b, initial_loads[i], profile.multiplicity(b)) for i, b in enumerate(profile)]
+    supps = {proj: [i for i, v in enumerate(voters_details) if proj in v.ballot] for proj in initial_projects}
+
+    scores = {project: profile.approval_score(project) for project in instance}
 
     all_budget_allocations = []
-    aux(instance, profile, projects, initial_loads, approval_scores, initial_budget_allocation, current_cost,
+    aux(instance, initial_projects, profile, voters_details, supps, scores, initial_budget_allocation, current_cost,
         all_budget_allocations, resoluteness)
 
     if resoluteness:

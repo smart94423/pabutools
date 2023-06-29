@@ -17,13 +17,13 @@ class MESVoter:
         self.ballot = ballot
         self.sat = sat
         self.budget = budget
-        self.multiplicty = multiplicity
+        self.multiplicity = multiplicity
 
     def total_sat(self, projs):
-        return self.multiplicty * self.sat.sat(projs)
+        return self.multiplicity * self.sat.sat(projs)
 
     def total_budget(self):
-        return self.multiplicty * self.budget
+        return self.multiplicity * self.budget
 
     def budget_over_sat(self, projs):
         return frac(self.budget, self.sat.sat(projs))
@@ -33,7 +33,7 @@ def mes_scheme(instance: Instance,
                profile: Profile,
                sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
                initial_budget: Fraction,
-               budget_allocation: Iterable[Project],
+               initial_budget_allocation: Iterable[Project],
                tie_breaking: TieBreakingRule,
                resoluteness=True
                ) -> list[Project] | list[list[Project]]:
@@ -50,7 +50,7 @@ def mes_scheme(instance: Instance,
                 The profile of satisfaction functions.
             initial_budget : float
                 The budget distributed to the agents initially.
-            budget_allocation : collection of pbvoting.instance.pbinstance.Project
+            initial_budget_allocation : collection of pbvoting.instance.pbinstance.Project
                 An initial budget allocation, typically empty.
             tie_breaking : pbvoting.rules.tiebreaking.TieBreakingRule
                 The tie-breaking rule used.
@@ -118,7 +118,7 @@ def mes_scheme(instance: Instance,
 
     # Adapted from equalshares.net
     initial_projects = set(instance)
-    for proj in budget_allocation:
+    for proj in initial_budget_allocation:
         initial_projects.remove(proj)
     scores = {proj: sat_profile.total_satisfaction([proj]) for proj in initial_projects}
     for proj, score in scores.items():
@@ -130,7 +130,7 @@ def mes_scheme(instance: Instance,
     supps = {proj: [i for i, v in enumerate(voters_details) if v.sat.sat([proj]) > 0] for proj in initial_projects}
     initial_affordability = {proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float('inf')
                              for proj in initial_projects}
-    initial_budget_allocation = copy(budget_allocation)
+    initial_budget_allocation = copy(initial_budget_allocation)
 
     all_budget_allocations = []
 

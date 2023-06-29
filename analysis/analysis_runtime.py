@@ -13,8 +13,8 @@ from pbvoting.rules import greedy_welfare, sequential_phragmen, method_of_equal_
 from pbvoting.rules.maxwelfare import max_welfare
 
 
-def runtime_analysis_pool(file_rule_set):
-    file, rule = file_rule_set
+def runtime_analysis_pool(file_rule):
+    file, rule = file_rule
     print("File {} for rule {}".format(file, rule.__name__))
     instance, prof = parse_pabulib(file)
 
@@ -30,10 +30,10 @@ def runtime_analysis_pool(file_rule_set):
         data["runtime"] = total_time
         data["num_projects"] = len(instance)
         data["num_projects_cat"] = round(len(instance) / 10) * 10
-        data["num_voters"] = len(profile)
-        data["num_voters_cat"] = round(len(profile) / 1000) * 1000
-        data["avg_vote_length"] = sum(len(b) for b in profile) / len(profile)
-        data["avg_vote_length_cat"] = round(sum(len(b) for b in profile) / len(profile))
+        data["num_voters"] = len(prof)
+        data["num_voters_cat"] = round(len(prof) / 1000) * 1000
+        data["avg_vote_length"] = sum(len(b) for b in prof) / len(prof)
+        data["avg_vote_length_cat"] = round(sum(len(b) for b in prof) / len(prof))
         res.append(data)
     return res
 
@@ -53,9 +53,6 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
     pool = Pool()
     csv_keys = None
     for res in pool.imap_unordered(runtime_analysis_pool, file_rule_set):
-    # for instance_profile_rule in file_rule_set:
-    #     res = runtime_analysis_pool(instance_profile_rule)
-
         for line in res:
             with open(os.path.join("csv", csv_file), "a") as f:
                 if csv_keys is None:
@@ -65,7 +62,6 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
 
 
 def runtime_analysis_plot(csv_file="runtime.csv"):
-    print("============== Rule Runtime Analysis ==============")
     plt.close('all')
 
     data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding='utf-8')
@@ -76,10 +72,14 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
         plt.close('all')
         g = sns.pointplot(
             data=data[data["rule"] == rule],
-            x="num_projects_cat",
+            x="avg_vote_length_cat",
             y="runtime",
             hue="profile_type"
         )
+        g.set(yscale='log')
+        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        g.set(yticks=runtime_range)
+        g.set(yticklabels=runtime_range)
         g.set_title(rule)
 
         plt.show()
@@ -93,6 +93,10 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
             y="runtime",
             hue="rule"
         )
+        g.set(yscale='log')
+        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        g.set(yticks=runtime_range)
+        g.set(yticklabels=runtime_range)
         g.set_title(profile_type)
 
         plt.show()
@@ -119,8 +123,7 @@ def mes_cost_res(instance, profile):
 
 
 if __name__ == "__main__":
-
-    runtime_analysis_write_data(os.path.join("Pabulib", "all_app_75"),
-                                [greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res])
+    # runtime_analysis_write_data(os.path.join("Pabulib", "all_app"),
+    #                             [greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res])
 
     runtime_analysis_plot()

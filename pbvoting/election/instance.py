@@ -122,7 +122,7 @@ class Instance(set[Project]):
 
     def __init__(self,
                  s: Iterable[Project] = (),
-                 budget_limit: float | None = None,
+                 budget_limit: Number | None = None,
                  categories: set[str] | None = None,
                  targets: set[str] | None = None,
                  file_path: str | None = None,
