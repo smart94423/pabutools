@@ -26,7 +26,7 @@ class MESVoter:
         return self.multiplicty * self.budget
 
     def budget_over_sat(self, projs):
-        return frac(self.sat.sat(projs), self.budget)
+        return frac(self.budget, self.sat.sat(projs))
 
 
 def mes_scheme(instance: Instance,
@@ -98,15 +98,21 @@ def mes_scheme(instance: Instance,
             if resolute:
                 tied_projects = tied_projects[:1]
             for selected_project in tied_projects:
-                new_alloc = copy(alloc)
+                if resolute:
+                    new_alloc = alloc
+                    new_projects = projects
+                    new_voters = voters
+                    new_afford = prev_affordability
+                else:
+                    new_alloc = copy(alloc)
+                    new_projects = copy(projects)
+                    new_voters = deepcopy(voters)
+                    new_afford = deepcopy(prev_affordability)
                 new_alloc.append(selected_project)
-                new_projects = copy(projects)
                 new_projects.remove(selected_project)
-                new_voters = deepcopy(voters)
                 for supporter_index in supporters[selected_project]:
                     supporter = new_voters[supporter_index]
                     supporter.budget -= min(supporter.budget, best_afford * supporter.sat.sat([selected_project]))
-                new_afford = deepcopy(prev_affordability)
                 aux(inst, prof, new_voters, tie, new_projects, new_alloc, total_scores, supporters, new_afford,
                     all_allocs, resolute)
 

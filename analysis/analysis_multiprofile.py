@@ -60,7 +60,7 @@ def multiproifle_gain(folder_path, csv_file="multiprofile_gain.csv", recompute=F
 
 
 def multiprofile_runtime(folder_path, rules, rule_params, csv_file="multiprofile_runtime.csv", recompute=False):
-    print("============== Multiprofile Gain Analysis ==============")
+    print("============== Multiprofile Runtime Analysis ==============")
 
     if not recompute and os.path.isfile(os.path.join("csv", csv_file)):
         data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding='utf-8')
@@ -81,8 +81,7 @@ def multiprofile_runtime(folder_path, rules, rule_params, csv_file="multiprofile
                     rule(instance, profile, sat_profile=sat_profile, resoluteness=True, **rule_params[index])
                     profile_time = time.time() - profile_time
                     multiprofile_time = time.time()
-                    outcome2 = rule(instance, profile, sat_profile=sat_multiprofile, resoluteness=True,
-                                    **rule_params[index])
+                    rule(instance, profile, sat_profile=sat_multiprofile, resoluteness=True, **rule_params[index])
                     multiprofile_time = time.time() - multiprofile_time
 
                     data["file"].append(file)
@@ -130,7 +129,7 @@ if __name__ == "__main__":
     recompute = False
     # recompute = True
 
-    # multiproifle_gain("all_app_pabulib", recompute=recompute)
+    multiproifle_gain("all_app_pabulib", recompute=recompute)
 
     multiprofile_runtime("all_app_pabulib",
                          [greedy_welfare, max_welfare],

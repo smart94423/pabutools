@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from copy import deepcopy
-from fractions import Fraction
+from numbers import Number
 
 from pbvoting.fractions import frac
 from pbvoting.election import Instance, Project, total_cost, ApprovalProfile, ApprovalMultiProfile
@@ -9,7 +9,7 @@ from pbvoting.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 def sequential_phragmen(instance: Instance,
                         profile: ApprovalProfile | ApprovalMultiProfile,
-                        initial_loads: list[Fraction] = None,
+                        initial_loads: list[Number] = None,
                         initial_budget_allocation: Iterable[Project] = None,
                         tie_breaking: TieBreakingRule = lexico_tie_breaking,
                         resoluteness: bool = True

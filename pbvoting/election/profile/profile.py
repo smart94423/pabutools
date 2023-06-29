@@ -58,7 +58,8 @@ class Profile(list, AbstractProfile):
         self.ballot_type = ballot_type
         for item in iterable:
             self.validate_ballot(item)
-        super(Profile, self).__init__(iterable)
+        list.__init__(self, iterable)
+        AbstractProfile.__init__(self)
         if instance is None:
             instance = Instance()
         self.instance = instance
@@ -117,7 +118,8 @@ class MultiProfile(Counter, AbstractProfile):
                  ) -> None:
         self.ballot_validation = ballot_validation
         self.ballot_type = ballot_type
-        super(MultiProfile, self).__init__(iterable)
+        Counter.__init__(self, iterable)
+        AbstractProfile.__init__(self)
         if instance is None:
             instance = Instance()
         self.instance = instance
