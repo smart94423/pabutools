@@ -11,9 +11,27 @@ from pbvoting.fractions import frac
 from pbvoting.tiebreaking import TieBreakingRule
 
 
+class MESVoter:
+
+    def __init__(self, ballot, sat, budget, multiplicity):
+        self.ballot = ballot
+        self.sat = sat
+        self.budget = budget
+        self.multiplicty = multiplicity
+
+    def total_sat(self, projs):
+        return self.multiplicty * self.sat.sat(projs)
+
+    def total_budget(self):
+        return self.multiplicty * self.budget
+
+    def budget_over_sat(self, projs):
+        return frac(self.sat.sat(projs), self.budget)
+
+
 def mes_scheme(instance: Instance,
                profile: Profile,
-               sat_profile: SatisfactionProfile,
+               sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
                initial_budget: Fraction,
                budget_allocation: Iterable[Project],
                tie_breaking: TieBreakingRule,
@@ -44,22 +62,23 @@ def mes_scheme(instance: Instance,
             list of pbvoting.instance.pbinstance.Project if resolute, list of the previous if irresolute
     """
 
-    def aux(inst, prof, sats, tie, projects, budgets, alloc, total_scores, supporters, prev_affordability,
-            all_allocs, resolute):
+    def aux(inst, prof, voters, tie, projects, alloc, total_scores, supporters, prev_affordability, all_allocs,
+            resolute):
         tied_projects = []
         best_afford = float('inf')
         for project in sorted(projects, key=lambda p: prev_affordability[p]):
             if prev_affordability[project] > best_afford:  # best possible afford for this round isn't good enough
                 break
-            if sum(budgets[i] for i in supporters[project]) < project.cost:  # unaffordable, can delete
+            if sum(voters[i].total_budget() for i in supporters[project]) < project.cost:  # unaffordable, can delete
                 projects.remove(project)
                 continue
-            supporters[project].sort(key=lambda i: budgets[i] / sats[i].sat([project]))
+            supporters[project].sort(key=lambda i: voters[i].budget_over_sat([project]))
             paid_so_far = 0
             denominator = total_scores[project]
-            for j in range(len(supporters[project])):
+            for supporter_index in supporters[project]:
+                supporter = voters[supporter_index]
                 rho = frac(project.cost - paid_so_far, denominator)
-                if rho * sats[supporters[project][j]].sat([project]) <= budgets[supporters[project][j]]:
+                if rho * supporter.sat.sat([project]) <= supporter.budget:
                     # found the best rho for this candidate
                     prev_affordability[project] = rho
                     if rho < best_afford:
@@ -68,8 +87,8 @@ def mes_scheme(instance: Instance,
                     elif rho == best_afford:
                         tied_projects.append(project)
                     break
-                paid_so_far += budgets[supporters[project][j]]
-                denominator -= sats[supporters[project][j]].sat([project])
+                paid_so_far += supporter.total_budget()
+                denominator -= supporter.total_sat([project])
         if not tied_projects:
             alloc.sort()
             if alloc not in all_allocs:
@@ -83,30 +102,34 @@ def mes_scheme(instance: Instance,
                 new_alloc.append(selected_project)
                 new_projects = copy(projects)
                 new_projects.remove(selected_project)
-                new_budgets = deepcopy(budgets)
-                for i in supporters[selected_project]:
-                    new_budgets[i] -= min(budgets[i], best_afford * sats[i].sat([selected_project]))
+                new_voters = deepcopy(voters)
+                for supporter_index in supporters[selected_project]:
+                    supporter = new_voters[supporter_index]
+                    supporter.budget -= min(supporter.budget, best_afford * supporter.sat.sat([selected_project]))
                 new_afford = deepcopy(prev_affordability)
-                aux(inst, prof, sats, tie, new_projects, new_budgets, new_alloc, total_scores, supporters, new_afford,
+                aux(inst, prof, new_voters, tie, new_projects, new_alloc, total_scores, supporters, new_afford,
                     all_allocs, resolute)
 
     # Adapted from equalshares.net
     initial_projects = set(instance)
     for proj in budget_allocation:
         initial_projects.remove(proj)
-    initial_budgets = {i: initial_budget for i in range(len(profile))}
     scores = {proj: sat_profile.total_satisfaction([proj]) for proj in initial_projects}
     for proj, score in scores.items():
         if score <= 0 or proj.cost == 0:
             initial_projects.remove(proj)
-    supps = {proj: [i for i, sat in enumerate(sat_profile) if sat.sat([proj]) > 0] for proj in initial_projects}
+
+    voters_details = [MESVoter(sat.ballot, sat, initial_budget, sat_profile.multiplicity(sat)) for sat in sat_profile]
+
+    supps = {proj: [i for i, v in enumerate(voters_details) if v.sat.sat([proj]) > 0] for proj in initial_projects}
     initial_affordability = {proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float('inf')
                              for proj in initial_projects}
     initial_budget_allocation = copy(budget_allocation)
+
     all_budget_allocations = []
 
-    aux(instance, profile, sat_profile, tie_breaking, initial_projects, initial_budgets, initial_budget_allocation,
-        scores, supps, initial_affordability, all_budget_allocations, resoluteness)
+    aux(instance, profile, voters_details, tie_breaking, initial_projects, initial_budget_allocation, scores, supps,
+        initial_affordability, all_budget_allocations, resoluteness)
 
     if resoluteness:
         return all_budget_allocations[0]
@@ -163,5 +186,5 @@ def method_of_equal_shares(instance: Instance,
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
-    return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, len(profile)), budget_allocation,
-                      tie_breaking, resoluteness=resoluteness)
+    return mes_scheme(instance, profile, sat_profile, frac(instance.budget_limit, profile.total_len()),
+                      budget_allocation, tie_breaking, resoluteness=resoluteness)

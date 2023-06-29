@@ -31,6 +31,10 @@ class AbstractProfile(ABC):
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]) -> SatisfactionProfile | SatisfactionMultiProfile:
         ...
 
+    @abstractmethod
+    def total_len(self) -> int:
+        ...
+
 
 class Profile(list, AbstractProfile):
     """
@@ -72,6 +76,9 @@ class Profile(list, AbstractProfile):
 
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]):
         return SatisfactionProfile(instance=self.instance, profile=self, sat_class=sat_class)
+
+    def total_len(self) -> int:
+        return len(self)
 
     def __add__(self, value):
         return Profile(list.__add__(self, value), instance=self.instance, ballot_validation=self.ballot_validation)
@@ -125,6 +132,9 @@ class MultiProfile(Counter, AbstractProfile):
 
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]):
         return SatisfactionMultiProfile(instance=self.instance, multiprofile=self, sat_class=sat_class)
+
+    def total_len(self) -> int:
+        return self.total()
 
     def __setitem__(self, key, value):
         self.validate_ballot(key)

@@ -186,7 +186,7 @@ def greedy_welfare(instance: Instance,
     else:
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class)
-            is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
+        is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
 
     if is_sat_additive:
         return greedy_scheme_additive(instance, profile, sat_profile, budget_allocation, tie_breaking,

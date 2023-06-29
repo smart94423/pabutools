@@ -47,6 +47,9 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
             res += sat.sat(projects)
         return res
 
+    def multiplicity(self, sat: SatisfactionMeasure) -> int:
+        return 1
+
     def __add__(self, value):
         return SatisfactionProfile(list.__add__(self, value), instance=self.instance)
 
@@ -110,3 +113,5 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             res += multiplicity * sat.sat(projects)
         return res
 
+    def multiplicity(self, sat: SatisfactionMeasure) -> int:
+        return self[sat]
