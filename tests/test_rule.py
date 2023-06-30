@@ -1,4 +1,6 @@
 from unittest import TestCase
+
+import pbvoting.rules.phragmen
 from pbvoting.fractions import frac
 from pbvoting.election.profile import ApprovalProfile
 from pbvoting.election.ballot import ApprovalBallot
@@ -75,7 +77,7 @@ def test_elections():
         ApprovalBallot({p[1], p[2], p[3]}),
         ApprovalBallot({p[2]})
     ], instance=inst)
-    test_election = TestElection("AppEx_2", p, inst, prof)
+    test_election = TestElection("AppEx_3", p, inst, prof)
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
     res.append(test_election)
@@ -164,40 +166,45 @@ def run_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         for sat_class in test_election.irr_results_sat[rule]:
             if test_election.irr_results_sat[rule][sat_class] is not None:
-                # print("\n===================== {} - {} =====================".format(rule.__name__,
-                #                                                                      sat_class.__name__))
-                # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
-                #                                                  test_election.profile))
-                resolute_out = rule(test_election.instance, test_election.profile, sat_class=sat_class,
-                                    resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
-                irresolute_out = sorted(rule(test_election.instance, test_election.profile, sat_class=sat_class,
-                                             resoluteness=False, initial_budget_allocation=test_election.initial_alloc))
-                # print("Res outcome:  {}".format(resolute_out))
-                # print("Irres outcome:  {}".format(irresolute_out))
-                # print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
-                assert resolute_out in test_election.irr_results_sat[rule][sat_class]
-                assert resolute_out == rule(test_election.instance, test_election.profile, resoluteness=True,
-                                            sat_profile=SatisfactionProfile(profile=test_election.profile,
-                                                                            sat_class=sat_class),
+                for profile in [test_election.profile, test_election.profile.as_multiprofile()]:
+                    for sat_profile in [None, profile.as_sat_profile(sat_class)]:
+                        # print("\n===================== {} - {} =====================".format(rule.__name__,
+                        #                                                                      sat_class.__name__))
+                        # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+                        #                                                  profile))
+                        resolute_out = rule(test_election.instance, profile, sat_class=sat_class,
+                                            sat_profile=sat_profile, resoluteness=True,
                                             initial_budget_allocation=test_election.initial_alloc)
-                assert irresolute_out == test_election.irr_results_sat[rule][sat_class]
+                        irresolute_out = sorted(rule(test_election.instance, profile, sat_class=sat_class,
+                                                     sat_profile=sat_profile, resoluteness=False,
+                                                     initial_budget_allocation=test_election.initial_alloc))
+                        # print("Res outcome:  {}".format(resolute_out))
+                        # print("Irres outcome:  {}".format(irresolute_out))
+                        # print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
+                        assert resolute_out in test_election.irr_results_sat[rule][sat_class]
+                        assert resolute_out == rule(test_election.instance, test_election.profile, resoluteness=True,
+                                                    sat_profile=SatisfactionProfile(profile=test_election.profile,
+                                                                                    sat_class=sat_class),
+                                                    initial_budget_allocation=test_election.initial_alloc)
+                        assert irresolute_out == test_election.irr_results_sat[rule][sat_class]
 
 
 def run_non_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         if test_election.irr_results_non_sat[rule] is not None:
-            # print("\n===================== {} =====================".format(rule.__name__))
-            # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
-            #                                                  test_election.profile))
-            resolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=True,
-                                       initial_budget_allocation=test_election.initial_alloc))
-            irresolute_out = sorted(rule(test_election.instance, test_election.profile, resoluteness=False,
-                                         initial_budget_allocation=test_election.initial_alloc))
-            # print("Res outcome:  {}".format(resolute_out))
-            # print("Irres outcome:  {}".format(irresolute_out))
-            # print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
-            assert resolute_out in test_election.irr_results_non_sat[rule]
-            assert irresolute_out == test_election.irr_results_non_sat[rule]
+            for profile in [test_election.profile, test_election.profile.as_multiprofile()]:
+                # print("\n===================== {} =====================".format(rule.__name__))
+                # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
+                #                                                  test_election.profile))
+                resolute_out = sorted(rule(test_election.instance, profile, resoluteness=True,
+                                           initial_budget_allocation=test_election.initial_alloc))
+                irresolute_out = sorted(rule(test_election.instance, profile, resoluteness=False,
+                                             initial_budget_allocation=test_election.initial_alloc))
+                # print("Res outcome:  {}".format(resolute_out))
+                # print("Irres outcome:  {}".format(irresolute_out))
+                # print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
+                assert resolute_out in test_election.irr_results_non_sat[rule]
+                assert irresolute_out == test_election.irr_results_non_sat[rule]
 
 
 class TestRule(TestCase):
@@ -207,15 +214,28 @@ class TestRule(TestCase):
         with self.assertRaises(ValueError):
             greedy_welfare(Instance(), ApprovalProfile())
 
+    def test_greedy_multiprofile(self):
+        for test_election in ALL_TEST_ELECTIONS:
+            outcome1 = greedy_welfare(test_election.instance, test_election.profile, resoluteness=True,
+                                      initial_budget_allocation=test_election.initial_alloc,
+                                      sat_class=Cost_Sat)
+            multiprofile = test_election.profile.as_multiprofile()
+            outcome2 = greedy_welfare(test_election.instance, multiprofile, sat_class=Cost_Sat,
+                                      resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+            assert outcome1 == outcome2
+
     def test_greedy_multisat(self):
         for test_election in ALL_TEST_ELECTIONS:
-            sat_profile = SatisfactionProfile(profile=test_election.profile, sat_class=Cost_Sat)
-            outcome1 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
-                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
-            sat_multiprofile = SatisfactionMultiProfile(profile=test_election.profile, sat_class=Cost_Sat)
-            outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
-                                     resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
-            assert outcome1 == outcome2
+            for add_sat in [True, False]:
+                sat_profile = SatisfactionProfile(profile=test_election.profile, sat_class=Cost_Sat)
+                outcome1 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
+                                          resoluteness=True, initial_budget_allocation=test_election.initial_alloc,
+                                          is_sat_additive=add_sat)
+                sat_multiprofile = SatisfactionMultiProfile(profile=test_election.profile, sat_class=Cost_Sat)
+                outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_multiprofile,
+                                          resoluteness=True, initial_budget_allocation=test_election.initial_alloc,
+                                          is_sat_additive=add_sat)
+                assert outcome1 == outcome2
 
     def test_max_welfare(self):
         run_sat_rule(max_welfare)

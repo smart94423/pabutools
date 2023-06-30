@@ -17,9 +17,8 @@ class Project:
             name : str, optional
                 The name of the project.
                 Defaults to `""`
-            cost : fraction, optional
+            cost : Number, optional (defaults to `0`)
                 The cost of the project.
-                Defaults to `0.0`
             categories: set, optional
                 set of categories that the project fits into
             targets: set, optional
@@ -79,7 +78,8 @@ def total_cost(projects: Iterable[Project]) -> Number:
                 An iterable of projects.
         Returns
         -------
-            fraction.Fraction
+            Number
+                The total cost
     """
     return sum(p.cost for p in projects)
 
@@ -122,7 +122,7 @@ class Instance(set[Project]):
 
     def __init__(self,
                  s: Iterable[Project] = (),
-                 budget_limit: float | None = None,
+                 budget_limit: Number | None = None,
                  categories: set[str] | None = None,
                  targets: set[str] | None = None,
                  file_path: str | None = None,
@@ -137,7 +137,7 @@ class Instance(set[Project]):
             if hasattr(s, "budget_limit"):
                 budget_limit = s.budget_limit
             else:
-                budget_limit = 0.0
+                budget_limit = 0
         self.budget_limit = budget_limit
 
         if categories is None:
@@ -266,9 +266,15 @@ class Instance(set[Project]):
         def wrap_method_closure(name):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
-                if isinstance(result, set) and not hasattr(result, 'foo'):
-                    result = cls(result, budget_limit=self.budget_limit, file_name=self.file_name,
-                                 file_path=self.file_path, parsing_errors=self.parsing_errors, meta=self.meta,
+                if isinstance(result, set) and not isinstance(result, cls):
+                    result = cls(result,
+                                 budget_limit=self.budget_limit,
+                                 categories=self.categories,
+                                 targets=self.targets,
+                                 file_name=self.file_name,
+                                 file_path=self.file_path,
+                                 parsing_errors=self.parsing_errors,
+                                 meta=self.meta,
                                  project_meta=self.project_meta)
                 return result
 

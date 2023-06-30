@@ -1,4 +1,6 @@
 from unittest import TestCase
+
+from pbvoting.election import OrdinalBallot
 from pbvoting.election.pabulib import parse_pabulib
 
 import os
@@ -436,7 +438,9 @@ voter_id;vote;voting_method;district
         assert len(profile[44]) == 3
         assert len(profile[4]) == 3
 
-        assert profile[44] == [instance.get_project("4"), instance.get_project("36"), instance.get_project("41")]
+        assert profile[44] == OrdinalBallot([instance.get_project("4"),
+                                             instance.get_project("36"),
+                                             instance.get_project("41")])
 
     def test_wrong_type(self):
         with open("test.pb", "w", encoding="utf-8") as f:

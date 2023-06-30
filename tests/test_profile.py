@@ -1,10 +1,8 @@
 from unittest import TestCase
 
-from pbvoting.election.profile import Profile, ApprovalProfile, CardinalProfile, CumulativeProfile, OrdinalProfile, \
-    get_random_approval_profile, get_all_approval_profiles
-from pbvoting.election.ballot import Ballot, ApprovalBallot, CardinalBallot, CumulativeBallot, OrdinalBallot,\
-    get_random_approval_ballot
-from pbvoting.election.instance import Instance, Project
+from pbvoting.election import Instance, Project, ApprovalProfile, CardinalProfile, CumulativeProfile, OrdinalProfile, \
+    get_random_approval_profile, get_all_approval_profiles, ApprovalBallot, CardinalBallot, CumulativeBallot, \
+    OrdinalBallot, FrozenApprovalBallot, ApprovalMultiProfile, FrozenCardinalBallot, CardinalMultiProfile
 
 
 class TestProfile(TestCase):
@@ -35,25 +33,6 @@ class TestProfile(TestCase):
     #     assert len(profile) == 12
     #     assert profile[-1] == b2
     #     assert profile[-2] == b2
-
-    def test_approval_ballot(self):
-        p1 = Project("p1", 1)
-        p2 = Project("p2", 2)
-        p3 = Project("p3", 5)
-        p4 = Project("p4", 3)
-        p5 = Project("p5", 2)
-        p6 = Project("p6", 2)
-        ballot = ApprovalBallot([p1, p2, p3, p4])
-        assert p1 in ballot
-        assert p2 in ballot
-        assert p3 in ballot
-        assert p4 in ballot
-        assert p5 not in ballot
-        assert p6 not in ballot
-
-        ballot.add(p5)
-
-        get_random_approval_ballot([p1, p2, p3, p4, p5], "BallotName")
 
     def test_approval_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -129,15 +108,24 @@ class TestProfile(TestCase):
         assert len(set(get_all_approval_profiles(new_inst, 2))) == 8 * 8
         assert len(set(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
 
-    def test_cardinal_ballot(self):
+    def test_app_multiprofile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = Instance(projects, budget_limit=1)
-        b1 = CardinalBallot({projects[1]: 100, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
-        assert b1[projects[1]] == 100
-        assert b1[projects[2]] == 74
-        assert b1[projects[3]] == 12
-        assert b1[projects[4]] == 7
-        assert b1[projects[5]] == -41
+        b1 = FrozenApprovalBallot(projects[:4], name="name", meta={"metakey": 0})
+        b2 = FrozenApprovalBallot(projects[1:6], name="name", meta={"metakey": 0})
+        b3 = FrozenApprovalBallot({projects[0]}, name="name", meta={"metakey": 0})
+        b4 = FrozenApprovalBallot((projects[1], projects[4]), name="name", meta={"metakey": 0})
+        multiprofile = ApprovalMultiProfile((b1, b2, b3, b4))
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 4
+        multiprofile.append(b1)
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 5
+
+        profile = ApprovalProfile([ApprovalBallot(projects[:2])] * 4 + [ApprovalBallot(projects[:5])] * 10)
+        assert len(profile) == 14
+        multiprofile = ApprovalMultiProfile(profile=profile)
+        assert len(multiprofile) == 2
+        assert multiprofile.total() == 14
 
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -172,16 +160,6 @@ class TestProfile(TestCase):
         assert profile.legal_max_length == 5
         assert profile.legal_min_score == 3
         assert profile.legal_max_score == 100
-
-    def test_cumulative_ballot(self):
-        projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = Instance(projects, budget_limit=1)
-        b1 = CumulativeBallot({projects[1]: 4, projects[2]: 5, projects[3]: 7, projects[4]: 57, projects[5]: -41})
-        assert b1[projects[1]] == 4
-        assert b1[projects[2]] == 5
-        assert b1[projects[3]] == 7
-        assert b1[projects[4]] == 57
-        assert b1[projects[5]] == -41
 
     def test_cumulative_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -225,35 +203,6 @@ class TestProfile(TestCase):
         assert profile.legal_max_score == 10
         assert profile.legal_min_total_score == 1
         assert profile.legal_max_total_score == 1000
-
-    def test_ordinal_ballot(self):
-        projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
-        b1.__repr__()
-        b1.__str__()
-        b2 = OrdinalBallot()
-        b2.append(projects[0])
-        b2.append(projects[1])
-        b2.append(projects[2])
-        assert b1 == b2
-        b3 = OrdinalBallot(name="Name")
-        b3 += b1
-        assert b3 == b1 == b2
-        assert b3.name == "Name"
-
-        assert b1 != [projects[0]]
-        assert b1 != [projects[0], projects[1], projects[3]]
-        assert not b1 == [projects[0]]
-        assert not b1 == [projects[0], projects[1], projects[3]]
-
-        try:
-            b3.index(123)
-        except ValueError:
-            pass
-
-        assert OrdinalBallot([projects[0], projects[1], projects[2]]) == [projects[0], projects[1], projects[2]]
-        assert OrdinalBallot([projects[0], projects[1], projects[2]]) != [projects[0], projects[1]]
-        assert OrdinalBallot([projects[0], projects[2], projects[1]]) != [projects[0], projects[1], projects[2]]
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

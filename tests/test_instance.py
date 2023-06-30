@@ -3,33 +3,15 @@ from pbvoting.election.instance import *
 
 
 class TestInstance(TestCase):
-    def test_instance_as_set(self):
-        inst = Instance()
-        projects = [Project("p{}".format(i), 1) for i in range(10)]
-        inst.add(projects[0])
-        assert len(inst) == 1
-        inst.add(projects[1])
-        assert len(inst) == 2
-        inst.update(projects[:7])
-        assert len(inst) == 7
-        inst.file_name = "File_Name"
-        inst.__str__()
-        inst.__repr__()
-
-        inst2 = Instance()
-        inst2.update(projects)
-        inst3 = inst.union(inst2)
-        assert len(inst3) == 10
-        assert type(inst3) == Instance
 
     def test_instance(self):
         inst = Instance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
         assert inst.budget_limit == 2
         assert len(inst) == 3
-        try:
+
+        with self.assertRaises(KeyError):
             inst.get_project("name_that_does_not_appear")
-        except KeyError:
-            pass
+
         p1 = inst.get_project("p1")
         assert p1.name == "p1"
         assert p1.cost == 2

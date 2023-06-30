@@ -3,7 +3,8 @@ from collections.abc import Iterable
 import mip
 from mip import Model, xsum, maximize, BINARY
 
-from pbvoting.election import Instance, Profile, SatisfactionMeasure, SatisfactionProfile, Project, total_cost
+from pbvoting.election import Instance, Profile, SatisfactionMeasure, SatisfactionProfile, Project, total_cost, \
+    MultiProfile, SatisfactionMultiProfile
 
 
 def max_welfare_scheme(instance: Instance,
@@ -51,9 +52,9 @@ def max_welfare_scheme(instance: Instance,
 
 
 def max_welfare(instance: Instance,
-                profile: Profile,
+                profile: Profile | MultiProfile,
                 sat_class: type[SatisfactionMeasure] = None,
-                sat_profile: SatisfactionProfile = None,
+                sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
                 resoluteness: bool = True,
                 initial_budget_allocation: Iterable[Project] = None
                 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
@@ -92,6 +93,6 @@ def max_welfare(instance: Instance,
             raise ValueError("Satisfaction and sat_profile cannot both be None.")
     else:
         if sat_profile is None:
-            sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=sat_class)
+            sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
     return max_welfare_scheme(instance, sat_profile, budget_allocation, resoluteness=resoluteness)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Callable, Iterable
 from numbers import Number
 from pbvoting.election.ballot.ballot import Ballot
@@ -5,8 +7,12 @@ from pbvoting.election.ballot.ballot import Ballot
 from pbvoting.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pbvoting.election.ballot import ApprovalBallot, CardinalBallot
 from pbvoting.election.instance import Instance, Project, total_cost
-from pbvoting.election.profile import Profile
 from pbvoting.fractions import frac
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile, MultiProfile
 
 
 class AdditiveSatisfaction(SatisfactionMeasure):
@@ -215,4 +221,3 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
                  ballot: CardinalBallot
                  ) -> None:
         super(Additive_Cardinal_Sat, self).__init__(instance, profile, ballot, additive_card_sat_func)
-

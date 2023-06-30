@@ -1,5 +1,7 @@
 from gmpy2 import mpq
 
+import pbvoting.fractions
+
 FRACTION = "gmpy2"
 
 
@@ -9,11 +11,17 @@ def frac(*arg):
             return mpq(arg[0])
         elif FRACTION == "float":
             return arg[0]
+        else:
+            raise ValueError("The current value of pbvoting.fractions.FRACTION '{}' is invalid, it needs to be in "
+                             "[gmpy2, float].".format(pbvoting.fractions.FRACTION))
     elif len(arg) == 2:
         if FRACTION == "gmpy2":
             return mpq(arg[0], arg[1])
         elif FRACTION == "float":
             return arg[0]/arg[1]
+        else:
+            raise ValueError("The current value of pbvoting.fractions.FRACTION '{}' is invalid, it needs to be in "
+                             "[gmpy2, float].".format(pbvoting.fractions.FRACTION))
     raise ValueError("frac can only take 1 or 2 arguments")
 
 

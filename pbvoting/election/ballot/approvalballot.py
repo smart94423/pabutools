@@ -10,10 +10,20 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
 
     def __init__(self,
                  approved: Iterable[Project] = (),
-                 name: str = "",
+                 name: str | None = None,
                  meta: dict | None = None
                  ) -> None:
         tuple.__init__(self)
+        if name is None:
+            if hasattr(approved, "name"):
+                name = approved.name
+            else:
+                name = ""
+        if meta is None:
+            if hasattr(approved, "meta"):
+                meta = approved.meta
+            else:
+                meta = dict
         FrozenBallot.__init__(self, name, meta)
 
     def __new__(cls,
@@ -41,7 +51,7 @@ class ApprovalBallot(set[Project], Ballot):
 
     def __init__(self,
                  approved: Iterable[Project] = (),
-                 name: str = "",
+                 name: str | None = None,
                  meta: dict | None = None
                  ) -> None:
         """
@@ -56,9 +66,19 @@ class ApprovalBallot(set[Project], Ballot):
                     strings. Could for instance store the gender of the voter, their location etc...
         """
         set.__init__(self, approved)
+        if name is None:
+            if hasattr(approved, "name"):
+                name = approved.name
+            else:
+                name = ""
+        if meta is None:
+            if hasattr(approved, "meta"):
+                meta = approved.meta
+            else:
+                meta = dict()
         Ballot.__init__(self, name, meta)
 
-    def freeze(self) -> FrozenApprovalBallot:
+    def frozen(self) -> FrozenApprovalBallot:
         """
             Returns the frozen approval ballot (that is hashable) corresponding to the ballot.
 
@@ -75,7 +95,7 @@ class ApprovalBallot(set[Project], Ballot):
         def wrap_method_closure(method):
             def inner_method(self, *args):
                 result = getattr(super(cls, self), method)(*args)
-                if isinstance(result, set) and not hasattr(result, 'name'):
+                if isinstance(result, set) and not isinstance(result, cls):
                     result = cls(approved=result, name=self.name, meta=self.meta)
                 return result
 

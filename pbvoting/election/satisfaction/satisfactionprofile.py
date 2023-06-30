@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 from collections import Counter
 
 from pbvoting.election.satisfaction.satisfactionmeasure import SatisfactionMeasure, GroupSatisfactionMeasure
 from pbvoting.election.instance import Instance
-from pbvoting.election.profile import Profile, MultiProfile
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from pbvoting.election.profile import Profile, MultiProfile
 
 
-class SatisfactionProfile(list, SatisfactionMeasure):
+class SatisfactionProfile(list, GroupSatisfactionMeasure):
     """
         A profile of satisfaction functions, one per voter.
         Attributes
@@ -42,11 +47,28 @@ class SatisfactionProfile(list, SatisfactionMeasure):
             res += sat.sat(projects)
         return res
 
-    def __add__(self, value):
-        return SatisfactionProfile(list.__add__(self, value), instance=self.instance)
+    def multiplicity(self, sat: SatisfactionMeasure) -> int:
+        return 1
 
-    def __mul__(self, value):
-        return SatisfactionProfile(list.__mul__(self, value), instance=self.instance)
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, list) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance)
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+SatisfactionProfile._wrap_methods(['__add__', '__iadd__', '__imul__', '__mul__', '__reversed__', '__rmul__', 'copy',
+                               'reverse'])
 
 
 class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
@@ -83,7 +105,7 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
 
     def extend_from_profile(self, profile: Profile, sat_class: type[SatisfactionMeasure]):
         for ballot in profile:
-            self.append(sat_class(self.instance, profile, ballot.freeze()))
+            self.append(sat_class(self.instance, profile, ballot.frozen()))
 
     def extend_from_multiprofile(self, profile: MultiProfile, sat_class: type[SatisfactionMeasure]):
         for ballot, multiplicity in profile.items():
@@ -105,3 +127,5 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             res += multiplicity * sat.sat(projects)
         return res
 
+    def multiplicity(self, sat: SatisfactionMeasure) -> int:
+        return self[sat]

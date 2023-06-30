@@ -42,24 +42,6 @@ class ApprovalProfile(Profile):
                                     legal_min_cost=self.legal_min_cost,
                                     legal_max_cost=self.legal_max_cost)
 
-    def __add__(self, value):
-        return ApprovalProfile(list.__add__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation,
-                               ballot_type=self.ballot_type,
-                               legal_min_length=self.legal_min_length,
-                               legal_max_length=self.legal_max_length,
-                               legal_min_cost=self.legal_min_cost,
-                               legal_max_cost=self.legal_max_cost)
-
-    def __mul__(self, value):
-        return ApprovalProfile(list.__mul__(self, value), instance=self.instance,
-                               ballot_validation=self.ballot_validation,
-                               ballot_type=self.ballot_type,
-                               legal_min_length=self.legal_min_length,
-                               legal_max_length=self.legal_max_length,
-                               legal_min_cost=self.legal_min_cost,
-                               legal_max_cost=self.legal_max_cost)
-
     def approval_score(self, project: Project) -> int:
         """
             Returns the approval score of a project, that is, the number of voters who approved of it.
@@ -108,6 +90,32 @@ class ApprovalProfile(Profile):
             bool
         """
         return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
+
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, list) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance,
+                                 ballot_validation=self.ballot_validation,
+                                 ballot_type=self.ballot_type,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_cost=self.legal_min_cost,
+                                 legal_max_cost=self.legal_max_cost)
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+ApprovalProfile._wrap_methods(['__add__', '__iadd__', '__imul__', '__mul__', '__reversed__', '__rmul__', 'copy',
+                               'reverse'])
 
 
 def get_random_approval_profile(instance: Instance, num_agents: int) -> ApprovalProfile:
@@ -167,3 +175,45 @@ class ApprovalMultiProfile(MultiProfile):
         self.legal_min_cost = legal_min_cost
         self.legal_max_cost = legal_max_cost
 
+    def approval_score(self, project: Project) -> int:
+        """
+            Returns the approval score of a project, that is, the number of voters who approved of it.
+            Parameters
+            ----------
+                project : pbvoting.instance.instance.Project
+                    The project.
+            Returns
+            -------
+                int
+        """
+        approval_score = 0
+        for ballot, multiplicity in self.items():
+            if project in ballot:
+                approval_score += multiplicity
+        return approval_score
+
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, dict) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance,
+                                 ballot_validation=self.ballot_validation,
+                                 ballot_type=self.ballot_type,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_cost=self.legal_min_cost,
+                                 legal_max_cost=self.legal_max_cost)
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+ApprovalMultiProfile._wrap_methods(['__add__', '__and__', '__iadd__', '__iand__', '__ior__', '__isub__', '__imul__',
+                                    '__mul__', '__or__', '__ror__', '__sub__', 'copy'])

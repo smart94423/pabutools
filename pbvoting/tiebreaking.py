@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable
-from fractions import Fraction
+from numbers import Number
 
 from pbvoting.election.profile import Profile
 from pbvoting.election.instance import Instance, Project
@@ -22,7 +22,7 @@ class TieBreakingRule:
             project will be sorted.
     """
 
-    def __init__(self, func: Callable[[Instance, Profile, Project], Fraction]):
+    def __init__(self, func: Callable[[Instance, Profile, Project], Number]):
         self.func = func
 
     def order(self,
