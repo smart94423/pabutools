@@ -65,7 +65,7 @@ class CardinalBallot(dict[Project, Number], Ballot):
             if project not in self:
                 self[project] = default_score
 
-    def freeze(self):
+    def frozen(self) -> FrozenCardinalBallot:
         return FrozenCardinalBallot(self)
 
     # This allows dict method returning copies of a dict to work

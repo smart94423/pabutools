@@ -68,7 +68,7 @@ class Ballot(AbstractBallot):
         self.name = name
 
     @abstractmethod
-    def freeze(self) -> FrozenBallot:
+    def frozen(self) -> FrozenBallot:
         """
         Returns the ballot in its frozen form, that is, as a Frozen (hashable) ballot.
 

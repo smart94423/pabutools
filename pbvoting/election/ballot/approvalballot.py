@@ -78,7 +78,7 @@ class ApprovalBallot(set[Project], Ballot):
                 meta = dict()
         Ballot.__init__(self, name, meta)
 
-    def freeze(self) -> FrozenApprovalBallot:
+    def frozen(self) -> FrozenApprovalBallot:
         """
             Returns the frozen approval ballot (that is hashable) corresponding to the ballot.
 

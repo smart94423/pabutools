@@ -91,7 +91,7 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
 
     def extend_from_profile(self, profile: Profile, sat_class: type[SatisfactionMeasure]):
         for ballot in profile:
-            self.append(sat_class(self.instance, profile, ballot.freeze()))
+            self.append(sat_class(self.instance, profile, ballot.frozen()))
 
     def extend_from_multiprofile(self, profile: MultiProfile, sat_class: type[SatisfactionMeasure]):
         for ballot, multiplicity in profile.items():

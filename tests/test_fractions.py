@@ -9,9 +9,11 @@ class TestFractions(TestCase):
     def test_fraction_toggle(self):
         pbvoting.fractions.FRACTION = "gmpy2"
         assert isinstance(frac(3, 2), mpq)
+        assert isinstance(str_as_frac("4"), mpq)
         pbvoting.fractions.FRACTION = "float"
         assert not isinstance(frac(3, 2), mpq)
         assert isinstance(frac(3, 2), float)
+        assert isinstance(str_as_frac("4"), float)
 
     def test_frac_one_arg(self):
         pbvoting.fractions.FRACTION = "gmpy2"

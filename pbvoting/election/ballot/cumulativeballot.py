@@ -58,7 +58,7 @@ class CumulativeBallot(CardinalBallot):
                 meta = dict
         CardinalBallot.__init__(self, d, name=name, meta=meta)
 
-    def freeze(self):
+    def frozen(self):
         return FrozenCumulativeBallot(self)
 
     # This allows dict method returning copies of a dict to work

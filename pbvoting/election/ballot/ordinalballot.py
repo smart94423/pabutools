@@ -82,7 +82,7 @@ class OrdinalBallot(dict, Ballot):
             i += 1
         raise ValueError("{} is not in the ballot".format(element))
 
-    def freeze(self) -> FrozenOrdinalBallot:
+    def frozen(self) -> FrozenOrdinalBallot:
         return FrozenOrdinalBallot(self)
 
     def __eq__(self, other):

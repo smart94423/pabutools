@@ -151,6 +151,6 @@ class MultiProfile(Counter, AbstractProfile):
     def extend(self, iterable: Iterable[FrozenBallot] | Iterable[Ballot]):
         for ballot in iterable:
             if issubclass(type(ballot), Ballot):
-                self.append(ballot.freeze())
+                self.append(ballot.frozen())
             else:
                 self.append(ballot)
