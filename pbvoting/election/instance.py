@@ -137,7 +137,7 @@ class Instance(set[Project]):
             if hasattr(s, "budget_limit"):
                 budget_limit = s.budget_limit
             else:
-                budget_limit = 0.0
+                budget_limit = 0
         self.budget_limit = budget_limit
 
         if categories is None:
@@ -266,9 +266,15 @@ class Instance(set[Project]):
         def wrap_method_closure(name):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
-                if isinstance(result, set) and not hasattr(result, 'foo'):
-                    result = cls(result, budget_limit=self.budget_limit, file_name=self.file_name,
-                                 file_path=self.file_path, parsing_errors=self.parsing_errors, meta=self.meta,
+                if isinstance(result, set) and not isinstance(result, cls):
+                    result = cls(result,
+                                 budget_limit=self.budget_limit,
+                                 categories=self.categories,
+                                 targets=self.targets,
+                                 file_name=self.file_name,
+                                 file_path=self.file_path,
+                                 parsing_errors=self.parsing_errors,
+                                 meta=self.meta,
                                  project_meta=self.project_meta)
                 return result
 

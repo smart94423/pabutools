@@ -237,6 +237,7 @@ class TestProfile(TestCase):
         b2.append(projects[2])
         assert b1 == b2
         b3 = OrdinalBallot(name="Name")
+        assert b3.name == "Name"
         b3 += b1
         assert b3 == b1 == b2
         assert b3.name == "Name"
@@ -251,9 +252,9 @@ class TestProfile(TestCase):
         except ValueError:
             pass
 
-        assert OrdinalBallot([projects[0], projects[1], projects[2]]) == [projects[0], projects[1], projects[2]]
-        assert OrdinalBallot([projects[0], projects[1], projects[2]]) != [projects[0], projects[1]]
-        assert OrdinalBallot([projects[0], projects[2], projects[1]]) != [projects[0], projects[1], projects[2]]
+        assert OrdinalBallot([projects[0], projects[1], projects[2]]) == OrdinalBallot([projects[0], projects[1], projects[2]])
+        assert OrdinalBallot([projects[0], projects[1], projects[2]]) != OrdinalBallot([projects[0], projects[1]])
+        assert OrdinalBallot([projects[0], projects[2], projects[1]]) != OrdinalBallot([projects[0], projects[1], projects[2]])
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

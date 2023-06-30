@@ -31,6 +31,7 @@ class FrozenBallot(AbstractBallot):
                     Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
                     strings. Could for instance store the gender of the voter, their location etc...
         """
+        AbstractBallot.__init__(self)
         if meta is None:
             meta = dict()
         self.meta = meta
@@ -60,7 +61,6 @@ class Ballot(AbstractBallot):
                     Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
                     strings. Could for instance store the gender of the voter, their location etc...
         """
-        ABC.__init__(self)
         AbstractBallot.__init__(self)
         if meta is None:
             meta = dict()

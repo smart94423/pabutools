@@ -33,19 +33,29 @@ class OrdinalProfile(Profile):
                                    legal_min_length=self.legal_min_length,
                                    legal_max_length=self.legal_max_length)
 
-    def __add__(self, value):
-        return OrdinalProfile(list.__add__(self, value), instance=self.instance,
-                              ballot_validation=self.ballot_validation,
-                              ballot_type=self.ballot_type,
-                              legal_min_length=self.legal_min_length,
-                              legal_max_length=self.legal_max_length)
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, list) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance,
+                                 ballot_validation=self.ballot_validation,
+                                 ballot_type=self.ballot_type,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length)
+                return result
 
-    def __mul__(self, value):
-        return OrdinalProfile(list.__mul__(self, value), instance=self.instance,
-                              ballot_validation=self.ballot_validation,
-                              ballot_type=self.ballot_type,
-                              legal_min_length=self.legal_min_length,
-                              legal_max_length=self.legal_max_length)
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+OrdinalProfile._wrap_methods(['__add__', '__iadd__', '__imul__', '__mul__', '__reversed__', '__rmul__', 'copy',
+                              'reverse'])
 
 
 class OrdinalMultiProfile(MultiProfile):
