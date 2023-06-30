@@ -38,7 +38,7 @@ def runtime_analysis_pool(file_rule):
     return res
 
 
-def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
+def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv", num_workers=None):
     file_rule_set = []
     for file in os.listdir(os.path.join(folder_path)):
         if file.endswith(".pb"):
@@ -50,7 +50,7 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
     with open(os.path.join("csv", csv_file), "w"):
         pass
 
-    pool = Pool()
+    pool = Pool(processes=num_workers)
     csv_keys = None
     for res in pool.imap_unordered(runtime_analysis_pool, file_rule_set):
         for line in res:
