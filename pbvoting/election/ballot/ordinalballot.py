@@ -71,7 +71,7 @@ class OrdinalBallot(dict, Ballot):
         rev_generator = dict.__reversed__(self)
         res = OrdinalBallot(name=self.name, meta=self.meta)
         for key in rev_generator:
-            self.append(key)
+            res.append(key)
         return res
 
     def index(self, element):

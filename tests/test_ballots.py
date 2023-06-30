@@ -124,6 +124,11 @@ class TestBallot(TestCase):
         with self.assertRaises(ValueError):
             b3.index(123)
 
+        b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
+        b2 = reversed(b1)
+        assert isinstance(b2, OrdinalBallot)
+        assert b2 == OrdinalBallot([projects[2], projects[1], projects[0]])
+
         o = OrdinalBallot([projects[0], projects[1], projects[2]])
         o1 = OrdinalBallot([projects[0], projects[1]])
         o2 = OrdinalBallot([projects[2], projects[0], projects[1]])
@@ -132,9 +137,23 @@ class TestBallot(TestCase):
         assert o >= o
         assert o != o1
         assert o1 < o
-        assert o1 < o2
+        assert o1 < o
+        assert o1 <= o2
+        assert o1 <= o2
         assert o2 != o
         assert o2 > o
+        assert o2 >= o
+        with self.assertRaises(TypeError):
+            o += 1
+        with self.assertRaises(TypeError):
+            o > 2
+        with self.assertRaises(TypeError):
+            o < 2
+        with self.assertRaises(TypeError):
+            o >= 2
+        with self.assertRaises(TypeError):
+            o <= 2
+
 
         ballot = OrdinalBallot(projects, name="OrdBallot", meta={"metakey": "value"})
 
