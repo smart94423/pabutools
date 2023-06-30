@@ -1,8 +1,7 @@
 from unittest import TestCase
 
-from election import get_random_approval_ballot, Instance
 from pbvoting.election import Project, ApprovalBallot, CardinalBallot, CumulativeBallot, OrdinalBallot, \
-    FrozenApprovalBallot, FrozenCardinalBallot, FrozenCumulativeBallot, FrozenOrdinalBallot
+    FrozenApprovalBallot, FrozenCardinalBallot, FrozenCumulativeBallot, FrozenOrdinalBallot, get_random_approval_ballot
 from tests.test_class_inheritence import check_members_equality
 
 
@@ -60,6 +59,8 @@ class TestBallot(TestCase):
         assert set(ballot) == set(frozen_ballot1) == set(frozen_ballot2) == set(frozen_ballot3)
         assert ballot.name == frozen_ballot2.name == frozen_ballot3.name
         assert ballot.meta == frozen_ballot2.meta == frozen_ballot3.meta
+
+        get_random_approval_ballot([p1, p2, p3, p4, p5, p6])
 
     def test_cardinal_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
