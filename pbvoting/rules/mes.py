@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from collections.abc import Iterable
-from fractions import Fraction
+from numbers import Number
 
 from pbvoting.election import MultiProfile, SatisfactionMultiProfile
 from pbvoting.election.instance import Instance, Project
@@ -32,7 +32,7 @@ class MESVoter:
 def mes_scheme(instance: Instance,
                profile: Profile,
                sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
-               initial_budget: Fraction,
+               initial_budget: Number,
                initial_budget_allocation: Iterable[Project],
                tie_breaking: TieBreakingRule,
                resoluteness=True

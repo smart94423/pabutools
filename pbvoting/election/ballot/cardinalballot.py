@@ -18,9 +18,9 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
                 name = ""
         if meta is None:
             if hasattr(d, "meta"):
-                name = d.meta
+                meta = d.meta
             else:
-                name = ""
+                meta = dict()
         FrozenBallot.__init__(self, name=name, meta=meta)
 
     def __setitem__(self, key, value):

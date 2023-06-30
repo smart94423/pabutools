@@ -1,4 +1,6 @@
 from unittest import TestCase
+
+import pbvoting.rules.phragmen
 from pbvoting.fractions import frac
 from pbvoting.election.profile import ApprovalProfile
 from pbvoting.election.ballot import ApprovalBallot
@@ -165,7 +167,7 @@ def run_sat_rule(rule):
         for sat_class in test_election.irr_results_sat[rule]:
             if test_election.irr_results_sat[rule][sat_class] is not None:
                 for profile in [test_election.profile, test_election.profile.as_multiprofile()]:
-                    for sat_profile in [profile.as_sat_profile(sat_class)]:
+                    for sat_profile in [None, profile.as_sat_profile(sat_class)]:
                         # print("\n===================== {} - {} =====================".format(rule.__name__,
                         #                                                                      sat_class.__name__))
                         # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
