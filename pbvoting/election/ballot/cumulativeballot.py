@@ -61,7 +61,6 @@ class CumulativeBallot(CardinalBallot):
     def frozen(self):
         return FrozenCumulativeBallot(self)
 
-    # This allows dict method returning copies of a dict to work
     @classmethod
     def _wrap_methods(cls, names):
         def wrap_method_closure(name):
@@ -80,4 +79,4 @@ class CumulativeBallot(CardinalBallot):
             wrap_method_closure(n)
 
 
-CumulativeBallot._wrap_methods(['fromkeys', 'copy', '__ior__', '__or__', '__ror__', '__reversed__'])
+CumulativeBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__', '__reversed__'])

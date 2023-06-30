@@ -84,7 +84,7 @@ class TestBallot(TestCase):
     def test_cumulative_ballot(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         ballot = CumulativeBallot({projects[1]: 4, projects[2]: 5, projects[3]: 7, projects[4]: 57, projects[5]: -41},
-                              name="CumBallot", meta={"MetaKey": "Value"})
+                                  name="CumBallot", meta={"MetaKey": "Value"})
         assert ballot[projects[1]] == 4
         assert ballot[projects[2]] == 5
         assert ballot[projects[3]] == 7
@@ -92,7 +92,7 @@ class TestBallot(TestCase):
         assert ballot[projects[5]] == -41
 
         frozen_ballot1 = FrozenCumulativeBallot({projects[1]: 4, projects[2]: 5, projects[3]: 7, projects[4]: 57,
-                                                projects[5]: -41})
+                                                 projects[5]: -41})
         frozen_ballot2 = ballot.frozen()
         frozen_ballot3 = FrozenCumulativeBallot(ballot)
         for p in ballot:
@@ -153,7 +153,6 @@ class TestBallot(TestCase):
             o >= 2
         with self.assertRaises(TypeError):
             o <= 2
-
 
         ballot = OrdinalBallot(projects, name="OrdBallot", meta={"metakey": "value"})
 

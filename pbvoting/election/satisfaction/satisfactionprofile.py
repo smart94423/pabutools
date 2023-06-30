@@ -50,11 +50,25 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
     def multiplicity(self, sat: SatisfactionMeasure) -> int:
         return 1
 
-    def __add__(self, value):
-        return SatisfactionProfile(list.__add__(self, value), instance=self.instance)
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, list) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance)
+                return result
 
-    def __mul__(self, value):
-        return SatisfactionProfile(list.__mul__(self, value), instance=self.instance)
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+SatisfactionProfile._wrap_methods(['__add__', '__iadd__', '__imul__', '__mul__', '__reversed__', '__rmul__', 'copy',
+                               'reverse'])
 
 
 class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):

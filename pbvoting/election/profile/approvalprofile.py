@@ -191,3 +191,29 @@ class ApprovalMultiProfile(MultiProfile):
             if project in ballot:
                 approval_score += multiplicity
         return approval_score
+
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, dict) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance,
+                                 ballot_validation=self.ballot_validation,
+                                 ballot_type=self.ballot_type,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_cost=self.legal_min_cost,
+                                 legal_max_cost=self.legal_max_cost)
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+ApprovalMultiProfile._wrap_methods(['__add__', '__and__', '__iadd__', '__iand__', '__ior__', '__isub__', '__imul__',
+                                    '__mul__', '__or__', '__ror__', '__sub__', 'copy'])

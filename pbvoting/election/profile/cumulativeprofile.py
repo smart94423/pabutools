@@ -107,3 +107,29 @@ class CumulativeMultiProfile(CardinalMultiProfile):
         self.legal_min_total_score = legal_min_total_score
         self.legal_max_total_score = legal_max_total_score
 
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, dict) and not isinstance(result, cls):
+                    result = cls(result,
+                                 instance=self.instance,
+                                 ballot_validation=self.ballot_validation,
+                                 ballot_type=self.ballot_type,
+                                 legal_min_length=self.legal_min_length,
+                                 legal_max_length=self.legal_max_length,
+                                 legal_min_score=self.legal_min_score,
+                                 legal_max_score=self.legal_max_score,
+                                 legal_min_total_score=self.legal_min_total_score,
+                                 legal_max_total_score=self.legal_max_total_score)
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+
+CumulativeMultiProfile._wrap_methods(['copy', '__ior__', '__or__', '__ror__', '__reversed__'])

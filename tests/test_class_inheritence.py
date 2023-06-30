@@ -3,7 +3,8 @@ from copy import deepcopy
 from unittest import TestCase
 
 from pbvoting.election import Instance, Project, ApprovalBallot, ApprovalProfile, OrdinalBallot, OrdinalProfile, \
-    CardinalBallot, CardinalProfile, CumulativeBallot, CumulativeProfile
+    CardinalBallot, CardinalProfile, CumulativeBallot, CumulativeProfile, SatisfactionProfile, Additive_Borda_Sat, \
+    ApprovalMultiProfile
 
 
 def check_members_equality(obj1, obj2):
@@ -269,3 +270,7 @@ class TestAnalysis(TestCase):
                                  legal_min_length=10,
                                  legal_max_length=100)
         check_list_members(profile, ballots[:10], ballots[10:])
+
+        sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=Additive_Borda_Sat)
+        sats = [Additive_Borda_Sat(instance, profile, ballot) for ballot in ballots]
+        check_list_members(sat_profile, sats[:10], sats[10:])

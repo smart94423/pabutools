@@ -87,4 +87,4 @@ class CardinalBallot(dict[Project, Number], Ballot):
             wrap_method_closure(n)
 
 
-CardinalBallot._wrap_methods(['fromkeys', 'copy', '__ior__', '__or__', '__ror__'])
+CardinalBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__'])

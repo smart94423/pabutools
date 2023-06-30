@@ -144,4 +144,4 @@ class OrdinalBallot(dict, Ballot):
             wrap_method_closure(n)
 
 
-OrdinalBallot._wrap_methods(['fromkeys', 'copy', '__ior__', '__or__', '__ror__'])
+OrdinalBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__'])
