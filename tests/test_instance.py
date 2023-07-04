@@ -3,9 +3,10 @@ from pbvoting.election.instance import *
 
 
 class TestInstance(TestCase):
-
     def test_instance(self):
-        inst = Instance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
+        inst = Instance(
+            [Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2
+        )
         assert inst.budget_limit == 2
         assert len(inst) == 3
 
@@ -20,9 +21,15 @@ class TestInstance(TestCase):
         for budget_allocation in inst.budget_allocations():
             budget_allocations.append(budget_allocation)
         assert len(budget_allocations) == 5
-        assert inst.is_feasible([Project("p1", 2), Project("p2", 1), Project("p3", 1)]) is False
+        assert (
+            inst.is_feasible([Project("p1", 2), Project("p2", 1), Project("p3", 1)])
+            is False
+        )
         assert inst.is_feasible([Project("p1", 2)]) is True
-        assert inst.is_exhaustive([Project("p1", 2), Project("p2", 1), Project("p3", 1)]) is True
+        assert (
+            inst.is_exhaustive([Project("p1", 2), Project("p2", 1), Project("p3", 1)])
+            is True
+        )
         assert inst.is_exhaustive([Project("p2", 1)]) is False
         assert inst.is_exhaustive([Project("p3", 1)]) is False
         inst = get_random_instance(10, 1, 10)
@@ -60,4 +67,3 @@ class TestInstance(TestCase):
         assert project <= Project("z")
         assert project < "z"
         assert project < Project("z")
-

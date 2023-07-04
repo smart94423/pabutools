@@ -1,4 +1,3 @@
 numpy
-pytest
 mip
 gmpy2

@@ -1,5 +1,6 @@
-import os
+import pathlib
 import time
+import os
 
 from multiprocessing import Pool
 
@@ -15,8 +16,12 @@ from pbvoting.rules.maxwelfare import max_welfare
 
 def runtime_analysis_pool(file_rule):
     file, rule = file_rule
-    print("File {} for rule {}".format(file, rule.__name__))
     instance, prof = parse_pabulib(file)
+    print(
+        "File {} (n={}, m={}) for rule {}".format(
+            pathlib.PurePath(file).name, len(prof), len(instance), rule.__name__
+        )
+    )
 
     res = []
     for profile in [prof, prof.as_multiprofile()]:
@@ -38,7 +43,9 @@ def runtime_analysis_pool(file_rule):
     return res
 
 
-def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv", num_workers=None):
+def runtime_analysis_write_data(
+    folder_path, rules, csv_file="runtime.csv", num_workers=None
+):
     file_rule_set = []
     for file in os.listdir(os.path.join(folder_path)):
         if file.endswith(".pb"):
@@ -62,22 +69,24 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv", num_
 
 
 def runtime_analysis_plot(csv_file="runtime.csv"):
-    plt.close('all')
+    plt.close("all")
 
-    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding='utf-8')
+    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding="utf-8")
 
     sns.set_theme()
 
     for rule in data["rule"].unique():
-        plt.close('all')
+        plt.close("all")
         g = sns.pointplot(
             data=data[data["rule"] == rule],
             x="avg_vote_length_cat",
             y="runtime",
-            hue="profile_type"
+            hue="profile_type",
         )
-        g.set(yscale='log')
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        g.set(yscale="log")
+        runtime_range = [0.001] + [
+            int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)
+        ]
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(rule)
@@ -85,16 +94,18 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
         plt.show()
 
     for profile_type in data["profile_type"].unique():
-        plt.close('all')
+        plt.close("all")
 
         g = sns.pointplot(
             data=data[data["profile_type"] == profile_type],
             x="num_projects_cat",
             y="runtime",
-            hue="rule"
+            hue="rule",
         )
-        g.set(yscale='log')
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        g.set(yscale="log")
+        runtime_range = [0.001] + [
+            int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)
+        ]
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(profile_type)
@@ -111,7 +122,9 @@ def maxwelfare_cost_res(instance, profile):
 
 
 def greed_card_res(instance, profile):
-    return greedy_welfare(instance, profile, sat_class=Cardinality_Sat, resoluteness=True)
+    return greedy_welfare(
+        instance, profile, sat_class=Cardinality_Sat, resoluteness=True
+    )
 
 
 def seqphragmen_res(instance, profile):
@@ -119,11 +132,14 @@ def seqphragmen_res(instance, profile):
 
 
 def mes_cost_res(instance, profile):
-    return method_of_equal_shares(instance, profile, sat_class=Cost_Sat, resoluteness=True)
+    return method_of_equal_shares(
+        instance, profile, sat_class=Cost_Sat, resoluteness=True
+    )
 
 
 if __name__ == "__main__":
-    # runtime_analysis_write_data(os.path.join("Pabulib", "all_app"),
-    #                             [greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res])
+    # runtime_analysis_write_data(os.path.join("Pabulib", "all_app_100"),
+    #                             [greed_cost_res, seqphragmen_res, mes_cost_res],
+    #                             num_workers=2)
 
     runtime_analysis_plot()

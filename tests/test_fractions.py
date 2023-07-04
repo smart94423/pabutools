@@ -5,7 +5,6 @@ import pbvoting.fractions
 
 
 class TestFractions(TestCase):
-
     def test_fraction_toggle(self):
         pbvoting.fractions.FRACTION = "gmpy2"
         assert isinstance(frac(3, 2), mpq)
@@ -36,4 +35,3 @@ class TestFractions(TestCase):
             frac(0, 4)
         with self.assertRaises(ValueError):
             frac(3, 4, 5)
-

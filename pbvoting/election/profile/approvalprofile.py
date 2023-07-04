@@ -2,8 +2,13 @@ from collections.abc import Iterable
 from itertools import product
 from numbers import Number
 
-from pbvoting.election.ballot import Ballot, ApprovalBallot, FrozenBallot, FrozenApprovalBallot, \
-    get_random_approval_ballot
+from pbvoting.election.ballot import (
+    Ballot,
+    ApprovalBallot,
+    FrozenBallot,
+    FrozenApprovalBallot,
+    get_random_approval_ballot,
+)
 from pbvoting.election.profile.profile import Profile, MultiProfile
 from pbvoting.election.instance import Instance, Project
 from pbvoting.utils import powerset
@@ -16,42 +21,50 @@ class ApprovalProfile(Profile):
     ----------
     """
 
-    def __init__(self,
-                 iterable: Iterable[ApprovalBallot] = (),
-                 instance: Instance | None = None,
-                 ballot_validation: bool = True,
-                 ballot_type: type[Ballot] = ApprovalBallot,
-                 legal_min_length: int | None = None,
-                 legal_max_length: int | None = None,
-                 legal_min_cost: Number | None = None,
-                 legal_max_cost: Number | None = None):
-        super(ApprovalProfile, self).__init__(iterable=iterable, instance=instance, ballot_validation=ballot_validation,
-                                              ballot_type=ballot_type)
+    def __init__(
+        self,
+        iterable: Iterable[ApprovalBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[Ballot] = ApprovalBallot,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_cost: Number | None = None,
+        legal_max_cost: Number | None = None,
+    ):
+        super(ApprovalProfile, self).__init__(
+            iterable=iterable,
+            instance=instance,
+            ballot_validation=ballot_validation,
+            ballot_type=ballot_type,
+        )
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_cost = legal_min_cost
         self.legal_max_cost = legal_max_cost
 
     def as_multiprofile(self):
-        return ApprovalMultiProfile(instance=self.instance,
-                                    profile=self,
-                                    ballot_validation=self.ballot_validation,
-                                    ballot_type=FrozenApprovalBallot,
-                                    legal_min_length=self.legal_min_length,
-                                    legal_max_length=self.legal_max_length,
-                                    legal_min_cost=self.legal_min_cost,
-                                    legal_max_cost=self.legal_max_cost)
+        return ApprovalMultiProfile(
+            instance=self.instance,
+            profile=self,
+            ballot_validation=self.ballot_validation,
+            ballot_type=FrozenApprovalBallot,
+            legal_min_length=self.legal_min_length,
+            legal_max_length=self.legal_max_length,
+            legal_min_cost=self.legal_min_cost,
+            legal_max_cost=self.legal_max_cost,
+        )
 
     def approval_score(self, project: Project) -> int:
         """
-            Returns the approval score of a project, that is, the number of voters who approved of it.
-            Parameters
-            ----------
-                project : pbvoting.instance.instance.Project
-                    The project.
-            Returns
-            -------
-                int
+        Returns the approval score of a project, that is, the number of voters who approved of it.
+        Parameters
+        ----------
+            project : pbvoting.instance.instance.Project
+                The project.
+        Returns
+        -------
+            int
         """
         approval_score = 0
         for ballot in self:
@@ -61,13 +74,16 @@ class ApprovalProfile(Profile):
 
     def is_trivial(self) -> bool:
         """
-            Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost
-            that exceeds the budget limit.
-            Returns
-            -------
-                bool
+        Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost
+        that exceeds the budget limit.
+        Returns
+        -------
+            bool
         """
-        return all(project.cost > self.instance.budget_limit for project in self.approved_projects())
+        return all(
+            project.cost > self.instance.budget_limit
+            for project in self.approved_projects()
+        )
 
     def approved_projects(self) -> set[Project]:
         """
@@ -97,14 +113,16 @@ class ApprovalProfile(Profile):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, list) and not isinstance(result, cls):
-                    result = cls(result,
-                                 instance=self.instance,
-                                 ballot_validation=self.ballot_validation,
-                                 ballot_type=self.ballot_type,
-                                 legal_min_length=self.legal_min_length,
-                                 legal_max_length=self.legal_max_length,
-                                 legal_min_cost=self.legal_min_cost,
-                                 legal_max_cost=self.legal_max_cost)
+                    result = cls(
+                        result,
+                        instance=self.instance,
+                        ballot_validation=self.ballot_validation,
+                        ballot_type=self.ballot_type,
+                        legal_min_length=self.legal_min_length,
+                        legal_max_length=self.legal_max_length,
+                        legal_min_cost=self.legal_min_cost,
+                        legal_max_cost=self.legal_max_cost,
+                    )
                 return result
 
             inner.fn_name = name
@@ -114,60 +132,77 @@ class ApprovalProfile(Profile):
             wrap_method_closure(n)
 
 
-ApprovalProfile._wrap_methods(['__add__', '__iadd__', '__imul__', '__mul__', '__reversed__', '__rmul__', 'copy',
-                               'reverse'])
+ApprovalProfile._wrap_methods(
+    [
+        "__add__",
+        "__iadd__",
+        "__imul__",
+        "__mul__",
+        "__reversed__",
+        "__rmul__",
+        "copy",
+        "reverse",
+    ]
+)
 
 
 def get_random_approval_profile(instance: Instance, num_agents: int) -> ApprovalProfile:
     """
-        Generates a random approval profile in which approval ballots are such that each project is approved with
-        probability 0.5.
-        Parameters
-        ----------
-            instance : pbvoting.instance.instance.PBInstance
-                The instance the profile is defined with respect to.
-            num_agents : int
-                The length of the profile, i.e., the number of agents..
-        Returns
-        -------
-            pbvoting.instance.profile.ApprovalBallot
+    Generates a random approval profile in which approval ballots are such that each project is approved with
+    probability 0.5.
+    Parameters
+    ----------
+        instance : pbvoting.instance.instance.PBInstance
+            The instance the profile is defined with respect to.
+        num_agents : int
+            The length of the profile, i.e., the number of agents..
+    Returns
+    -------
+        pbvoting.instance.profile.ApprovalBallot
     """
     profile = ApprovalProfile(instance=instance)
     for i in range(num_agents):
-        profile.append(get_random_approval_ballot(instance, name="RandomAppBallot {}".format(i)))
+        profile.append(
+            get_random_approval_ballot(instance, name="RandomAppBallot {}".format(i))
+        )
     return profile
 
 
 def get_all_approval_profiles(instance: Instance, num_agents: int):
     """
-        Returns a generator over all the possible profile for a given instance of a given length.
-        Parameters
-        ----------
-            instance : pbvoting.instance.instance.PBInstance
-                The instance the profile is defined with respect to.
-            num_agents : int
-                The length of the profile, i.e., the number of agents..
-        Returns
-        -------
-            pbvoting.instance.profile.ApprovalBallot
+    Returns a generator over all the possible profile for a given instance of a given length.
+    Parameters
+    ----------
+        instance : pbvoting.instance.instance.PBInstance
+            The instance the profile is defined with respect to.
+        num_agents : int
+            The length of the profile, i.e., the number of agents..
+    Returns
+    -------
+        pbvoting.instance.profile.ApprovalBallot
     """
     return product(powerset(instance), repeat=num_agents)
 
 
 class ApprovalMultiProfile(MultiProfile):
-
-    def __init__(self,
-                 iterable: Iterable[FrozenApprovalBallot] = (),
-                 instance: Instance | None = None,
-                 ballot_validation: bool = True,
-                 ballot_type: type[FrozenBallot] = FrozenApprovalBallot,
-                 profile: ApprovalProfile = None,
-                 legal_min_length: int | None = None,
-                 legal_max_length: int | None = None,
-                 legal_min_cost: Number | None = None,
-                 legal_max_cost: Number | None = None):
-        super(ApprovalMultiProfile, self).__init__(iterable=iterable, instance=instance,
-                                                   ballot_validation=ballot_validation, ballot_type=ballot_type)
+    def __init__(
+        self,
+        iterable: Iterable[FrozenApprovalBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[FrozenBallot] = FrozenApprovalBallot,
+        profile: ApprovalProfile = None,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_cost: Number | None = None,
+        legal_max_cost: Number | None = None,
+    ):
+        super(ApprovalMultiProfile, self).__init__(
+            iterable=iterable,
+            instance=instance,
+            ballot_validation=ballot_validation,
+            ballot_type=ballot_type,
+        )
         if profile is not None:
             self.extend(profile)
         self.legal_min_length = legal_min_length
@@ -177,14 +212,14 @@ class ApprovalMultiProfile(MultiProfile):
 
     def approval_score(self, project: Project) -> int:
         """
-            Returns the approval score of a project, that is, the number of voters who approved of it.
-            Parameters
-            ----------
-                project : pbvoting.instance.instance.Project
-                    The project.
-            Returns
-            -------
-                int
+        Returns the approval score of a project, that is, the number of voters who approved of it.
+        Parameters
+        ----------
+            project : pbvoting.instance.instance.Project
+                The project.
+        Returns
+        -------
+            int
         """
         approval_score = 0
         for ballot, multiplicity in self.items():
@@ -198,14 +233,16 @@ class ApprovalMultiProfile(MultiProfile):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, dict) and not isinstance(result, cls):
-                    result = cls(result,
-                                 instance=self.instance,
-                                 ballot_validation=self.ballot_validation,
-                                 ballot_type=self.ballot_type,
-                                 legal_min_length=self.legal_min_length,
-                                 legal_max_length=self.legal_max_length,
-                                 legal_min_cost=self.legal_min_cost,
-                                 legal_max_cost=self.legal_max_cost)
+                    result = cls(
+                        result,
+                        instance=self.instance,
+                        ballot_validation=self.ballot_validation,
+                        ballot_type=self.ballot_type,
+                        legal_min_length=self.legal_min_length,
+                        legal_max_length=self.legal_max_length,
+                        legal_min_cost=self.legal_min_cost,
+                        legal_max_cost=self.legal_max_cost,
+                    )
                 return result
 
             inner.fn_name = name
@@ -215,5 +252,19 @@ class ApprovalMultiProfile(MultiProfile):
             wrap_method_closure(n)
 
 
-ApprovalMultiProfile._wrap_methods(['__add__', '__and__', '__iadd__', '__iand__', '__ior__', '__isub__', '__imul__',
-                                    '__mul__', '__or__', '__ror__', '__sub__', 'copy'])
+ApprovalMultiProfile._wrap_methods(
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
+)

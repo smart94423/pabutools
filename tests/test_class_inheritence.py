@@ -2,15 +2,35 @@ from copy import deepcopy
 
 from unittest import TestCase
 
-from pbvoting.election import Instance, Project, ApprovalBallot, ApprovalProfile, OrdinalBallot, OrdinalProfile, \
-    CardinalBallot, CardinalProfile, CumulativeBallot, CumulativeProfile, SatisfactionProfile, Additive_Borda_Sat, \
-    ApprovalMultiProfile
+from pbvoting.election import (
+    Instance,
+    Project,
+    ApprovalBallot,
+    ApprovalProfile,
+    OrdinalBallot,
+    OrdinalProfile,
+    CardinalBallot,
+    CardinalProfile,
+    CumulativeBallot,
+    CumulativeProfile,
+    SatisfactionProfile,
+    Additive_Borda_Sat,
+    ApprovalMultiProfile,
+)
 
 
 def check_members_equality(obj1, obj2):
     assert type(obj1) == type(obj2)
-    obj1_attrs = [a for a in dir(obj1) if a[:2] + a[-2:] != '____' and not callable(getattr(obj1, a))]
-    obj2_attrs = [a for a in dir(obj2) if a[:2] + a[-2:] != '____' and not callable(getattr(obj2, a))]
+    obj1_attrs = [
+        a
+        for a in dir(obj1)
+        if a[:2] + a[-2:] != "____" and not callable(getattr(obj1, a))
+    ]
+    obj2_attrs = [
+        a
+        for a in dir(obj2)
+        if a[:2] + a[-2:] != "____" and not callable(getattr(obj2, a))
+    ]
     assert obj1_attrs == obj2_attrs
     for attr in obj1_attrs:
         assert obj1.__getattribute__(attr) == obj2.__getattribute__(attr)
@@ -48,7 +68,9 @@ def check_set_members(set_class, initial_set, included_objects, additional_objec
     check_members_equality(initial_set, new_set)
 
     new_set = deepcopy(initial_set)
-    new_set = new_set.intersection(set_class(additional_objects), set_class(additional_objects))
+    new_set = new_set.intersection(
+        set_class(additional_objects), set_class(additional_objects)
+    )
     check_members_equality(initial_set, new_set)
 
     new_set = deepcopy(initial_set)
@@ -196,13 +218,21 @@ def check_list_members(initial_list, included_objects, additional_objects):
 
 
 class TestAnalysis(TestCase):
-
     def test_instance_members(self):
         projects = [Project(str(i), i) for i in range(20)]
-        instance = Instance(projects[:10], budget_limit=10, categories={"cat1", "cat2"}, targets={"targ1", "targ2"},
-                            file_path="filepath", file_name="filename", parsing_errors=True,
-                            meta={"metakey": "metavalue"},
-                            project_meta={p: {"proj_metakey", "proje_metavalue"} for p in projects[:10]})
+        instance = Instance(
+            projects[:10],
+            budget_limit=10,
+            categories={"cat1", "cat2"},
+            targets={"targ1", "targ2"},
+            file_path="filepath",
+            file_name="filename",
+            parsing_errors=True,
+            meta={"metakey": "metavalue"},
+            project_meta={
+                p: {"proj_metakey", "proje_metavalue"} for p in projects[:10]
+            },
+        )
         check_set_members(Instance, instance, projects[:10], projects[10:])
 
     def test_approvalballots_members(self):
@@ -215,62 +245,96 @@ class TestAnalysis(TestCase):
         scores = {p: 4 for p in projects[:10]}
         # ballot = FrozenCardinalBallot(scores, name="sqdkj", meta={"fd": "fsdfb"})
         # self.check_dict_members(ballot, projects[:10], projects[10:])
-        ballot = CardinalBallot(scores, name="nameoftheballot", meta={"metakey": "metavalue"})
+        ballot = CardinalBallot(
+            scores, name="nameoftheballot", meta={"metakey": "metavalue"}
+        )
         check_dict_members(ballot, projects[:10], projects[10:])
-        ballot = CumulativeBallot(scores, name="nameoftheballot", meta={"metakey": "metavalue"})
+        ballot = CumulativeBallot(
+            scores, name="nameoftheballot", meta={"metakey": "metavalue"}
+        )
         check_dict_members(ballot, projects[:10], projects[10:])
-        ballot = OrdinalBallot(projects[:10], name="nameoftheballot", meta={"metakey": "metavalue"})
+        ballot = OrdinalBallot(
+            projects[:10], name="nameoftheballot", meta={"metakey": "metavalue"}
+        )
         check_dict_members(ballot, projects[:10], projects[10:])
 
     def test_profile_members(self):
         projects = [Project(str(i), i) for i in range(20)]
         instance = Instance(projects)
-        ballots = [ApprovalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"}) for i in range(20)]
-        profile = ApprovalProfile(ballots[:10],
-                                  instance=instance,
-                                  ballot_validation=False,
-                                  ballot_type=CumulativeBallot,
-                                  legal_min_length=10,
-                                  legal_max_length=100,
-                                  legal_min_cost=2100,
-                                  legal_max_cost=15)
+        ballots = [
+            ApprovalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"})
+            for i in range(20)
+        ]
+        profile = ApprovalProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=10,
+            legal_max_length=100,
+            legal_min_cost=2100,
+            legal_max_cost=15,
+        )
         check_list_members(profile, ballots[:10], ballots[10:])
 
-        ballots = [CardinalBallot({p: 5 for p in projects}, name="app" + str(i), meta={"key" + str(i): "v"})
-                   for i in range(20)]
-        profile = CardinalProfile(ballots[:10],
-                                  instance=instance,
-                                  ballot_validation=False,
-                                  ballot_type=CumulativeBallot,
-                                  legal_min_length=10,
-                                  legal_max_length=100,
-                                  legal_min_score=1000,
-                                  legal_max_score=555)
+        ballots = [
+            CardinalBallot(
+                {p: 5 for p in projects},
+                name="app" + str(i),
+                meta={"key" + str(i): "v"},
+            )
+            for i in range(20)
+        ]
+        profile = CardinalProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=10,
+            legal_max_length=100,
+            legal_min_score=1000,
+            legal_max_score=555,
+        )
         check_list_members(profile, ballots[:10], ballots[10:])
 
-        ballots = [CumulativeBallot({p: 5 for p in projects}, name="app" + str(i), meta={"key" + str(i): "v"})
-                   for i in range(20)]
-        profile = CumulativeProfile(ballots[:10],
-                                    instance=instance,
-                                    ballot_validation=False,
-                                    ballot_type=CumulativeBallot,
-                                    legal_min_length=105,
-                                    legal_max_length=120,
-                                    legal_min_score=1020,
-                                    legal_max_score=535,
-                                    legal_min_total_score=87,
-                                    legal_max_total_score=45)
+        ballots = [
+            CumulativeBallot(
+                {p: 5 for p in projects},
+                name="app" + str(i),
+                meta={"key" + str(i): "v"},
+            )
+            for i in range(20)
+        ]
+        profile = CumulativeProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=105,
+            legal_max_length=120,
+            legal_min_score=1020,
+            legal_max_score=535,
+            legal_min_total_score=87,
+            legal_max_total_score=45,
+        )
         check_list_members(profile, ballots[:10], ballots[10:])
 
-        ballots = [OrdinalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"}) for i in range(20)]
-        profile = OrdinalProfile(ballots[:10],
-                                 instance=instance,
-                                 ballot_validation=False,
-                                 ballot_type=CumulativeBallot,
-                                 legal_min_length=10,
-                                 legal_max_length=100)
+        ballots = [
+            OrdinalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"})
+            for i in range(20)
+        ]
+        profile = OrdinalProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=10,
+            legal_max_length=100,
+        )
         check_list_members(profile, ballots[:10], ballots[10:])
 
-        sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=Additive_Borda_Sat)
+        sat_profile = SatisfactionProfile(
+            instance=instance, profile=profile, sat_class=Additive_Borda_Sat
+        )
         sats = [Additive_Borda_Sat(instance, profile, ballot) for ballot in ballots]
         check_list_members(sat_profile, sats[:10], sats[10:])

@@ -6,11 +6,12 @@ from numbers import Number
 
 
 class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
-
-    def __init__(self,
-                 d: dict[Project, Number] = None,
-                 name: str | None = None,
-                 meta: dict | None = None):
+    def __init__(
+        self,
+        d: dict[Project, Number] = None,
+        name: str | None = None,
+        meta: dict | None = None,
+    ):
         if d is None:
             d = dict()
         dict.__init__(self, d)
@@ -35,15 +36,17 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
 
 class CumulativeBallot(CardinalBallot):
     """
-        A cumulative ballot, that is, a ballot in which the voter has indicated a score for every project using a
-        total number of points allocated to the voter. It is a subclass of `pbvoting.instance.profile.Ballot`.
-        Attributes
+    A cumulative ballot, that is, a ballot in which the voter has indicated a score for every project using a
+    total number of points allocated to the voter. It is a subclass of `pbvoting.instance.profile.Ballot`.
+    Attributes
     """
 
-    def __init__(self,
-                 d: dict[Project, Number] = None,
-                 name: str | None = None,
-                 meta: dict | None = None):
+    def __init__(
+        self,
+        d: dict[Project, Number] = None,
+        name: str | None = None,
+        meta: dict | None = None,
+    ):
         if d is None:
             d = dict()
         if name is None:
@@ -67,9 +70,7 @@ class CumulativeBallot(CardinalBallot):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, dict) and not isinstance(result, cls):
-                    result = cls(result,
-                                 name=self.name,
-                                 meta=self.meta)
+                    result = cls(result, name=self.name, meta=self.meta)
                 return result
 
             inner.fn_name = name
@@ -79,4 +80,4 @@ class CumulativeBallot(CardinalBallot):
             wrap_method_closure(n)
 
 
-CumulativeBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__', '__reversed__'])
+CumulativeBallot._wrap_methods(["copy", "__ior__", "__or__", "__ror__", "__reversed__"])

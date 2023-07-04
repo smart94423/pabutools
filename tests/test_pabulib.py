@@ -9,7 +9,8 @@ import os
 class TestPabulib(TestCase):
     def test_approval(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
 key;value
 description;Local PB in Warsaw, WesoÅ‚a | Plac Wojska Polskiego
 country;Poland
@@ -62,7 +63,8 @@ voter_id;age;sex;voting_method;vote
 88639;63;M;internet;915
 94116;33;M;internet;427
 103942;54;M;internet;427
-104255;53;F;internet;427""")
+104255;53;F;internet;427"""
+            )
 
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
@@ -81,7 +83,8 @@ voter_id;age;sex;voting_method;vote
 
     def test_cumulative(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
 key;value
 description;Municipal PB in Toulouse
 country;France
@@ -143,7 +146,8 @@ voter_id;vote;points
 8;14,8,2,4;3,2,1,1
 9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
 10;6,7;3,3
-11;2,14,8;3,3,1""")
+11;2,14,8;3,3,1"""
+            )
 
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
@@ -168,7 +172,8 @@ voter_id;vote;points
 
     def test_scoring(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
 key;value
 description;Municipal PB in Toulouse
 country;France
@@ -228,7 +233,8 @@ voter_id;vote;points
 8;14,8,2,4;3,2,1,1
 9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
 10;6,7;3,3
-11;2,14,8;3,3,1""")
+11;2,14,8;3,3,1"""
+            )
 
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
@@ -239,7 +245,8 @@ voter_id;vote;points
 
     def test_ordinal(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
 key;value
 description;Municipal PB in Kraków
 country;Poland
@@ -428,7 +435,8 @@ voter_id;vote;voting_method;district
 42;95,75,111;paper;PODGÓRZE DUCHACKIE
 43;84,101,83;internet;PODGÓRZE
 44;4,36,41;internet;KROWODRZA
-""")
+"""
+            )
 
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
@@ -438,13 +446,18 @@ voter_id;vote;voting_method;district
         assert len(profile[44]) == 3
         assert len(profile[4]) == 3
 
-        assert profile[44] == OrdinalBallot([instance.get_project("4"),
-                                             instance.get_project("36"),
-                                             instance.get_project("41")])
+        assert profile[44] == OrdinalBallot(
+            [
+                instance.get_project("4"),
+                instance.get_project("36"),
+                instance.get_project("41"),
+            ]
+        )
 
     def test_wrong_type(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -476,7 +489,8 @@ voter_id;vote;voting_method;district
                 2;17,23,11;internet;NOWA HUTA
                 3;18,3,34;internet;CZYŻYNY
                 4;97,120,117;paper;NOWA HUTA
-            """)
+            """
+            )
 
         try:
             _, _ = parse_pabulib("test.pb")
@@ -487,7 +501,8 @@ voter_id;vote;voting_method;district
 
     def test_legal_defaults(self):
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -511,7 +526,8 @@ voter_id;vote;voting_method;district
                 VOTES
                 voter_id;vote;voting_method;district
                 0;1,2,3;paper;PODGÓRZE DUCHACKIE
-            """)
+            """
+            )
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
         assert instance.meta["min_length"] == "1"
@@ -524,7 +540,8 @@ voter_id;vote;voting_method;district
         assert profile.legal_max_cost is None
 
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -548,7 +565,8 @@ voter_id;vote;voting_method;district
                 VOTES
                 voter_id;vote;points
                 0;1,2,3;1,2,3
-            """)
+            """
+            )
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
 
@@ -559,5 +577,3 @@ voter_id;vote;voting_method;district
         assert profile.legal_max_score is None
         assert profile.legal_min_total_score is None
         assert profile.legal_max_total_score == 100
-
-

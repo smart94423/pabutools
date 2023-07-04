@@ -23,7 +23,9 @@ def powerset(iterable):
 
 def gini_coefficient(values):
     if np.any(values < 0):
-        raise ValueError("Negative values not supported by gini coefficient implementation.")
+        raise ValueError(
+            "Negative values not supported by gini coefficient implementation."
+        )
     if np.all(values == 0):
         return 0
     n = len(values)
