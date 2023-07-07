@@ -15,25 +15,40 @@ class TestAnalysis(TestCase):
     def test_satisfaction_properties(self):
         projects = [Project(str(i), 10 + i) for i in range(10)]
         instance = Instance(projects, budget_limit=90)
-        app_ball_1 = ApprovalBallot([projects[0], projects[1], projects[2], projects[3]])
+        app_ball_1 = ApprovalBallot(
+            [projects[0], projects[1], projects[2], projects[3]]
+        )
         app_ball_2 = ApprovalBallot([projects[0]])
         app_ball_3 = ApprovalBallot([projects[5], projects[6]])
         app_ball_4 = ApprovalBallot([projects[8], projects[9]])
         app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3, app_ball_4])
-        
-        budget_allocation = [projects[0], projects[1],projects[8],projects[9]]
-        
-        assert(avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17)
-        assert(percent_non_empty_handed(instance, app_profile, budget_allocation) == frac(3,4))
-        assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat) == frac(7,20))
-        assert(gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat, invert=True) == 1-frac(7,20))
 
         budget_allocation = [projects[0], projects[1], projects[8], projects[9]]
 
-        assert (avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17)
-        assert (percent_non_empty_handed(instance, app_profile, budget_allocation) == frac(3, 4))
-        assert (gini_coefficient_of_satisfaction(instance, app_profile, budget_allocation, Cardinality_Sat) == frac(7,
-                                                                                                                    20))
+        assert (
+            avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17
+        )
+        assert percent_non_empty_handed(
+            instance, app_profile, budget_allocation
+        ) == frac(3, 4)
+        assert gini_coefficient_of_satisfaction(
+            instance, app_profile, budget_allocation, Cardinality_Sat
+        ) == frac(7, 20)
+        assert gini_coefficient_of_satisfaction(
+            instance, app_profile, budget_allocation, Cardinality_Sat, invert=True
+        ) == 1 - frac(7, 20)
+
+        budget_allocation = [projects[0], projects[1], projects[8], projects[9]]
+
+        assert (
+            avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17
+        )
+        assert percent_non_empty_handed(
+            instance, app_profile, budget_allocation
+        ) == frac(3, 4)
+        assert gini_coefficient_of_satisfaction(
+            instance, app_profile, budget_allocation, Cardinality_Sat
+        ) == frac(7, 20)
 
         ord_ball_1 = OrdinalBallot([projects[0], projects[1], projects[2], projects[3]])
         ord_ball_2 = OrdinalBallot([projects[0]])
@@ -41,7 +56,12 @@ class TestAnalysis(TestCase):
         ord_ball_4 = OrdinalBallot([projects[8], projects[9]])
         ord_profile = OrdinalProfile([ord_ball_1, ord_ball_2, ord_ball_3, ord_ball_4])
 
-        assert (avg_satisfaction(instance, ord_profile, budget_allocation, Additive_Borda_Sat) == 1.5)
+        assert (
+            avg_satisfaction(
+                instance, ord_profile, budget_allocation, Additive_Borda_Sat
+            )
+            == 1.5
+        )
 
     def test_proportionality_properties(self):
         projects = [
@@ -59,16 +79,20 @@ class TestAnalysis(TestCase):
         projects = [
             Project("p1", cost=1, categories={"c1", "c2"}),
             Project("p2", cost=2, categories={"c2", "c3"}),
-            Project("p3", cost=2, categories=set())
+            Project("p3", cost=2, categories=set()),
         ]
-        instance = Instance(projects, budget_limit=90, categories={"c1", "c2", "c3", "c4"})
+        instance = Instance(
+            projects, budget_limit=90, categories={"c1", "c2", "c3", "c4"}
+        )
         app_ball_1 = ApprovalBallot([projects[0], projects[1]])
         app_ball_2 = ApprovalBallot([projects[0]])
         app_ball_3 = ApprovalBallot([projects[1]])
         app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3])
         budget_allocation = [projects[0], projects[2]]
 
-        assert category_proportionality(instance, app_profile, budget_allocation) == np.exp(-31. / 162)
+        assert category_proportionality(
+            instance, app_profile, budget_allocation
+        ) == np.exp(-31.0 / 162)
 
         projects = [
             Project("p1", cost=1),
@@ -95,12 +119,12 @@ class TestAnalysis(TestCase):
         assert avg_project_cost(instance) == 3
         assert median_project_cost(instance) == 2
         assert funding_scarcity(instance) == frac(3, 2)
-        assert std_dev_project_cost(instance) == np.sqrt(14. / 3)
+        assert std_dev_project_cost(instance) == np.sqrt(14.0 / 3)
 
         instance = Instance(projects)
         with self.assertRaises(ValueError):
             funding_scarcity(instance)
-        
+
     def test_profile_properties(self):
         projects = [
             Project("p1", cost=1),

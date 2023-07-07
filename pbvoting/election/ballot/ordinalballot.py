@@ -5,12 +5,12 @@ from pbvoting.election.instance import Project
 
 
 class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
-
-    def __init__(self,
-                 iterable: Iterable[Project] = (),
-                 name: str | None = None,
-                 meta: dict | None = None
-                 ) -> None:
+    def __init__(
+        self,
+        iterable: Iterable[Project] = (),
+        name: str | None = None,
+        meta: dict | None = None,
+    ) -> None:
         tuple.__init__(self)
         if name is None:
             if hasattr(iterable, "name"):
@@ -24,12 +24,15 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
                 meta = dict()
         FrozenBallot.__init__(self, name, meta)
 
-    def __new__(cls,
-                iterable: Iterable[Project] = (),
-                name: str = "",
-                meta: dict | None = None):
+    def __new__(
+        cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
+    ):
         if len(set(iterable)) != len(iterable):
-            raise ValueError("Some projects are repeated in {}, this is not a valid ordinal ballot.".format(iterable))
+            raise ValueError(
+                "Some projects are repeated in {}, this is not a valid ordinal ballot.".format(
+                    iterable
+                )
+            )
         return super(FrozenOrdinalBallot, cls).__new__(cls, tuple(iterable))
 
     def __hash__(self):
@@ -37,12 +40,12 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
 
 
 class OrdinalBallot(dict, Ballot):
-
-    def __init__(self,
-                 iterable: Iterable[Project] = (),
-                 name: str | None = None,
-                 meta: dict | None = None
-                 ) -> None:
+    def __init__(
+        self,
+        iterable: Iterable[Project] = (),
+        name: str | None = None,
+        meta: dict | None = None,
+    ) -> None:
         if name is None:
             if hasattr(iterable, "name"):
                 name = iterable.name
@@ -118,7 +121,6 @@ class OrdinalBallot(dict, Ballot):
                 return False
         return len(self) == len(other)
 
-
     def __repr__(self):
         return list(self.keys()).__repr__()
 
@@ -132,9 +134,7 @@ class OrdinalBallot(dict, Ballot):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, dict) and not isinstance(result, cls):
-                    result = cls(result,
-                                 name=self.name,
-                                 meta=self.meta)
+                    result = cls(result, name=self.name, meta=self.meta)
                 return result
 
             inner.fn_name = name
@@ -144,4 +144,4 @@ class OrdinalBallot(dict, Ballot):
             wrap_method_closure(n)
 
 
-OrdinalBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__'])
+OrdinalBallot._wrap_methods(["copy", "__ior__", "__or__", "__ror__"])

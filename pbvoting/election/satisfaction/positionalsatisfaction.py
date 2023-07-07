@@ -8,9 +8,9 @@ from pbvoting.election.ballot import OrdinalBallot
 from pbvoting.election.instance import Instance, Project
 
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from pbvoting.election.profile import Profile, MultiProfile
-
 
 
 class PositionalSatisfaction(SatisfactionMeasure):
@@ -35,29 +35,30 @@ class PositionalSatisfaction(SatisfactionMeasure):
                 score of the subset of projects as a fraction.
     """
 
-    def __init__(self,
-                 instance: Instance,
-                 profile: Profile,
-                 ballot: OrdinalBallot,
-                 positional_func: Callable[[OrdinalBallot, Project], Number],
-                 aggregation_func: Callable[[Iterable[Number]], Number]):
+    def __init__(
+        self,
+        instance: Instance,
+        profile: Profile,
+        ballot: OrdinalBallot,
+        positional_func: Callable[[OrdinalBallot, Project], Number],
+        aggregation_func: Callable[[Iterable[Number]], Number],
+    ):
         super(PositionalSatisfaction, self).__init__(instance, profile, ballot)
         self.positional_func = positional_func
         self.aggregation_func = aggregation_func
         self.instance = instance
 
-    def sat(self,
-            projects: Iterable[Project]):
+    def sat(self, projects: Iterable[Project]):
         """
-            Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
-            by the inner function specified at initialisation.
-            Parameters
-            ----------
-                projects : Iterable[pbvoting.instance.pbinstance.Project]
-                    The set of projects.
-            Returns
-            -------
-                float
+        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
+        by the inner function specified at initialisation.
+        Parameters
+        ----------
+            projects : Iterable[pbvoting.instance.pbinstance.Project]
+                The set of projects.
+        Returns
+        -------
+            float
         """
         scores = [self.positional_func(self.ballot, project) for project in projects]
         return self.aggregation_func(scores)
@@ -70,6 +71,7 @@ def borda_sat_func(ballot: OrdinalBallot, project: Project) -> int:
 
 
 class Additive_Borda_Sat(PositionalSatisfaction):
-
     def __init__(self, instance: Instance, profile: Profile, ballot: OrdinalBallot):
-        super(Additive_Borda_Sat, self).__init__(instance, profile, ballot, borda_sat_func, sum)
+        super(Additive_Borda_Sat, self).__init__(
+            instance, profile, ballot, borda_sat_func, sum
+        )

@@ -5,11 +5,12 @@ from numbers import Number
 
 
 class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
-
-    def __init__(self,
-                 d: dict[Project, Number] = (),
-                 name: str | None = None,
-                 meta: dict | None = None):
+    def __init__(
+        self,
+        d: dict[Project, Number] = (),
+        name: str | None = None,
+        meta: dict | None = None,
+    ):
         dict.__init__(self, d)
         if name is None:
             if hasattr(d, "name"):
@@ -32,19 +33,21 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
 
 class CardinalBallot(dict[Project, Number], Ballot):
     """
-        A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
-        subclass of `Ballot`.
-        Attributes
-        ----------
-            d : dict of projects: score
-                The score assigned to the projects. The keys are the projects and map to the score.
-                Defaults to the empty dictionary.
+    A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
+    subclass of `Ballot`.
+    Attributes
+    ----------
+        d : dict of projects: score
+            The score assigned to the projects. The keys are the projects and map to the score.
+            Defaults to the empty dictionary.
     """
 
-    def __init__(self,
-                 d: dict[Project, Number] = None,
-                 name: str | None = None,
-                 meta: dict | None = None):
+    def __init__(
+        self,
+        d: dict[Project, Number] = None,
+        name: str | None = None,
+        meta: dict | None = None,
+    ):
         if d is None:
             d = dict()
         dict.__init__(self, d)
@@ -75,9 +78,7 @@ class CardinalBallot(dict[Project, Number], Ballot):
             def inner(self, *args):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, dict) and not isinstance(result, cls):
-                    result = cls(result,
-                                 name=self.name,
-                                 meta=self.meta)
+                    result = cls(result, name=self.name, meta=self.meta)
                 return result
 
             inner.fn_name = name
@@ -87,4 +88,4 @@ class CardinalBallot(dict[Project, Number], Ballot):
             wrap_method_closure(n)
 
 
-CardinalBallot._wrap_methods(['copy', '__ior__', '__or__', '__ror__'])
+CardinalBallot._wrap_methods(["copy", "__ior__", "__or__", "__ror__"])

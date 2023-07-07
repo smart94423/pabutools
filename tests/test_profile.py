@@ -1,12 +1,26 @@
 from unittest import TestCase
 
-from pbvoting.election import Instance, Project, ApprovalProfile, CardinalProfile, CumulativeProfile, OrdinalProfile, \
-    get_random_approval_profile, get_all_approval_profiles, ApprovalBallot, CardinalBallot, CumulativeBallot, \
-    OrdinalBallot, FrozenApprovalBallot, ApprovalMultiProfile, FrozenCardinalBallot, CardinalMultiProfile
+from pbvoting.election import (
+    Instance,
+    Project,
+    ApprovalProfile,
+    CardinalProfile,
+    CumulativeProfile,
+    OrdinalProfile,
+    get_random_approval_profile,
+    get_all_approval_profiles,
+    ApprovalBallot,
+    CardinalBallot,
+    CumulativeBallot,
+    OrdinalBallot,
+    FrozenApprovalBallot,
+    ApprovalMultiProfile,
+    FrozenCardinalBallot,
+    CardinalMultiProfile,
+)
 
 
 class TestProfile(TestCase):
-
     # def test_profile(self):
     #     profile = Profile()
     #     b1 = Ballot()
@@ -103,7 +117,9 @@ class TestProfile(TestCase):
         random_profile = get_random_approval_profile(instance, 10)
         assert len(random_profile) == 10
 
-        new_inst = Instance([Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3)
+        new_inst = Instance(
+            [Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3
+        )
         assert len(set(get_all_approval_profiles(new_inst, 1))) == 8
         assert len(set(get_all_approval_profiles(new_inst, 2))) == 8 * 8
         assert len(set(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
@@ -113,7 +129,9 @@ class TestProfile(TestCase):
         b1 = FrozenApprovalBallot(projects[:4], name="name", meta={"metakey": 0})
         b2 = FrozenApprovalBallot(projects[1:6], name="name", meta={"metakey": 0})
         b3 = FrozenApprovalBallot({projects[0]}, name="name", meta={"metakey": 0})
-        b4 = FrozenApprovalBallot((projects[1], projects[4]), name="name", meta={"metakey": 0})
+        b4 = FrozenApprovalBallot(
+            (projects[1], projects[4]), name="name", meta={"metakey": 0}
+        )
         multiprofile = ApprovalMultiProfile((b1, b2, b3, b4))
         assert len(multiprofile) == 4
         assert multiprofile.total() == 4
@@ -121,7 +139,9 @@ class TestProfile(TestCase):
         assert len(multiprofile) == 4
         assert multiprofile.total() == 5
 
-        profile = ApprovalProfile([ApprovalBallot(projects[:2])] * 4 + [ApprovalBallot(projects[:5])] * 10)
+        profile = ApprovalProfile(
+            [ApprovalBallot(projects[:2])] * 4 + [ApprovalBallot(projects[:5])] * 10
+        )
         assert len(profile) == 14
         multiprofile = ApprovalMultiProfile(profile=profile)
         assert len(multiprofile) == 2
@@ -130,10 +150,42 @@ class TestProfile(TestCase):
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         instance = Instance(projects, budget_limit=1)
-        b1 = CardinalBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
-        b2 = CardinalBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
-        b3 = CardinalBallot({projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
-        b4 = CardinalBallot({projects[1]: 2, projects[2]: 8, projects[3]: 16872, projects[4]: 77, projects[5]: -457851})
+        b1 = CardinalBallot(
+            {
+                projects[1]: 4,
+                projects[2]: 74,
+                projects[3]: 12,
+                projects[4]: 7,
+                projects[5]: -41,
+            }
+        )
+        b2 = CardinalBallot(
+            {
+                projects[1]: 41,
+                projects[2]: 4,
+                projects[3]: 68,
+                projects[4]: 7,
+                projects[5]: 0,
+            }
+        )
+        b3 = CardinalBallot(
+            {
+                projects[1]: 57,
+                projects[2]: 5,
+                projects[3]: 5857,
+                projects[4]: 7786,
+                projects[5]: -481,
+            }
+        )
+        b4 = CardinalBallot(
+            {
+                projects[1]: 2,
+                projects[2]: 8,
+                projects[3]: 16872,
+                projects[4]: 77,
+                projects[5]: -457851,
+            }
+        )
         profile = CardinalProfile((b1, b2), instance=instance)
         assert len(profile) == 2
         assert profile[0] == b1
@@ -164,12 +216,42 @@ class TestProfile(TestCase):
     def test_cumulative_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         instance = Instance(projects, budget_limit=1)
-        b1 = CumulativeBallot({projects[1]: 4, projects[2]: 74, projects[3]: 12, projects[4]: 7, projects[5]: -41})
-        b2 = CumulativeBallot({projects[1]: 41, projects[2]: 4, projects[3]: 68, projects[4]: 7, projects[5]: 0})
+        b1 = CumulativeBallot(
+            {
+                projects[1]: 4,
+                projects[2]: 74,
+                projects[3]: 12,
+                projects[4]: 7,
+                projects[5]: -41,
+            }
+        )
+        b2 = CumulativeBallot(
+            {
+                projects[1]: 41,
+                projects[2]: 4,
+                projects[3]: 68,
+                projects[4]: 7,
+                projects[5]: 0,
+            }
+        )
         b3 = CumulativeBallot(
-            {projects[1]: 57, projects[2]: 5, projects[3]: 5857, projects[4]: 7786, projects[5]: -481})
+            {
+                projects[1]: 57,
+                projects[2]: 5,
+                projects[3]: 5857,
+                projects[4]: 7786,
+                projects[5]: -481,
+            }
+        )
         b4 = CumulativeBallot(
-            {projects[1]: 2, projects[2]: 8, projects[3]: 16872, projects[4]: 77, projects[5]: -457851})
+            {
+                projects[1]: 2,
+                projects[2]: 8,
+                projects[3]: 16872,
+                projects[4]: 77,
+                projects[5]: -457851,
+            }
+        )
         profile = CumulativeProfile((b1, b2, b3), instance=instance)
         assert len(profile) == 3
         assert profile[0] == b1
