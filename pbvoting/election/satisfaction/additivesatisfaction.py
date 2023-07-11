@@ -145,7 +145,7 @@ def relative_cost_sat_func(instance: Instance,
                            preprocessed_values: dict
                            ) -> int:
     if preprocessed_values['max_budget_allocation_cost'] == 0:
-        return 0
+        return 0 # TODO
     return frac(int(project in ballot), preprocessed_values['max_budget_allocation_cost'])
 
 

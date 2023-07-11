@@ -8,6 +8,7 @@ from pbvoting.analysis.category import *
 from pbvoting.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
 from pbvoting.election.ballot import ApprovalBallot, OrdinalBallot, CardinalBallot
 from pbvoting.election.profile import OrdinalProfile
+from pbvoting.election.satisfaction.additivesatisfaction import Relative_Cardinality_Sat
 from pbvoting.fractions import frac
 
 
@@ -15,9 +16,7 @@ class TestAnalysis(TestCase):
     def test_satisfaction_properties(self):
         projects = [Project(str(i), 10 + i) for i in range(10)]
         instance = Instance(projects, budget_limit=90)
-        app_ball_1 = ApprovalBallot(
-            [projects[0], projects[1], projects[2], projects[3]]
-        )
+        app_ball_1 = ApprovalBallot([projects[0], projects[1], projects[2], projects[3]])
         app_ball_2 = ApprovalBallot([projects[0]])
         app_ball_3 = ApprovalBallot([projects[5], projects[6]])
         app_ball_4 = ApprovalBallot([projects[8], projects[9]])
@@ -62,6 +61,17 @@ class TestAnalysis(TestCase):
             )
             == 1.5
         )
+
+        budget_allocation = []
+        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
+        
+        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        
+        budget_allocation = [projects[0], projects[1], projects[2], projects[5]]
+        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
+
+        assert(sat_hist == [.25, 0, 0, 0, 0, 0.25, 0, .25, 0, .25])
+
 
     def test_proportionality_properties(self):
         projects = [
