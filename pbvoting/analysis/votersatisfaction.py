@@ -75,10 +75,7 @@ def satisfaction_histogram(
     hist_data = [0.0 for i in range(num_bins)]
     for i in range(len(sat_profile)):
         satisfaction = sat_profile[i].sat(budget_allocation)
-        
-        if satisfaction > 1:
-            raise ValueError("encountered satisfaction bigger than max_satisfaction")
-        elif satisfaction == 1:
+        if satisfaction >= 1:
             hist_data[-1] += 1
         else:
             hist_data[math.floor(satisfaction*num_bins/max_satisfaction)] += 1
