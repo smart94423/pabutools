@@ -7,12 +7,18 @@ import numpy as np
 from pabutools.fractions import frac
 
 
-def mean_generator(generator: Iterable[Number]):
+def mean_generator(generator: Iterable[Number] | Iterable[tuple[Number, int]]):
     n = 0
     mean = 0
     for x in generator:
-        n += 1
-        mean += frac(x - mean, n)
+        multiplicity = 1
+        value = x
+        if type(x) is tuple:
+            value = x[0]
+            multiplicity = x[1]
+        for i in range(multiplicity):
+            n += 1
+            mean += frac(value - mean, n)
     return mean
 
 

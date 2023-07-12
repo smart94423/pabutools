@@ -4,6 +4,7 @@ from pabutools.analysis.instanceproperties import *
 from pabutools.analysis.profileproperties import *
 from pabutools.analysis.votersatisfaction import *
 from pabutools.analysis.category import *
+from pabutools.election.profile.approvalprofile import ApprovalProfile, ApprovalMultiProfile
 
 from pabutools.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
 from pabutools.election.ballot import ApprovalBallot, OrdinalBallot, CardinalBallot
@@ -18,59 +19,76 @@ class TestAnalysis(TestCase):
         instance = Instance(projects, budget_limit=90)
         app_ball_1 = ApprovalBallot([projects[0], projects[1], projects[2], projects[3]])
         app_ball_2 = ApprovalBallot([projects[0]])
-        app_ball_3 = ApprovalBallot([projects[5], projects[6]])
-        app_ball_4 = ApprovalBallot([projects[8], projects[9]])
-        app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3, app_ball_4])
+        app_ball_3 = ApprovalBallot([projects[0]])
+        app_ball_4 = ApprovalBallot([projects[5], projects[6]])
+        app_ball_5 = ApprovalBallot([projects[8], projects[9]])
+        app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3, app_ball_4, app_ball_5])
+        app_multi_profile = app_profile.as_multiprofile()
 
         budget_allocation = [projects[0], projects[1], projects[8], projects[9]]
 
         assert (
-            avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17
+            avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == frac(78, 5)
+        )
+        assert (
+            avg_satisfaction(instance, app_multi_profile, budget_allocation, Cost_Sat) == frac(78, 5)
         )
         assert percent_non_empty_handed(
             instance, app_profile, budget_allocation
-        ) == frac(3, 4)
+        ) == frac(4, 5)
+        assert percent_non_empty_handed(
+            instance, app_multi_profile, budget_allocation
+        ) == frac(4, 5)
         assert gini_coefficient_of_satisfaction(
             instance, app_profile, budget_allocation, Cardinality_Sat
-        ) == frac(7, 20)
+        ) == frac(1, 3)
+        assert gini_coefficient_of_satisfaction(
+            instance, app_multi_profile, budget_allocation, Cardinality_Sat
+        ) == frac(1, 3)
         assert gini_coefficient_of_satisfaction(
             instance, app_profile, budget_allocation, Cardinality_Sat, invert=True
-        ) == 1 - frac(7, 20)
-
-        budget_allocation = [projects[0], projects[1], projects[8], projects[9]]
-
-        assert (
-            avg_satisfaction(instance, app_profile, budget_allocation, Cost_Sat) == 17
-        )
-        assert percent_non_empty_handed(
-            instance, app_profile, budget_allocation
-        ) == frac(3, 4)
+        ) == frac(2, 3)
         assert gini_coefficient_of_satisfaction(
-            instance, app_profile, budget_allocation, Cardinality_Sat
-        ) == frac(7, 20)
+            instance, app_multi_profile, budget_allocation, Cardinality_Sat, invert=True
+        ) == frac(2, 3)
 
         ord_ball_1 = OrdinalBallot([projects[0], projects[1], projects[2], projects[3]])
         ord_ball_2 = OrdinalBallot([projects[0]])
-        ord_ball_3 = OrdinalBallot([projects[5], projects[6]])
-        ord_ball_4 = OrdinalBallot([projects[8], projects[9]])
-        ord_profile = OrdinalProfile([ord_ball_1, ord_ball_2, ord_ball_3, ord_ball_4])
+        ord_ball_3 = OrdinalBallot([projects[0]])
+        ord_ball_4 = OrdinalBallot([projects[5], projects[6]])
+        ord_ball_5 = OrdinalBallot([projects[8], projects[9]])
+        ord_profile = OrdinalProfile([ord_ball_1, ord_ball_2, ord_ball_3, ord_ball_4, ord_ball_5])
+        ord_multi_profile = ord_profile.as_multiprofile()
 
         assert (
             avg_satisfaction(
                 instance, ord_profile, budget_allocation, Additive_Borda_Sat
             )
-            == 1.5
+            == frac(6,5)
+        )
+        assert (
+            avg_satisfaction(
+                instance, ord_multi_profile, budget_allocation, Additive_Borda_Sat
+            )
+            == frac(6,5)
         )
 
         budget_allocation = []
+       
         sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
-        
         assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
+        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
         
         budget_allocation = [projects[0], projects[1], projects[2], projects[5]]
-        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
 
-        assert(sat_hist == [.25, 0, 0, 0, 0, 0.25, 0, .25, 0, .25])
+        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
+        assert(sat_hist == [.2, 0, 0, 0, 0, 0.2, 0, .2, 0, .4])
+
+        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
+        assert(sat_hist == [.2, 0, 0, 0, 0, 0.2, 0, .2, 0, .4])
 
 
     def test_proportionality_properties(self):
