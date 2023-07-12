@@ -6,11 +6,8 @@ import math
 
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import ApprovalProfile, Profile
-from pabutools.election.satisfaction import (
-    SatisfactionMeasure,
-    CC_Sat,
-    SatisfactionProfile,
-)
+from pabutools.election.profile.profile import MultiProfile
+from pabutools.election.satisfaction import SatisfactionMeasure, CC_Sat, SatisfactionMultiProfile
 from pabutools.fractions import frac
 
 from pabutools.utils import gini_coefficient, mean_generator
@@ -18,18 +15,18 @@ from pabutools.utils import gini_coefficient, mean_generator
 
 def avg_satisfaction(
     instance: Instance,
-    profile: ApprovalProfile,
+    profile: Profile | MultiProfile,
     budget_allocation: Iterable[Project],
     satisfaction: type[SatisfactionMeasure],
 ) -> Number | float:
     """Computes the average satisfaction for a given instance, profile and satisfaction function
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance : pabutools.instance.pbinstance.PBInstance
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile
+        profile : pabutools.instance.profile.Profile | pabutools.instance.profile.MultiProfile
             The profile.
-        budget_allocation : collection of pabutools.election.instance.Project
+        budget_allocation : collection of pabutools.instance.pbinstance.Project
             Collection of projects
         satisfaction : class
             The class defining the satisfaction function used to measure the social welfare. It should be a class
@@ -39,7 +36,7 @@ def avg_satisfaction(
         average satisfaction"""
 
     return mean_generator(
-        satisfaction(instance, profile, ballot).sat(budget_allocation)
+        (satisfaction(instance, profile, ballot).sat(budget_allocation), profile.multiplicity(ballot))
         for ballot in profile
     )
 
@@ -52,40 +49,42 @@ def percent_non_empty_handed(
 
 def gini_coefficient_of_satisfaction(
     instance: Instance,
-    profile: ApprovalProfile,
+    profile: Profile | MultiProfile,
     budget_allocation: Iterable[Project],
     satisfaction: type[SatisfactionMeasure],
     invert: bool = False,
 ) -> Number | float:
-    voter_satisfactions = np.array(
-        [
-            frac(satisfaction(instance, profile, ballot).sat(budget_allocation))
-            for ballot in profile
-        ]
-    )
+    voter_satisfactions = []
+    for ballot in profile: 
+        voter_satisfaction = frac(satisfaction(instance, profile, ballot).sat(budget_allocation))
+        for i in range(profile.multiplicity(ballot)):
+            voter_satisfactions.append(voter_satisfaction)
+    
     if invert:
-        return 1 - gini_coefficient(voter_satisfactions)
-    return gini_coefficient(voter_satisfactions)
+        return 1 - gini_coefficient(np.array(voter_satisfactions))
+    return gini_coefficient(np.array(voter_satisfactions))
 
 
 def satisfaction_histogram(
     instance: Instance,
-    profile: Profile,
+    profile: Profile | MultiProfile,
     budget_allocation: Iterable[Project],
     satisfaction: type[SatisfactionMeasure],
     max_satisfaction: float,
-    num_bins: int = 20,
+    num_bins: int = 20
 ) -> list[float]:
-    sat_profile = SatisfactionProfile(
-        instance=instance, profile=profile, sat_class=satisfaction
-    )
+    if isinstance(profile, MultiProfile):
+        sat_profile = SatisfactionMultiProfile(instance=instance, multiprofile=profile, sat_class=satisfaction)
+    else:
+        sat_profile = SatisfactionMultiProfile(instance=instance, profile=profile, sat_class=satisfaction)
+
     hist_data = [0.0 for i in range(num_bins)]
-    for i in range(len(sat_profile)):
-        satisfaction = sat_profile[i].sat(budget_allocation)
-        if satisfaction >= 1:
-            hist_data[-1] += 1
+    for i, ballot in enumerate(sat_profile):
+        satisfaction = ballot.sat(budget_allocation)
+        if satisfaction >= max_satisfaction:
+            hist_data[-1] += sat_profile.multiplicity(ballot)
         else:
-            hist_data[math.floor(satisfaction * num_bins / max_satisfaction)] += 1
+            hist_data[math.floor(satisfaction*num_bins/max_satisfaction)] += sat_profile.multiplicity(ballot)
     for i in range(len(hist_data)):
-        hist_data[i] = hist_data[i] / len(profile)
+        hist_data[i] = hist_data[i]/profile.total_len()
     return hist_data
