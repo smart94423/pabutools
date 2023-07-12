@@ -2,4 +2,5 @@ Instance module
 ===============
 
 .. automodule:: pabutools.election.instance
-   :members:
+    :members:
+    :show-inheritance:

@@ -1,10 +1,41 @@
-from pabutools.election.ballot.ballot import FrozenBallot, Ballot
+from collections.abc import Iterable
+
+from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
 from pabutools.election.instance import Project
 
 from numbers import Number
 
 
 class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
+    """
+    Frozen cardinal ballot, that is, a ballot in which the voter assigned scores to projects.
+    Since there is not frozen dictionary implemented in Python, this class simply inherits from the Python class `dict`,
+    overriding the `set_item` method to ensure that it is non-mutable (raising an exception if the method is used).
+
+    Parameters
+    ----------
+        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+            Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
+
     def __init__(
         self,
         d: dict[Project, Number] = (),
@@ -13,12 +44,12 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
     ):
         dict.__init__(self, d)
         if name is None:
-            if hasattr(d, "name"):
+            if isinstance(d, AbstractBallot):
                 name = d.name
             else:
                 name = ""
         if meta is None:
-            if hasattr(d, "meta"):
+            if isinstance(d, AbstractBallot):
                 meta = d.meta
             else:
                 meta = dict()
@@ -33,13 +64,31 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
 
 class CardinalBallot(dict[Project, Number], Ballot):
     """
-    A cardinal ballot, that is, a ballot in which the voter has indicated a score for every project. It is a
-    subclass of `Ballot`.
+    A cardinal ballot, that is, a ballot in which the voter assigned scores to projects. This class inherits from the
+    Python class `dict` and can be used as one.
+
+    Parameters
+    ----------
+        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+            Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
     Attributes
     ----------
-        d : dict of projects: score
-            The score assigned to the projects. The keys are the projects and map to the score.
-            Defaults to the empty dictionary.
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
     """
 
     def __init__(
@@ -52,23 +101,42 @@ class CardinalBallot(dict[Project, Number], Ballot):
             d = dict()
         dict.__init__(self, d)
         if name is None:
-            if hasattr(d, "name"):
+            if isinstance(d, AbstractBallot):
                 name = d.name
             else:
                 name = ""
         if meta is None:
-            if hasattr(d, "meta"):
+            if isinstance(d, AbstractBallot):
                 meta = d.meta
             else:
                 meta = dict
         Ballot.__init__(self, name=name, meta=meta)
 
-    def complete(self, projects, default_score):
+    def complete(self, projects: Iterable[Project], default_score: Number) -> None:
+        """
+        Completes the ballot by assigning the `default_score` to all projects from `projects` that have not been
+        assigned a score yet.
+
+        Parameters
+        ----------
+            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The set of all the projects to consider. This is typically the instance.
+            default_score : Number
+                The default score that will be assigned.
+        """
         for project in projects:
             if project not in self:
                 self[project] = default_score
 
     def frozen(self) -> FrozenCardinalBallot:
+        """
+        Returns the frozen cardinal ballot (that is hashable) corresponding to the ballot.
+
+        Returns
+        -------
+            FrozenCardinalBallot
+                The frozen cardinal ballot.
+        """
         return FrozenCardinalBallot(self)
 
     # This allows dict method returning copies of a dict to work
