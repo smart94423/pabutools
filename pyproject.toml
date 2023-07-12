@@ -29,6 +29,16 @@ dependencies = [
     "preflibtools",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "build",
+    "coverage",
+    "Sphinx",
+    "sphinx_rtd_theme",
+    "unittest2",
+    "flake8"
+]
+
 [project.urls]
 "Homepage" = "https://github.com/pbvoting/pabutools"
 "Bug Tracker" = "https://github.com/pbvoting/pabutools/issues"
