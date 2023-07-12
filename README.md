@@ -1,4 +1,4 @@
-# PBvoting
+# pabutools
 
 [![Build badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://github.com/pbvoting/pabutoolsactions?query=workflow%3Abuild)
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-PBvoting is a python package providing many tools to work with
+The pabutools are a complete set of tools work with
 participatory budgeting instances.
 
 Participatory budgeting (PB) is a democratic tool used to allocate

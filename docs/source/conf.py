@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "pbvoting"
+project = "pabutools"
 copyright = "2023, Simon Rey"
 author = "Simon Rey"
 
