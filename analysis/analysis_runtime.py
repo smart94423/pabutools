@@ -9,7 +9,7 @@ import seaborn as sns
 import pandas as pd
 
 from analysis.rules import greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res, mes_cost_res_ex
-from pbvoting.election import parse_pabulib
+from pabutools.election import parse_pabulib
 
 
 def runtime_analysis_pool(file_rule):

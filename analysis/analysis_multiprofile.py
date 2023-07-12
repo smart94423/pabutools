@@ -7,14 +7,14 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
-from pbvoting.election import (
+from pabutools.election import (
     parse_pabulib,
     SatisfactionMultiProfile,
     Cost_Sat,
     SatisfactionProfile,
 )
-from pbvoting.rules import greedy_welfare
-from pbvoting.rules.maxwelfare import max_welfare
+from pabutools.rules import greedy_welfare
+from pabutools.rules.maxwelfare import max_welfare
 
 
 def multiprofile_analysis_pool(file):

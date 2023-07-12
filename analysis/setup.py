@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from pbvoting.election import parse_pabulib
+from pabutools.election import parse_pabulib
 
 
 if __name__ == "__main__":

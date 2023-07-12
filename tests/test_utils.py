@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pbvoting.utils import *
+from pabutools.utils import *
 
 
 class TestUtils(TestCase):

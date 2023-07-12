@@ -1,7 +1,7 @@
-from pbvoting.election import Cost_Sat, total_cost, Cardinality_Sat
-from pbvoting.rules import greedy_welfare, sequential_phragmen, method_of_equal_shares, completion_by_rule_combination,\
+from pabutools.election import Cost_Sat, total_cost, Cardinality_Sat
+from pabutools.rules import greedy_welfare, sequential_phragmen, method_of_equal_shares, completion_by_rule_combination,\
     exhaustion_by_budget_increase
-from pbvoting.rules.maxwelfare import max_welfare
+from pabutools.rules.maxwelfare import max_welfare
 
 
 def greed_cost_res(instance, profile):

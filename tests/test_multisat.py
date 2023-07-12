@@ -1,9 +1,9 @@
 from unittest import TestCase
 
 
-from pbvoting.election.profile import get_random_approval_profile
-from pbvoting.election.instance import get_random_instance
-from pbvoting.election.satisfaction import *
+from pabutools.election.profile import get_random_approval_profile
+from pabutools.election.instance import get_random_instance
+from pabutools.election.satisfaction import *
 
 
 class TestSatisfaction(TestCase):

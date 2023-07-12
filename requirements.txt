@@ -1,4 +1,0 @@
-numpy
-mip
-gmpy2
-preflibtools

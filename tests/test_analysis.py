@@ -1,15 +1,15 @@
 from unittest import TestCase
 
-from pbvoting.analysis.instanceproperties import *
-from pbvoting.analysis.profileproperties import *
-from pbvoting.analysis.votersatisfaction import *
-from pbvoting.analysis.category import *
+from pabutools.analysis.instanceproperties import *
+from pabutools.analysis.profileproperties import *
+from pabutools.analysis.votersatisfaction import *
+from pabutools.analysis.category import *
 
-from pbvoting.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
-from pbvoting.election.ballot import ApprovalBallot, OrdinalBallot, CardinalBallot
-from pbvoting.election.profile import OrdinalProfile
-from pbvoting.election.satisfaction.additivesatisfaction import Relative_Cardinality_Sat
-from pbvoting.fractions import frac
+from pabutools.election.satisfaction import Cost_Sat, Additive_Borda_Sat, Cardinality_Sat
+from pabutools.election.ballot import ApprovalBallot, OrdinalBallot, CardinalBallot
+from pabutools.election.profile import OrdinalProfile
+from pabutools.election.satisfaction.additivesatisfaction import Relative_Cardinality_Sat
+from pabutools.fractions import frac
 
 
 class TestAnalysis(TestCase):

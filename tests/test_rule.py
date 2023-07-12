@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-import pbvoting.rules.phragmen
-from pbvoting.fractions import frac
-from pbvoting.election.profile import ApprovalProfile
-from pbvoting.election.ballot import ApprovalBallot
-from pbvoting.election.satisfaction import (
+import pabutools.rules.phragmen
+from pabutools.fractions import frac
+from pabutools.election.profile import ApprovalProfile
+from pabutools.election.ballot import ApprovalBallot
+from pabutools.election.satisfaction import (
     Cost_Sat,
     Cardinality_Sat,
     Effort_Sat,
@@ -14,15 +14,15 @@ from pbvoting.election.satisfaction import (
     SatisfactionProfile,
     SatisfactionMultiProfile,
 )
-from pbvoting.election.instance import Project, Instance
-from pbvoting.rules.phragmen import sequential_phragmen
-from pbvoting.rules.exhaustion import (
+from pabutools.election.instance import Project, Instance
+from pabutools.rules.phragmen import sequential_phragmen
+from pabutools.rules.exhaustion import (
     completion_by_rule_combination,
     exhaustion_by_budget_increase,
 )
-from pbvoting.rules.greedywelfare import greedy_welfare
-from pbvoting.rules.maxwelfare import max_welfare
-from pbvoting.rules.mes import method_of_equal_shares
+from pabutools.rules.greedywelfare import greedy_welfare
+from pabutools.rules.maxwelfare import max_welfare
+from pabutools.rules.mes import method_of_equal_shares
 
 ALL_SAT_RULES = [greedy_welfare, max_welfare, method_of_equal_shares]
 ALL_NON_SAT_RULES = [sequential_phragmen]

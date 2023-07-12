@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from pbvoting.election import OrdinalBallot
-from pbvoting.election.pabulib import parse_pabulib
+from pabutools.election import OrdinalBallot
+from pabutools.election.pabulib import parse_pabulib
 
 import os
 

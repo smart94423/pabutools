@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pbvoting.election import (
+from pabutools.election import (
     Instance,
     Project,
     ApprovalProfile,

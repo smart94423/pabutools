@@ -1,13 +1,6 @@
 pip
-bump2version
-wheel
-watchdog
-flake8
-tox
+build
 coverage
 Sphinx
-ipykernel
 sphinx_rtd_theme
-twine
-
 unittest2

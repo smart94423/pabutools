@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from pbvoting.election.profile import ApprovalProfile
-from pbvoting.election.ballot import ApprovalBallot
-from pbvoting.tiebreaking import *
+from pabutools.election.profile import ApprovalProfile
+from pabutools.election.ballot import ApprovalBallot
+from pabutools.tiebreaking import *
 
 
 class TestTieBreaking(TestCase):

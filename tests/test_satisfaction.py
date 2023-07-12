@@ -3,21 +3,21 @@ from unittest import TestCase
 
 import numpy as np
 
-from pbvoting.election.profile import (
+from pabutools.election.profile import (
     ApprovalProfile,
     CardinalProfile,
     OrdinalProfile,
     get_random_approval_profile,
 )
-from pbvoting.election.instance import Instance, Project, get_random_instance
-from pbvoting.election.ballot import ApprovalBallot, CardinalBallot, OrdinalBallot
-from pbvoting.election.satisfaction import *
-from pbvoting.election.satisfaction.additivesatisfaction import (
+from pabutools.election.instance import Instance, Project, get_random_instance
+from pabutools.election.ballot import ApprovalBallot, CardinalBallot, OrdinalBallot
+from pabutools.election.satisfaction import *
+from pabutools.election.satisfaction.additivesatisfaction import (
     Relative_Cardinality_Sat,
     Relative_Cost_Sat,
     Relative_Cost_Unbounded_Sat,
 )
-from pbvoting.fractions import frac
+from pabutools.fractions import frac
 
 
 class TestSatisfaction(TestCase):
