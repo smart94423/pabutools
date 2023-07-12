@@ -13,13 +13,13 @@ Participatory budgeting (PB) is a democratic tool used to allocate
 a given amount of money to a collection of projects based on a
 group of individuals' preferences over the projects. It has been invented
 in Brazil in the late 80's and is now a widely implemented. See the
-`Wikipedia page <https://en.wikipedia.org/wiki/Participatory_budgeting>`_
+[Wikipedia page](https://en.wikipedia.org/wiki/Participatory_budgeting)
 for more details.
 
 In this library we provide the tools to handle PB instances of different
 kinds, together with voting rules to determine the outcome of the elections
 and some analytic tools. In particular, we provide full support for the
-instances taken from `pabulib <http://pabulib.org/>`_, the reference library
+instances taken from [pabulib](http://pabulib.org), the reference library
 when it comes to PB data.
 
 ## Installation
@@ -192,7 +192,7 @@ profile.append(b1)
 #### Pabulib
 
 We provide full support of the PB data hosted on the
-`pabulib <http://pabulib.org/>`_ website. The function
+[pabulib](http://pabulib.org) website. The function
 `pabutools.election.parse_pabulib` can be used to parse a file
 formatted according to the pabulib format. It returns the instance
 and the profile, using the suitable profile class given the ballot
