@@ -72,7 +72,7 @@ budget allocations, test the feasiblity of a set of projects etc...
 
 ```python
 for b in instance.budget_allocations():
-print(str(b) + " is a feasible budget allocation")
+    print(str(b) + " is a feasible budget allocation")
 instance.is_feasible([p1, p2, p3])   # Returns False
 instance.is_exhaustive([p1, p2])   # Returns True
 ```
@@ -185,7 +185,7 @@ from pabutools.election import Project, OrdinalBallot, OrdinalProfile
 projects = [Project("p{}".format(i), 1) for i in range(10)]
 b1 = OrdinalBallot((projects[0], projects[4], projects[2]))   # Ordinal ballot ranking p0 > p4 > p2
 b1.append(projects[1])   # The ballot becomes p0 > p4 > p2 > p1
-profile = CardinalProfile()
+profile = OrdinalProfile()
 profile.append(b1)
 ```
 
@@ -215,7 +215,7 @@ instance, profile = parse_pabulib("path_to_the_file")
 instance.meta   # The meta dict is populated with all the metadata described in the file
 instance.project_meta    # The project_meta dict is populated with the metadata related to the projects
 for ballot in profile:
-ballot.meta    # The meta dict populated with the metadata corresponding to the ballot
+    ballot.meta    # The meta dict populated with the metadata corresponding to the ballot
 ```
 
 There are several metadata that are stored as members of the relevant
@@ -268,11 +268,11 @@ instance, profile = parse_pabulib("path_to_the_file")
 sat_profile = SatisfactionProfile(instance=instance)
 # We define a satisfaction function:
 class MySatisfaction(SatisfactionMeasure):
-def sat(self, projects):
-    return 100 if "p1" in projects else len(projects)
+    def sat(self, projects):
+        return 100 if "p1" in projects else len(projects)
 # We populate the satisfaction profile
 for ballot in profile:
-sat_profile.append(MySatisfaction(instance, profile, ballot))
+    sat_profile.append(MySatisfaction(instance, profile, ballot))
 # The satisfaction profile is ready for use
 outcome = rule(sat_profile)
 ```
@@ -329,6 +329,8 @@ We illustrate its use by presenting how to define the cardinality
 satisfaction function.
 
 ```python
+from pabutools.election import AdditiveSatisfaction
+
 def cardinality_sat_func(instance, profile, ballot, project):
     return int(project in ballot)
 
@@ -350,6 +352,8 @@ We illustrate its usage by defining the additive Borda satisfaction
 function.
 
 ```python
+from pabutools.election import PositionalSatisfaction
+
 def borda_sat_func(ballot, project):
     if project not in ballot:
         return 0
