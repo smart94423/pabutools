@@ -8,9 +8,8 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
-from pbvoting.election import parse_pabulib, Cost_Sat, Cardinality_Sat
-from pbvoting.rules import greedy_welfare, sequential_phragmen, method_of_equal_shares
-from pbvoting.rules.maxwelfare import max_welfare
+from analysis.rules import greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res, mes_cost_res_ex
+from pbvoting.election import parse_pabulib
 
 
 def runtime_analysis_pool(file_rule):
@@ -45,7 +44,7 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
             for rule in rules:
                 file_rule_set.append((os.path.join(folder_path, file), rule))
 
-    print("A total of {} element will be computed".format(len(file_rule_set)))
+    print("A total of {} element will be computed".format(len(file_rule_set) * 2))
 
     with open(os.path.join("csv", csv_file), "w"):
         pass
@@ -72,12 +71,13 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
         plt.close('all')
         g = sns.pointplot(
             data=data[data["rule"] == rule],
-            x="avg_vote_length_cat",
+            x="num_projects_cat",
             y="runtime",
             hue="profile_type"
         )
         g.set(yscale='log')
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        max_runtime = data[data["rule"] == rule].runtime.max()
+        runtime_range = [0.001] + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)] + [int(max_runtime)]
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(rule)
@@ -94,7 +94,8 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
             hue="rule"
         )
         g.set(yscale='log')
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, data.runtime.max() ** (1 / 10), 6)]
+        max_runtime = data[data["profile_type"] == profile_type].runtime.max()
+        runtime_range = [0.001] + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)] + [int(max_runtime)]
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(profile_type)
@@ -102,28 +103,8 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
         plt.show()
 
 
-def greed_cost_res(instance, profile):
-    return greedy_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
-
-
-def maxwelfare_cost_res(instance, profile):
-    return max_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
-
-
-def greed_card_res(instance, profile):
-    return greedy_welfare(instance, profile, sat_class=Cardinality_Sat, resoluteness=True)
-
-
-def seqphragmen_res(instance, profile):
-    return sequential_phragmen(instance, profile, resoluteness=True)
-
-
-def mes_cost_res(instance, profile):
-    return method_of_equal_shares(instance, profile, sat_class=Cost_Sat, resoluteness=True)
-
-
 if __name__ == "__main__":
     # runtime_analysis_write_data(os.path.join("Pabulib", "all_app"),
-    #                             [greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res])
+    #                             [greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res, mes_cost_res_ex])
 
     runtime_analysis_plot()
