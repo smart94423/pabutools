@@ -6,14 +6,18 @@ from collections import Counter
 from collections.abc import Iterable
 from abc import ABC, abstractmethod
 
-from pbvoting.election.satisfaction import SatisfactionMeasure, SatisfactionProfile, SatisfactionMultiProfile
+from pbvoting.election.satisfaction import (
+    SatisfactionMeasure,
+    SatisfactionProfile,
+    SatisfactionMultiProfile,
+)
 from pbvoting.election.ballot import AbstractBallot, FrozenBallot, Ballot
 from pbvoting.election.instance import Instance
 
 
 class AbstractProfile(ABC):
     """
-        Abstract class representing a profile, that is, a collection of ballots.
+    Abstract class representing a profile, that is, a collection of ballots.
     """
 
     def __init__(self):
@@ -28,7 +32,9 @@ class AbstractProfile(ABC):
         ...
 
     @abstractmethod
-    def as_sat_profile(self, sat_class: type[SatisfactionMeasure]) -> SatisfactionProfile | SatisfactionMultiProfile:
+    def as_sat_profile(
+        self, sat_class: type[SatisfactionMeasure]
+    ) -> SatisfactionProfile | SatisfactionMultiProfile:
         ...
 
     @abstractmethod
@@ -38,22 +44,23 @@ class AbstractProfile(ABC):
 
 class Profile(list, AbstractProfile):
     """
-        A profile, that is, a list of elemnts per voters. It typically contrains all the ballots of the voters, but
-        can also be a profile of satisfaction functions.
-        This class inherits from `list`.
-        This is the class that all profile formats inherit from.
-        Attributes
-        ----------
-            instance : pbvoting.instance.instance.PBInstance
-                The instance with respect to which the profile is defined.
+    A profile, that is, a list of elemnts per voters. It typically contrains all the ballots of the voters, but
+    can also be a profile of satisfaction functions.
+    This class inherits from `list`.
+    This is the class that all profile formats inherit from.
+    Attributes
+    ----------
+        instance : pbvoting.instance.instance.PBInstance
+            The instance with respect to which the profile is defined.
     """
 
-    def __init__(self,
-                 iterable: Iterable[Ballot] = (),
-                 instance: Instance | None = None,
-                 ballot_validation: bool = True,
-                 ballot_type: type[Ballot] = None
-                 ) -> None:
+    def __init__(
+        self,
+        iterable: Iterable[Ballot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[Ballot] = None,
+    ) -> None:
         self.ballot_validation = ballot_validation
         self.ballot_type = ballot_type
         for item in iterable:
@@ -65,9 +72,16 @@ class Profile(list, AbstractProfile):
         self.instance = instance
 
     def validate_ballot(self, ballot: Ballot) -> None:
-        if self.ballot_validation and self.ballot_type is not None and not issubclass(type(ballot), self.ballot_type):
-            raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
-                                                                                            self.__class__.__name__))
+        if (
+            self.ballot_validation
+            and self.ballot_type is not None
+            and not issubclass(type(ballot), self.ballot_type)
+        ):
+            raise TypeError(
+                "Ballot type {} is not compatible with profile type {}.".format(
+                    type(ballot), self.__class__.__name__
+                )
+            )
 
     def multiplicity(self, ballot: Ballot) -> int:
         return 1
@@ -76,16 +90,26 @@ class Profile(list, AbstractProfile):
         ...
 
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]):
-        return SatisfactionProfile(instance=self.instance, profile=self, sat_class=sat_class)
+        return SatisfactionProfile(
+            instance=self.instance, profile=self, sat_class=sat_class
+        )
 
     def total_len(self) -> int:
         return len(self)
 
     def __add__(self, value):
-        return Profile(list.__add__(self, value), instance=self.instance, ballot_validation=self.ballot_validation)
+        return Profile(
+            list.__add__(self, value),
+            instance=self.instance,
+            ballot_validation=self.ballot_validation,
+        )
 
     def __mul__(self, value):
-        return Profile(list.__mul__(self, value), instance=self.instance, ballot_validation=self.ballot_validation)
+        return Profile(
+            list.__mul__(self, value),
+            instance=self.instance,
+            ballot_validation=self.ballot_validation,
+        )
 
     def __setitem__(self, index, item):
         self.validate_ballot(item)
@@ -107,15 +131,15 @@ class Profile(list, AbstractProfile):
 
 
 class MultiProfile(Counter, AbstractProfile):
-    """
-    """
+    """ """
 
-    def __init__(self,
-                 iterable: Iterable[FrozenBallot] = (),
-                 instance: Instance | None = None,
-                 ballot_validation: bool = True,
-                 ballot_type: type[FrozenBallot] = None,
-                 ) -> None:
+    def __init__(
+        self,
+        iterable: Iterable[FrozenBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[FrozenBallot] = None,
+    ) -> None:
         self.ballot_validation = ballot_validation
         self.ballot_type = ballot_type
         Counter.__init__(self, iterable)
@@ -125,15 +149,24 @@ class MultiProfile(Counter, AbstractProfile):
         self.instance = instance
 
     def validate_ballot(self, ballot: FrozenBallot) -> None:
-        if self.ballot_validation and self.ballot_type is not None and not issubclass(type(ballot), self.ballot_type):
-            raise TypeError("Ballot type {} is not compatible with profile type {}.".format(type(ballot),
-                                                                                            self.__class__.__name__))
+        if (
+            self.ballot_validation
+            and self.ballot_type is not None
+            and not issubclass(type(ballot), self.ballot_type)
+        ):
+            raise TypeError(
+                "Ballot type {} is not compatible with profile type {}.".format(
+                    type(ballot), self.__class__.__name__
+                )
+            )
 
     def multiplicity(self, ballot: FrozenBallot) -> int:
         return self[ballot]
 
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]):
-        return SatisfactionMultiProfile(instance=self.instance, multiprofile=self, sat_class=sat_class)
+        return SatisfactionMultiProfile(
+            instance=self.instance, multiprofile=self, sat_class=sat_class
+        )
 
     def total_len(self) -> int:
         return self.total()
@@ -151,6 +184,6 @@ class MultiProfile(Counter, AbstractProfile):
     def extend(self, iterable: Iterable[FrozenBallot] | Iterable[Ballot]):
         for ballot in iterable:
             if issubclass(type(ballot), Ballot):
-                self.append(ballot.freeze())
+                self.append(ballot.frozen())
             else:
                 self.append(ballot)

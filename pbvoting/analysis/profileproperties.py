@@ -3,7 +3,12 @@ import numpy as np
 from numbers import Number
 
 from pbvoting.election.instance import Instance, total_cost
-from pbvoting.election.profile import Profile, ApprovalProfile, CardinalProfile, CumulativeProfile
+from pbvoting.election.profile import (
+    Profile,
+    ApprovalProfile,
+    CardinalProfile,
+    CumulativeProfile,
+)
 
 from pbvoting.fractions import frac
 from pbvoting.utils import mean_generator
@@ -39,11 +44,15 @@ def median_approval_score(instance: Instance, profile: ApprovalProfile) -> Numbe
     return np.median([frac(profile.approval_score(project)) for project in instance])
 
 
-def avg_total_score(instance: Instance, profile: CumulativeProfile | CardinalProfile) -> Number:
+def avg_total_score(
+    instance: Instance, profile: CumulativeProfile | CardinalProfile
+) -> Number:
     """average score of all projects in the instance"""
     return mean_generator(profile.score(project) for project in instance)
 
 
-def median_total_score(instance: Instance, profile: CumulativeProfile | CardinalProfile) -> Number:
+def median_total_score(
+    instance: Instance, profile: CumulativeProfile | CardinalProfile
+) -> Number:
     """median score of all projects in the instance"""
     return np.median([frac(profile.score(project)) for project in instance])

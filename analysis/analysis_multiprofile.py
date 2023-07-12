@@ -7,7 +7,12 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
-from pbvoting.election import parse_pabulib, SatisfactionMultiProfile, Cost_Sat, SatisfactionProfile
+from pbvoting.election import (
+    parse_pabulib,
+    SatisfactionMultiProfile,
+    Cost_Sat,
+    SatisfactionProfile,
+)
 from pbvoting.rules import greedy_welfare
 from pbvoting.rules.maxwelfare import max_welfare
 
@@ -53,23 +58,17 @@ def multiprofile_analysis_write_data(folder_path, csv_file="multiprofile_gain.cs
 
 
 def multiprofile_analysis_write_plot(csv_file="multiprofile_gain.csv"):
+    plt.close("all")
 
-    plt.close('all')
-
-    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding='utf-8')
+    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding="utf-8")
 
     sns.set_theme()
 
-    g = sns.histplot(
-        data=data,
-        x="gains_percent",
-        multiple="stack",
-        binwidth=None
-    )
+    g = sns.histplot(data=data, x="gains_percent", multiple="stack", binwidth=None)
 
     plt.show()
 
-    plt.close('all')
+    plt.close("all")
 
     g = sns.boxplot(
         data=data,

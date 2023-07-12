@@ -1,12 +1,25 @@
 from unittest import TestCase
+
+import pbvoting.rules.phragmen
 from pbvoting.fractions import frac
 from pbvoting.election.profile import ApprovalProfile
 from pbvoting.election.ballot import ApprovalBallot
-from pbvoting.election.satisfaction import Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat, \
-    SatisfactionProfile, SatisfactionMultiProfile
+from pbvoting.election.satisfaction import (
+    Cost_Sat,
+    Cardinality_Sat,
+    Effort_Sat,
+    Cost_Log_Sat,
+    Cost_Sqrt_Sat,
+    CC_Sat,
+    SatisfactionProfile,
+    SatisfactionMultiProfile,
+)
 from pbvoting.election.instance import Project, Instance
 from pbvoting.rules.phragmen import sequential_phragmen
-from pbvoting.rules.exhaustion import completion_by_rule_combination, exhaustion_by_budget_increase
+from pbvoting.rules.exhaustion import (
+    completion_by_rule_combination,
+    exhaustion_by_budget_increase,
+)
 from pbvoting.rules.greedywelfare import greedy_welfare
 from pbvoting.rules.maxwelfare import max_welfare
 from pbvoting.rules.mes import method_of_equal_shares
@@ -17,8 +30,9 @@ ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, C
 
 
 class TestElection:
-
-    def __init__(self, name="", projects=None, instance=None, profile=None, initial_alloc=None):
+    def __init__(
+        self, name="", projects=None, instance=None, profile=None, initial_alloc=None
+    ):
         self.name = name
         self.projects = projects
         self.instance = instance
@@ -40,44 +54,75 @@ def test_elections():
     # Approval example 1
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
     inst = Instance(p, budget_limit=3)
-    prof = ApprovalProfile([
-        ApprovalBallot((p[0], p[1], p[2], p[3])),
-        ApprovalBallot((p[0], p[1], p[2], p[3])),
-    ], instance=inst)
+    prof = ApprovalProfile(
+        [
+            ApprovalBallot((p[0], p[1], p[2], p[3])),
+            ApprovalBallot((p[0], p[1], p[2], p[3])),
+        ],
+        instance=inst,
+    )
     test_election = TestElection("AppEx_1", p, inst, prof)
-    test_election.irr_results_sat[greedy_welfare][Cost_Sat] = sorted([[p[0], p[2]], [p[0], p[3]], [p[1]], [p[2], p[3]]])
-    test_election.irr_results_sat[greedy_welfare][Cardinality_Sat] = sorted([[p[0], p[3]]])
-    test_election.irr_results_sat[max_welfare][Cost_Sat] = sorted([[p[0], p[2]], [p[1]], [p[2], p[3]]])
-    test_election.irr_results_sat[max_welfare][Cardinality_Sat] = sorted([[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]])
+    test_election.irr_results_sat[greedy_welfare][Cost_Sat] = sorted(
+        [[p[0], p[2]], [p[0], p[3]], [p[1]], [p[2], p[3]]]
+    )
+    test_election.irr_results_sat[greedy_welfare][Cardinality_Sat] = sorted(
+        [[p[0], p[3]]]
+    )
+    test_election.irr_results_sat[max_welfare][Cost_Sat] = sorted(
+        [[p[0], p[2]], [p[1]], [p[2], p[3]]]
+    )
+    test_election.irr_results_sat[max_welfare][Cardinality_Sat] = sorted(
+        [[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]]
+    )
     res.append(test_election)
 
     # Approval example 2
     p = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09)]
     inst = Instance(p, budget_limit=4)
-    prof = ApprovalProfile([
-        ApprovalBallot({p[0]}),
-        ApprovalBallot({p[1], p[2], p[3]}),
-        ApprovalBallot({p[1], p[2], p[3]}),
-        ApprovalBallot({p[2]})
-    ], instance=inst)
+    prof = ApprovalProfile(
+        [
+            ApprovalBallot({p[0]}),
+            ApprovalBallot({p[1], p[2], p[3]}),
+            ApprovalBallot({p[1], p[2], p[3]}),
+            ApprovalBallot({p[2]}),
+        ],
+        instance=inst,
+    )
     test_election = TestElection("AppEx_2", p, inst, prof)
-    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
-    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
+    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
+        [[p[0], p[1], p[3]]]
+    )
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
+        [[p[0], p[2]]]
+    )
     res.append(test_election)
 
     # Approval example 3 - With app score 0
-    p = [Project("p0", 1), Project("p1", 0.9), Project("p2", 2), Project("p3", 1.09), Project("p4", 1.09),
-         Project("p5", 1.09)]
+    p = [
+        Project("p0", 1),
+        Project("p1", 0.9),
+        Project("p2", 2),
+        Project("p3", 1.09),
+        Project("p4", 1.09),
+        Project("p5", 1.09),
+    ]
     inst = Instance(p, budget_limit=4)
-    prof = ApprovalProfile([
-        ApprovalBallot({p[0]}),
-        ApprovalBallot({p[1], p[2], p[3]}),
-        ApprovalBallot({p[1], p[2], p[3]}),
-        ApprovalBallot({p[2]})
-    ], instance=inst)
+    prof = ApprovalProfile(
+        [
+            ApprovalBallot({p[0]}),
+            ApprovalBallot({p[1], p[2], p[3]}),
+            ApprovalBallot({p[1], p[2], p[3]}),
+            ApprovalBallot({p[2]}),
+        ],
+        instance=inst,
+    )
     test_election = TestElection("AppEx_3", p, inst, prof)
-    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted([[p[0], p[1], p[3]]])
-    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[p[0], p[2]]])
+    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
+        [[p[0], p[1], p[3]]]
+    )
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
+        [[p[0], p[2]]]
+    )
     res.append(test_election)
 
     # Empty profile
@@ -87,12 +132,22 @@ def test_elections():
     test_election = TestElection("EmptyProfile", p, inst, prof)
     for sat_class in ALL_SAT:
         test_election.irr_results_sat[max_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations()])
+            [sorted(list(b)) for b in inst.budget_allocations()]
+        )
         test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations()
-             if inst.is_exhaustive(b)])
+            [
+                sorted(list(b))
+                for b in inst.budget_allocations()
+                if inst.is_exhaustive(b)
+            ]
+        )
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = [[]]
-    test_election.irr_results_non_sat[sequential_phragmen] = [[p[0]], [p[1]], [p[2]], [p[3]]]
+    test_election.irr_results_non_sat[sequential_phragmen] = [
+        [p[0]],
+        [p[1]],
+        [p[2]],
+        [p[3]],
+    ]
     res.append(test_election)
 
     # Empty profile with initial alloc
@@ -103,11 +158,18 @@ def test_elections():
     test_election = TestElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
     for sat_class in ALL_SAT:
         test_election.irr_results_sat[max_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations() if p[0] in b])
+            [sorted(list(b)) for b in inst.budget_allocations() if p[0] in b]
+        )
         test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations()
-             if p[0] in b and inst.is_exhaustive(b)])
-        test_election.irr_results_sat[method_of_equal_shares][sat_class] = [initial_alloc]
+            [
+                sorted(list(b))
+                for b in inst.budget_allocations()
+                if p[0] in b and inst.is_exhaustive(b)
+            ]
+        )
+        test_election.irr_results_sat[method_of_equal_shares][sat_class] = [
+            initial_alloc
+        ]
     test_election.irr_results_non_sat[sequential_phragmen] = [initial_alloc]
     res.append(test_election)
 
@@ -134,24 +196,29 @@ def test_elections():
         Project("g", 1),
     ]
     inst = Instance(p, budget_limit=4)
-    prof = ApprovalProfile([
-        ApprovalBallot({p[0], p[1]}),
-        ApprovalBallot({p[0], p[1]}),
-        ApprovalBallot({p[0], p[1]}),
-        ApprovalBallot({p[0], p[2]}),
-        ApprovalBallot({p[0], p[2]}),
-        ApprovalBallot({p[0], p[2]}),
-        ApprovalBallot({p[0], p[3]}),
-        ApprovalBallot({p[0], p[3]}),
-        ApprovalBallot({p[1], p[2], p[5]}),
-        ApprovalBallot({p[4]}),
-        ApprovalBallot({p[5]}),
-        ApprovalBallot({p[6]})
-    ], instance=inst)
+    prof = ApprovalProfile(
+        [
+            ApprovalBallot({p[0], p[1]}),
+            ApprovalBallot({p[0], p[1]}),
+            ApprovalBallot({p[0], p[1]}),
+            ApprovalBallot({p[0], p[2]}),
+            ApprovalBallot({p[0], p[2]}),
+            ApprovalBallot({p[0], p[2]}),
+            ApprovalBallot({p[0], p[3]}),
+            ApprovalBallot({p[0], p[3]}),
+            ApprovalBallot({p[1], p[2], p[5]}),
+            ApprovalBallot({p[4]}),
+            ApprovalBallot({p[5]}),
+            ApprovalBallot({p[6]}),
+        ],
+        instance=inst,
+    )
     test_election = TestElection("RunningEx LackSkow23", p, inst, prof)
     test_election.irr_results_non_sat[sequential_phragmen] = sorted([p[:4]])
     for sat_class in [Cost_Sat, Cardinality_Sat, Cost_Sqrt_Sat, Cost_Log_Sat]:
-        test_election.irr_results_sat[method_of_equal_shares][sat_class] = sorted([[p[0]]])
+        test_election.irr_results_sat[method_of_equal_shares][sat_class] = sorted(
+            [[p[0]]]
+        )
     res.append(test_election)
 
     return res
@@ -164,40 +231,81 @@ def run_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         for sat_class in test_election.irr_results_sat[rule]:
             if test_election.irr_results_sat[rule][sat_class] is not None:
-                for profile in [test_election.profile, test_election.profile.as_multiprofile()]:
-                    for sat_profile in [profile.as_sat_profile(sat_class)]:
+                for profile in [
+                    test_election.profile,
+                    test_election.profile.as_multiprofile(),
+                ]:
+                    for sat_profile in [None, profile.as_sat_profile(sat_class)]:
                         # print("\n===================== {} - {} =====================".format(rule.__name__,
                         #                                                                      sat_class.__name__))
                         # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
                         #                                                  profile))
-                        resolute_out = rule(test_election.instance, profile, sat_class=sat_class,
-                                            sat_profile=sat_profile, resoluteness=True,
-                                            initial_budget_allocation=test_election.initial_alloc)
-                        irresolute_out = sorted(rule(test_election.instance, profile, sat_class=sat_class,
-                                                     sat_profile=sat_profile, resoluteness=False,
-                                                     initial_budget_allocation=test_election.initial_alloc))
+                        resolute_out = rule(
+                            test_election.instance,
+                            profile,
+                            sat_class=sat_class,
+                            sat_profile=sat_profile,
+                            resoluteness=True,
+                            initial_budget_allocation=test_election.initial_alloc,
+                        )
+                        irresolute_out = sorted(
+                            rule(
+                                test_election.instance,
+                                profile,
+                                sat_class=sat_class,
+                                sat_profile=sat_profile,
+                                resoluteness=False,
+                                initial_budget_allocation=test_election.initial_alloc,
+                            )
+                        )
                         # print("Res outcome:  {}".format(resolute_out))
                         # print("Irres outcome:  {}".format(irresolute_out))
                         # print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
-                        assert resolute_out in test_election.irr_results_sat[rule][sat_class]
-                        assert resolute_out == rule(test_election.instance, test_election.profile, resoluteness=True,
-                                                    sat_profile=SatisfactionProfile(profile=test_election.profile,
-                                                                                    sat_class=sat_class),
-                                                    initial_budget_allocation=test_election.initial_alloc)
-                        assert irresolute_out == test_election.irr_results_sat[rule][sat_class]
+                        assert (
+                            resolute_out
+                            in test_election.irr_results_sat[rule][sat_class]
+                        )
+                        assert resolute_out == rule(
+                            test_election.instance,
+                            test_election.profile,
+                            resoluteness=True,
+                            sat_profile=SatisfactionProfile(
+                                profile=test_election.profile, sat_class=sat_class
+                            ),
+                            initial_budget_allocation=test_election.initial_alloc,
+                        )
+                        assert (
+                            irresolute_out
+                            == test_election.irr_results_sat[rule][sat_class]
+                        )
 
 
 def run_non_sat_rule(rule):
     for test_election in ALL_TEST_ELECTIONS:
         if test_election.irr_results_non_sat[rule] is not None:
-            for profile in [test_election.profile, test_election.profile.as_multiprofile()]:
+            for profile in [
+                test_election.profile,
+                test_election.profile.as_multiprofile(),
+            ]:
                 # print("\n===================== {} =====================".format(rule.__name__))
                 # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
                 #                                                  test_election.profile))
-                resolute_out = sorted(rule(test_election.instance, profile, resoluteness=True,
-                                           initial_budget_allocation=test_election.initial_alloc))
-                irresolute_out = sorted(rule(test_election.instance, profile, resoluteness=False,
-                                             initial_budget_allocation=test_election.initial_alloc))
+                resolute_out = sorted(
+                    rule(
+                        test_election.instance,
+                        profile,
+                        resoluteness=True,
+                        initial_budget_allocation=test_election.initial_alloc,
+                    )
+                )
+                irresolute_out = sorted(
+                    rule(
+                        test_election.instance,
+                        profile,
+                        resoluteness=False,
+                        initial_budget_allocation=test_election.initial_alloc,
+                    )
+                )
                 # print("Res outcome:  {}".format(resolute_out))
                 # print("Irres outcome:  {}".format(irresolute_out))
                 # print("Irres expected: {}".format(test_election.irr_results_non_sat[rule]))
@@ -206,7 +314,6 @@ def run_non_sat_rule(rule):
 
 
 class TestRule(TestCase):
-
     def test_greedy_welfare(self):
         run_sat_rule(greedy_welfare)
         with self.assertRaises(ValueError):
@@ -214,25 +321,48 @@ class TestRule(TestCase):
 
     def test_greedy_multiprofile(self):
         for test_election in ALL_TEST_ELECTIONS:
-            outcome1 = greedy_welfare(test_election.instance, test_election.profile, resoluteness=True,
-                                      initial_budget_allocation=test_election.initial_alloc,
-                                      sat_class=Cost_Sat)
+            outcome1 = greedy_welfare(
+                test_election.instance,
+                test_election.profile,
+                resoluteness=True,
+                initial_budget_allocation=test_election.initial_alloc,
+                sat_class=Cost_Sat,
+            )
             multiprofile = test_election.profile.as_multiprofile()
-            outcome2 = greedy_welfare(test_election.instance, multiprofile, sat_class=Cost_Sat,
-                                      resoluteness=True, initial_budget_allocation=test_election.initial_alloc)
+            outcome2 = greedy_welfare(
+                test_election.instance,
+                multiprofile,
+                sat_class=Cost_Sat,
+                resoluteness=True,
+                initial_budget_allocation=test_election.initial_alloc,
+            )
             assert outcome1 == outcome2
 
     def test_greedy_multisat(self):
         for test_election in ALL_TEST_ELECTIONS:
             for add_sat in [True, False]:
-                sat_profile = SatisfactionProfile(profile=test_election.profile, sat_class=Cost_Sat)
-                outcome1 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_profile,
-                                          resoluteness=True, initial_budget_allocation=test_election.initial_alloc,
-                                          is_sat_additive=add_sat)
-                sat_multiprofile = SatisfactionMultiProfile(profile=test_election.profile, sat_class=Cost_Sat)
-                outcome2 = greedy_welfare(test_election.instance, test_election.profile, sat_profile=sat_multiprofile,
-                                          resoluteness=True, initial_budget_allocation=test_election.initial_alloc,
-                                          is_sat_additive=add_sat)
+                sat_profile = SatisfactionProfile(
+                    profile=test_election.profile, sat_class=Cost_Sat
+                )
+                outcome1 = greedy_welfare(
+                    test_election.instance,
+                    test_election.profile,
+                    sat_profile=sat_profile,
+                    resoluteness=True,
+                    initial_budget_allocation=test_election.initial_alloc,
+                    is_sat_additive=add_sat,
+                )
+                sat_multiprofile = SatisfactionMultiProfile(
+                    profile=test_election.profile, sat_class=Cost_Sat
+                )
+                outcome2 = greedy_welfare(
+                    test_election.instance,
+                    test_election.profile,
+                    sat_profile=sat_multiprofile,
+                    resoluteness=True,
+                    initial_budget_allocation=test_election.initial_alloc,
+                    is_sat_additive=add_sat,
+                )
                 assert outcome1 == outcome2
 
     def test_max_welfare(self):
@@ -272,32 +402,48 @@ class TestRule(TestCase):
                 ApprovalBallot({projects[1], projects[2], projects[5]}),
                 ApprovalBallot({projects[4]}),
                 ApprovalBallot({projects[5]}),
-                ApprovalBallot({projects[6]})
+                ApprovalBallot({projects[6]}),
             ]
         )
         budget_allocation_mes = method_of_equal_shares(instance, profile, Cost_Sat)
         assert budget_allocation_mes == [projects[0]]
 
-        budget_allocation_mes_iterated = exhaustion_by_budget_increase(instance,
-                                                                       profile,
-                                                                       method_of_equal_shares,
-                                                                       {"sat_class": Cost_Sat},
-                                                                       budget_step=frac(1, 24))
-        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[3]]
+        budget_allocation_mes_iterated = exhaustion_by_budget_increase(
+            instance,
+            profile,
+            method_of_equal_shares,
+            {"sat_class": Cost_Sat},
+            budget_step=frac(1, 24),
+        )
+        assert budget_allocation_mes_iterated == [
+            projects[0],
+            projects[1],
+            projects[2],
+            projects[3],
+        ]
 
-        budget_allocation_mes_iterated = exhaustion_by_budget_increase(instance,
-                                                                       profile,
-                                                                       method_of_equal_shares,
-                                                                       {"sat_class": Cost_Sat},
-                                                                       budget_step=frac(1, 24),
-                                                                       initial_budget_allocation=[projects[6]])
-        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2], projects[6]]
+        budget_allocation_mes_iterated = exhaustion_by_budget_increase(
+            instance,
+            profile,
+            method_of_equal_shares,
+            {"sat_class": Cost_Sat},
+            budget_step=frac(1, 24),
+            initial_budget_allocation=[projects[6]],
+        )
+        assert budget_allocation_mes_iterated == [
+            projects[0],
+            projects[1],
+            projects[2],
+            projects[6],
+        ]
 
-        budget_allocation_mes_iterated_big_steps = exhaustion_by_budget_increase(instance,
-                                                                                 profile,
-                                                                                 method_of_equal_shares,
-                                                                                 {"sat_class": Cost_Sat},
-                                                                                 budget_step=5)
+        budget_allocation_mes_iterated_big_steps = exhaustion_by_budget_increase(
+            instance,
+            profile,
+            method_of_equal_shares,
+            {"sat_class": Cost_Sat},
+            budget_step=5,
+        )
         assert budget_allocation_mes_iterated_big_steps == [projects[0]]
 
         with self.assertRaises(ValueError):
@@ -324,35 +470,55 @@ class TestRule(TestCase):
                 ApprovalBallot({projects[0], projects[3]}),
                 ApprovalBallot({projects[0], projects[3]}),
                 ApprovalBallot({projects[5]}),
-                ApprovalBallot({projects[4]})
+                ApprovalBallot({projects[4]}),
             ]
         )
         budget_allocation_mes = method_of_equal_shares(instance, profile, Cost_Sat)
         assert budget_allocation_mes == [projects[0]]
 
-        budget_allocation_mes_iterated = completion_by_rule_combination(instance,
-                                                                        profile,
-                                                                        [method_of_equal_shares,
-                                                                         greedy_welfare],
-                                                                        [{"sat_class": Cost_Sat},
-                                                                         {"sat_class": Cost_Sat}])
+        budget_allocation_mes_iterated = completion_by_rule_combination(
+            instance,
+            profile,
+            [method_of_equal_shares, greedy_welfare],
+            [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
+        )
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
-        budget_allocation_mes_iterated = completion_by_rule_combination(instance,
-                                                                        profile,
-                                                                        [method_of_equal_shares,
-                                                                         greedy_welfare],
-                                                                        [{"sat_class": Cost_Sat},
-                                                                         {"sat_class": Cost_Sat}],
-                                                                        initial_budget_allocation=[projects[5]])
-        assert budget_allocation_mes_iterated == [projects[0], projects[2], projects[3], projects[5]]
+        budget_allocation_mes_iterated = completion_by_rule_combination(
+            instance,
+            profile,
+            [method_of_equal_shares, greedy_welfare],
+            [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
+            initial_budget_allocation=[projects[5]],
+        )
+        assert budget_allocation_mes_iterated == [
+            projects[0],
+            projects[2],
+            projects[3],
+            projects[5],
+        ]
 
         with self.assertRaises(ValueError):
-            completion_by_rule_combination(instance, profile, [method_of_equal_shares, greedy_welfare],
-                                           [{"sat_class": Cost_Sat}])
+            completion_by_rule_combination(
+                instance,
+                profile,
+                [method_of_equal_shares, greedy_welfare],
+                [{"sat_class": Cost_Sat}],
+            )
 
         with self.assertRaises(ValueError):
-            completion_by_rule_combination(instance, profile, [method_of_equal_shares, greedy_welfare])
+            completion_by_rule_combination(
+                instance, profile, [method_of_equal_shares, greedy_welfare]
+            )
 
-        completion_by_rule_combination(instance, profile, [exhaustion_by_budget_increase, greedy_welfare],
-                                       [{'rule': method_of_equal_shares,
-                                         'rule_params': {'sat_class': Cost_Sat}}, {'sat_class': Cost_Sat}])
+        completion_by_rule_combination(
+            instance,
+            profile,
+            [exhaustion_by_budget_increase, greedy_welfare],
+            [
+                {
+                    "rule": method_of_equal_shares,
+                    "rule_params": {"sat_class": Cost_Sat},
+                },
+                {"sat_class": Cost_Sat},
+            ],
+        )

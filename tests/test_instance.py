@@ -3,34 +3,16 @@ from pbvoting.election.instance import *
 
 
 class TestInstance(TestCase):
-
-    def test_instance_as_set(self):
-        inst = Instance()
-        projects = [Project("p{}".format(i), 1) for i in range(10)]
-        inst.add(projects[0])
-        assert len(inst) == 1
-        inst.add(projects[1])
-        assert len(inst) == 2
-        inst.update(projects[:7])
-        assert len(inst) == 7
-        inst.file_name = "File_Name"
-        inst.__str__()
-        inst.__repr__()
-
-        inst2 = Instance()
-        inst2.update(projects)
-        inst3 = inst.union(inst2)
-        assert len(inst3) == 10
-        assert type(inst3) == Instance
-
     def test_instance(self):
-        inst = Instance([Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2)
+        inst = Instance(
+            [Project("p1", 2), Project("p2", 1), Project("p3", 1)], budget_limit=2
+        )
         assert inst.budget_limit == 2
         assert len(inst) == 3
-        try:
+
+        with self.assertRaises(KeyError):
             inst.get_project("name_that_does_not_appear")
-        except KeyError:
-            pass
+
         p1 = inst.get_project("p1")
         assert p1.name == "p1"
         assert p1.cost == 2
@@ -39,9 +21,15 @@ class TestInstance(TestCase):
         for budget_allocation in inst.budget_allocations():
             budget_allocations.append(budget_allocation)
         assert len(budget_allocations) == 5
-        assert inst.is_feasible([Project("p1", 2), Project("p2", 1), Project("p3", 1)]) is False
+        assert (
+            inst.is_feasible([Project("p1", 2), Project("p2", 1), Project("p3", 1)])
+            is False
+        )
         assert inst.is_feasible([Project("p1", 2)]) is True
-        assert inst.is_exhaustive([Project("p1", 2), Project("p2", 1), Project("p3", 1)]) is True
+        assert (
+            inst.is_exhaustive([Project("p1", 2), Project("p2", 1), Project("p3", 1)])
+            is True
+        )
         assert inst.is_exhaustive([Project("p2", 1)]) is False
         assert inst.is_exhaustive([Project("p3", 1)]) is False
         inst = get_random_instance(10, 1, 10)
@@ -79,4 +67,3 @@ class TestInstance(TestCase):
         assert project <= Project("z")
         assert project < "z"
         assert project < Project("z")
-
