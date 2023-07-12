@@ -1,7 +1,6 @@
 # pabutools
 
 [![Build badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://github.com/pbvoting/pabutoolsactions?query=workflow%3Abuild)
-
 [![codecov](https://codecov.io/gh/Simon-Rey/pbvoting/branch/main/graphs/badge.svg)](https://codecov.io/gh/Simon-Rey/pbvoting/tree/main)
 
 ## Overview

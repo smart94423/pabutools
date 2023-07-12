@@ -1,6 +1,8 @@
 Ballot module
 =============
 
+.. automodule:: pabutools.election.ballot
+
 .. autoclass:: pabutools.election.ballot.ballot.AbstractBallot
     :members:
     :show-inheritance:
