@@ -17,7 +17,7 @@ class SatisfactionMeasure(ABC):
     Abstract class representing a satisfaction function. Only meant to be inherited.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
@@ -60,7 +60,7 @@ class SatisfactionMeasure(ABC):
         Returns the satisfaction of a voter with a given approval ballot for a given subset of projects.
         Parameters
         ----------
-            projects : iterable of pabutools.instance.pbinstance.Project
+            projects : iterable of pabutools.election.instance.Project
                 The set of projects.
         Returns
         -------

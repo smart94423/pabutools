@@ -6,7 +6,11 @@ import math
 
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import ApprovalProfile, Profile
-from pabutools.election.satisfaction import SatisfactionMeasure, CC_Sat, SatisfactionProfile
+from pabutools.election.satisfaction import (
+    SatisfactionMeasure,
+    CC_Sat,
+    SatisfactionProfile,
+)
 from pabutools.fractions import frac
 
 from pabutools.utils import gini_coefficient, mean_generator
@@ -21,11 +25,11 @@ def avg_satisfaction(
     """Computes the average satisfaction for a given instance, profile and satisfaction function
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
-        budget_allocation : collection of pabutools.instance.pbinstance.Project
+        budget_allocation : collection of pabutools.election.instance.Project
             Collection of projects
         satisfaction : class
             The class defining the satisfaction function used to measure the social welfare. It should be a class
@@ -63,22 +67,25 @@ def gini_coefficient_of_satisfaction(
         return 1 - gini_coefficient(voter_satisfactions)
     return gini_coefficient(voter_satisfactions)
 
+
 def satisfaction_histogram(
     instance: Instance,
     profile: Profile,
     budget_allocation: Iterable[Project],
     satisfaction: type[SatisfactionMeasure],
     max_satisfaction: float,
-    num_bins: int = 20
+    num_bins: int = 20,
 ) -> list[float]:
-    sat_profile = SatisfactionProfile(instance=instance, profile=profile, sat_class=satisfaction)
+    sat_profile = SatisfactionProfile(
+        instance=instance, profile=profile, sat_class=satisfaction
+    )
     hist_data = [0.0 for i in range(num_bins)]
     for i in range(len(sat_profile)):
         satisfaction = sat_profile[i].sat(budget_allocation)
         if satisfaction >= 1:
             hist_data[-1] += 1
         else:
-            hist_data[math.floor(satisfaction*num_bins/max_satisfaction)] += 1
+            hist_data[math.floor(satisfaction * num_bins / max_satisfaction)] += 1
     for i in range(len(hist_data)):
-        hist_data[i] = hist_data[i]/len(profile)
+        hist_data[i] = hist_data[i] / len(profile)
     return hist_data

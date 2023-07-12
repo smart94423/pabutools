@@ -11,19 +11,17 @@ def category_proportionality(
     budget_allocation: Iterable[Project],
 ) -> float:
     categories = list(instance.categories)
-    if len(categories) == 0:       
+    if len(categories) == 0:
         raise ValueError(
             "Category proportionality can only be computed for instances with categories."
         )
     if len(budget_allocation) == 0:
         return 0
-    
+
     proportional_allocated_cost_per_category = {
         category: 0.0 for category in categories
     }
-    allocated_cost_per_category = {
-        category: 0.0 for category in categories
-    }
+    allocated_cost_per_category = {category: 0.0 for category in categories}
     allocated_total_cost = 0.0
     for project in budget_allocation:
         allocated_total_cost += project.cost

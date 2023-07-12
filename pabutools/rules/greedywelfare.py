@@ -27,13 +27,13 @@ def greedy_scheme(
     violation of the budget constraint are skipped.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
         sat_profile : pabutools.instance.satisfaction.SatisfactionProfile
             The profile of satisfaction functions.
-        budget_allocation : collection of pabutools.instance.pbinstance.Project
+        budget_allocation : collection of pabutools.election.instance.Project
             An initial budget allocation, typically empty.
         tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
             The tie-breaking rule used.
@@ -42,7 +42,7 @@ def greedy_scheme(
             Defaults to True.
     Returns
     -------
-        list of pabutools.instance.pbinstance.Project if resolute, list of the previous if irresolute
+        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
     """
 
     def aux(inst, prof, sats, allocs, alloc, tie, resolute):
@@ -112,13 +112,13 @@ def greedy_scheme_additive(
     Faster version of the inner algorithm for the greedy rule, if the scores are additive.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
         sat_profile : pabutools.instance.pbinstance.SatisfactionProfile
             The profile of satisfaction functions.
-        budget_allocation : collection of pabutools.instance.pbinstance.Project
+        budget_allocation : collection of pabutools.election.instance.Project
             An initial budget allocation, typically empty.
         tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
             The tie-breaking rule used.
@@ -127,7 +127,7 @@ def greedy_scheme_additive(
             Defaults to True.
     Returns
     -------
-        list of pabutools.instance.pbinstance.Project if resolute, list of the previous if irresolute
+        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
     """
     if not resoluteness:
         return greedy_scheme(
@@ -181,7 +181,7 @@ def greedy_welfare(
     lead to a violation of the budget constraint are skipped.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
@@ -202,11 +202,11 @@ def greedy_welfare(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        initial_budget_allocation : collection of pabutools.instance.pbinstance.Project, optional
+        initial_budget_allocation : collection of pabutools.election.instance.Project, optional
             A potential initial budget allocation.
     Returns
     -------
-        set of pabutools.instance.pbinstance.Project
+        set of pabutools.election.instance.Project
     """
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)

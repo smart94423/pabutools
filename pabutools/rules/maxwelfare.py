@@ -86,7 +86,7 @@ def max_welfare(
     Welfare maximiser.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
@@ -101,11 +101,11 @@ def max_welfare(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        initial_budget_allocation : collection of pabutools.instance.pbinstance.Project, optional
+        initial_budget_allocation : collection of pabutools.election.instance.Project, optional
             A potential initial budget allocation.
     Returns
     -------
-        set of pabutools.instance.pbinstance.Project
+        set of pabutools.election.instance.Project
     """
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)

@@ -4,7 +4,10 @@ from pabutools.election.ballot.approvalballot import (
     FrozenApprovalBallot,
     get_random_approval_ballot,
 )
-from pabutools.election.ballot.cardinalballot import CardinalBallot, FrozenCardinalBallot
+from pabutools.election.ballot.cardinalballot import (
+    CardinalBallot,
+    FrozenCardinalBallot,
+)
 from pabutools.election.ballot.cumulativeballot import (
     CumulativeBallot,
     FrozenCumulativeBallot,

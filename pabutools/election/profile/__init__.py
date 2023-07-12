@@ -13,4 +13,7 @@ from pabutools.election.profile.cardinalprofile import (
     CardinalProfile,
     CardinalMultiProfile,
 )
-from pabutools.election.profile.ordinalprofile import OrdinalProfile, OrdinalMultiProfile
+from pabutools.election.profile.ordinalprofile import (
+    OrdinalProfile,
+    OrdinalMultiProfile,
+)

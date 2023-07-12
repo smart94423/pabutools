@@ -22,7 +22,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
     scores are only computed once and for all.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
@@ -50,17 +50,17 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         self.scores = dict()
         self.preprocessed_values = self.preprocessing(instance, profile, ballot)
 
-    def preprocessing(self,
-                      instance: Instance,
-                      profile: Profile,
-                      ballot: ApprovalBallot
-                      ) -> dict:
+    def preprocessing(
+        self, instance: Instance, profile: Profile, ballot: ApprovalBallot
+    ) -> dict:
         return {}
 
     def get_score(self, project: Project) -> Number:
         if project in self.scores:
             return self.scores[project]
-        score = self.func(self.instance, self.profile, self.ballot, project, self.preprocessed_values)
+        score = self.func(
+            self.instance, self.profile, self.ballot, project, self.preprocessed_values
+        )
         self.scores[project] = score
         return score
 
@@ -70,7 +70,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         satisfaction is additive, it is thus defines as the sum of the score of the projects under consideration.
         Parameters
         ----------
-            projects : set of pabutools.instance.pbinstance.Project
+            projects : set of pabutools.election.instance.Project
                 The set of projects.
         Returns
         -------
@@ -79,12 +79,13 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         return sum(self.get_score(project) for project in projects)
 
 
-def cardinality_sat_func(instance: Instance,
-                         profile: Profile,
-                         ballot: ApprovalBallot,
-                         project: Project,
-                         preprocessed_values: dict
-                         ) -> int:
+def cardinality_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> int:
     return int(project in ballot)
 
 
@@ -95,12 +96,13 @@ class Cardinality_Sat(AdditiveSatisfaction):
         )
 
 
-def cost_sat_func(instance: Instance,
-                  profile: Profile,
-                  ballot: ApprovalBallot,
-                  project: Project,
-                  preprocessed_values: dict
-                  ) -> Number:
+def cost_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> Number:
     return int(project in ballot) * project.cost
 
 
@@ -109,15 +111,18 @@ class Cost_Sat(AdditiveSatisfaction):
         super(Cost_Sat, self).__init__(instance, profile, ballot, cost_sat_func)
 
 
-def relative_cardinality_sat_func(instance: Instance,
-                                  profile: Profile,
-                                  ballot: ApprovalBallot,
-                                  project: Project,
-                                  preprocessed_values: dict
-                                  ) -> int:
-    if preprocessed_values['max_budget_allocation_card'] == 0:
+def relative_cardinality_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> int:
+    if preprocessed_values["max_budget_allocation_card"] == 0:
         return 0
-    return frac(int(project in ballot), preprocessed_values['max_budget_allocation_card'])
+    return frac(
+        int(project in ballot), preprocessed_values["max_budget_allocation_card"]
+    )
 
 
 class Relative_Cardinality_Sat(AdditiveSatisfaction):
@@ -126,27 +131,29 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
             instance, profile, ballot, relative_cardinality_sat_func
         )
 
-    def preprocessing(self,
-                      instance: Instance,
-                      profile: Profile,
-                      ballot: ApprovalBallot):
+    def preprocessing(
+        self, instance: Instance, profile: Profile, ballot: ApprovalBallot
+    ):
         ballot_sorted = sorted(ballot, key=lambda p: (p.cost))
         i, c = 0, 0
         while i < len(ballot) and c + ballot_sorted[i].cost <= instance.budget_limit:
             c += ballot_sorted[i].cost
             i += 1
-        return {'max_budget_allocation_card': i}
+        return {"max_budget_allocation_card": i}
 
 
-def relative_cost_sat_func(instance: Instance,
-                           profile: Profile,
-                           ballot: ApprovalBallot,
-                           project: Project,
-                           preprocessed_values: dict
-                           ) -> int:
-    if preprocessed_values['max_budget_allocation_cost'] == 0:
-        return 0 # TODO
-    return frac(int(project in ballot), preprocessed_values['max_budget_allocation_cost'])
+def relative_cost_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> int:
+    if preprocessed_values["max_budget_allocation_cost"] == 0:
+        return 0  # TODO
+    return frac(
+        int(project in ballot), preprocessed_values["max_budget_allocation_cost"]
+    )
 
 
 class Relative_Cost_Sat(AdditiveSatisfaction):
@@ -155,20 +162,22 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
             instance, profile, ballot, relative_cost_sat_func
         )
 
-    def preprocessing(self,
-                      instance: Instance,
-                      profile: Profile,
-                      ballot: ApprovalBallot):
-        return {'max_budget_allocation_cost': 1}
+    def preprocessing(
+        self, instance: Instance, profile: Profile, ballot: ApprovalBallot
+    ):
+        return {"max_budget_allocation_cost": 1}
 
 
-def relative_cost_unbounded_sat_func(instance: Instance,
-                                     profile: Profile,
-                                     ballot: ApprovalBallot,
-                                     project: Project,
-                                     preprocessed_values: dict
-                                     ) -> Number:
-    return frac(int(project in ballot) * project.cost, preprocessed_values['total_ballot_cost'])
+def relative_cost_unbounded_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> Number:
+    return frac(
+        int(project in ballot) * project.cost, preprocessed_values["total_ballot_cost"]
+    )
 
 
 class Relative_Cost_Unbounded_Sat(AdditiveSatisfaction):
@@ -177,18 +186,19 @@ class Relative_Cost_Unbounded_Sat(AdditiveSatisfaction):
             instance, profile, ballot, relative_cost_unbounded_sat_func
         )
 
-    def preprocessing(self,
-                      instance: Instance,
-                      profile: Profile,
-                      ballot: ApprovalBallot):
-        return {'total_ballot_cost': total_cost([p for p in ballot if p in ballot])}
+    def preprocessing(
+        self, instance: Instance, profile: Profile, ballot: ApprovalBallot
+    ):
+        return {"total_ballot_cost": total_cost([p for p in ballot if p in ballot])}
 
-def effort_sat_func(instance: Instance,
-                    profile: Profile,
-                    ballot: ApprovalBallot,
-                    project: Project,
-                    preprocessed_values: dict
-                    ) -> Number:
+
+def effort_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> Number:
     projects = [project for b in profile if project in b]
     if projects:
         return int(project in ballot) * frac(project.cost, len(projects))
@@ -200,12 +210,13 @@ class Effort_Sat(AdditiveSatisfaction):
         super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
 
 
-def additive_card_sat_func(instance: Instance,
-                           profile: Profile,
-                           ballot: CardinalBallot,
-                           project: Project,
-                           preprocessed_values: dict
-                           ) -> Number:
+def additive_card_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: CardinalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> Number:
     return ballot.get(project, 0)
 
 

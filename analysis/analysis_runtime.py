@@ -8,7 +8,13 @@ import numpy as np
 import seaborn as sns
 import pandas as pd
 
-from analysis.rules import greed_cost_res, maxwelfare_cost_res, seqphragmen_res, mes_cost_res, mes_cost_res_ex
+from analysis.rules import (
+    greed_cost_res,
+    maxwelfare_cost_res,
+    seqphragmen_res,
+    mes_cost_res,
+    mes_cost_res_ex,
+)
 from pabutools.election import parse_pabulib
 
 
@@ -61,23 +67,27 @@ def runtime_analysis_write_data(folder_path, rules, csv_file="runtime.csv"):
 
 
 def runtime_analysis_plot(csv_file="runtime.csv"):
-    plt.close('all')
+    plt.close("all")
 
-    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding='utf-8')
+    data = pd.read_csv(os.path.join("csv", csv_file), sep=";", encoding="utf-8")
 
     sns.set_theme()
 
     for rule in data["rule"].unique():
-        plt.close('all')
+        plt.close("all")
         g = sns.pointplot(
             data=data[data["rule"] == rule],
             x="num_projects_cat",
             y="runtime",
-            hue="profile_type"
+            hue="profile_type",
         )
-        g.set(yscale='log')
+        g.set(yscale="log")
         max_runtime = data[data["rule"] == rule].runtime.max()
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)] + [int(max_runtime)]
+        runtime_range = (
+            [0.001]
+            + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)]
+            + [int(max_runtime)]
+        )
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(rule)
@@ -85,17 +95,21 @@ def runtime_analysis_plot(csv_file="runtime.csv"):
         plt.show()
 
     for profile_type in data["profile_type"].unique():
-        plt.close('all')
+        plt.close("all")
 
         g = sns.pointplot(
             data=data[data["profile_type"] == profile_type],
             x="num_projects_cat",
             y="runtime",
-            hue="rule"
+            hue="rule",
         )
-        g.set(yscale='log')
+        g.set(yscale="log")
         max_runtime = data[data["profile_type"] == profile_type].runtime.max()
-        runtime_range = [0.001] + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)] + [int(max_runtime)]
+        runtime_range = (
+            [0.001]
+            + [int(x) for x in np.logspace(0, max_runtime ** (1 / 10), 6)]
+            + [int(max_runtime)]
+        )
         g.set(yticks=runtime_range)
         g.set(yticklabels=runtime_range)
         g.set_title(profile_type)
