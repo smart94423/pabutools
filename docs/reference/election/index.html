@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Election module &#8212; Pabutools</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/election/index';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Instance module" href="instance.html" />
+    <link rel="prev" title="Reference" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pabutools</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Election module</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html">Ballot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html">Satisfaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libraries.html">Preference Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rules/index.html">Rules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis module</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/pbvoting/pabutools" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/election/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Election module</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="election-module">
+<h1>Election module<a class="headerlink" href="#election-module" title="Permalink to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instance.html">Instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance"><code class="docutils literal notranslate"><span class="pre">Instance</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.budget_limit"><code class="docutils literal notranslate"><span class="pre">Instance.budget_limit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.categories"><code class="docutils literal notranslate"><span class="pre">Instance.categories</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.targets"><code class="docutils literal notranslate"><span class="pre">Instance.targets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.file_path"><code class="docutils literal notranslate"><span class="pre">Instance.file_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.file_name"><code class="docutils literal notranslate"><span class="pre">Instance.file_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.parsing_errors"><code class="docutils literal notranslate"><span class="pre">Instance.parsing_errors</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.meta"><code class="docutils literal notranslate"><span class="pre">Instance.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.project_meta"><code class="docutils literal notranslate"><span class="pre">Instance.project_meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.budget_allocations"><code class="docutils literal notranslate"><span class="pre">Instance.budget_allocations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.copy"><code class="docutils literal notranslate"><span class="pre">Instance.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.difference"><code class="docutils literal notranslate"><span class="pre">Instance.difference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.difference_update"><code class="docutils literal notranslate"><span class="pre">Instance.difference_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.get_project"><code class="docutils literal notranslate"><span class="pre">Instance.get_project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.intersection"><code class="docutils literal notranslate"><span class="pre">Instance.intersection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.intersection_update"><code class="docutils literal notranslate"><span class="pre">Instance.intersection_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.is_exhaustive"><code class="docutils literal notranslate"><span class="pre">Instance.is_exhaustive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.is_feasible"><code class="docutils literal notranslate"><span class="pre">Instance.is_feasible()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.is_trivial"><code class="docutils literal notranslate"><span class="pre">Instance.is_trivial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.symmetric_difference"><code class="docutils literal notranslate"><span class="pre">Instance.symmetric_difference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.symmetric_difference_update"><code class="docutils literal notranslate"><span class="pre">Instance.symmetric_difference_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance.union"><code class="docutils literal notranslate"><span class="pre">Instance.union()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html#pabutools.election.instance.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Project.name"><code class="docutils literal notranslate"><span class="pre">Project.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Project.cost"><code class="docutils literal notranslate"><span class="pre">Project.cost</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Project.categories"><code class="docutils literal notranslate"><span class="pre">Project.categories</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="instance.html#pabutools.election.instance.Project.targets"><code class="docutils literal notranslate"><span class="pre">Project.targets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html#pabutools.election.instance.get_random_instance"><code class="docutils literal notranslate"><span class="pre">get_random_instance()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html#pabutools.election.instance.total_cost"><code class="docutils literal notranslate"><span class="pre">total_cost()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ballot.html">Ballot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot"><code class="docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot.name"><code class="docutils literal notranslate"><span class="pre">AbstractBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot.meta"><code class="docutils literal notranslate"><span class="pre">AbstractBallot.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot"><code class="docutils literal notranslate"><span class="pre">Ballot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot.name"><code class="docutils literal notranslate"><span class="pre">Ballot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot.meta"><code class="docutils literal notranslate"><span class="pre">Ballot.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot.frozen"><code class="docutils literal notranslate"><span class="pre">Ballot.frozen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.name"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.meta"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.difference"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.difference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.difference_update"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.difference_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.frozen"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.frozen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.intersection"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.intersection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.intersection_update"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.intersection_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.symmetric_difference"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.symmetric_difference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.symmetric_difference_update"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.symmetric_difference_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.union"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.union()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot"><code class="docutils literal notranslate"><span class="pre">CardinalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.name"><code class="docutils literal notranslate"><span class="pre">CardinalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.meta"><code class="docutils literal notranslate"><span class="pre">CardinalBallot.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.complete"><code class="docutils literal notranslate"><span class="pre">CardinalBallot.complete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.copy"><code class="docutils literal notranslate"><span class="pre">CardinalBallot.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.frozen"><code class="docutils literal notranslate"><span class="pre">CardinalBallot.frozen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot"><code class="docutils literal notranslate"><span class="pre">CumulativeBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot.name"><code class="docutils literal notranslate"><span class="pre">CumulativeBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot.meta"><code class="docutils literal notranslate"><span class="pre">CumulativeBallot.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeBallot.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot.frozen"><code class="docutils literal notranslate"><span class="pre">CumulativeBallot.frozen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.name"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.meta"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.append"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.append()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.frozen"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.frozen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.index"><code class="docutils literal notranslate"><span class="pre">OrdinalBallot.index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.FrozenBallot"><code class="docutils literal notranslate"><span class="pre">FrozenBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.FrozenBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.FrozenBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenBallot.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot"><code class="docutils literal notranslate"><span class="pre">FrozenCardinalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenCardinalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenCardinalBallot.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot"><code class="docutils literal notranslate"><span class="pre">FrozenCumulativeBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenCumulativeBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenCumulativeBallot.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot"><code class="docutils literal notranslate"><span class="pre">FrozenOrdinalBallot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenOrdinalBallot.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenOrdinalBallot.meta</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile"><code class="docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile.append"><code class="docutils literal notranslate"><span class="pre">Profile.append()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile.extend"><code class="docutils literal notranslate"><span class="pre">Profile.extend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile.insert"><code class="docutils literal notranslate"><span class="pre">Profile.insert()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approval_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approved_projects()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_party_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_trivial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.get_random_approval_profile"><code class="docutils literal notranslate"><span class="pre">get_random_approval_profile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.get_all_approval_profiles"><code class="docutils literal notranslate"><span class="pre">get_all_approval_profiles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.reverse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.score"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.sort"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.reverse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile.sort"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.MultiProfile"><code class="docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.approval_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="satisfaction.html">Satisfaction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.AdditiveSatisfaction"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.AdditiveSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.func</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.AdditiveSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Additive_Borda_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Additive_Cardinal_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.CC_Sat"><code class="docutils literal notranslate"><span class="pre">CC_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Cardinality_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Cost_Log_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Log_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Cost_Sqrt_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sqrt_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Effort_Sat"><code class="docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.func</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.GroupSatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">GroupSatisfactionMeasure</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Relative_Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Relative_Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.Relative_Cost_Unbounded_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Unbounded_Sat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionMeasure.sat"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionMultiProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionMultiProfile</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionProfile.copy"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html#pabutools.election.satisfaction.SatisfactionProfile.reverse"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">Preference Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html#pabutools.election.pabulib.parse_pabulib"><code class="docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="target" id="module-pabutools.election"></span></section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="instance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Instance module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

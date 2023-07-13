@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Satisfaction module &#8212; Pabutools</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/election/satisfaction';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Instance module" href="libraries.html" />
+    <link rel="prev" title="Profile module" href="profile.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pabutools</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Election module</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html">Ballot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile.html">Profile</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Satisfaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libraries.html">Preference Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rules/index.html">Rules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis module</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/pbvoting/pabutools" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/election/satisfaction.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Satisfaction module</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.func</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Additive_Borda_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Additive_Cardinal_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.CC_Sat"><code class="docutils literal notranslate"><span class="pre">CC_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Cardinality_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Log_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Log_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Sqrt_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sqrt_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Effort_Sat"><code class="docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.func</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.GroupSatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">GroupSatisfactionMeasure</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.PositionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.PositionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cost_Unbounded_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Unbounded_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMeasure.sat"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMultiProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionMultiProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile.copy"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile.reverse"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-pabutools.election.satisfaction">
+<span id="satisfaction-module"></span><h1>Satisfaction module<a class="headerlink" href="#module-pabutools.election.satisfaction" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.AdditiveSatisfaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditiveSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.AdditiveSatisfaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Class representing additive satisfaction functions, that is, satisfaction functions for which the total
+satisfaction is exactly the sum of the satisfaction of the individual projects. To speed up computations,
+scores are only computed once and for all.
+:param instance: The instance.
+:type instance: pabutools.election.instance.Instance
+:param profile: The profile.
+:type profile: pabutools.instance.profile.Profile
+:param ballot: The approval ballot.
+:type ballot: pabutools.instance.profile.Ballot
+:param func: A function taking as input an instance, a profile, a ballot and a project, and returning</p>
+<blockquote>
+<div><p>the score as a fraction.</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.AdditiveSatisfaction.func">
+<span class="sig-name descname"><span class="pre">func</span></span><a class="headerlink" href="#pabutools.election.satisfaction.AdditiveSatisfaction.func" title="Permalink to this definition">#</a></dt>
+<dd><p>A function taking as input an instance, a profile, a ballot and a project, and returning the score of
+the project as a fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.AdditiveSatisfaction.sat">
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.AdditiveSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the satisfaction of a voter with a given approval ballot for a given subset of projects. The
+satisfaction is additive, it is thus defines as the sum of the score of the projects under consideration.
+:param projects: The set of projects.
+:type projects: set of pabutools.election.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Additive_Borda_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Additive_Borda_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot" title="pabutools.election.ballot.ordinalballot.OrdinalBallot"><span class="pre">OrdinalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#Additive_Borda_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Additive_Borda_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Additive_Cardinal_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Additive_Cardinal_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot" title="pabutools.election.ballot.cardinalballot.CardinalBallot"><span class="pre">CardinalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Additive_Cardinal_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Additive_Cardinal_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.CC_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CC_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#CC_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.CC_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Cardinality_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cardinality_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Cardinality_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Cardinality_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Cost_Log_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cost_Log_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#Cost_Log_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Cost_Log_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Cost_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cost_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Cost_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Cost_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Cost_Sqrt_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cost_Sqrt_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#Cost_Sqrt_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Cost_Sqrt_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Effort_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Effort_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Effort_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Effort_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.FunctionalSatisfaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FunctionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.FunctionalSatisfaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.
+:param instance: The instance.
+:type instance: pabutools.election.instance.Instance
+:param profile: The profile.
+:type profile: pabutools.instance.profile.Profile
+:param ballot: The ballot.
+:type ballot: pabutools.instance.profile.Ballot
+:param func: A function taking as input an instance, a ballot and a subset of projects, and returning the score</p>
+<blockquote>
+<div><p>as a fraction.</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.FunctionalSatisfaction.func">
+<span class="sig-name descname"><span class="pre">func</span></span><a class="headerlink" href="#pabutools.election.satisfaction.FunctionalSatisfaction.func" title="Permalink to this definition">#</a></dt>
+<dd><p>A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
+score of the subset of projects as a fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.FunctionalSatisfaction.sat">
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.FunctionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
+by the inner function specified at initialisation.
+:param projects: The set of projects.
+:type projects: Iterable[pabutools.election.instance.Project]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.GroupSatisfactionMeasure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GroupSatisfactionMeasure</span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.GroupSatisfactionMeasure" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.PositionalSatisfaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PositionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot" title="pabutools.election.ballot.ordinalballot.OrdinalBallot"><span class="pre">OrdinalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot" title="pabutools.election.ballot.ordinalballot.OrdinalBallot"><span class="pre">OrdinalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.PositionalSatisfaction" title="Permalink to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.
+For a set of projects, the total satisfaction is additive.</p>
+</div></blockquote>
+<dl>
+<dt>Parameters</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>instance<span class="classifier">pabutools.election.instance.Instance</span></dt><dd><p>The instance.</p>
+</dd>
+<dt>profile<span class="classifier">pabutools.instance.profile.Profile</span></dt><dd><p>The profile.</p>
+</dd>
+<dt>ballot<span class="classifier">pabutools.instance.profile.OrdinalBallot</span></dt><dd><p>The ordinal ballot.</p>
+</dd>
+<dt>func<span class="classifier">function</span></dt><dd><p>A function taking as input an instance, a ballot and a subset of projects, and returning the score
+as a fraction.</p>
+</dd>
+</dl>
+</div></blockquote>
+<blockquote>
+<div><dl class="simple">
+<dt>func<span class="classifier">function</span></dt><dd><p>A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
+score of the subset of projects as a fraction.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.PositionalSatisfaction.sat">
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.PositionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
+by the inner function specified at initialisation.
+:param projects: The set of projects.
+:type projects: Iterable[pabutools.election.instance.Project]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Relative_Cardinality_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Relative_Cardinality_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Relative_Cardinality_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Relative_Cardinality_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Relative_Cost_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Relative_Cost_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Relative_Cost_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Relative_Cost_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.Relative_Cost_Unbounded_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Relative_Cost_Unbounded_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Relative_Cost_Unbounded_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.Relative_Cost_Unbounded_Sat" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionMeasure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SatisfactionMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><span class="pre">Ballot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionMeasure" title="Permalink to this definition">#</a></dt>
+<dd><p>Abstract class representing a satisfaction function. Only meant to be inherited.
+:param instance: The instance.
+:type instance: pabutools.election.instance.Instance
+:param profile: The profile.
+:type profile: pabutools.instance.profile.Profile
+:param ballot: The ballot.
+:type ballot: pabutools.instance.profile.Ballot</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionMeasure.sat">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionMeasure.sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the satisfaction of a voter with a given approval ballot for a given subset of projects.
+:param projects: The set of projects.
+:type projects: iterable of pabutools.election.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionMultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SatisfactionMultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.satisfaction.SatisfactionMeasure" title="pabutools.election.satisfaction.SatisfactionMeasure"><span class="pre">SatisfactionMeasure</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiprofile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><span class="pre">MultiProfile</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sat_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.satisfaction.SatisfactionMeasure" title="pabutools.election.satisfaction.SatisfactionMeasure"><span class="pre">SatisfactionMeasure</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionMultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionMultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>A profile of satisfaction functions, one per voter.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SatisfactionProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sat_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.satisfaction.SatisfactionMeasure" title="pabutools.election.satisfaction.SatisfactionMeasure"><span class="pre">SatisfactionMeasure</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>A profile of satisfaction functions, one per voter.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.SatisfactionProfile.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.satisfaction.SatisfactionProfile.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse <em>IN PLACE</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="profile.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Profile module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="libraries.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Instance module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.func</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.AdditiveSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">AdditiveSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Additive_Borda_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Additive_Cardinal_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.CC_Sat"><code class="docutils literal notranslate"><span class="pre">CC_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Cardinality_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Log_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Log_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Cost_Sqrt_Sat"><code class="docutils literal notranslate"><span class="pre">Cost_Sqrt_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Effort_Sat"><code class="docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction.func"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.func</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.FunctionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">FunctionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.GroupSatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">GroupSatisfactionMeasure</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.PositionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.PositionalSatisfaction.sat"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cardinality_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cost_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.Relative_Cost_Unbounded_Sat"><code class="docutils literal notranslate"><span class="pre">Relative_Cost_Unbounded_Sat</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMeasure"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMeasure.sat"><code class="docutils literal notranslate"><span class="pre">SatisfactionMeasure.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionMultiProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionMultiProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile.copy"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.SatisfactionProfile.reverse"><code class="docutils literal notranslate"><span class="pre">SatisfactionProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,838 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Profile module &#8212; Pabutools</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/election/profile';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Satisfaction module" href="satisfaction.html" />
+    <link rel="prev" title="Ballot module" href="ballot.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pabutools</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Election module</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ballot.html">Ballot</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="satisfaction.html">Satisfaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libraries.html">Preference Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rules/index.html">Rules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis module</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/pbvoting/pabutools" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/election/profile.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Profile module</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.AbstractProfile"><code class="docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.append"><code class="docutils literal notranslate"><span class="pre">Profile.append()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.extend"><code class="docutils literal notranslate"><span class="pre">Profile.extend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.insert"><code class="docutils literal notranslate"><span class="pre">Profile.insert()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approval_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approved_projects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_party_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_trivial()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.get_random_approval_profile"><code class="docutils literal notranslate"><span class="pre">get_random_approval_profile()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.get_all_approval_profiles"><code class="docutils literal notranslate"><span class="pre">get_all_approval_profiles()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.reverse()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.score"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.sort"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.reverse()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.sort"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.MultiProfile"><code class="docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.approval_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-pabutools.election.profile">
+<span id="profile-module"></span><h1>Profile module<a class="headerlink" href="#module-pabutools.election.profile" title="Permalink to this heading">#</a></h1>
+<p>Module describing different profile formats. A profile simply correspond to a list of ballots
+(see the py:mod:<cite>~pabutools.election.ballot</cite> module), one for each voter of the election. The structure of this module
+is very similar to that of the <a class="reference internal" href="ballot.html#module-pabutools.election.ballot" title="pabutools.election.ballot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ballot</span></code></a> module.</p>
+<p>All profiles are derived from the <a class="reference internal" href="#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a> class. Then, two
+general categories of profiles are introduced. First, the usual profiles that contain one ballot per voter. These are
+implemented by the following classes, all inheriting from the class
+<a class="reference internal" href="#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pabutools.election.profile.approvalprofile.ApprovalProfile" title="pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.cardinalprofile.CardinalProfile" title="pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile" title="pabutools.election.profile.cumulativeprofile.CumulativeProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile" title="pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a></p></li>
+</ul>
+<p>The second category of profiles this module introduce are the so-called multiprofile. In those profiles, only unique
+ballots are stored, together with their multiplicity. Frozen ballots are used here as the ballots need to be
+non-mutable. The corresponding classes all inherit from
+<a class="reference internal" href="#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a>, and are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile" title="pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile" title="pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile" title="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile" title="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a></p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.AbstractProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AbstractProfile</span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#AbstractProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.AbstractProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract class representing a profile, that is, a collection of ballots.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.Profile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><span class="pre">Ballot</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><span class="pre">pabutools.election.ballot.ballot.Ballot</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#Profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.Profile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <a class="reference internal" href="#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a></p>
+<p>A profile, that is, a list of elemnts per voters. It typically contrains all the ballots of the voters, but
+can also be a profile of satisfaction functions.
+This class inherits from <cite>list</cite>.
+This is the class that all profile formats inherit from.
+.. attribute:: instance</p>
+<blockquote>
+<div><p>The instance with respect to which the profile is defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pabutools.instance.instance.PBInstance</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.Profile.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><span class="pre">Ballot</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#Profile.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.Profile.append" title="Permalink to this definition">#</a></dt>
+<dd><p>Append object to the end of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.Profile.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#Profile.extend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.Profile.extend" title="Permalink to this definition">#</a></dt>
+<dd><p>Extend list by appending elements from the iterable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.Profile.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><span class="pre">Ballot</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#Profile.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.Profile.insert" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert object before index.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApprovalProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.approvalballot.ApprovalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.Ballot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.approvalballot.ApprovalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_cost:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_cost:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a></p>
+<p>A profile of approval ballots. Inherits from <cite>pabutools.instance.profile.Profile</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score">
+<span class="sig-name descname"><span class="pre">approval_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalProfile.approval_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the approval score of a project, that is, the number of voters who approved of it.
+:param project: The project.
+:type project: pabutools.instance.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects">
+<span class="sig-name descname"><span class="pre">approved_projects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">pabutools.election.instance.Project</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalProfile.approved_projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects" title="Permalink to this definition">#</a></dt>
+<dd><p>A set of all projects approved by at least one voter.
+:rtype: set of projects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list">
+<span class="sig-name descname"><span class="pre">is_party_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalProfile.is_party_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list" title="Permalink to this definition">#</a></dt>
+<dd><p>Check whether this profile is a party-list profile.
+In a party-list profile all approval sets are either disjoint or equal.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial">
+<span class="sig-name descname"><span class="pre">is_trivial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalProfile.is_trivial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial" title="Permalink to this definition">#</a></dt>
+<dd><p>Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost
+that exceeds the budget limit.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalProfile.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse <em>IN PLACE</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.get_random_approval_profile">
+<span class="sig-name descname"><span class="pre">get_random_approval_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.profile.approvalprofile.ApprovalProfile" title="pabutools.election.profile.approvalprofile.ApprovalProfile"><span class="pre">ApprovalProfile</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#get_random_approval_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.get_random_approval_profile" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a random approval profile in which approval ballots are such that each project is approved with
+probability 0.5.
+:param instance: The instance the profile is defined with respect to.
+:type instance: pabutools.instance.instance.PBInstance
+:param num_agents: The length of the profile, i.e., the number of agents..
+:type num_agents: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pabutools.instance.profile.ApprovalBallot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.get_all_approval_profiles">
+<span class="sig-name descname"><span class="pre">get_all_approval_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#get_all_approval_profiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.get_all_approval_profiles" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a generator over all the possible profile for a given instance of a given length.
+:param instance: The instance the profile is defined with respect to.
+:type instance: pabutools.instance.instance.PBInstance
+:param num_agents: The length of the profile, i.e., the number of agents..
+:type num_agents: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pabutools.instance.profile.ApprovalBallot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CardinalProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.cardinalballot.CardinalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.Ballot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.cardinalballot.CardinalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cardinalprofile.html#CardinalProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a></p>
+<p>A profile of cardinal ballots. Inherits from <cite>pabutools.instance.profile.Profile</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalProfile.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse <em>IN PLACE</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalProfile.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/cardinalprofile.html#CardinalProfile.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the score of a project, that is, the sum of scores received from all voters.
+:param project: The project.
+:type project: pabutools.instance.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fraction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalProfile.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cardinalprofile.html#CardinalProfile.sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.sort" title="Permalink to this definition">#</a></dt>
+<dd><p>Sort the list in ascending order and return None.</p>
+<p>The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
+order of two equal elements is maintained).</p>
+<p>If a key function is given, apply it once to each list item and sort them,
+ascending or descending, according to their function values.</p>
+<p>The reverse flag can be set to sort in descending order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CumulativeProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.cumulativeballot.CumulativeBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.Ballot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.cumulativeballot.CumulativeBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_total_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_total_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cumulativeprofile.html#CumulativeProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.cardinalprofile.CardinalProfile" title="pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a></p>
+<p>A profile of cardinal ballots. Inherits from <cite>pabutools.instance.profile.Profile</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeProfile.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse <em>IN PLACE</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeProfile.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cumulativeprofile.html#CumulativeProfile.sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.sort" title="Permalink to this definition">#</a></dt>
+<dd><p>Sort the list in ascending order and return None.</p>
+<p>The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
+order of two equal elements is maintained).</p>
+<p>If a key function is given, apply it once to each list item and sort them,
+ascending or descending, according to their function values.</p>
+<p>The reverse flag can be set to sort in descending order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.ordinalprofile.OrdinalProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrdinalProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.ordinalballot.OrdinalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.Ballot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.ordinalballot.OrdinalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/ordinalprofile.html#OrdinalProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a></p>
+<p>A profile of cardinal ballots. Inherits from <cite>pabutools.instance.profile.Profile</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.ordinalprofile.OrdinalProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.ordinalprofile.OrdinalProfile.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.reverse" title="Permalink to this definition">#</a></dt>
+<dd><p>Reverse <em>IN PLACE</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.profile.MultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.FrozenBallot" title="pabutools.election.ballot.ballot.FrozenBallot"><span class="pre">FrozenBallot</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.FrozenBallot" title="pabutools.election.ballot.ballot.FrozenBallot"><span class="pre">pabutools.election.ballot.ballot.FrozenBallot</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/profile.html#MultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.profile.MultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Counter</span></code>, <a class="reference internal" href="#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a></p>
+<p>Multiprofiles</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalMultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApprovalMultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.approvalballot.FrozenApprovalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.FrozenBallot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.approvalballot.FrozenApprovalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile:</span> <span class="pre">~pabutools.election.profile.approvalprofile.ApprovalProfile</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_cost:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_cost:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalMultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score">
+<span class="sig-name descname"><span class="pre">approval_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/approvalprofile.html#ApprovalMultiProfile.approval_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the approval score of a project, that is, the number of voters who approved of it.
+:param project: The project.
+:type project: pabutools.instance.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.approvalprofile.ApprovalMultiProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalMultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CardinalMultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.FrozenBallot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.cardinalballot.FrozenCardinalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile:</span> <span class="pre">~pabutools.election.profile.cardinalprofile.CardinalProfile</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cardinalprofile.html#CardinalMultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalMultiProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CumulativeMultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.FrozenBallot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile:</span> <span class="pre">~pabutools.election.profile.cumulativeprofile.CumulativeProfile</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_total_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_total_score:</span> <span class="pre">~numbers.Number</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/cumulativeprofile.html#CumulativeMultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile" title="pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a></p>
+<p>A profile of cardinal ballots. Inherits from <cite>pabutools.instance.profile.Profile</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrdinalMultiProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable:</span> <span class="pre">~collections.abc.Iterable[~pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~pabutools.election.instance.Instance</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_validation:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot_type:</span> <span class="pre">type[pabutools.election.ballot.ballot.FrozenBallot]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile:</span> <span class="pre">~pabutools.election.profile.ordinalprofile.OrdinalProfile</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_min_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legal_max_length:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/profile/ordinalprofile.html#OrdinalMultiProfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a shallow copy.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ballot.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Ballot module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="satisfaction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Satisfaction module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.AbstractProfile"><code class="docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.append"><code class="docutils literal notranslate"><span class="pre">Profile.append()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.extend"><code class="docutils literal notranslate"><span class="pre">Profile.extend()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.Profile.insert"><code class="docutils literal notranslate"><span class="pre">Profile.insert()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approval_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.approved_projects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_party_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.is_trivial()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">ApprovalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.get_random_approval_profile"><code class="docutils literal notranslate"><span class="pre">get_random_approval_profile()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.get_all_approval_profiles"><code class="docutils literal notranslate"><span class="pre">get_all_approval_profiles()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.reverse()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.score"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalProfile.sort"><code class="docutils literal notranslate"><span class="pre">CardinalProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.reverse"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.reverse()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile.sort"><code class="docutils literal notranslate"><span class="pre">CumulativeProfile.sort()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile.reverse"><code class="docutils literal notranslate"><span class="pre">OrdinalProfile.reverse()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.profile.MultiProfile"><code class="docutils literal notranslate"><span class="pre">MultiProfile</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.approval_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">ApprovalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile.copy"><code class="docutils literal notranslate"><span class="pre">OrdinalMultiProfile.copy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

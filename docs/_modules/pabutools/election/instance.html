@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pabutools.election.instance &#8212; Pabutools</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pabutools/election/instance';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pabutools</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/election/index.html">Election module</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/instance.html">Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/ballot.html">Ballot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/profile.html">Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/satisfaction.html">Satisfaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/libraries.html">Preference Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/rules/index.html">Rules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/analysis/index.html">Analysis module</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/pbvoting/pabutools" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for pabutools.election.instance</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module defining the basic classes used to represent a participatory budgeting election.</span>
+<span class="sd">The :py:class:`~pabutools.election.instance.Project` and the</span>
+<span class="sd">:py:class:`~pabutools.election.instance.Instance` classes are defined here.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">powerset</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a project, that is, the entity that is voted upon in a participatory budgeting election.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            The name of the project. This is used as the identifier of a project. It should be unique with a collection</span>
+<span class="sd">            of projects, though this is not enforced.</span>
+<span class="sd">            Defaults to `&quot;&quot;`.</span>
+<span class="sd">        cost : Number, optional</span>
+<span class="sd">            The cost of the project.</span>
+<span class="sd">            Defaults to `0`.</span>
+<span class="sd">        categories: set[str], optional</span>
+<span class="sd">            The categories that the project is a member of. These categories can  &quot;Urban greenery&quot; or &quot;Public</span>
+<span class="sd">            transport&quot; for instance.</span>
+<span class="sd">            Defaults to `{}`.</span>
+<span class="sd">        targets: set[str], optional</span>
+<span class="sd">            The target groups that the project is targeting. These can be &quot;Citizens above 60 years old&quot; or</span>
+<span class="sd">            &quot;Residents of district A&quot; for instance.</span>
+<span class="sd">            Defaults to `{}`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the project. This is used as the identifier of a project. It should be unique with a collection</span>
+<span class="sd">            of projects, though this is not enforced.</span>
+<span class="sd">        cost : Number</span>
+<span class="sd">            The cost of the project.</span>
+<span class="sd">        categories: set[str]</span>
+<span class="sd">            The categories that the project is a member of. These categories can  &quot;Urban greenery&quot; or &quot;Public</span>
+<span class="sd">            transport&quot; for instance.</span>
+<span class="sd">        targets: set[str]</span>
+<span class="sd">            The target groups that the project is targeting. These can be &quot;Citizens above 60 years old&quot; or</span>
+<span class="sd">            &quot;Residents of district A&quot; for instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">targets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">categories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">categories</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">categories</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Project</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Project</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="fm">__le__</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="fm">__le__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Project</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="total_cost"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.total_cost">[docs]</a><span class="k">def</span> <span class="nf">total_cost</span><span class="p">(</span><span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the total cost of a collection of projects, summing the cost of the projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        projects : iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            An iterable of projects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The total cost</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="nb">set</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Participatory budgeting instances.</span>
+<span class="sd">    An instance contains the projects that are voted on, together with other information about the election such as the</span>
+<span class="sd">    budget limit.</span>
+<span class="sd">    Importantly, the ballots submitted by the voters is not part of the instance.</span>
+<span class="sd">    See the module :py:mod:`~pabutools.election.profile` for how to handle the voters.</span>
+<span class="sd">    Note that `Instance` is a subclass of the Python class `set`, and can be used as a set is.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        s: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">            An iterable of :py:class:`~pabutools.election.instance.Project` that constitutes the initial set of projects</span>
+<span class="sd">            for the instance. In case an :py:class:`~pabutools.election.instance.Instance` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">        budget_limit : Number, optional</span>
+<span class="sd">            The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be</span>
+<span class="sd">            feasible.</span>
+<span class="sd">        categories: set[str], optional</span>
+<span class="sd">            The set of categories that the projects can be assigned to. These can be &quot;Urban greenery&quot; or &quot;Public</span>
+<span class="sd">            transport&quot; for instance.</span>
+<span class="sd">            Defaults to `{}`.</span>
+<span class="sd">        targets: set[str], optional</span>
+<span class="sd">            The set of target groups that the project can be targeting. These can be &quot;Citizens above 60 years old&quot; or</span>
+<span class="sd">            &quot;Residents of district A&quot; for instance.</span>
+<span class="sd">            Defaults to `{}`.</span>
+<span class="sd">        file_path : str, optional</span>
+<span class="sd">            If the instance has been parsed from a file, the path to the file.</span>
+<span class="sd">            Defaults to `&quot;&quot;`.</span>
+<span class="sd">        file_name : str, optional</span>
+<span class="sd">            If the instance has been parsed from a file, the name of the file.</span>
+<span class="sd">            Defaults to `&quot;&quot;`.</span>
+<span class="sd">        parsing_errors : bool, optional</span>
+<span class="sd">            Boolean indicating if errors were encountered when parsing the file.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        meta : dict, optional</span>
+<span class="sd">            All kinds of relevant information for the instance, stored in a dictionary. Keys and values are</span>
+<span class="sd">            typically strings.</span>
+<span class="sd">            Defaults to `dict()`.</span>
+<span class="sd">        project_meta : dict[:py:class:`~pabutools.election.instance.Project`, dict], optional</span>
+<span class="sd">            All kinds of relevant information about the projects, stored in a dictionary. Keys are</span>
+<span class="sd">            :py:class:`~pabutools.election.instance.Project` and values are dictionaries.</span>
+<span class="sd">            Defaults to `dict()`.</span>
+
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        budget_limit : Number</span>
+<span class="sd">            The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be</span>
+<span class="sd">            feasible.</span>
+<span class="sd">        categories: set[str]</span>
+<span class="sd">            The set of categories that the projects can be assigned to. These can be &quot;Urban greenery&quot; or &quot;Public</span>
+<span class="sd">            transport&quot; for instance.</span>
+<span class="sd">        targets: set[str]</span>
+<span class="sd">            The set of target groups that the project can be targeting. These can be &quot;Citizens above 60 years old&quot; or</span>
+<span class="sd">            &quot;Residents of district A&quot; for instance.</span>
+<span class="sd">        file_path : str</span>
+<span class="sd">            If the instance has been parsed from a file, the path to the file.</span>
+<span class="sd">        file_name : str</span>
+<span class="sd">            If the instance has been parsed from a file, the name of the file.</span>
+<span class="sd">        parsing_errors : bool</span>
+<span class="sd">            Boolean indicating if errors were encountered when parsing the file.</span>
+<span class="sd">        meta : dict</span>
+<span class="sd">            All kinds of relevant information for the instance, stored in a dictionary. Keys and values are</span>
+<span class="sd">            typically strings.</span>
+<span class="sd">        project_meta : dict[:py:class:`~pabutools.election.instance.Project`: dict]</span>
+<span class="sd">            All kinds of relevant information about the projects, stored in a dictionary. Keys are</span>
+<span class="sd">            :py:class:`~pabutools.election.instance.Project` and values are dictionaries.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">budget_limit</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">categories</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">targets</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">parsing_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">project_meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Instance</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">budget_limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">budget_limit</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="n">budget_limit</span>
+
+        <span class="k">if</span> <span class="n">categories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">categories</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">categories</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">categories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">categories</span>
+
+        <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">targets</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
+
+        <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">file_path</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+
+        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">file_name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+
+        <span class="k">if</span> <span class="n">parsing_errors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">parsing_errors</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parsing_errors</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">parsing_errors</span>
+
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">meta</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+
+        <span class="k">if</span> <span class="n">project_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">project_meta</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">project_meta</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">project_meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_meta</span> <span class="o">=</span> <span class="n">project_meta</span>
+
+<div class="viewcode-block" id="Instance.get_project"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.get_project">[docs]</a>    <span class="k">def</span> <span class="nf">get_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterates over the instance to find a project with the given name. If found, the project is returned, otherwise</span>
+<span class="sd">        a `KeyError` exception is raised.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">                The project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">project_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">p</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+            <span class="s2">&quot;No project with name </span><span class="si">{}</span><span class="s2"> found in the instance.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.budget_allocations"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.budget_allocations">[docs]</a>    <span class="k">def</span> <span class="nf">budget_allocations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a generator for all the feasible budget allocations of the instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Generator[Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">                The generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">powerset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">b</span></div>
+
+<div class="viewcode-block" id="Instance.is_trivial"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.is_trivial">[docs]</a>    <span class="k">def</span> <span class="nf">is_trivial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tests if the instance is trivial, meaning that either all projects can be selected without</span>
+<span class="sd">        exceeding the budget limit, or that no project can be selected.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            bool</span>
+<span class="sd">                `True` if the instance is trivial, `False` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">total_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">&lt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.is_feasible"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.is_feasible">[docs]</a>    <span class="k">def</span> <span class="nf">is_feasible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tests if a given collection of projects is feasible for the instance, meaning that the total cost of the</span>
+<span class="sd">        projects does not exceed the budget limit of the instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">                The collection of projects.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            bool</span>
+<span class="sd">                `True` if the collection of project cost less than the budget limit, `False` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span></div>
+
+<div class="viewcode-block" id="Instance.is_exhaustive"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.is_exhaustive">[docs]</a>    <span class="k">def</span> <span class="nf">is_exhaustive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no</span>
+<span class="sd">        additional project could be added without violating the budget limit.</span>
+<span class="sd">        Note that a collection of projects can be exhaustive, but not feasibility.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">                The collection of projects.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            bool</span>
+<span class="sd">                `True` if the collection of project is exhaustive, `False` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">projects</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">cost</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;Instance &quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="s2">&quot;with budget limit </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> projects:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">c(</span><span class="si">{}</span><span class="s2">) = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="c1"># This allows set method returning copies of a set to work with PBInstances</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_wrap_methods</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrap_method_closure</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span> <span class="n">name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+                        <span class="n">result</span><span class="p">,</span>
+                        <span class="n">budget_limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">,</span>
+                        <span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+                        <span class="n">targets</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
+                        <span class="n">file_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span>
+                        <span class="n">file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+                        <span class="n">parsing_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span><span class="p">,</span>
+                        <span class="n">meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span>
+                        <span class="n">project_meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_meta</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+            <span class="n">inner</span><span class="o">.</span><span class="n">fn_name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">inner</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">wrap_method_closure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+
+<span class="n">Instance</span><span class="o">.</span><span class="n">_wrap_methods</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;__ror__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;difference_update&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__isub__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;symmetric_difference&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__rsub__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__and__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__rand__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;intersection&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;difference&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__iand__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;union&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__ixor__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;symmetric_difference_update&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__or__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__rxor__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;intersection_update&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__xor__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__ior__&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__sub__&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_random_instance"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.get_random_instance">[docs]</a><span class="k">def</span> <span class="nf">get_random_instance</span><span class="p">(</span><span class="n">num_projects</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">min_cost</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">max_cost</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Instance</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a random instance. Costs and budget limit are integers. The costs are selected uniformly at random between</span>
+<span class="sd">    `min_cost` and `max_cost`. The budget limit is sample form a uniform between the minimum cost of a project</span>
+<span class="sd">    and the total cost of all the projects.</span>
+<span class="sd">    The parameters are rounded up to the closest int.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        num_projects : int</span>
+<span class="sd">            The number of projects in the instance.</span>
+<span class="sd">        min_cost : int</span>
+<span class="sd">            The minimum cost of a project.</span>
+<span class="sd">        max_cost : int</span>
+<span class="sd">            The maximum cost of a project.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        pabutools.election.instance.Instance</span>
+<span class="sd">            The randomly-generated instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inst</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
+    <span class="n">inst</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">Project</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">min_cost</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">max_cost</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">num_projects</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">inst</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+        <span class="n">ceil</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">inst</span><span class="p">)),</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">inst</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">inst</span></div>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
