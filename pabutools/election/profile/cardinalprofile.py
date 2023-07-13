@@ -145,6 +145,23 @@ class CardinalMultiProfile(MultiProfile):
         self.legal_min_score = legal_min_score
         self.legal_max_score = legal_max_score
 
+    def score(self, project: Project) -> Number:
+        """
+        Returns the score of a project, that is, the sum of scores received from all voters.
+        Parameters
+        ----------
+            project : pabutools.instance.instance.Project
+                The project.
+        Returns
+        -------
+            Fraction
+        """
+        score = 0
+        for ballot, multiplicity in self.items():
+            if project in ballot:
+                score += ballot[project] * multiplicity
+        return score
+
     @classmethod
     def _wrap_methods(cls, names):
         def wrap_method_closure(name):

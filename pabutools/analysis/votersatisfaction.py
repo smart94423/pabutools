@@ -69,15 +69,13 @@ def satisfaction_histogram(
     instance: Instance,
     profile: Profile | MultiProfile,
     budget_allocation: Iterable[Project],
-    satisfaction: type[SatisfactionMeasure],
+    sat_class: type[SatisfactionMeasure],
     max_satisfaction: float,
     num_bins: int = 20
 ) -> list[float]:
-    if isinstance(profile, MultiProfile):
-        sat_profile = SatisfactionMultiProfile(instance=instance, multiprofile=profile, sat_class=satisfaction)
-    else:
-        sat_profile = SatisfactionMultiProfile(instance=instance, profile=profile, sat_class=satisfaction)
 
+    profile.instance = instance
+    sat_profile = profile.as_sat_profile(sat_class=sat_class)
     hist_data = [0.0 for i in range(num_bins)]
     for i, ballot in enumerate(sat_profile):
         satisfaction = ballot.sat(budget_allocation)
