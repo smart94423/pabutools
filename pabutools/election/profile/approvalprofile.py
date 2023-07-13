@@ -10,7 +10,6 @@ from numbers import Number
 from pabutools.election.ballot.ballot import AbstractBallot
 
 from pabutools.election.ballot import (
-    Ballot,
     ApprovalBallot,
     FrozenBallot,
     FrozenApprovalBallot,
@@ -341,7 +340,7 @@ class ApprovalMultiProfile(MultiProfile):
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
             else:
-                ballot_type = ApprovalBallot
+                ballot_type = FrozenApprovalBallot
         super(ApprovalMultiProfile, self).__init__(
             iterable=iterable,
             instance=instance,
