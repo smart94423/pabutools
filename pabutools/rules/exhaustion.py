@@ -16,7 +16,7 @@ def completion_by_rule_combination(
     non-exhaustive.
     Parameters. For now, only resolute rules are supported
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
@@ -26,7 +26,7 @@ def completion_by_rule_combination(
             Iterable of dictionaries of additional parameters that are passed to the rule functions
     Returns
     -------
-        list of pabutools.instance.pbinstance.Project
+        list of pabutools.election.instance.Project
     """
     if rule_params is not None and len(rule_sequence) != len(rule_params):
         raise ValueError(
@@ -43,7 +43,7 @@ def completion_by_rule_combination(
             instance,
             profile,
             initial_budget_allocation=budget_allocation,
-            **rule_params[index]
+            **rule_params[index],
         )
         if instance.is_exhaustive(budget_allocation):
             break
@@ -63,7 +63,7 @@ def exhaustion_by_budget_increase(
     the budget limit is exceeded by the rule with increased budget.
     For now, only resolute rules are supported.
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
@@ -73,7 +73,7 @@ def exhaustion_by_budget_increase(
             A dictionary of additional parameters that are passed to the rule function
     Returns
     -------
-        list of pabutools.instance.pbinstance.Project
+        list of pabutools.election.instance.Project
     """
     if rule_params is None:
         rule_params = {}

@@ -20,7 +20,7 @@ class FunctionalSatisfaction(SatisfactionMeasure):
     Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.instance.profile.Profile
             The profile.
@@ -53,7 +53,7 @@ class FunctionalSatisfaction(SatisfactionMeasure):
         by the inner function specified at initialisation.
         Parameters
         ----------
-            projects : Iterable[pabutools.instance.pbinstance.Project]
+            projects : Iterable[pabutools.election.instance.Project]
                 The set of projects.
         Returns
         -------

@@ -3,14 +3,18 @@ from abc import ABC, abstractmethod
 
 class AbstractBallot(ABC):
     """
-    Abstract class representing the ballots, i.e., the information submitted by the voters.
-    """
+    Abstract class representing the ballots, i.e., the information submitted by the voters. Essentially used for
+    type-hint purposes.
 
-
-class FrozenBallot(AbstractBallot):
-    """
-    Abstract class representing frozen ballots, i.e., ballots that are hashable. In general the Ballot class
-    should be preferred over this one but hashable ballots can be useful (typically for `MultiProfile`).
+    Parameters
+    ----------
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
 
     Attributes
     ----------
@@ -22,18 +26,41 @@ class FrozenBallot(AbstractBallot):
     """
 
     def __init__(self, name: str = "", meta: dict | None = None):
-        """
-        Parameters
-        ----------
-            name : str, optional (defaults to `""`)
-                The identifier of the ballot.
-            meta : dict, optional (defaults to `dict()`)
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc...
-        """
-        AbstractBallot.__init__(self)
         if meta is None:
             meta = dict()
+        self.meta = meta
+        self.name = name
+
+
+class FrozenBallot(AbstractBallot):
+    """
+    Abstract class representing frozen ballots, i.e., ballots that are hashable (and thus non-mutable). In general the
+    :py:class:`~pabutools.election.ballot.ballot.Ballot` class should be preferred over this one but hashable ballots
+    can be useful (typically for :py:class:`~pabutools.election.profile.profile.MultiProfile`).
+
+    Parameters
+    ----------
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc...
+    """
+
+    def __init__(self, name: str = "", meta: dict | None = None):
+        if meta is None:
+            meta = dict()
+        AbstractBallot.__init__(self, name=name, meta=meta)
         self.meta = meta
         self.name = name
 
@@ -42,6 +69,16 @@ class Ballot(AbstractBallot):
     """
     Abstract class representing the ballots, i.e., the information submitted by the voters.
 
+    Parameters
+    ----------
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
     Attributes
     ----------
         name : str
@@ -52,18 +89,9 @@ class Ballot(AbstractBallot):
     """
 
     def __init__(self, name: str = "", meta: dict | None = None):
-        """
-        Parameters
-        ----------
-            name : str, optional (defaults to `""`)
-                The identifier of the ballot.
-            meta : dict, optional (defaults to `dict()`)
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc...
-        """
-        AbstractBallot.__init__(self)
         if meta is None:
             meta = dict()
+        AbstractBallot.__init__(self, name=name, meta=meta)
         self.meta = meta
         self.name = name
 

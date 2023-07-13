@@ -1,5 +1,7 @@
 """
-Instances.
+Module defining the basic classes used to represent a participatory budgeting election.
+The :py:class:`~pabutools.election.instance.Project` and the
+:py:class:`~pabutools.election.instance.Instance` classes are defined here.
 """
 from collections.abc import Iterable, Generator
 from pabutools.utils import powerset
@@ -11,68 +13,91 @@ import random
 
 class Project:
     """
-    A project in a participatory budgeting instance.
-    Attributes
+    Represents a project, that is, the entity that is voted upon in a participatory budgeting election.
+
+    Parameters
     ----------
         name : str, optional
-            The name of the project.
-            Defaults to `""`
-        cost : Number, optional (defaults to `0`)
+            The name of the project. This is used as the identifier of a project. It should be unique with a collection
+            of projects, though this is not enforced.
+            Defaults to `""`.
+        cost : Number, optional
             The cost of the project.
-        categories: set, optional
-            set of categories that the project fits into
-        targets: set, optional
-            set of target groups that the project is targeting
+            Defaults to `0`.
+        categories: set[str], optional
+            The categories that the project is a member of. These categories can  "Urban greenery" or "Public
+            transport" for instance.
+            Defaults to `{}`.
+        targets: set[str], optional
+            The target groups that the project is targeting. These can be "Citizens above 60 years old" or
+            "Residents of district A" for instance.
+            Defaults to `{}`.
+
+    Attributes
+    ----------
+        name : str
+            The name of the project. This is used as the identifier of a project. It should be unique with a collection
+            of projects, though this is not enforced.
+        cost : Number
+            The cost of the project.
+        categories: set[str]
+            The categories that the project is a member of. These categories can  "Urban greenery" or "Public
+            transport" for instance.
+        targets: set[str]
+            The target groups that the project is targeting. These can be "Citizens above 60 years old" or
+            "Residents of district A" for instance.
     """
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
     def __init__(
-        self, project_name: str = "", cost: Number = 0, categories=None, targets=None
+        self, name: str = "", cost: Number = 0, categories=None, targets=None
     ) -> None:
         if targets is None:
             targets = {}
         if categories is None:
             categories = {}
-        self.name = project_name
+        self.name = name
         self.cost = cost
         self.categories = categories
         self.targets = targets
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if isinstance(other, Project):
             return self.name == other.name
         if isinstance(other, str):
             return self.name == other
         return False
 
-    def __le__(self, other):
+    def __le__(self, other) -> bool:
         if isinstance(other, Project):
             return self.name.__le__(other.name)
         if isinstance(other, str):
             return self.name.__le__(other)
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         if isinstance(other, Project):
             return self.name.__lt__(other.name)
         if isinstance(other, str):
             return self.name.__lt__(other)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.name)
 
 
 def total_cost(projects: Iterable[Project]) -> Number:
     """
-    Returns the total cost of a collection of projects, summing the cost of its content.
+    Returns the total cost of a collection of projects, summing the cost of the projects.
+
     Parameters
     ----------
-        projects : iterable of pabutools.instances.instance.Project
+        projects : iterable[:py:class:`~pabutools.election.instance.Project`]
             An iterable of projects.
+
     Returns
     -------
         Number
@@ -83,38 +108,72 @@ def total_cost(projects: Iterable[Project]) -> Number:
 
 class Instance(set[Project]):
     """
-    Participatory Budgeting (PB) instances.
-    An instance contains the projects, their cost and the budget limit. Importantly, the profile is not part of
-    the instance.
-    Note that `PBInstance` is a subclass of `set`, acting as a set of projects.
+    Participatory budgeting instances.
+    An instance contains the projects that are voted on, together with other information about the election such as the
+    budget limit.
+    Importantly, the ballots submitted by the voters is not part of the instance.
+    See the module :py:mod:`~pabutools.election.profile` for how to handle the voters.
+    Note that `Instance` is a subclass of the Python class `set`, and can be used as a set is.
+
     Parameters
     ----------
-        budget_limit : float
-            The budget limit of the instance.
-            Defaults to `0.0`.
-    Attributes
-    ----------
-        budget_limit : float, optional
-            The budget limit of the instance.
-            Defaults to `0.0`.
+        s: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            An iterable of :py:class:`~pabutools.election.instance.Project` that constitutes the initial set of projects
+            for the instance. In case an :py:class:`~pabutools.election.instance.Instance` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+        budget_limit : Number, optional
+            The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be
+            feasible.
         categories: set[str], optional
-            set of categories that the projects can be assigned to
+            The set of categories that the projects can be assigned to. These can be "Urban greenery" or "Public
+            transport" for instance.
+            Defaults to `{}`.
         targets: set[str], optional
-            set of target groups that the project can be targeting
+            The set of target groups that the project can be targeting. These can be "Citizens above 60 years old" or
+            "Residents of district A" for instance.
+            Defaults to `{}`.
         file_path : str, optional
-            If the instance has been parsed from a file, the path to the file. Otherwise, the empty string.
+            If the instance has been parsed from a file, the path to the file.
             Defaults to `""`.
         file_name : str, optional
-            If the instance has been parsed from a file, the name of the file. Otherwise, the empty string.
+            If the instance has been parsed from a file, the name of the file.
             Defaults to `""`.
         parsing_errors : bool, optional
             Boolean indicating if errors were encountered when parsing the file.
-        meta : dict of str, optional
+            Defaults to `None`.
+        meta : dict, optional
             All kinds of relevant information for the instance, stored in a dictionary. Keys and values are
             typically strings.
-        project_meta : dict of dict of str, optional
-            All kinds of relevant information about the projects, stored in a dictionary. Keys are typically
-            strings. Values are dictionary of strings.
+            Defaults to `dict()`.
+        project_meta : dict[:py:class:`~pabutools.election.instance.Project`, dict], optional
+            All kinds of relevant information about the projects, stored in a dictionary. Keys are
+            :py:class:`~pabutools.election.instance.Project` and values are dictionaries.
+            Defaults to `dict()`.
+
+
+    Attributes
+    ----------
+        budget_limit : Number
+            The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be
+            feasible.
+        categories: set[str]
+            The set of categories that the projects can be assigned to. These can be "Urban greenery" or "Public
+            transport" for instance.
+        targets: set[str]
+            The set of target groups that the project can be targeting. These can be "Citizens above 60 years old" or
+            "Residents of district A" for instance.
+        file_path : str
+            If the instance has been parsed from a file, the path to the file.
+        file_name : str
+            If the instance has been parsed from a file, the name of the file.
+        parsing_errors : bool
+            Boolean indicating if errors were encountered when parsing the file.
+        meta : dict
+            All kinds of relevant information for the instance, stored in a dictionary. Keys and values are
+            typically strings.
+        project_meta : dict[:py:class:`~pabutools.election.instance.Project`: dict]
+            All kinds of relevant information about the projects, stored in a dictionary. Keys are
+            :py:class:`~pabutools.election.instance.Project` and values are dictionaries.
     """
 
     def __init__(
@@ -132,62 +191,71 @@ class Instance(set[Project]):
         super(Instance, self).__init__(s)
 
         if budget_limit is None:
-            if hasattr(s, "budget_limit"):
+            if isinstance(s, Instance):
                 budget_limit = s.budget_limit
             else:
                 budget_limit = 0
         self.budget_limit = budget_limit
 
         if categories is None:
-            if hasattr(s, "categories"):
+            if isinstance(s, Instance):
                 categories = s.categories
             else:
                 categories = set()
         self.categories = categories
 
         if targets is None:
-            if hasattr(s, "targets"):
+            if isinstance(s, Instance):
                 targets = s.targets
             else:
                 targets = set()
         self.targets = targets
 
         if file_path is None:
-            if hasattr(s, "file_path"):
+            if isinstance(s, Instance):
                 file_path = s.file_path
             else:
                 file_path = ""
         self.file_path = file_path
 
         if file_name is None:
-            if hasattr(s, "file_name"):
+            if isinstance(s, Instance):
                 file_name = s.file_name
             else:
                 file_name = ""
         self.file_name = file_name
 
         if parsing_errors is None:
-            if hasattr(s, "parsing_errors"):
+            if isinstance(s, Instance):
                 parsing_errors = s.parsing_errors
             else:
                 parsing_errors = False
         self.parsing_errors = parsing_errors
 
         if meta is None:
-            if hasattr(s, "meta"):
+            if isinstance(s, Instance):
                 meta = s.meta
             else:
                 meta = dict()
         self.meta = meta
 
         if project_meta is None:
-            if hasattr(s, "project_meta"):
+            if isinstance(s, Instance):
                 project_meta = s.project_meta
             else:
                 project_meta = dict()
         self.project_meta = project_meta
 
     def get_project(self, project_name: str) -> Project:
+        """
+        Iterates over the instance to find a project with the given name. If found, the project is returned, otherwise
+        a `KeyError` exception is raised.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.instance.Project`
+                The project.
+        """
         for p in self:
             if p.name == project_name:
                 return p
@@ -195,12 +263,15 @@ class Instance(set[Project]):
             "No project with name {} found in the instance.".format(project_name)
         )
 
-    def budget_allocations(self) -> Generator[Iterable[Project], None, None]:
+    def budget_allocations(self) -> Generator[Iterable[Project]]:
         """
-        Returns a generator of all the feasible budget allocations of the instance.
+        Returns a generator for all the feasible budget allocations of the instance.
+
         Returns
         -------
-            Generator of iterable of projects
+            Generator[Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The generator.
+
         """
         for b in powerset(self):
             if self.is_feasible(b):
@@ -210,39 +281,46 @@ class Instance(set[Project]):
         """
         Tests if the instance is trivial, meaning that either all projects can be selected without
         exceeding the budget limit, or that no project can be selected.
+
         Returns
         -------
             bool
+                `True` if the instance is trivial, `False` otherwise.
         """
         return (total_cost(self) <= self.budget_limit) or (
-            self.budget_limit <= min([p.cost for p in self])
+            self.budget_limit <= min(p.cost for p in self)
         )
 
     def is_feasible(self, projects: Iterable[Project]) -> bool:
         """
-        Tests if a given set of projects is feasible, meaning that its total cost does not exceed the budget
-        limit.
+        Tests if a given collection of projects is feasible for the instance, meaning that the total cost of the
+        projects does not exceed the budget limit of the instance.
+
         Parameters
         ----------
-            projects : iterable of projects
-            The set of projects.
+            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The collection of projects.
         Returns
         -------
             bool
+                `True` if the collection of project cost less than the budget limit, `False` otherwise.
         """
         return total_cost(projects) <= self.budget_limit
 
     def is_exhaustive(self, projects: Iterable[Project]) -> bool:
         """
-        Tests if a given set of projects is exhaustive, meaning that no additional project could be added without
-        violating the budget limit. Note that we do not explicitly check for feasibility first.
+        Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no
+        additional project could be added without violating the budget limit.
+        Note that a collection of projects can be exhaustive, but not feasibility.
+
         Parameters
         ----------
-            projects : iterable of projects
-            The set of projects.
+            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The collection of projects.
         Returns
         -------
             bool
+                `True` if the collection of project is exhaustive, `False` otherwise.
         """
         cost = total_cost(projects)
         for p in self:
@@ -250,7 +328,7 @@ class Instance(set[Project]):
                 return False
         return True
 
-    def __str__(self):
+    def __str__(self) -> str:
         res = "Instance "
         if self.file_name:
             res += "({}) ".format(self.file_name)
@@ -261,7 +339,7 @@ class Instance(set[Project]):
             res += "\tc({}) = {}\n".format(p, p.cost)
         return res[:-1]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
     # This allows set method returning copies of a set to work with PBInstances
@@ -319,10 +397,11 @@ Instance._wrap_methods(
 
 def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> Instance:
     """
-    Generates a random instance. Costs and budget limit are integers. The cost are selected uniformly between
-    min_cost and max_cost. The budget limit is sample form a uniform between the minimum cost of a project
+    Generates a random instance. Costs and budget limit are integers. The costs are selected uniformly at random between
+    `min_cost` and `max_cost`. The budget limit is sample form a uniform between the minimum cost of a project
     and the total cost of all the projects.
     The parameters are rounded up to the closest int.
+
     Parameters
     ----------
         num_projects : int
@@ -333,19 +412,18 @@ def get_random_instance(num_projects: int, min_cost: int, max_cost: int) -> Inst
             The maximum cost of a project.
     Returns
     -------
-        pabutools.instances.instance.PBInstance
+        pabutools.election.instance.Instance
+            The randomly-generated instance.
     """
     inst = Instance()
     inst.update(
-        [
-            Project(
-                project_name=str(p),
-                cost=random.randint(round(min_cost), round(max_cost)),
-            )
-            for p in range(round(num_projects))
-        ]
+        Project(
+            name=str(p),
+            cost=random.randint(round(min_cost), round(max_cost)),
+        )
+        for p in range(round(num_projects))
     )
     inst.budget_limit = random.randint(
-        ceil(min([p.cost for p in inst])), ceil(sum([p.cost for p in inst]))
+        ceil(min(p.cost for p in inst)), ceil(sum(p.cost for p in inst))
     )
     return inst

@@ -13,4 +13,22 @@ from pabutools.election.profile.cardinalprofile import (
     CardinalProfile,
     CardinalMultiProfile,
 )
-from pabutools.election.profile.ordinalprofile import OrdinalProfile, OrdinalMultiProfile
+from pabutools.election.profile.ordinalprofile import (
+    OrdinalProfile,
+    OrdinalMultiProfile,
+)
+
+__all__ = [
+    "Profile",
+    "MultiProfile",
+    "ApprovalProfile",
+    "ApprovalMultiProfile",
+    "get_random_approval_profile",
+    "get_all_approval_profiles",
+    "CumulativeProfile",
+    "CumulativeMultiProfile",
+    "CardinalProfile",
+    "CardinalMultiProfile",
+    "OrdinalProfile",
+    "OrdinalMultiProfile"
+]

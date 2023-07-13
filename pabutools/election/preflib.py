@@ -1,9 +1,20 @@
-
 import preflibtools.instances as preflib
 
 
-def init_preflib_instance(preflib_inst, instance, file_path, file_name, modification_type, relates_to, related_files, title,
-                          description, publication_date, modification_date, alternative_names):
+def init_preflib_instance(
+    preflib_inst,
+    instance,
+    file_path,
+    file_name,
+    modification_type,
+    relates_to,
+    related_files,
+    title,
+    description,
+    publication_date,
+    modification_date,
+    alternative_names,
+):
     preflib_inst.file_path = file_path
     preflib_inst.file_name = file_name
     preflib_inst.modification_type = modification_type
@@ -23,12 +34,35 @@ def init_preflib_instance(preflib_inst, instance, file_path, file_name, modifica
             preflib_inst.alternatives_name[project.name] = project.name
 
 
-def approval_to_preflib(instance, profile, file_path="", file_name="", modification_type="original", relates_to=None,
-                        related_files=None, title="", description="", publication_date="", modification_date="",
-                        alternative_names=None):
+def approval_to_preflib(
+    instance,
+    profile,
+    file_path="",
+    file_name="",
+    modification_type="original",
+    relates_to=None,
+    related_files=None,
+    title="",
+    description="",
+    publication_date="",
+    modification_date="",
+    alternative_names=None,
+):
     preflib_inst = preflib.CategoricalInstance()
-    init_preflib_instance(preflib_inst, instance, file_path, file_name, modification_type, relates_to, related_files,
-                          title, description, publication_date, modification_date, alternative_names)
+    init_preflib_instance(
+        preflib_inst,
+        instance,
+        file_path,
+        file_name,
+        modification_type,
+        relates_to,
+        related_files,
+        title,
+        description,
+        publication_date,
+        modification_date,
+        alternative_names,
+    )
 
     preflib_inst.data_type = "cat"
     preflib_inst.num_categories = 2
@@ -48,12 +82,35 @@ def approval_to_preflib(instance, profile, file_path="", file_name="", modificat
     return preflib_inst
 
 
-def cardinal_to_preflib(instance, profile, file_path="", file_name="", modification_type="original", relates_to=None,
-                        related_files=None, title="", description="", publication_date="", modification_date="",
-                        alternative_names=None):
+def cardinal_to_preflib(
+    instance,
+    profile,
+    file_path="",
+    file_name="",
+    modification_type="original",
+    relates_to=None,
+    related_files=None,
+    title="",
+    description="",
+    publication_date="",
+    modification_date="",
+    alternative_names=None,
+):
     preflib_inst = preflib.OrdinalInstance()
-    init_preflib_instance(preflib_inst, instance, file_path, file_name, modification_type, relates_to, related_files,
-                          title, description, publication_date, modification_date, alternative_names)
+    init_preflib_instance(
+        preflib_inst,
+        instance,
+        file_path,
+        file_name,
+        modification_type,
+        relates_to,
+        related_files,
+        title,
+        description,
+        publication_date,
+        modification_date,
+        alternative_names,
+    )
     preflib_inst.data_type = "toi"
     for ballot in profile:
         order = list(ballot)
@@ -69,13 +126,35 @@ def cardinal_to_preflib(instance, profile, file_path="", file_name="", modificat
     return preflib_inst
 
 
-
-def ordinal_to_preflib(instance, profile, file_path="", file_name="", modification_type="original", relates_to=None,
-                       related_files=None, title="", description="", publication_date="", modification_date="",
-                       alternative_names=None):
+def ordinal_to_preflib(
+    instance,
+    profile,
+    file_path="",
+    file_name="",
+    modification_type="original",
+    relates_to=None,
+    related_files=None,
+    title="",
+    description="",
+    publication_date="",
+    modification_date="",
+    alternative_names=None,
+):
     preflib_inst = preflib.OrdinalInstance()
-    init_preflib_instance(preflib_inst, instance, file_path, file_name, modification_type, relates_to, related_files,
-                          title, description, publication_date, modification_date, alternative_names)
+    init_preflib_instance(
+        preflib_inst,
+        instance,
+        file_path,
+        file_name,
+        modification_type,
+        relates_to,
+        related_files,
+        title,
+        description,
+        publication_date,
+        modification_date,
+        alternative_names,
+    )
     preflib_inst.data_type = "toi"
     for ballot in profile:
         order = list(ballot)

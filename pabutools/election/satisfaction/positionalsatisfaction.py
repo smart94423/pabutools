@@ -19,7 +19,7 @@ class PositionalSatisfaction(SatisfactionMeasure):
         For a set of projects, the total satisfaction is additive.
     Parameters
         ----------
-            instance : pabutools.instance.pbinstance.PBInstance
+            instance : pabutools.election.instance.Instance
                 The instance.
             profile : pabutools.instance.profile.Profile
                 The profile.
@@ -54,7 +54,7 @@ class PositionalSatisfaction(SatisfactionMeasure):
         by the inner function specified at initialisation.
         Parameters
         ----------
-            projects : Iterable[pabutools.instance.pbinstance.Project]
+            projects : Iterable[pabutools.election.instance.Project]
                 The set of projects.
         Returns
         -------

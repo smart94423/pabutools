@@ -3,10 +3,37 @@ import random
 from collections.abc import Iterable
 
 from pabutools.election.instance import Project
-from pabutools.election.ballot.ballot import Ballot, FrozenBallot
+from pabutools.election.ballot.ballot import Ballot, FrozenBallot, AbstractBallot
 
 
 class FrozenApprovalBallot(tuple[Project], FrozenBallot):
+    """
+    Frozen approval ballot, that is, a ballot in which the voter expressed their preferences by simply selecting
+    some projects they approve of. It derives from the Python class `tuple` and can be used as one.
+
+    Parameters
+    ----------
+        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
     def __init__(
         self,
         approved: Iterable[Project] = (),
@@ -15,12 +42,12 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
     ) -> None:
         tuple.__init__(self)
         if name is None:
-            if hasattr(approved, "name"):
+            if isinstance(approved, AbstractBallot):
                 name = approved.name
             else:
                 name = ""
         if meta is None:
-            if hasattr(approved, "meta"):
+            if isinstance(approved, AbstractBallot):
                 meta = approved.meta
             else:
                 meta = dict
@@ -38,14 +65,30 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
 class ApprovalBallot(set[Project], Ballot):
     """
     An approval ballot, that is, a ballot in which the voter has indicated the projects that they approve of. It
-    is a subclass of the Python class `set` and of the abstract class `Ballot`.
+    is a subclass of the Python class `set` and can be used as one.
+
+    Parameters
+    ----------
+        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the set. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
     Attributes
     ----------
         name : str
             The identifier of the ballot.
         meta : dict
             Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-            strings. Could for instance store the gender of the voter, their location etc...
+            strings. Could for instance store the gender of the voter, their location etc.
     """
 
     def __init__(
@@ -54,25 +97,14 @@ class ApprovalBallot(set[Project], Ballot):
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
-        """
-        Parameters
-        ----------
-            approved: Iterable[Project], optional (defaults to `()`)
-                Approved projects
-            name : str, optional (defaults to `""`)
-                The identifier of the ballot.
-            meta : dict, optional (defaults to `dict()`)
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc...
-        """
         set.__init__(self, approved)
         if name is None:
-            if hasattr(approved, "name"):
+            if isinstance(approved, AbstractBallot):
                 name = approved.name
             else:
                 name = ""
         if meta is None:
-            if hasattr(approved, "meta"):
+            if isinstance(approved, AbstractBallot):
                 meta = approved.meta
             else:
                 meta = dict()
@@ -85,7 +117,7 @@ class ApprovalBallot(set[Project], Ballot):
         Returns
         -------
             FrozenApprovalBallot
-                The frozen approval ballot
+                The frozen approval ballot.
         """
         return FrozenApprovalBallot(self, name=self.name, meta=self.meta)
 
@@ -140,14 +172,15 @@ def get_random_approval_ballot(
 
     Parameters
     ----------
-        projects : Iterable[Project]
-            A collection of projects
-        name : str, optional (defaults to `"RandomAppBallot"`)
+        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            A collection of projects.
+        name : str, optional
             The identifier of the ballot.
+            Defaults to `"RandomAppBallot"`.
     Returns
     -------
         ApprovalBallot
-            The approval ballot
+            The randomly-generated approval ballot.
     """
     ballot = ApprovalBallot(name=name)
     for p in projects:

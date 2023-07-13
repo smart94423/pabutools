@@ -1,7 +1,6 @@
 # pabutools
 
 [![Build badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://github.com/pbvoting/pabutoolsactions?query=workflow%3Abuild)
-
 [![codecov](https://codecov.io/gh/Simon-Rey/pbvoting/branch/main/graphs/badge.svg)](https://codecov.io/gh/Simon-Rey/pbvoting/tree/main)
 
 ## Overview
@@ -394,3 +393,28 @@ See the module `pabutools.rules.mes`.
 #### Tie-Breaking
 
 See the module `pabutools.tiebreaking`.
+
+## Development
+
+We are more than happy to receive help with the development of the package.
+If you want to contribute, here are some elements to take into account.
+
+First, install the development dependencies by running the following command:
+```shell
+pip install -e .[dev]
+```
+
+You can run the unit tests with the following:
+```shell
+python -m unittest
+```
+
+The doc is generated using sphinx. We use the [numpy style guide](https://numpydoc.readthedocs.io/en/latest/format.html).
+The [napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html) extension for Sphinx is used
+and the HTML style is defined by the [Book Sphinx Theme](https://sphinx-book-theme.readthedocs.io/en/stable/).
+
+To generate the doc, first move inside the `docs`folder and run the following:
+```shell
+make clean 
+make html
+```

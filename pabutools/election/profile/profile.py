@@ -131,7 +131,9 @@ class Profile(list, AbstractProfile):
 
 
 class MultiProfile(Counter, AbstractProfile):
-    """ """
+    """
+    Multiprofiles
+    """
 
     def __init__(
         self,

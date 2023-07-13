@@ -34,6 +34,7 @@ dev = [
     "coverage",
     "Sphinx",
     "sphinx_rtd_theme",
+    "sphinxcontrib-napoleon",
     "unittest2"
 ]
 

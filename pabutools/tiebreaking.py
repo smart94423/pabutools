@@ -37,17 +37,17 @@ class TieBreakingRule:
         based on the instance or/and on the profile.
         Parameters
         ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.profile.Profile
             The profile.
-        projects : collection of pabutools.instance.pbinstance.Project
+        projects : collection of pabutools.election.instance.Project
             The set of projects between which ties are to be broken.
-        key : function[_ -> pabutools.instance.pbinstance.Project]
+        key : function[_ -> pabutools.election.instance.Project]
             A key function to select the project from the input.
         Returns
         -------
-            list of pabutools.instance.pbinstance.Project
+            list of pabutools.election.instance.Project
         """
         return sorted(
             list(projects),
@@ -66,17 +66,17 @@ class TieBreakingRule:
         projects according to the tie-breaking rule and return the first project of the order.
         Parameters
         ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : pabutools.election.instance.Instance
             The instance.
         profile : pabutools.profile.Profile
             The profile.
-        projects : collection of pabutools.instance.pbinstance.Project
+        projects : collection of pabutools.election.instance.Project
             The set of projects between which ties are to be broken.
-        key : function[_ -> pabutools.instance.pbinstance.Project]
+        key : function[_ -> pabutools.election.instance.Project]
             A key function to select the project from the input.
         Returns
         -------
-            pabutools.instance.pbinstance.Project
+            pabutools.election.instance.Project
         """
         return self.order(instance, profile, projects, key)[0]
 
