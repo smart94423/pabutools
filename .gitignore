@@ -71,6 +71,7 @@ db.sqlite3-journal
 # Sphinx documentation
 docs/_build/
 docs/doctrees
+docs-source/build
 
 # PyBuilder
 .pybuilder/
