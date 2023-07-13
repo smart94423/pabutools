@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -249,9 +248,16 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.election.profile.approvalprofile</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Approval profiles, i.e., collections of approval ballots.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Generator</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">AbstractBallot</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Ballot</span><span class="p">,</span>
@@ -260,16 +266,64 @@ document.write(`
     <span class="n">FrozenApprovalBallot</span><span class="p">,</span>
     <span class="n">get_random_approval_ballot</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.profile.profile</span> <span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">MultiProfile</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.profile.profile</span> <span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">MultiProfile</span><span class="p">,</span> <span class="n">AbstractProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 <span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">powerset</span>
 
 
 <div class="viewcode-block" id="ApprovalProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile">[docs]</a><span class="k">class</span> <span class="nc">ApprovalProfile</span><span class="p">(</span><span class="n">Profile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A profile of approval ballots. Inherits from `pabutools.instance.profile.Profile`.</span>
+<span class="sd">    A profile of approval ballots, that is, a list of approval ballots per voters. See the class</span>
+<span class="sd">    :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` for more details on approval ballots.</span>
+<span class="sd">    This class inherits from the Python `list` class and can thus be used as one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`], optional</span>
+<span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` that is used an</span>
+<span class="sd">            initializer for the list. If activated, the types of the ballots are validated. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`, optional</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">            Defaults to `Instance()`.</span>
+<span class="sd">        ballot_validation : bool, optional</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">            Defaults to `True`.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">            Defaults to `ApprovalBallot`.</span>
+<span class="sd">        legal_min_length : int, optional</span>
+<span class="sd">            The minimum length of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_max_length : int, optional</span>
+<span class="sd">            The maximum length of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_min_cost : Number, optional</span>
+<span class="sd">            The minimum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_max_cost : Number, optional</span>
+<span class="sd">            The maximum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">        ballot_validation : bool</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">        legal_min_length : int</span>
+<span class="sd">            The minimum length of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_max_length : int</span>
+<span class="sd">            The maximum length of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_min_cost : Number</span>
+<span class="sd">            The minimum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_max_cost : Number</span>
+<span class="sd">            The maximum total cost of an approval ballot per the rules of the election.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -277,12 +331,17 @@ document.write(`
         <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ApprovalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">,</span>
+        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ApprovalBallot</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ApprovalProfile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">iterable</span><span class="o">=</span><span class="n">iterable</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
@@ -294,7 +353,16 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_cost</span> <span class="o">=</span> <span class="n">legal_min_cost</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_max_cost</span> <span class="o">=</span> <span class="n">legal_max_cost</span>
 
-    <span class="k">def</span> <span class="nf">as_multiprofile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ApprovalProfile.as_multiprofile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.as_multiprofile">[docs]</a>    <span class="k">def</span> <span class="nf">as_multiprofile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the profile into a :py:class:`~pabutools.election.profile.approvalprofile.ApprovalMultiProfile`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            :py:class:`~pabutools.election.profile.approvalprofile.ApprovalMultiProfile`</span>
+<span class="sd">                The multiprofile corresponding to the profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="n">ApprovalMultiProfile</span><span class="p">(</span>
             <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -304,18 +372,20 @@ document.write(`
             <span class="n">legal_max_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_max_length</span><span class="p">,</span>
             <span class="n">legal_min_cost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_min_cost</span><span class="p">,</span>
             <span class="n">legal_max_cost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_max_cost</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ApprovalProfile.approval_score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.approval_score">[docs]</a>    <span class="k">def</span> <span class="nf">approval_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the approval score of a project, that is, the number of voters who approved of it.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            project : pabutools.instance.instance.Project</span>
+<span class="sd">            project : :py:class:`~pabutools.election.instance.Project`</span>
 <span class="sd">                The project.</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            int</span>
+<span class="sd">                The approval score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">approval_score</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
@@ -325,11 +395,13 @@ document.write(`
 
 <div class="viewcode-block" id="ApprovalProfile.is_trivial"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.is_trivial">[docs]</a>    <span class="k">def</span> <span class="nf">is_trivial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost</span>
+<span class="sd">        Tests if the profile is trivial, meaning that all projects that are approved by at least one voter have a cost</span>
 <span class="sd">        that exceeds the budget limit.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            bool</span>
+<span class="sd">                `True` if the profile is trivial, and `False` otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
             <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
@@ -338,10 +410,12 @@ document.write(`
 
 <div class="viewcode-block" id="ApprovalProfile.approved_projects"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects">[docs]</a>    <span class="k">def</span> <span class="nf">approved_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A set of all projects approved by at least one voter.</span>
+<span class="sd">        Returns the set of all the projects approved by at least one voter.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            set of projects</span>
+<span class="sd">            set[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">                The set of projects with at least one supporter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">approved_projects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
@@ -350,11 +424,13 @@ document.write(`
 
 <div class="viewcode-block" id="ApprovalProfile.is_party_list"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.is_party_list">[docs]</a>    <span class="k">def</span> <span class="nf">is_party_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check whether this profile is a party-list profile.</span>
+<span class="sd">        Checks whether the profile is a party-list profile.</span>
 <span class="sd">        In a party-list profile all approval sets are either disjoint or equal.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            bool</span>
+<span class="sd">                `True` if the profile is party-list and `False` otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b1</span> <span class="o">&amp;</span> <span class="n">b2</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">b1</span><span class="p">))</span> <span class="k">for</span> <span class="n">b1</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">for</span> <span class="n">b2</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span></div>
 
@@ -401,15 +477,18 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a random approval profile in which approval ballots are such that each project is approved with</span>
 <span class="sd">    probability 0.5.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.instance.instance.PBInstance</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance the profile is defined with respect to.</span>
 <span class="sd">        num_agents : int</span>
-<span class="sd">            The length of the profile, i.e., the number of agents..</span>
+<span class="sd">            The length of the profile, i.e., the number of agents.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        pabutools.instance.profile.ApprovalBallot</span>
+<span class="sd">        :py:class:`~pabutools.election.profile.approvalprofile.ApprovalProfile`</span>
+<span class="sd">            The randomly generated profile.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_agents</span><span class="p">):</span>
@@ -419,35 +498,100 @@ document.write(`
     <span class="k">return</span> <span class="n">profile</span></div>
 
 
-<div class="viewcode-block" id="get_all_approval_profiles"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.get_all_approval_profiles">[docs]</a><span class="k">def</span> <span class="nf">get_all_approval_profiles</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="get_all_approval_profiles"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.get_all_approval_profiles">[docs]</a><span class="k">def</span> <span class="nf">get_all_approval_profiles</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a generator over all the possible profile for a given instance of a given length.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.instance.instance.PBInstance</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance the profile is defined with respect to.</span>
 <span class="sd">        num_agents : int</span>
 <span class="sd">            The length of the profile, i.e., the number of agents..</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        pabutools.instance.profile.ApprovalBallot</span>
+<span class="sd">        Generator[Iterable[:py:class:`~pabutools.election.instance.Project`]]</span>
+<span class="sd">            Generator over subsets of projects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">product</span><span class="p">(</span><span class="n">powerset</span><span class="p">(</span><span class="n">instance</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_agents</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ApprovalMultiProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile">[docs]</a><span class="k">class</span> <span class="nc">ApprovalMultiProfile</span><span class="p">(</span><span class="n">MultiProfile</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A multiprofile of approval ballots, that is, a multiset of approval ballots togehter with their multiplicity.</span>
+<span class="sd">    Ballots needs to be hashable, so the class</span>
+<span class="sd">    :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` should be used by default here.</span>
+<span class="sd">    This class inherits from the Python `Counter` class and can thus be used as one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot`], optional</span>
+<span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` that is used an</span>
+<span class="sd">            initializer for the counter. If activated, the types of the ballots are validated. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`, optional</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">            Defaults to `Instance()`.</span>
+<span class="sd">        ballot_validation : bool, optional</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">            Defaults to `True`.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">            Defaults to `FrozenApprovalBallot`.</span>
+<span class="sd">        legal_min_length : int, optional</span>
+<span class="sd">            The minimum length of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_max_length : int, optional</span>
+<span class="sd">            The maximum length of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_min_cost : Number, optional</span>
+<span class="sd">            The minimum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        legal_max_cost : Number, optional</span>
+<span class="sd">            The maximum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">            Defaults to `None`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">        ballot_validation : bool</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">        legal_min_length : int</span>
+<span class="sd">            The minimum length of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_max_length : int</span>
+<span class="sd">            The maximum length of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_min_cost : Number</span>
+<span class="sd">            The minimum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">        legal_max_cost : Number</span>
+<span class="sd">            The maximum total cost of an approval ballot per the rules of the election.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenApprovalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="n">FrozenApprovalBallot</span><span class="p">,</span>
+        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">profile</span><span class="p">:</span> <span class="n">ApprovalProfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ApprovalBallot</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ApprovalMultiProfile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">iterable</span><span class="o">=</span><span class="n">iterable</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
@@ -464,13 +608,15 @@ document.write(`
 <div class="viewcode-block" id="ApprovalMultiProfile.approval_score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score">[docs]</a>    <span class="k">def</span> <span class="nf">approval_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the approval score of a project, that is, the number of voters who approved of it.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            project : pabutools.instance.instance.Project</span>
+<span class="sd">            project : :py:class:`~pabutools.election.instance.Project`</span>
 <span class="sd">                The project.</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            int</span>
+<span class="sd">                The approval score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">approval_score</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

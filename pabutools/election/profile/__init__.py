@@ -58,5 +58,5 @@ __all__ = [
     "CardinalProfile",
     "CardinalMultiProfile",
     "OrdinalProfile",
-    "OrdinalMultiProfile"
+    "OrdinalMultiProfile",
 ]

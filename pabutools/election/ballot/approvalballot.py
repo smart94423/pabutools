@@ -37,6 +37,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
             Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
             strings. Could for instance store the gender of the voter, their location etc.
     """
+
     def __init__(
         self,
         approved: Iterable[Project] = (),

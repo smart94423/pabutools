@@ -9,32 +9,33 @@ from pabutools.election.instance import Project
 
 class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
     """
-        Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
-        preferences. It derives from the Python class `tuple` and can be used as one.
+    Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
+    preferences. It derives from the Python class `tuple` and can be used as one.
 
-        Parameters
-        ----------
-            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
-                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
-                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
-                additional attributes are also copied (except if the corresponding keyword arguments have been given).
-                Defaults to `()`.
-            name : str, optional
-                The identifier of the ballot.
-                Defaults to `""`.
-            meta : dict, optional
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-                Defaults to `dict()`.
+    Parameters
+    ----------
+        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
 
-        Attributes
-        ----------
-            name : str
-                The identifier of the ballot.
-            meta : dict
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-        """
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
+
     def __init__(
         self,
         iterable: Iterable[Project] = (),
@@ -71,33 +72,34 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
 
 class OrdinalBallot(dict, Ballot):
     """
-        Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
-        preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).
-        The convention is that the elements are presented from the most preferred one to the least preferred one.
+    Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
+    preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).
+    The convention is that the elements are presented from the most preferred one to the least preferred one.
 
-        Parameters
-        ----------
-            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
-                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
-                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
-                additional attributes are also copied (except if the corresponding keyword arguments have been given).
-                Defaults to `()`.
-            name : str, optional
-                The identifier of the ballot.
-                Defaults to `""`.
-            meta : dict, optional
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-                Defaults to `dict()`.
+    Parameters
+    ----------
+        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
 
-        Attributes
-        ----------
-            name : str
-                The identifier of the ballot.
-            meta : dict
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-        """
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
+
     def __init__(
         self,
         iterable: Iterable[Project] = (),

@@ -45,5 +45,5 @@ __all__ = [
     "Cost_Log_Sat",
     "Cost_Sqrt_Sat",
     "PositionalSatisfaction",
-    "Additive_Borda_Sat"
+    "Additive_Borda_Sat",
 ]

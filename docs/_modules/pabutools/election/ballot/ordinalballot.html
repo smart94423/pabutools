@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -260,32 +259,33 @@ document.write(`
 
 <div class="viewcode-block" id="FrozenOrdinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot">[docs]</a><span class="k">class</span> <span class="nc">FrozenOrdinalBallot</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">FrozenBallot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their</span>
-<span class="sd">        preferences. It derives from the Python class `tuple` and can be used as one.</span>
+<span class="sd">    Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their</span>
+<span class="sd">    preferences. It derives from the Python class `tuple` and can be used as one.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
-<span class="sd">                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an</span>
-<span class="sd">                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
-<span class="sd">                additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
-<span class="sd">                Defaults to `()`.</span>
-<span class="sd">            name : str, optional</span>
-<span class="sd">                The identifier of the ballot.</span>
-<span class="sd">                Defaults to `&quot;&quot;`.</span>
-<span class="sd">            meta : dict, optional</span>
-<span class="sd">                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
-<span class="sd">                strings. Could for instance store the gender of the voter, their location etc.</span>
-<span class="sd">                Defaults to `dict()`.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">            Defaults to `()`.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            The identifier of the ballot.</span>
+<span class="sd">            Defaults to `&quot;&quot;`.</span>
+<span class="sd">        meta : dict, optional</span>
+<span class="sd">            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
+<span class="sd">            strings. Could for instance store the gender of the voter, their location etc.</span>
+<span class="sd">            Defaults to `dict()`.</span>
 
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">            name : str</span>
-<span class="sd">                The identifier of the ballot.</span>
-<span class="sd">            meta : dict</span>
-<span class="sd">                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
-<span class="sd">                strings. Could for instance store the gender of the voter, their location etc.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The identifier of the ballot.</span>
+<span class="sd">        meta : dict</span>
+<span class="sd">            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
+<span class="sd">            strings. Could for instance store the gender of the voter, their location etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
@@ -322,33 +322,34 @@ document.write(`
 
 <div class="viewcode-block" id="OrdinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot">[docs]</a><span class="k">class</span> <span class="nc">OrdinalBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Ballot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their</span>
-<span class="sd">        preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).</span>
-<span class="sd">        The convention is that the elements are presented from the most preferred one to the least preferred one.</span>
+<span class="sd">    Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their</span>
+<span class="sd">    preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).</span>
+<span class="sd">    The convention is that the elements are presented from the most preferred one to the least preferred one.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
-<span class="sd">                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an</span>
-<span class="sd">                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
-<span class="sd">                additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
-<span class="sd">                Defaults to `()`.</span>
-<span class="sd">            name : str, optional</span>
-<span class="sd">                The identifier of the ballot.</span>
-<span class="sd">                Defaults to `&quot;&quot;`.</span>
-<span class="sd">            meta : dict, optional</span>
-<span class="sd">                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
-<span class="sd">                strings. Could for instance store the gender of the voter, their location etc.</span>
-<span class="sd">                Defaults to `dict()`.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">            Defaults to `()`.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            The identifier of the ballot.</span>
+<span class="sd">            Defaults to `&quot;&quot;`.</span>
+<span class="sd">        meta : dict, optional</span>
+<span class="sd">            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
+<span class="sd">            strings. Could for instance store the gender of the voter, their location etc.</span>
+<span class="sd">            Defaults to `dict()`.</span>
 
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">            name : str</span>
-<span class="sd">                The identifier of the ballot.</span>
-<span class="sd">            meta : dict</span>
-<span class="sd">                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
-<span class="sd">                strings. Could for instance store the gender of the voter, their location etc.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The identifier of the ballot.</span>
+<span class="sd">        meta : dict</span>
+<span class="sd">            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically</span>
+<span class="sd">            strings. Could for instance store the gender of the voter, their location etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>

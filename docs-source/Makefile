@@ -17,7 +17,7 @@ help:
 
 # To produced the docs for the github pages
 github:
-	touch "$(GITHUBBUILDDIR)"/.nojekyll
+	touch "$(GITHUBBUILDDIR)/.nojekyll"
 	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(GITHUBBUILDDIR)" $(SPHINXOPTS) $(O)
 githubclean:
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(GITHUBBUILDDIR)" $(SPHINXOPTS) $(O)

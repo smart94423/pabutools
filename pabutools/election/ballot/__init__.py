@@ -53,5 +53,5 @@ __all__ = [
     "CumulativeBallot",
     "FrozenCumulativeBallot",
     "OrdinalBallot",
-    "FrozenOrdinalBallot"
+    "FrozenOrdinalBallot",
 ]

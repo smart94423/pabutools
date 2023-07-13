@@ -1,5 +1,5 @@
 """
-Preference profiles and voters.
+Profiles, i.e., collections of ballots.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pabutools.election.satisfaction import (
     SatisfactionMeasure,
     SatisfactionProfile,
     SatisfactionMultiProfile,
-    GroupSatisfactionMeasure
+    GroupSatisfactionMeasure,
 )
 from pabutools.election.ballot import AbstractBallot, FrozenBallot, Ballot
 from pabutools.election.instance import Instance
@@ -143,7 +143,7 @@ class Profile(list, AbstractProfile):
         iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the
             list. If activated, the types of the ballots are validated. In case an
-            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
         instance : :py:class:`~pabutools.election.instance.Instance`, optional
             The instance related to the profile.
@@ -175,7 +175,12 @@ class Profile(list, AbstractProfile):
         ballot_type: type[Ballot] = None,
     ) -> None:
         if ballot_type is None:
-            ballot_type = Ballot
+            if isinstance(instance, AbstractProfile):
+                ballot_type = instance.ballot_type
+            else:
+                ballot_type = Ballot
+        if ballot_validation is None and isinstance(instance, AbstractProfile):
+            ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
         for item in iterable:
             self.validate_ballot(item)
@@ -184,6 +189,7 @@ class Profile(list, AbstractProfile):
     def multiplicity(self, ballot: Ballot) -> int:
         return 1
 
+    @abstractmethod
     def as_multiprofile(self) -> MultiProfile:
         """
         Converts the profile into a :py:class:`~pabutools.election.profile.profile.MultiProfile`.
@@ -247,7 +253,7 @@ class MultiProfile(Counter, AbstractProfile):
         iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the
             list. If activated, the types of the ballots are validated. In case an
-            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
         instance : :py:class:`~pabutools.election.instance.Instance`, optional
             The instance related to the profile.
@@ -279,7 +285,12 @@ class MultiProfile(Counter, AbstractProfile):
         ballot_type: type[FrozenBallot] = None,
     ) -> None:
         if ballot_type is None:
-            ballot_type = FrozenBallot
+            if isinstance(instance, AbstractProfile):
+                ballot_type = instance.ballot_type
+            else:
+                ballot_type = FrozenBallot
+        if ballot_validation is None and isinstance(instance, AbstractProfile):
+            ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
         for item in iterable:
             self.validate_ballot(item)

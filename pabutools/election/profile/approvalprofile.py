@@ -1,6 +1,13 @@
-from collections.abc import Iterable
+"""
+Approval profiles, i.e., collections of approval ballots.
+"""
+from __future__ import annotations
+
+from collections.abc import Iterable, Generator
 from itertools import product
 from numbers import Number
+
+from pabutools.election.ballot.ballot import AbstractBallot
 
 from pabutools.election.ballot import (
     Ballot,
@@ -9,16 +16,64 @@ from pabutools.election.ballot import (
     FrozenApprovalBallot,
     get_random_approval_ballot,
 )
-from pabutools.election.profile.profile import Profile, MultiProfile
+from pabutools.election.profile.profile import Profile, MultiProfile, AbstractProfile
 from pabutools.election.instance import Instance, Project
 from pabutools.utils import powerset
 
 
 class ApprovalProfile(Profile):
     """
-    A profile of approval ballots. Inherits from `pabutools.instance.profile.Profile`.
+    A profile of approval ballots, that is, a list of approval ballots per voters. See the class
+    :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` for more details on approval ballots.
+    This class inherits from the Python `list` class and can thus be used as one.
+
+    Parameters
+    ----------
+        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`], optional
+            An iterable of :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` that is used an
+            initializer for the list. If activated, the types of the ballots are validated. In case an
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+        instance : :py:class:`~pabutools.election.instance.Instance`, optional
+            The instance related to the profile.
+            Defaults to `Instance()`.
+        ballot_validation : bool, optional
+            Boolean indicating whether ballots should be validated before being added to the profile.
+            Defaults to `True`.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+            Defaults to `ApprovalBallot`.
+        legal_min_length : int, optional
+            The minimum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_min_cost : Number, optional
+            The minimum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_cost : Number, optional
+            The maximum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+
     Attributes
     ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance related to the profile.
+        ballot_validation : bool
+            Boolean indicating whether ballots should be validated before being added to the profile.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+        legal_min_length : int
+            The minimum length of an approval ballot per the rules of the election.
+        legal_max_length : int
+            The maximum length of an approval ballot per the rules of the election.
+        legal_min_cost : Number
+            The minimum total cost of an approval ballot per the rules of the election.
+        legal_max_cost : Number
+            The maximum total cost of an approval ballot per the rules of the election.
     """
 
     def __init__(
@@ -26,12 +81,17 @@ class ApprovalProfile(Profile):
         iterable: Iterable[ApprovalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
-        ballot_type: type[Ballot] = ApprovalBallot,
+        ballot_type: type[AbstractBallot] | None = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
         legal_min_cost: Number | None = None,
         legal_max_cost: Number | None = None,
-    ):
+    ) -> None:
+        if ballot_type is None:
+            if isinstance(iterable, AbstractProfile):
+                ballot_type = iterable.ballot_type
+            else:
+                ballot_type = ApprovalBallot
         super(ApprovalProfile, self).__init__(
             iterable=iterable,
             instance=instance,
@@ -44,6 +104,15 @@ class ApprovalProfile(Profile):
         self.legal_max_cost = legal_max_cost
 
     def as_multiprofile(self):
+        """
+        Converts the profile into a :py:class:`~pabutools.election.profile.approvalprofile.ApprovalMultiProfile`.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.profile.approvalprofile.ApprovalMultiProfile`
+                The multiprofile corresponding to the profile.
+        """
+
         return ApprovalMultiProfile(
             instance=self.instance,
             profile=self,
@@ -58,13 +127,15 @@ class ApprovalProfile(Profile):
     def approval_score(self, project: Project) -> int:
         """
         Returns the approval score of a project, that is, the number of voters who approved of it.
+
         Parameters
         ----------
-            project : pabutools.instance.instance.Project
+            project : :py:class:`~pabutools.election.instance.Project`
                 The project.
         Returns
         -------
             int
+                The approval score.
         """
         approval_score = 0
         for ballot in self:
@@ -74,11 +145,13 @@ class ApprovalProfile(Profile):
 
     def is_trivial(self) -> bool:
         """
-        Tests if the profile is trivial, meaning all projects that are approved by at least one voter have a cost
+        Tests if the profile is trivial, meaning that all projects that are approved by at least one voter have a cost
         that exceeds the budget limit.
+
         Returns
         -------
             bool
+                `True` if the profile is trivial, and `False` otherwise.
         """
         return all(
             project.cost > self.instance.budget_limit
@@ -87,10 +160,12 @@ class ApprovalProfile(Profile):
 
     def approved_projects(self) -> set[Project]:
         """
-        A set of all projects approved by at least one voter.
+        Returns the set of all the projects approved by at least one voter.
+
         Returns
         -------
-            set of projects
+            set[:py:class:`~pabutools.election.instance.Project`]
+                The set of projects with at least one supporter.
         """
         approved_projects = set()
         for ballot in self:
@@ -99,11 +174,13 @@ class ApprovalProfile(Profile):
 
     def is_party_list(self) -> bool:
         """
-        Check whether this profile is a party-list profile.
+        Checks whether the profile is a party-list profile.
         In a party-list profile all approval sets are either disjoint or equal.
+
         Returns
         -------
             bool
+                `True` if the profile is party-list and `False` otherwise.
         """
         return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
 
@@ -150,15 +227,18 @@ def get_random_approval_profile(instance: Instance, num_agents: int) -> Approval
     """
     Generates a random approval profile in which approval ballots are such that each project is approved with
     probability 0.5.
+
     Parameters
     ----------
-        instance : pabutools.instance.instance.PBInstance
+        instance : :py:class:`~pabutools.election.instance.Instance`
             The instance the profile is defined with respect to.
         num_agents : int
-            The length of the profile, i.e., the number of agents..
+            The length of the profile, i.e., the number of agents.
+
     Returns
     -------
-        pabutools.instance.profile.ApprovalBallot
+        :py:class:`~pabutools.election.profile.approvalprofile.ApprovalProfile`
+            The randomly generated profile.
     """
     profile = ApprovalProfile(instance=instance)
     for i in range(num_agents):
@@ -168,35 +248,100 @@ def get_random_approval_profile(instance: Instance, num_agents: int) -> Approval
     return profile
 
 
-def get_all_approval_profiles(instance: Instance, num_agents: int):
+def get_all_approval_profiles(
+    instance: Instance, num_agents: int
+) -> Generator[Iterable[Project]]:
     """
     Returns a generator over all the possible profile for a given instance of a given length.
+
     Parameters
     ----------
-        instance : pabutools.instance.instance.PBInstance
+        instance : :py:class:`~pabutools.election.instance.Instance`
             The instance the profile is defined with respect to.
         num_agents : int
             The length of the profile, i.e., the number of agents..
+
     Returns
     -------
-        pabutools.instance.profile.ApprovalBallot
+        Generator[Iterable[:py:class:`~pabutools.election.instance.Project`]]
+            Generator over subsets of projects.
     """
     return product(powerset(instance), repeat=num_agents)
 
 
 class ApprovalMultiProfile(MultiProfile):
+    """
+    A multiprofile of approval ballots, that is, a multiset of approval ballots togehter with their multiplicity.
+    Ballots needs to be hashable, so the class
+    :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` should be used by default here.
+    This class inherits from the Python `Counter` class and can thus be used as one.
+
+    Parameters
+    ----------
+        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot`], optional
+            An iterable of :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` that is used an
+            initializer for the counter. If activated, the types of the ballots are validated. In case an
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+        instance : :py:class:`~pabutools.election.instance.Instance`, optional
+            The instance related to the profile.
+            Defaults to `Instance()`.
+        ballot_validation : bool, optional
+            Boolean indicating whether ballots should be validated before being added to the profile.
+            Defaults to `True`.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+            Defaults to `FrozenApprovalBallot`.
+        legal_min_length : int, optional
+            The minimum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_min_cost : Number, optional
+            The minimum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_cost : Number, optional
+            The maximum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+
+    Attributes
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance related to the profile.
+        ballot_validation : bool
+            Boolean indicating whether ballots should be validated before being added to the profile.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+        legal_min_length : int
+            The minimum length of an approval ballot per the rules of the election.
+        legal_max_length : int
+            The maximum length of an approval ballot per the rules of the election.
+        legal_min_cost : Number
+            The minimum total cost of an approval ballot per the rules of the election.
+        legal_max_cost : Number
+            The maximum total cost of an approval ballot per the rules of the election.
+    """
+
     def __init__(
         self,
         iterable: Iterable[FrozenApprovalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
-        ballot_type: type[FrozenBallot] = FrozenApprovalBallot,
+        ballot_type: type[FrozenBallot] = None,
         profile: ApprovalProfile = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
         legal_min_cost: Number | None = None,
         legal_max_cost: Number | None = None,
     ):
+        if ballot_type is None:
+            if isinstance(iterable, AbstractProfile):
+                ballot_type = iterable.ballot_type
+            else:
+                ballot_type = ApprovalBallot
         super(ApprovalMultiProfile, self).__init__(
             iterable=iterable,
             instance=instance,
@@ -213,13 +358,15 @@ class ApprovalMultiProfile(MultiProfile):
     def approval_score(self, project: Project) -> int:
         """
         Returns the approval score of a project, that is, the number of voters who approved of it.
+
         Parameters
         ----------
-            project : pabutools.instance.instance.Project
+            project : :py:class:`~pabutools.election.instance.Project`
                 The project.
         Returns
         -------
             int
+                The approval score.
         """
         approval_score = 0
         for ballot, multiplicity in self.items():
