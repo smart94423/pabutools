@@ -26,6 +26,10 @@ when it comes to PB data.
 Ultimately, the goal is to host this library on pip. For now, use the
 source code provided here.
 
+## Documentation
+
+The complete documentation is available [here](https://pbvoting.github.io/pabutools/).
+
 ## Usage
 
 ### Instances
@@ -413,8 +417,15 @@ The doc is generated using sphinx. We use the [numpy style guide](https://numpyd
 The [napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html) extension for Sphinx is used
 and the HTML style is defined by the [Book Sphinx Theme](https://sphinx-book-theme.readthedocs.io/en/stable/).
 
-To generate the doc, first move inside the `docs`folder and run the following:
+To generate the doc, first move inside the `docs-source` folder and run the following:
 ```shell
 make clean 
 make html
 ```
+
+This will generate the documentation locally. If you want to push the new documentation, run:
+```shell
+make github
+```
+
+After having pushed, the documentation will automatically be updated.

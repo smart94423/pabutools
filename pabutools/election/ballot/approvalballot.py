@@ -1,3 +1,6 @@
+"""
+Approval ballots, i.e., ballots in which the voters indicate which projects they approve of.
+"""
 import random
 
 from collections.abc import Iterable

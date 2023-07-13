@@ -1,3 +1,6 @@
+"""
+Cumulative ballots, i.e., ballots in which the voters distribute a given amount of points to the projects.
+"""
 from pabutools.election.ballot.ballot import FrozenBallot, AbstractBallot
 from pabutools.election.ballot.cardinalballot import CardinalBallot
 from pabutools.election.instance import Project
@@ -7,8 +10,8 @@ from numbers import Number
 
 class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
     """
-    Frozen cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of
-    points allocated to the voter. This is a special type of cardinal ballot
+    Frozen cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
+    This is a special type of cardinal ballot
     (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).
     Since there is not frozen dictionary implemented in Python, this class simply
     inherits from the Python class `dict`, overriding the `set_item` method to ensure that it is non-mutable
@@ -68,8 +71,8 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
 
 class CumulativeBallot(CardinalBallot):
     """
-    Cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of
-    points allocated to the voter. This is a special type of cardinal ballot
+    Cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
+    This is a special type of cardinal ballot
     (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).This class inherits from the
     Python class `dict` and can be used as one.
 

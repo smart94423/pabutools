@@ -1,3 +1,6 @@
+"""
+Cardinal ballots, i.e., ballots in which the voters map projects to scores.
+"""
 from collections.abc import Iterable
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot

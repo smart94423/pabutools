@@ -1,3 +1,6 @@
+"""
+Ballots, that is, the information submitted by the voters during the election.
+"""
 from abc import ABC, abstractmethod
 
 

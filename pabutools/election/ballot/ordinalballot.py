@@ -1,3 +1,6 @@
+"""
+Ordinal ballots, i.e., ballots in which the voters order the projects given their preferences.
+"""
 from collections.abc import Iterable
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
