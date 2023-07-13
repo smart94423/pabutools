@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 class SatisfactionMeasure(ABC):
     """
     Abstract class representing a satisfaction function. Only meant to be inherited.
+
     Parameters
     ----------
         instance : pabutools.election.instance.Instance

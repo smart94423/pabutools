@@ -249,7 +249,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.election.ballot.cumulativeballot</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">AbstractBallot</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cumulative ballots, i.e., ballots in which the voters distribute a given amount of points to the projects.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">AbstractBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot.cardinalballot</span> <span class="kn">import</span> <span class="n">CardinalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Project</span>
 
@@ -258,8 +261,8 @@ document.write(`
 
 <div class="viewcode-block" id="FrozenCumulativeBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot">[docs]</a><span class="k">class</span> <span class="nc">FrozenCumulativeBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">],</span> <span class="n">FrozenBallot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Frozen cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of</span>
-<span class="sd">    points allocated to the voter. This is a special type of cardinal ballot</span>
+<span class="sd">    Frozen cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.</span>
+<span class="sd">    This is a special type of cardinal ballot</span>
 <span class="sd">    (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).</span>
 <span class="sd">    Since there is not frozen dictionary implemented in Python, this class simply</span>
 <span class="sd">    inherits from the Python class `dict`, overriding the `set_item` method to ensure that it is non-mutable</span>
@@ -319,8 +322,8 @@ document.write(`
 
 <div class="viewcode-block" id="CumulativeBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot">[docs]</a><span class="k">class</span> <span class="nc">CumulativeBallot</span><span class="p">(</span><span class="n">CardinalBallot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of</span>
-<span class="sd">    points allocated to the voter. This is a special type of cardinal ballot</span>
+<span class="sd">    Cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.</span>
+<span class="sd">    This is a special type of cardinal ballot</span>
 <span class="sd">    (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).This class inherits from the</span>
 <span class="sd">    Python class `dict` and can be used as one.</span>
 

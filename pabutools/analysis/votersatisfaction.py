@@ -86,5 +86,5 @@ def satisfaction_histogram(
         else:
             hist_data[math.floor(satisfaction*num_bins/max_satisfaction)] += sat_profile.multiplicity(ballot)
     for i in range(len(hist_data)):
-        hist_data[i] = hist_data[i]/profile.total_len()
+        hist_data[i] = hist_data[i]/profile.num_ballots()
     return hist_data

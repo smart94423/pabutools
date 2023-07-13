@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -269,6 +268,7 @@ document.write(`
 <div class="viewcode-block" id="FunctionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">FunctionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance : pabutools.election.instance.Instance</span>
@@ -280,6 +280,7 @@ document.write(`
 <span class="sd">        func : Callable[[PBInstance, Ballot, Profile, Iterable[Project]], Fraction]</span>
 <span class="sd">            A function taking as input an instance, a ballot and a subset of projects, and returning the score</span>
 <span class="sd">            as a fraction.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">        func : function</span>
@@ -302,10 +303,12 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined</span>
 <span class="sd">        by the inner function specified at initialisation.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">            projects : Iterable[pabutools.election.instance.Project]</span>
 <span class="sd">                The set of projects.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            float</span>

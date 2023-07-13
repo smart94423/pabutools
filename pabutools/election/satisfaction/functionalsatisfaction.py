@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 class FunctionalSatisfaction(SatisfactionMeasure):
     """
     Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.
+
     Parameters
     ----------
         instance : pabutools.election.instance.Instance
@@ -29,6 +30,7 @@ class FunctionalSatisfaction(SatisfactionMeasure):
         func : Callable[[PBInstance, Ballot, Profile, Iterable[Project]], Fraction]
             A function taking as input an instance, a ballot and a subset of projects, and returning the score
             as a fraction.
+
     Attributes
     ----------
         func : function
@@ -51,10 +53,12 @@ class FunctionalSatisfaction(SatisfactionMeasure):
         """
         Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
         by the inner function specified at initialisation.
+
         Parameters
         ----------
             projects : Iterable[pabutools.election.instance.Project]
                 The set of projects.
+
         Returns
         -------
             float

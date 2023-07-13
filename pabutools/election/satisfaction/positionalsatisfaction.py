@@ -15,24 +15,25 @@ if TYPE_CHECKING:
 
 class PositionalSatisfaction(SatisfactionMeasure):
     """
-        Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.
-        For a set of projects, the total satisfaction is additive.
+    Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.
+    For a set of projects, the total satisfaction is additive.
+
     Parameters
-        ----------
-            instance : pabutools.election.instance.Instance
-                The instance.
-            profile : pabutools.instance.profile.Profile
-                The profile.
-            ballot : pabutools.instance.profile.OrdinalBallot
-                The ordinal ballot.
-            func : function
-                A function taking as input an instance, a ballot and a subset of projects, and returning the score
-                as a fraction.
-        Attributes
-        ----------
-            func : function
-                A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
-                score of the subset of projects as a fraction.
+    ----------
+        instance : pabutools.election.instance.Instance
+            The instance.
+        profile : pabutools.instance.profile.Profile
+            The profile.
+        ballot : pabutools.instance.profile.OrdinalBallot
+            The ordinal ballot.
+        func : function
+            A function taking as input an instance, a ballot and a subset of projects, and returning the score
+            as a fraction.
+    Attributes
+    ----------
+        func : function
+            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
+            score of the subset of projects as a fraction.
     """
 
     def __init__(

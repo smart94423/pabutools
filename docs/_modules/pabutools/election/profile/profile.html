@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -252,6 +251,7 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Preference profiles and voters.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
@@ -261,6 +261,7 @@ document.write(`
     <span class="n">SatisfactionMeasure</span><span class="p">,</span>
     <span class="n">SatisfactionProfile</span><span class="p">,</span>
     <span class="n">SatisfactionMultiProfile</span><span class="p">,</span>
+    <span class="n">GroupSatisfactionMeasure</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">Ballot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span>
@@ -268,41 +269,152 @@ document.write(`
 
 <div class="viewcode-block" id="AbstractProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile">[docs]</a><span class="k">class</span> <span class="nc">AbstractProfile</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstract class representing a profile, that is, a collection of ballots.</span>
+<span class="sd">    Abstract class representing a profile, that is, a collection of ballots. This class is only meant to be inherited.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`, optional</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">            Defaults to `Instance()`.</span>
+<span class="sd">        ballot_validation : bool, optional</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">            Defaults to `True`.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">            Defaults to `AbstractBallot`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">        ballot_validation : bool</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="o">=</span> <span class="n">ballot_validation</span>
+        <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ballot_type</span>
 
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">validate_ballot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="o">...</span>
+<div class="viewcode-block" id="AbstractProfile.validate_ballot"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.validate_ballot">[docs]</a>    <span class="k">def</span> <span class="nf">validate_ballot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method validating a ballot before adding it to the profile. Checks if the type of the ballot is a subclass of</span>
+<span class="sd">        the attribute `ballot_type`. Throws a `TypeError` if not, and returns `None` otherwise.</span>
 
-    <span class="nd">@abstractmethod</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">                The ballot to be checked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Ballot type </span><span class="si">{}</span><span class="s2"> is invalid, the profile expected a subclass of </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span>
+                <span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="AbstractProfile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.multiplicity">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="o">...</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method returning the multiplicity of a ballot. Used to ensure that</span>
+<span class="sd">        :py:class:`~pabutools.election.profile.profile.Profile` and</span>
+<span class="sd">        :py:class:`~pabutools.election.profile.profile.MultiProfile` can be used interchangeably.</span>
 
-    <span class="nd">@abstractmethod</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">                The ballot whose multiplicity is inquired.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            int</span>
+<span class="sd">                The multiplicity of the ballots.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="AbstractProfile.as_sat_profile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.as_sat_profile">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">as_sat_profile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SatisfactionProfile</span> <span class="o">|</span> <span class="n">SatisfactionMultiProfile</span><span class="p">:</span>
-        <span class="o">...</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the profile into a satisfaction profile. See the :py:mod:`~pabutools.election.satisfaction` for more</span>
+<span class="sd">        details.</span>
 
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">total_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
+<span class="sd">                The class for the representing the satisfaction measure to use.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
+<span class="sd">                A satisfaction profile, that is, a collection of satisfaction measures for all the voters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
+
+<div class="viewcode-block" id="AbstractProfile.num_ballots"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.num_ballots">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">num_ballots</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of ballots appearing in the profile. Used to ensure that</span>
+<span class="sd">        :py:class:`~pabutools.election.profile.profile.Profile` and</span>
+<span class="sd">        :py:class:`~pabutools.election.profile.profile.MultiProfile` can be used interchangeably.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            int</span>
+<span class="sd">                The number of voters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div></div>
 
 
 <div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A profile, that is, a list of elemnts per voters. It typically contrains all the ballots of the voters, but</span>
-<span class="sd">    can also be a profile of satisfaction functions.</span>
-<span class="sd">    This class inherits from `list`.</span>
-<span class="sd">    This is the class that all profile formats inherit from.</span>
+<span class="sd">    A profile, that is, a list of ballots per voters. This class inherits from the Python `list` class and can thus</span>
+<span class="sd">    be used as one. All other profile classes inherit form this one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
+<span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the</span>
+<span class="sd">            list. If activated, the types of the ballots are validated. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`, optional</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">            Defaults to `Instance()`.</span>
+<span class="sd">        ballot_validation : bool, optional</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">            Defaults to `True`.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">            Defaults to `Ballot`.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.instance.instance.PBInstance</span>
-<span class="sd">            The instance with respect to which the profile is defined.</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">        ballot_validation : bool</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -312,41 +424,34 @@ document.write(`
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="o">=</span> <span class="n">ballot_validation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ballot_type</span>
+        <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">Ballot</span>
+        <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">ballot_validation</span><span class="p">,</span> <span class="n">ballot_type</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">)</span>
-        <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
 
-    <span class="k">def</span> <span class="nf">validate_ballot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">Ballot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Ballot type </span><span class="si">{}</span><span class="s2"> is not compatible with profile type </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
+<div class="viewcode-block" id="Profile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">Ballot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
-    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">Ballot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">1</span>
+<div class="viewcode-block" id="Profile.as_multiprofile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.as_multiprofile">[docs]</a>    <span class="k">def</span> <span class="nf">as_multiprofile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultiProfile</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the profile into a :py:class:`~pabutools.election.profile.profile.MultiProfile`.</span>
 
-    <span class="k">def</span> <span class="nf">as_multiprofile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="o">...</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            :py:class:`~pabutools.election.profile.profile.MultiProfile`</span>
+<span class="sd">                The multiprofile corresponding to the profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
 
-    <span class="k">def</span> <span class="nf">as_sat_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]):</span>
+<div class="viewcode-block" id="Profile.as_sat_profile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.as_sat_profile">[docs]</a>    <span class="k">def</span> <span class="nf">as_sat_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]):</span>
         <span class="k">return</span> <span class="n">SatisfactionProfile</span><span class="p">(</span>
             <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">sat_class</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">total_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<div class="viewcode-block" id="Profile.num_ballots"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.num_ballots">[docs]</a>    <span class="k">def</span> <span class="nf">num_ballots</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Profile</span><span class="p">(</span>
@@ -383,7 +488,37 @@ document.write(`
 
 <div class="viewcode-block" id="MultiProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile">[docs]</a><span class="k">class</span> <span class="nc">MultiProfile</span><span class="p">(</span><span class="n">Counter</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Multiprofiles</span>
+<span class="sd">    A multiprofile, that is, a profile that stores the ballots together with their multiplicity. This class inherits</span>
+<span class="sd">    from the Python `Counter` class (a special type of `dict` meant to represent multisets) and can be used as one.</span>
+<span class="sd">    All other multiprofile classes inherit form this one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
+<span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the</span>
+<span class="sd">            list. If activated, the types of the ballots are validated. In case an</span>
+<span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
+<span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`, optional</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">            Defaults to `Instance()`.</span>
+<span class="sd">        ballot_validation : bool, optional</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">            Defaults to `True`.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
+<span class="sd">            Defaults to `FrozenBallot`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance related to the profile.</span>
+<span class="sd">        ballot_validation : bool</span>
+<span class="sd">            Boolean indicating whether ballots should be validated before being added to the profile.</span>
+<span class="sd">        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
+<span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -393,53 +528,63 @@ document.write(`
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="o">=</span> <span class="n">ballot_validation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ballot_type</span>
+        <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">FrozenBallot</span>
+        <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">ballot_validation</span><span class="p">,</span> <span class="n">ballot_type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="n">Counter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">)</span>
-        <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
 
-    <span class="k">def</span> <span class="nf">validate_ballot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">FrozenBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Ballot type </span><span class="si">{}</span><span class="s2"> is not compatible with profile type </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
+<div class="viewcode-block" id="MultiProfile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">FrozenBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">FrozenBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">as_sat_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]):</span>
+<div class="viewcode-block" id="MultiProfile.as_sat_profile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.as_sat_profile">[docs]</a>    <span class="k">def</span> <span class="nf">as_sat_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]):</span>
         <span class="k">return</span> <span class="n">SatisfactionMultiProfile</span><span class="p">(</span>
             <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="n">multiprofile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">sat_class</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">total_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
+<div class="viewcode-block" id="MultiProfile.num_ballots"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.num_ballots">[docs]</a>    <span class="k">def</span> <span class="nf">num_ballots</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="bp">self</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="viewcode-block" id="MultiProfile.append"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends a ballot to the profile and update the multiplicity if necessary.</span>
 
-    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]):</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">                The ballot to append to the profile.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="MultiProfile.extend"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.extend">[docs]</a>    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">],</span> <span class="n">force_freeze</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extends the profile by appending all the ballots in the iterable.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]</span>
+<span class="sd">                An iterable of ballots to add to the profile.</span>
+<span class="sd">            force_freeze : bool, optional</span>
+<span class="sd">                Boolean indicating whether subclasses of :py:class:`~pabutools.election.ballot.ballot.Ballot` should be</span>
+<span class="sd">                frozen beforehand.</span>
+<span class="sd">                Defaults to `True`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="n">Ballot</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="n">Ballot</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_freeze</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ballot</span><span class="o">.</span><span class="n">frozen</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

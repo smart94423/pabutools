@@ -35,6 +35,7 @@ dev = [
     "Sphinx",
     "sphinx_rtd_theme",
     "sphinxcontrib-napoleon",
+    "sphinx-autodoc-typehints",
     "unittest2"
 ]
 

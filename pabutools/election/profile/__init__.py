@@ -1,6 +1,6 @@
 """
 Module describing different profile formats. A profile simply correspond to a list of ballots
-(see the py:mod:`~pabutools.election.ballot` module), one for each voter of the election. The structure of this module
+(see the :py:mod:`~pabutools.election.ballot` module), one for each voter of the election. The structure of this module
 is very similar to that of the :py:mod:`~pabutools.election.ballot` module.
 
 All profiles are derived from the :py:class:`~pabutools.election.profile.profile.AbstractProfile` class. Then, two

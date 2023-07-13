@@ -405,7 +405,7 @@ If you want to contribute, here are some elements to take into account.
 
 First, install the development dependencies by running the following command:
 ```shell
-pip install -e .[dev]
+pip install -e ".[dev]"
 ```
 
 You can run the unit tests with the following:

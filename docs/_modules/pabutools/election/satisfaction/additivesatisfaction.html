@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -253,7 +252,6 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">Ballot</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">CardinalBallot</span>
@@ -271,6 +269,7 @@ document.write(`
 <span class="sd">    Class representing additive satisfaction functions, that is, satisfaction functions for which the total</span>
 <span class="sd">    satisfaction is exactly the sum of the satisfaction of the individual projects. To speed up computations,</span>
 <span class="sd">    scores are only computed once and for all.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance : pabutools.election.instance.Instance</span>
@@ -282,6 +281,7 @@ document.write(`
 <span class="sd">        func : Callable[[PBInstance, Profile, Ballot, Project], Number]</span>
 <span class="sd">            A function taking as input an instance, a profile, a ballot and a project, and returning</span>
 <span class="sd">            the score as a fraction.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">        func : function</span>
@@ -319,10 +319,12 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects. The</span>
 <span class="sd">        satisfaction is additive, it is thus defines as the sum of the score of the projects under consideration.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">            projects : set of pabutools.election.instance.Project</span>
 <span class="sd">                The set of projects.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            float</span>

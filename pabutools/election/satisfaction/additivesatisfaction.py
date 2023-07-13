@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 from numbers import Number
-from pabutools.election.ballot.ballot import Ballot
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import ApprovalBallot, CardinalBallot
@@ -20,6 +19,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
     Class representing additive satisfaction functions, that is, satisfaction functions for which the total
     satisfaction is exactly the sum of the satisfaction of the individual projects. To speed up computations,
     scores are only computed once and for all.
+
     Parameters
     ----------
         instance : pabutools.election.instance.Instance
@@ -31,6 +31,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         func : Callable[[PBInstance, Profile, Ballot, Project], Number]
             A function taking as input an instance, a profile, a ballot and a project, and returning
             the score as a fraction.
+
     Attributes
     ----------
         func : function
@@ -68,10 +69,12 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         """
         Returns the satisfaction of a voter with a given approval ballot for a given subset of projects. The
         satisfaction is additive, it is thus defines as the sum of the score of the projects under consideration.
+
         Parameters
         ----------
             projects : set of pabutools.election.instance.Project
                 The set of projects.
+
         Returns
         -------
             float

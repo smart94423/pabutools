@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -268,6 +267,7 @@ document.write(`
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -283,14 +283,14 @@ document.write(`
 </li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.AdditiveSatisfaction">AdditiveSatisfaction (class in pabutools.election.satisfaction)</a>
 </li>
-      <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.append">append() (OrdinalBallot method)</a>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.append">append() (MultiProfile method)</a>
 
       <ul>
+        <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.append">(OrdinalBallot method)</a>
+</li>
         <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.append">(Profile method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.approval_score">approval_score() (ApprovalMultiProfile method)</a>
 
       <ul>
@@ -299,12 +299,34 @@ document.write(`
       </ul></li>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot">ApprovalBallot (class in pabutools.election.ballot.approvalballot)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile">ApprovalMultiProfile (class in pabutools.election.profile.approvalprofile)</a>
 </li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile">ApprovalProfile (class in pabutools.election.profile.approvalprofile)</a>
 </li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.approved_projects">approved_projects() (ApprovalProfile method)</a>
 </li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile.as_multiprofile">as_multiprofile() (ApprovalProfile method)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.as_multiprofile">(CardinalProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile.as_multiprofile">(CumulativeProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile.as_multiprofile">(OrdinalProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.as_multiprofile">(Profile method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.as_sat_profile">as_sat_profile() (AbstractProfile method)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.as_sat_profile">(MultiProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.as_sat_profile">(Profile method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -313,8 +335,24 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot">Ballot (class in pabutools.election.ballot.ballot)</a>
 </li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.ballot_type">ballot_type (AbstractProfile attribute)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.ballot_type">(MultiProfile attribute)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.ballot_type">(Profile attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.ballot_validation">ballot_validation (AbstractProfile attribute)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.ballot_validation">(MultiProfile attribute)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.ballot_validation">(Profile attribute)</a>
+</li>
+      </ul></li>
       <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.budget_allocations">budget_allocations() (Instance method)</a>
 </li>
       <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.budget_limit">budget_limit (Instance attribute)</a>
@@ -419,12 +457,16 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.Effort_Sat">Effort_Sat (class in pabutools.election.satisfaction)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/rules/index.html#pabutools.rules.exhaustion_by_budget_increase">exhaustion_by_budget_increase() (in module pabutools.rules)</a>
 </li>
-      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.extend">extend() (Profile method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.extend">extend() (MultiProfile method)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.extend">(Profile method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -447,10 +489,10 @@ document.write(`
         <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.frozen">(OrdinalBallot method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot">FrozenApprovalBallot (class in pabutools.election.ballot.approvalballot)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.ballot.FrozenBallot">FrozenBallot (class in pabutools.election.ballot.ballot)</a>
 </li>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot">FrozenCardinalBallot (class in pabutools.election.ballot.cardinalballot)</a>
@@ -463,6 +505,8 @@ document.write(`
 
       <ul>
         <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction.func">(FunctionalSatisfaction attribute)</a>
+</li>
+        <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction.func">(PositionalSatisfaction attribute)</a>
 </li>
       </ul></li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction">FunctionalSatisfaction (class in pabutools.election.satisfaction)</a>
@@ -497,22 +541,30 @@ document.write(`
 </li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.insert">insert() (Profile method)</a>
 </li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.instance">instance (AbstractProfile attribute)</a>
+</li>
       <li><a href="reference/election/instance.html#pabutools.election.instance.Instance">Instance (class in pabutools.election.instance)</a>
 </li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.instance">instance (MultiProfile attribute)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.instance">(Profile attribute)</a>
+</li>
+      </ul></li>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.intersection">intersection() (ApprovalBallot method)</a>
 
       <ul>
         <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.intersection">(Instance method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.intersection_update">intersection_update() (ApprovalBallot method)</a>
 
       <ul>
         <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.intersection_update">(Instance method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.is_exhaustive">is_exhaustive() (Instance method)</a>
 </li>
       <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.is_feasible">is_feasible() (Instance method)</a>
@@ -559,10 +611,10 @@ document.write(`
         <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.meta">(OrdinalBallot attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/rules/index.html#pabutools.rules.method_of_equal_shares">method_of_equal_shares() (in module pabutools.rules)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
 
@@ -584,6 +636,14 @@ document.write(`
         <li><a href="reference/election/satisfaction.html#module-pabutools.election.satisfaction">pabutools.election.satisfaction</a>
 </li>
         <li><a href="reference/rules/index.html#module-pabutools.rules">pabutools.rules</a>
+</li>
+      </ul></li>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.multiplicity">multiplicity() (AbstractProfile method)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.multiplicity">(MultiProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.multiplicity">(Profile method)</a>
 </li>
       </ul></li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile">MultiProfile (class in pabutools.election.profile.profile)</a>
@@ -618,6 +678,16 @@ document.write(`
         <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.name">(OrdinalBallot attribute)</a>
 </li>
         <li><a href="reference/election/instance.html#pabutools.election.instance.Project.name">(Project attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.num_ballots">num_ballots() (AbstractProfile method)</a>
+
+      <ul>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.num_ballots">(MultiProfile method)</a>
+</li>
+        <li><a href="reference/election/profile.html#pabutools.election.profile.profile.Profile.num_ballots">(Profile method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -815,6 +885,14 @@ document.write(`
         <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.union">(Instance method)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile.validate_ballot">validate_ballot() (AbstractProfile method)</a>
+</li>
   </ul></td>
 </tr></table>
 

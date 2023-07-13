@@ -19,11 +19,13 @@ author = "Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.napoleon", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.napoleon", "sphinx.ext.viewcode", "sphinx.ext.autodoc", ]
 
 # autodoc_typehints = "description"
-autodoc_member_order = "groupwise"
 add_module_names = False
+autodoc_member_order = "groupwise"
+autodoc_typehints_format = "short"
+python_use_unqualified_type_names = True
 
 napoleon_google_docstring = False
 

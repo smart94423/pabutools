@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -266,24 +265,25 @@ document.write(`
 
 <div class="viewcode-block" id="PositionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">PositionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.</span>
-<span class="sd">        For a set of projects, the total satisfaction is additive.</span>
+<span class="sd">    Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.</span>
+<span class="sd">    For a set of projects, the total satisfaction is additive.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            instance : pabutools.election.instance.Instance</span>
-<span class="sd">                The instance.</span>
-<span class="sd">            profile : pabutools.instance.profile.Profile</span>
-<span class="sd">                The profile.</span>
-<span class="sd">            ballot : pabutools.instance.profile.OrdinalBallot</span>
-<span class="sd">                The ordinal ballot.</span>
-<span class="sd">            func : function</span>
-<span class="sd">                A function taking as input an instance, a ballot and a subset of projects, and returning the score</span>
-<span class="sd">                as a fraction.</span>
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">            func : function</span>
-<span class="sd">                A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the</span>
-<span class="sd">                score of the subset of projects as a fraction.</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : pabutools.election.instance.Instance</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : pabutools.instance.profile.Profile</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : pabutools.instance.profile.OrdinalBallot</span>
+<span class="sd">            The ordinal ballot.</span>
+<span class="sd">        func : function</span>
+<span class="sd">            A function taking as input an instance, a ballot and a subset of projects, and returning the score</span>
+<span class="sd">            as a fraction.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        func : function</span>
+<span class="sd">            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the</span>
+<span class="sd">            score of the subset of projects as a fraction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>

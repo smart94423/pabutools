@@ -246,7 +246,7 @@ def method_of_equal_shares(
         instance,
         profile,
         sat_profile,
-        frac(instance.budget_limit, profile.total_len()),
+        frac(instance.budget_limit, profile.num_ballots()),
         budget_allocation,
         tie_breaking,
         resoluteness=resoluteness,
