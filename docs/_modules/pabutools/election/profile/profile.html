@@ -267,7 +267,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span>
 
 
-<div class="viewcode-block" id="AbstractProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile">[docs]</a><span class="k">class</span> <span class="nc">AbstractProfile</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.AbstractProfile">[docs]</a><span class="k">class</span> <span class="nc">AbstractProfile</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class representing a profile, that is, a collection of ballots. This class is only meant to be inherited.</span>
 
@@ -302,7 +302,8 @@ document.write(`
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Iterable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
@@ -321,7 +322,7 @@ document.write(`
 <span class="sd">            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">                The ballot to be checked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">&quot;Ballot type </span><span class="si">{}</span><span class="s2"> is invalid, the profile expected a subclass of </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span>
@@ -592,7 +593,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">),</span> <span class="n">Ballot</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_freeze</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">Ballot</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_freeze</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ballot</span><span class="o">.</span><span class="n">frozen</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span></div></div>

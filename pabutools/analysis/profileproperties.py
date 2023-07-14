@@ -48,11 +48,11 @@ def avg_total_score(
     instance: Instance, profile: CumulativeProfile | CardinalProfile
 ) -> Number:
     """average score of all projects in the instance"""
-    return mean_generator(profile.score(project) for project in instance)
+    return mean_generator(profile.total_score(project) for project in instance)
 
 
 def median_total_score(
     instance: Instance, profile: CumulativeProfile | CardinalProfile
 ) -> Number:
     """median score of all projects in the instance"""
-    return np.median([frac(profile.score(project)) for project in instance])
+    return np.median([frac(profile.total_score(project)) for project in instance])

@@ -1,8 +1,7 @@
 """
 Approval profiles, i.e., collections of approval ballots.
 """
-from __future__ import annotations
-
+from abc import ABC
 from collections.abc import Iterable, Generator
 from itertools import product
 from numbers import Number
@@ -20,7 +19,112 @@ from pabutools.election.instance import Instance, Project
 from pabutools.utils import powerset
 
 
-class ApprovalProfile(Profile):
+class AbstractApprovalProfile(AbstractProfile, ABC):
+    """
+    Abstract class for approval profiles. Stores the metadata and the methods specific to approval profiles.
+
+    Parameters
+    ----------
+        legal_min_length : int, optional
+            The minimum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum length of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_min_cost : Number, optional
+            The minimum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+        legal_max_cost : Number, optional
+            The maximum total cost of an approval ballot per the rules of the election.
+            Defaults to `None`.
+
+    Attributes
+    ----------
+        legal_min_length : int
+            The minimum length of an approval ballot per the rules of the election.
+        legal_max_length : int
+            The maximum length of an approval ballot per the rules of the election.
+        legal_min_cost : Number
+            The minimum total cost of an approval ballot per the rules of the election.
+        legal_max_cost : Number
+            The maximum total cost of an approval ballot per the rules of the election.
+        """
+
+    def __init__(self,
+                 legal_min_length: int | None = None,
+                 legal_max_length: int | None = None,
+                 legal_min_cost: Number | None = None,
+                 legal_max_cost: Number | None = None
+                 ):
+        super(AbstractProfile, self).__init__()
+        super(ABC, self).__init__()
+        self.legal_min_length = legal_min_length
+        self.legal_max_length = legal_max_length
+        self.legal_min_cost = legal_min_cost
+        self.legal_max_cost = legal_max_cost
+
+    def approval_score(self, project: Project) -> int:
+        """
+        Returns the approval score of a project, that is, the number of voters who approved of it.
+
+        Parameters
+        ----------
+            project : :py:class:`~pabutools.election.instance.Project`
+                The project.
+        Returns
+        -------
+            int
+                The approval score.
+        """
+        approval_score = 0
+        for ballot in self:
+            if project in ballot:
+                approval_score += self.multiplicity(ballot)
+        return approval_score
+
+    def approved_projects(self) -> set[Project]:
+        """
+        Returns the set of all the projects approved by at least one voter.
+
+        Returns
+        -------
+            set[:py:class:`~pabutools.election.instance.Project`]
+                The set of projects with at least one supporter.
+        """
+        approved_projects = set()
+        for ballot in self:
+            approved_projects.update(ballot)
+        return approved_projects
+
+    def is_trivial(self) -> bool:
+        """
+        Tests if the profile is trivial, meaning that all projects that are approved by at least one voter have a cost
+        that exceeds the budget limit.
+
+        Returns
+        -------
+            bool
+                `True` if the profile is trivial, and `False` otherwise.
+        """
+        return all(
+            project.cost > self.instance.budget_limit
+            for project in self.approved_projects()
+        )
+
+    def is_party_list(self) -> bool:
+        """
+        Checks whether the profile is a party-list profile.
+        In a party-list profile all approval sets are either disjoint or equal.
+
+        Returns
+        -------
+            bool
+                `True` if the profile is party-list and `False` otherwise.
+        """
+        return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
+
+
+class ApprovalProfile(Profile, AbstractApprovalProfile):
     """
     A profile of approval ballots, that is, a list of approval ballots per voters. See the class
     :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` for more details on approval ballots.
@@ -76,31 +180,41 @@ class ApprovalProfile(Profile):
     """
 
     def __init__(
-        self,
-        iterable: Iterable[ApprovalBallot] = (),
-        instance: Instance | None = None,
-        ballot_validation: bool = True,
-        ballot_type: type[AbstractBallot] | None = None,
-        legal_min_length: int | None = None,
-        legal_max_length: int | None = None,
-        legal_min_cost: Number | None = None,
-        legal_max_cost: Number | None = None,
+            self,
+            iterable: Iterable[ApprovalBallot] = (),
+            instance: Instance | None = None,
+            ballot_validation: bool = True,
+            ballot_type: type[AbstractBallot] | None = None,
+            legal_min_length: int | None = None,
+            legal_max_length: int | None = None,
+            legal_min_cost: Number | None = None,
+            legal_max_cost: Number | None = None,
     ) -> None:
+        if legal_min_length is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_min_length = iterable.legal_min_length
+        if legal_max_length is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_max_length = iterable.legal_max_length
+        if legal_min_cost is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_min_cost = iterable.legal_min_cost
+        if legal_max_cost is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_max_cost = iterable.legal_max_cost
+        AbstractApprovalProfile.__init__(self,
+                                         legal_min_length=legal_min_length,
+                                         legal_max_length=legal_max_length,
+                                         legal_min_cost=legal_min_cost,
+                                         legal_max_cost=legal_max_cost
+                                         )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
             else:
                 ballot_type = ApprovalBallot
-        super(ApprovalProfile, self).__init__(
-            iterable=iterable,
-            instance=instance,
-            ballot_validation=ballot_validation,
-            ballot_type=ballot_type,
-        )
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_cost = legal_min_cost
-        self.legal_max_cost = legal_max_cost
+        Profile.__init__(self,
+                         iterable=iterable,
+                         instance=instance,
+                         ballot_validation=ballot_validation,
+                         ballot_type=ballot_type,
+                         )
 
     def as_multiprofile(self):
         """
@@ -122,66 +236,6 @@ class ApprovalProfile(Profile):
             legal_min_cost=self.legal_min_cost,
             legal_max_cost=self.legal_max_cost,
         )
-
-    def approval_score(self, project: Project) -> int:
-        """
-        Returns the approval score of a project, that is, the number of voters who approved of it.
-
-        Parameters
-        ----------
-            project : :py:class:`~pabutools.election.instance.Project`
-                The project.
-        Returns
-        -------
-            int
-                The approval score.
-        """
-        approval_score = 0
-        for ballot in self:
-            if project in ballot:
-                approval_score += 1
-        return approval_score
-
-    def is_trivial(self) -> bool:
-        """
-        Tests if the profile is trivial, meaning that all projects that are approved by at least one voter have a cost
-        that exceeds the budget limit.
-
-        Returns
-        -------
-            bool
-                `True` if the profile is trivial, and `False` otherwise.
-        """
-        return all(
-            project.cost > self.instance.budget_limit
-            for project in self.approved_projects()
-        )
-
-    def approved_projects(self) -> set[Project]:
-        """
-        Returns the set of all the projects approved by at least one voter.
-
-        Returns
-        -------
-            set[:py:class:`~pabutools.election.instance.Project`]
-                The set of projects with at least one supporter.
-        """
-        approved_projects = set()
-        for ballot in self:
-            approved_projects.update(ballot)
-        return approved_projects
-
-    def is_party_list(self) -> bool:
-        """
-        Checks whether the profile is a party-list profile.
-        In a party-list profile all approval sets are either disjoint or equal.
-
-        Returns
-        -------
-            bool
-                `True` if the profile is party-list and `False` otherwise.
-        """
-        return all(len(b1 & b2) in (0, len(b1)) for b1 in self for b2 in self)
 
     @classmethod
     def _wrap_methods(cls, names):
@@ -248,7 +302,7 @@ def get_random_approval_profile(instance: Instance, num_agents: int) -> Approval
 
 
 def get_all_approval_profiles(
-    instance: Instance, num_agents: int
+        instance: Instance, num_agents: int
 ) -> Generator[Iterable[Project]]:
     """
     Returns a generator over all the possible profile for a given instance of a given length.
@@ -268,9 +322,9 @@ def get_all_approval_profiles(
     return product(powerset(instance), repeat=num_agents)
 
 
-class ApprovalMultiProfile(MultiProfile):
+class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
     """
-    A multiprofile of approval ballots, that is, a multiset of approval ballots togehter with their multiplicity.
+    A multiprofile of approval ballots, that is, a multiset of approval ballots together with their multiplicity.
     Ballots needs to be hashable, so the class
     :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` should be used by default here.
     This class inherits from the Python `Counter` class and can thus be used as one.
@@ -325,17 +379,31 @@ class ApprovalMultiProfile(MultiProfile):
     """
 
     def __init__(
-        self,
-        iterable: Iterable[FrozenApprovalBallot] = (),
-        instance: Instance | None = None,
-        ballot_validation: bool = True,
-        ballot_type: type[FrozenBallot] = None,
-        profile: ApprovalProfile = None,
-        legal_min_length: int | None = None,
-        legal_max_length: int | None = None,
-        legal_min_cost: Number | None = None,
-        legal_max_cost: Number | None = None,
+            self,
+            iterable: Iterable[FrozenApprovalBallot] = (),
+            instance: Instance | None = None,
+            ballot_validation: bool = True,
+            ballot_type: type[FrozenBallot] = None,
+            profile: ApprovalProfile = None,
+            legal_min_length: int | None = None,
+            legal_max_length: int | None = None,
+            legal_min_cost: Number | None = None,
+            legal_max_cost: Number | None = None,
     ):
+        if legal_min_length is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_min_length = iterable.legal_min_length
+        if legal_max_length is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_max_length = iterable.legal_max_length
+        if legal_min_cost is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_min_cost = iterable.legal_min_cost
+        if legal_max_cost is None and isinstance(iterable, AbstractApprovalProfile):
+            legal_max_cost = iterable.legal_max_cost
+        AbstractApprovalProfile.__init__(self,
+                                         legal_min_length=legal_min_length,
+                                         legal_max_length=legal_max_length,
+                                         legal_min_cost=legal_min_cost,
+                                         legal_max_cost=legal_max_cost
+                                         )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
@@ -349,29 +417,6 @@ class ApprovalMultiProfile(MultiProfile):
         )
         if profile is not None:
             self.extend(profile)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_cost = legal_min_cost
-        self.legal_max_cost = legal_max_cost
-
-    def approval_score(self, project: Project) -> int:
-        """
-        Returns the approval score of a project, that is, the number of voters who approved of it.
-
-        Parameters
-        ----------
-            project : :py:class:`~pabutools.election.instance.Project`
-                The project.
-        Returns
-        -------
-            int
-                The approval score.
-        """
-        approval_score = 0
-        for ballot, multiplicity in self.items():
-            if project in ballot:
-                approval_score += multiplicity
-        return approval_score
 
     @classmethod
     def _wrap_methods(cls, names):

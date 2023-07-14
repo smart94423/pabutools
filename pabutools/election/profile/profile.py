@@ -17,7 +17,7 @@ from pabutools.election.ballot import AbstractBallot, FrozenBallot, Ballot
 from pabutools.election.instance import Instance
 
 
-class AbstractProfile(ABC):
+class AbstractProfile(ABC, Iterable):
     """
     Abstract class representing a profile, that is, a collection of ballots. This class is only meant to be inherited.
 
@@ -52,7 +52,8 @@ class AbstractProfile(ABC):
         ballot_validation: bool = True,
         ballot_type: type[AbstractBallot] = None,
     ) -> None:
-        super().__init__()
+        super(ABC, self).__init__()
+        super(Iterable, self).__init__()
         if instance is None:
             instance = Instance()
         self.instance = instance
@@ -71,7 +72,7 @@ class AbstractProfile(ABC):
             ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
                 The ballot to be checked.
         """
-        if self.ballot_validation and not issubclass(type(ballot), self.ballot_type):
+        if self.ballot_validation and not isinstance(ballot, self.ballot_type):
             raise TypeError(
                 "Ballot type {} is invalid, the profile expected a subclass of {}.".format(
                     type(ballot), self.ballot_type
@@ -342,7 +343,7 @@ class MultiProfile(Counter, AbstractProfile):
 
         """
         for ballot in iterable:
-            if issubclass(type(ballot), Ballot) and force_freeze:
+            if isinstance(ballot, Ballot) and force_freeze:
                 self.append(ballot.frozen())
             else:
                 self.append(ballot)

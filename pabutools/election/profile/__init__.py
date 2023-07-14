@@ -28,6 +28,7 @@ non-mutable. The corresponding classes all inherit from
 
 from pabutools.election.profile.profile import AbstractProfile, Profile, MultiProfile
 from pabutools.election.profile.approvalprofile import (
+    AbstractApprovalProfile,
     ApprovalProfile,
     ApprovalMultiProfile,
     get_random_approval_profile,
@@ -49,6 +50,7 @@ from pabutools.election.profile.ordinalprofile import (
 __all__ = [
     "Profile",
     "MultiProfile",
+    "AbstractApprovalProfile",
     "ApprovalProfile",
     "ApprovalMultiProfile",
     "get_random_approval_profile",
