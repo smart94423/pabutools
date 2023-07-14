@@ -47,6 +47,11 @@ Profile module
     :show-inheritance:
     :inherited-members:
 
+.. autoclass:: pabutools.election.profile.cumulativeprofile.AbstractCumulativeProfile
+    :members:
+    :show-inheritance:
+    :inherited-members: AbstractCardinalProfile
+
 .. autoclass:: pabutools.election.profile.cumulativeprofile.CumulativeProfile
     :members:
     :show-inheritance:
@@ -56,6 +61,10 @@ Profile module
     :members:
     :show-inheritance:
     :inherited-members:
+
+.. autoclass:: pabutools.election.profile.ordinalprofile.AbstractOrdinalProfile
+    :members:
+    :show-inheritance:
 
 .. autoclass:: pabutools.election.profile.ordinalprofile.OrdinalProfile
     :members:

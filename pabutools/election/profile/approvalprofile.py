@@ -56,8 +56,8 @@ class AbstractApprovalProfile(AbstractProfile, ABC):
                  legal_min_cost: Number | None = None,
                  legal_max_cost: Number | None = None
                  ):
-        super(AbstractProfile, self).__init__()
-        super(ABC, self).__init__()
+        AbstractProfile.__init__(self)
+        ABC.__init__(self)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_cost = legal_min_cost

@@ -306,8 +306,8 @@ document.write(`
                  <span class="n">legal_min_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">legal_max_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
                  <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">AbstractProfile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ABC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">legal_min_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">legal_max_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_cost</span> <span class="o">=</span> <span class="n">legal_min_cost</span>

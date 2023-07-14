@@ -142,7 +142,7 @@ class Profile(list, AbstractProfile):
     Parameters
     ----------
         iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
-            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the
+            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the
             list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -252,7 +252,7 @@ class MultiProfile(Counter, AbstractProfile):
     Parameters
     ----------
         iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
-            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used an initializer for the
+            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the
             list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
