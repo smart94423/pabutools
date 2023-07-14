@@ -188,6 +188,19 @@ class Profile(list, AbstractProfile):
         list.__init__(self, iterable)
 
     def multiplicity(self, ballot: Ballot) -> int:
+        """
+        Returns 1 regardless of the input (even if the ballot does not appear in the profile, to save up computation).
+
+        Parameters
+        ----------
+            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+                The ballot whose multiplicity is inquired.
+
+        Returns
+        -------
+            int
+                1
+        """
         return 1
 
     @abstractmethod

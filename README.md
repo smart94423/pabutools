@@ -423,9 +423,13 @@ make clean
 make html
 ```
 
-This will generate the documentation locally. If you want to push the new documentation, run:
+This will generate the documentation locally (in the folder `docs-source/build`. If you want to push the new documentation, run:
 ```shell
 make github
 ```
 
 After having pushed, the documentation will automatically be updated.
+
+Note that a large part of the documentation is done by hand (to ensure proper display and correct ordering). 
+This means that if you create new class of functions that should appear in the documentation, you may have
+to add they yourself using to autodoc directives (take inspiration from the files in `docs-source/source`). 

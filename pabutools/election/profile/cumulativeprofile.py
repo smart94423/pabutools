@@ -57,22 +57,23 @@ class AbstractCumulativeProfile(AbstractCardinalProfile, ABC):
             Minimum total score that can be assigned across all projects per the rules of the election.
         legal_max_total_score : Number
             Maximum total score that can be assigned across all projects per the rules of the election.
-        """
+    """
 
-    def __init__(self,
-                 legal_min_length: int | None = None,
-                 legal_max_length: int | None = None,
-                 legal_min_score: Number | None = None,
-                 legal_max_score: Number | None = None,
-                 legal_min_total_score: Number | None = None,
-                 legal_max_total_score: Number | None = None,
-                 ):
+    def __init__(
+        self,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_score: Number | None = None,
+        legal_max_score: Number | None = None,
+        legal_min_total_score: Number | None = None,
+        legal_max_total_score: Number | None = None,
+    ):
         AbstractCardinalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
             legal_max_length=legal_max_length,
             legal_min_score=legal_min_score,
-            legal_max_score=legal_max_score
+            legal_max_score=legal_max_score,
         )
         ABC.__init__(self)
         self.legal_min_total_score = legal_min_total_score
@@ -145,17 +146,17 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
     """
 
     def __init__(
-            self,
-            iterable: Iterable[CumulativeBallot] = (),
-            instance: Instance | None = None,
-            ballot_validation: bool = True,
-            ballot_type: type[Ballot] = None,
-            legal_min_length: int | None = None,
-            legal_max_length: int | None = None,
-            legal_min_score: Number | None = None,
-            legal_max_score: Number | None = None,
-            legal_min_total_score: Number | None = None,
-            legal_max_total_score: Number | None = None,
+        self,
+        iterable: Iterable[CumulativeBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[Ballot] = None,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_score: Number | None = None,
+        legal_max_score: Number | None = None,
+        legal_min_total_score: Number | None = None,
+        legal_max_total_score: Number | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(iterable, AbstractCardinalProfile):
             legal_min_length = iterable.legal_min_length
@@ -165,18 +166,23 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
             legal_min_score = iterable.legal_min_score
         if legal_max_score is None and isinstance(iterable, AbstractCardinalProfile):
             legal_max_score = iterable.legal_max_score
-        if legal_min_total_score is None and isinstance(iterable, AbstractCumulativeProfile):
+        if legal_min_total_score is None and isinstance(
+            iterable, AbstractCumulativeProfile
+        ):
             legal_min_total_score = iterable.legal_min_total_score
-        if legal_max_total_score is None and isinstance(iterable, AbstractCumulativeProfile):
+        if legal_max_total_score is None and isinstance(
+            iterable, AbstractCumulativeProfile
+        ):
             legal_max_total_score = iterable.legal_max_total_score
-        AbstractCumulativeProfile.__init__(self,
-                                           legal_min_length=legal_min_length,
-                                           legal_max_length=legal_max_length,
-                                           legal_min_score=legal_min_score,
-                                           legal_max_score=legal_max_score,
-                                           legal_min_total_score=legal_min_total_score,
-                                           legal_max_total_score=legal_max_total_score
-                                           )
+        AbstractCumulativeProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+            legal_min_score=legal_min_score,
+            legal_max_score=legal_max_score,
+            legal_min_total_score=legal_min_total_score,
+            legal_max_total_score=legal_max_total_score,
+        )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
@@ -322,18 +328,18 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
     """
 
     def __init__(
-            self,
-            iterable: Iterable[FrozenCumulativeBallot] = (),
-            instance: Instance | None = None,
-            ballot_validation: bool = True,
-            ballot_type: type[FrozenBallot] = None,
-            profile: CumulativeProfile = None,
-            legal_min_length: int | None = None,
-            legal_max_length: int | None = None,
-            legal_min_score: Number | None = None,
-            legal_max_score: Number | None = None,
-            legal_min_total_score: Number | None = None,
-            legal_max_total_score: Number | None = None,
+        self,
+        iterable: Iterable[FrozenCumulativeBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[FrozenBallot] = None,
+        profile: CumulativeProfile = None,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_score: Number | None = None,
+        legal_max_score: Number | None = None,
+        legal_min_total_score: Number | None = None,
+        legal_max_total_score: Number | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(iterable, AbstractCardinalProfile):
             legal_min_length = iterable.legal_min_length
@@ -343,18 +349,23 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
             legal_min_score = iterable.legal_min_score
         if legal_max_score is None and isinstance(iterable, AbstractCardinalProfile):
             legal_max_score = iterable.legal_max_score
-        if legal_min_total_score is None and isinstance(iterable, AbstractCumulativeProfile):
+        if legal_min_total_score is None and isinstance(
+            iterable, AbstractCumulativeProfile
+        ):
             legal_min_total_score = iterable.legal_min_total_score
-        if legal_max_total_score is None and isinstance(iterable, AbstractCumulativeProfile):
+        if legal_max_total_score is None and isinstance(
+            iterable, AbstractCumulativeProfile
+        ):
             legal_max_total_score = iterable.legal_max_total_score
-        AbstractCumulativeProfile.__init__(self,
-                                           legal_min_length=legal_min_length,
-                                           legal_max_length=legal_max_length,
-                                           legal_min_score=legal_min_score,
-                                           legal_max_score=legal_max_score,
-                                           legal_min_total_score=legal_min_total_score,
-                                           legal_max_total_score=legal_max_total_score
-                                           )
+        AbstractCumulativeProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+            legal_min_score=legal_min_score,
+            legal_max_score=legal_max_score,
+            legal_min_total_score=legal_min_total_score,
+            legal_max_total_score=legal_max_total_score,
+        )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type

@@ -1,0 +1,7 @@
+Counter do not work with function creating new ones, need to update the wrapper (potential fix: add all the set methods there)
+
+Do satisfaction work on multiprofile? To check
+
+Update type for Counter initializer.
+
+Rename all initialiser to init.

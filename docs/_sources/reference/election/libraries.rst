@@ -1,5 +1,5 @@
-Instance module
-===============
+Preference Libraries
+====================
 
 .. automodule:: pabutools.election.pabulib
    :members:

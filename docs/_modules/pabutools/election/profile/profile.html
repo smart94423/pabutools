@@ -125,7 +125,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/ballot.html">Ballot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/profile.html">Profile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/satisfaction.html">Satisfaction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
@@ -438,6 +438,19 @@ document.write(`
         <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Profile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">Ballot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns 1 regardless of the input (even if the ballot does not appear in the profile, to save up computation).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">                The ballot whose multiplicity is inquired.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            int</span>
+<span class="sd">                1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="Profile.as_multiprofile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.as_multiprofile">[docs]</a>    <span class="nd">@abstractmethod</span>

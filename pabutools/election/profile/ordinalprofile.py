@@ -30,12 +30,13 @@ class AbstractOrdinalProfile(AbstractProfile, ABC):
             The minimum length of an ordinal ballot per the rules of the election.
         legal_max_length : int
             The maximum length of an ordinal ballot per the rules of the election.
-        """
+    """
 
-    def __init__(self,
-                 legal_min_length: int | None = None,
-                 legal_max_length: int | None = None,
-                 ):
+    def __init__(
+        self,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+    ):
         AbstractProfile.__init__(self)
         ABC.__init__(self)
         self.legal_min_length = legal_min_length
@@ -88,33 +89,35 @@ class OrdinalProfile(Profile, AbstractOrdinalProfile):
     """
 
     def __init__(
-            self,
-            iterable: Iterable[OrdinalBallot] = (),
-            instance: Instance | None = None,
-            ballot_validation: bool = True,
-            ballot_type: type[Ballot] = OrdinalBallot,
-            legal_min_length: int | None = None,
-            legal_max_length: int | None = None,
+        self,
+        iterable: Iterable[OrdinalBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[Ballot] = OrdinalBallot,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(iterable, AbstractOrdinalProfile):
             legal_min_length = iterable.legal_min_length
         if legal_max_length is None and isinstance(iterable, AbstractOrdinalProfile):
             legal_max_length = iterable.legal_max_length
-        AbstractOrdinalProfile.__init__(self,
-                                        legal_min_length=legal_min_length,
-                                        legal_max_length=legal_max_length,
-                                        )
+        AbstractOrdinalProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+        )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
             else:
                 ballot_type = OrdinalBallot
-        Profile.__init__(self,
-                         iterable=iterable,
-                         instance=instance,
-                         ballot_validation=ballot_validation,
-                         ballot_type=ballot_type,
-                         )
+        Profile.__init__(
+            self,
+            iterable=iterable,
+            instance=instance,
+            ballot_validation=ballot_validation,
+            ballot_type=ballot_type,
+        )
 
     def as_multiprofile(self):
         """
@@ -218,34 +221,36 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
     """
 
     def __init__(
-            self,
-            iterable: Iterable[FrozenOrdinalBallot] = (),
-            instance: Instance | None = None,
-            ballot_validation: bool = True,
-            ballot_type: type[FrozenBallot] = None,
-            profile: OrdinalProfile = None,
-            legal_min_length: int | None = None,
-            legal_max_length: int | None = None,
+        self,
+        iterable: Iterable[FrozenOrdinalBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = True,
+        ballot_type: type[FrozenBallot] = None,
+        profile: OrdinalProfile = None,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(iterable, AbstractOrdinalProfile):
             legal_min_length = iterable.legal_min_length
         if legal_max_length is None and isinstance(iterable, AbstractOrdinalProfile):
             legal_max_length = iterable.legal_max_length
-        AbstractOrdinalProfile.__init__(self,
-                                        legal_min_length=legal_min_length,
-                                        legal_max_length=legal_max_length,
-                                        )
+        AbstractOrdinalProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+        )
         if ballot_type is None:
             if isinstance(iterable, AbstractProfile):
                 ballot_type = iterable.ballot_type
             else:
                 ballot_type = FrozenOrdinalBallot
-        MultiProfile.__init__(self,
-                              iterable=iterable,
-                              instance=instance,
-                              ballot_validation=ballot_validation,
-                              ballot_type=ballot_type,
-                              )
+        MultiProfile.__init__(
+            self,
+            iterable=iterable,
+            instance=instance,
+            ballot_validation=ballot_validation,
+            ballot_type=ballot_type,
+        )
         if profile is not None:
             self.extend(profile)
 

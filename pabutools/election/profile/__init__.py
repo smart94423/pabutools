@@ -23,6 +23,14 @@ non-mutable. The corresponding classes all inherit from
 * :py:class:`~pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile`
 * :py:class:`~pabutools.election.profile.ordinalprofile.OrdinalMultiProfile`
 
+For each type of profile, we also define a corresponding abstract class. This can be used for typing purposes, but also
+for attributes and methods that apply both to the profile and the multiprofile. These classes are:
+
+* :py:class:`~pabutools.election.profile.approvalprofile.AbstractApprovalProfile`
+* :py:class:`~pabutools.election.profile.cardinalprofile.AbstractCardinalProfile`
+* :py:class:`~pabutools.election.profile.cumulativeprofile.AbstractCumulativeProfile`
+* :py:class:`~pabutools.election.profile.ordinalprofile.AbstractOrdinalProfile`
+
 """
 
 
@@ -34,20 +42,24 @@ from pabutools.election.profile.approvalprofile import (
     get_random_approval_profile,
     get_all_approval_profiles,
 )
-from pabutools.election.profile.cumulativeprofile import (
-    CumulativeProfile,
-    CumulativeMultiProfile,
-)
 from pabutools.election.profile.cardinalprofile import (
+    AbstractCardinalProfile,
     CardinalProfile,
     CardinalMultiProfile,
 )
+from pabutools.election.profile.cumulativeprofile import (
+    AbstractCumulativeProfile,
+    CumulativeProfile,
+    CumulativeMultiProfile,
+)
 from pabutools.election.profile.ordinalprofile import (
+    AbstractOrdinalProfile,
     OrdinalProfile,
     OrdinalMultiProfile,
 )
 
 __all__ = [
+    "AbstractProfile",
     "Profile",
     "MultiProfile",
     "AbstractApprovalProfile",
@@ -55,10 +67,13 @@ __all__ = [
     "ApprovalMultiProfile",
     "get_random_approval_profile",
     "get_all_approval_profiles",
-    "CumulativeProfile",
-    "CumulativeMultiProfile",
+    "AbstractCardinalProfile",
     "CardinalProfile",
     "CardinalMultiProfile",
+    "AbstractCumulativeProfile",
+    "CumulativeProfile",
+    "CumulativeMultiProfile",
+    "AbstractOrdinalProfile",
     "OrdinalProfile",
     "OrdinalMultiProfile",
 ]

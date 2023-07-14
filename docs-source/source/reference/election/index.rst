@@ -6,7 +6,7 @@ Election module
     Ballot <ballot>
     Profile <profile>
     Satisfaction <satisfaction>
-    Preference Library <libraries>
+    Preference Libraries <libraries>
 
 .. automodule:: pabutools.election
    :members:

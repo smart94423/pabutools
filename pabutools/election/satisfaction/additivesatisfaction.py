@@ -99,21 +99,6 @@ class Cardinality_Sat(AdditiveSatisfaction):
         )
 
 
-def cost_sat_func(
-    instance: Instance,
-    profile: Profile,
-    ballot: ApprovalBallot,
-    project: Project,
-    preprocessed_values: dict,
-) -> Number:
-    return int(project in ballot) * project.cost
-
-
-class Cost_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: Profile, ballot: ApprovalBallot):
-        super(Cost_Sat, self).__init__(instance, profile, ballot, cost_sat_func)
-
-
 def relative_cardinality_sat_func(
     instance: Instance,
     profile: Profile,
@@ -145,6 +130,21 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
         return {"max_budget_allocation_card": i}
 
 
+def cost_sat_func(
+    instance: Instance,
+    profile: Profile,
+    ballot: ApprovalBallot,
+    project: Project,
+    preprocessed_values: dict,
+) -> Number:
+    return int(project in ballot) * project.cost
+
+
+class Cost_Sat(AdditiveSatisfaction):
+    def __init__(self, instance: Instance, profile: Profile, ballot: ApprovalBallot):
+        super(Cost_Sat, self).__init__(instance, profile, ballot, cost_sat_func)
+
+
 def relative_cost_sat_func(
     instance: Instance,
     profile: Profile,
@@ -171,7 +171,7 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         return {"max_budget_allocation_cost": 1}
 
 
-def relative_cost_unbounded_sat_func(
+def relative_cost_non_normalised_sat_func(
     instance: Instance,
     profile: Profile,
     ballot: ApprovalBallot,
@@ -183,10 +183,10 @@ def relative_cost_unbounded_sat_func(
     )
 
 
-class Relative_Cost_Unbounded_Sat(AdditiveSatisfaction):
+class Relative_Cost_Non_Normalised_Sat(AdditiveSatisfaction):
     def __init__(self, instance: Instance, profile: Profile, ballot: ApprovalBallot):
-        super(Relative_Cost_Unbounded_Sat, self).__init__(
-            instance, profile, ballot, relative_cost_unbounded_sat_func
+        super(Relative_Cost_Non_Normalised_Sat, self).__init__(
+            instance, profile, ballot, relative_cost_non_normalised_sat_func
         )
 
     def preprocessing(

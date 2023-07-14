@@ -125,7 +125,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/ballot.html">Ballot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/profile.html">Profile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/satisfaction.html">Satisfaction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
@@ -291,14 +291,15 @@ document.write(`
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">        legal_max_score : Number</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">ABC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">legal_min_length</span>
@@ -383,15 +384,15 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CardinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CardinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
             <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_length</span>
@@ -401,12 +402,13 @@ document.write(`
             <span class="n">legal_min_score</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_score</span>
         <span class="k">if</span> <span class="n">legal_max_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
             <span class="n">legal_max_score</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_max_score</span>
-        <span class="n">AbstractCardinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
-                                         <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
-                                         <span class="n">legal_min_score</span><span class="o">=</span><span class="n">legal_min_score</span><span class="p">,</span>
-                                         <span class="n">legal_max_score</span><span class="o">=</span><span class="n">legal_max_score</span>
-                                         <span class="p">)</span>
+        <span class="n">AbstractCardinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
+            <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
+            <span class="n">legal_min_score</span><span class="o">=</span><span class="n">legal_min_score</span><span class="p">,</span>
+            <span class="n">legal_max_score</span><span class="o">=</span><span class="n">legal_max_score</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
@@ -555,16 +557,16 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenCardinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">CardinalProfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenCardinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">CardinalProfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
             <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_length</span>
@@ -574,12 +576,13 @@ document.write(`
             <span class="n">legal_min_score</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_score</span>
         <span class="k">if</span> <span class="n">legal_max_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
             <span class="n">legal_max_score</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_max_score</span>
-        <span class="n">AbstractCardinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                         <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
-                                         <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
-                                         <span class="n">legal_min_score</span><span class="o">=</span><span class="n">legal_min_score</span><span class="p">,</span>
-                                         <span class="n">legal_max_score</span><span class="o">=</span><span class="n">legal_max_score</span>
-                                         <span class="p">)</span>
+        <span class="n">AbstractCardinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
+            <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
+            <span class="n">legal_min_score</span><span class="o">=</span><span class="n">legal_min_score</span><span class="p">,</span>
+            <span class="n">legal_max_score</span><span class="o">=</span><span class="n">legal_max_score</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
