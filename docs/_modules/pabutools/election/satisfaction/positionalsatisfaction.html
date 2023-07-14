@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 
@@ -125,7 +126,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/ballot.html">Ballot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/profile.html">Profile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/satisfaction.html">Satisfaction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
@@ -254,78 +255,110 @@ document.write(`
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="n">OrdinalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="n">AbstractOrdinalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">MultiProfile</span>
+    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">AbstractProfile</span>
 
 
-<div class="viewcode-block" id="PositionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">PositionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
+<div class="viewcode-block" id="PositionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">PositionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.</span>
-<span class="sd">    For a set of projects, the total satisfaction is additive.</span>
+<span class="sd">    Class representing satisfaction measures that are based on the position of the projects in an ordinal ballot.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.election.instance.Instance</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.instance.profile.Profile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        ballot : pabutools.instance.profile.OrdinalBallot</span>
-<span class="sd">            The ordinal ballot.</span>
-<span class="sd">        func : function</span>
-<span class="sd">            A function taking as input an instance, a ballot and a subset of projects, and returning the score</span>
-<span class="sd">            as a fraction.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">            The positional function mapping ordinal ballots and projects to numbers. That represents the actual</span>
+<span class="sd">            satisfaction function.</span>
+<span class="sd">        aggregation_func : Callable[[Iterable[Number]], Number]</span>
+<span class="sd">            The aggregation function used to aggregate the positional scores for a collection of projects.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">        func : function</span>
-<span class="sd">            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the</span>
-<span class="sd">            score of the subset of projects as a fraction.</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">            The positional function mapping ordinal ballots and projects to numbers. That represents the actual</span>
+<span class="sd">            satisfaction function.</span>
+<span class="sd">        aggregation_func : Callable[[Iterable[Number]], Number]</span>
+<span class="sd">            The aggregation function used to aggregate the positional scores for a collection of projects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">OrdinalBallot</span><span class="p">,</span>
-        <span class="n">positional_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">OrdinalBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">],</span> <span class="n">Number</span><span class="p">],</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractOrdinalBallot</span><span class="p">,</span>
+        <span class="n">positional_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">AbstractOrdinalBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">],</span> <span class="n">Number</span><span class="p">],</span>
         <span class="n">aggregation_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Number</span><span class="p">]],</span> <span class="n">Number</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PositionalSatisfaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
+        <span class="n">SatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positional_func</span> <span class="o">=</span> <span class="n">positional_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregation_func</span> <span class="o">=</span> <span class="n">aggregation_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
 
-<div class="viewcode-block" id="PositionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.PositionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined</span>
-<span class="sd">        by the inner function specified at initialisation.</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            projects : Iterable[pabutools.election.instance.Project]</span>
-<span class="sd">                The set of projects.</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PositionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">positional_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregation_func</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">borda_sat_func</span><span class="p">(</span><span class="n">ballot</span><span class="p">:</span> <span class="n">OrdinalBallot</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">borda_sat_func</span><span class="p">(</span><span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractOrdinalBallot</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the Borda score of the project. If the project does not appear in the ballot, 0 is returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractOrdinalBallot`</span>
+<span class="sd">            The ordinal ballot.</span>
+<span class="sd">        project : :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">            The project.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The Borda score of the projects.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span> <span class="o">-</span> <span class="n">ballot</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
 
-<div class="viewcode-block" id="Additive_Borda_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.Additive_Borda_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Borda_Sat</span><span class="p">(</span><span class="n">PositionalSatisfaction</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">OrdinalBallot</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Additive_Borda_Sat</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">borda_sat_func</span><span class="p">,</span> <span class="nb">sum</span>
-        <span class="p">)</span></div>
+<div class="viewcode-block" id="Additive_Borda_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Borda_Sat</span><span class="p">(</span><span class="n">PositionalSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Additive Borda satisfaction. It can only be applied to ordinal ballots. It is equal to the sum of the Borda scores</span>
+<span class="sd">    of the selected projects in the ballots. The Borda score is the length of the ballot minus 1 plus the index of the</span>
+<span class="sd">    project in the ballot</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractOrdinalBallot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractOrdinalBallot</span><span class="p">):</span>
+            <span class="n">PositionalSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">borda_sat_func</span><span class="p">,</span> <span class="nb">sum</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The additive Borda satisfaction cannot be used for ballots for type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">))</span>
+            <span class="p">)</span></div>
 </pre></div>
 
                 </article>

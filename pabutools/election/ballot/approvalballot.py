@@ -9,7 +9,13 @@ from pabutools.election.instance import Project
 from pabutools.election.ballot.ballot import Ballot, FrozenBallot, AbstractBallot
 
 
-class FrozenApprovalBallot(tuple[Project], FrozenBallot):
+class AbstractApprovalBallot:
+    """
+    Abstract class for approval ballots. Essentially used for typing purposes.
+    """
+
+
+class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot):
     """
     Frozen approval ballot, that is, a ballot in which the voter expressed their preferences by simply selecting
     some projects they approve of. It derives from the Python class `tuple` and can be used as one.
@@ -56,6 +62,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
             else:
                 meta = dict
         FrozenBallot.__init__(self, name, meta)
+        AbstractApprovalBallot.__init__(self)
 
     def __new__(
         cls, approved: Iterable[Project] = (), name: str = "", meta: dict | None = None
@@ -66,7 +73,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot):
         return tuple.__hash__(self)
 
 
-class ApprovalBallot(set[Project], Ballot):
+class ApprovalBallot(set[Project], Ballot, AbstractApprovalBallot):
     """
     An approval ballot, that is, a ballot in which the voter has indicated the projects that they approve of. It
     is a subclass of the Python class `set` and can be used as one.
@@ -113,6 +120,7 @@ class ApprovalBallot(set[Project], Ballot):
             else:
                 meta = dict()
         Ballot.__init__(self, name, meta)
+        AbstractApprovalBallot.__init__(self)
 
     def frozen(self) -> FrozenApprovalBallot:
         """

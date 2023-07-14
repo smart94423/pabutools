@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 
@@ -125,7 +126,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/ballot.html">Ballot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/profile.html">Profile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/satisfaction.html">Satisfaction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/election/libraries.html">Preference Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
@@ -256,108 +257,272 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="n">ApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
+    <span class="n">AbstractCardinalBallot</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">total_cost</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">MultiProfile</span>
+    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">AbstractProfile</span><span class="p">,</span>
+
+    <span class="p">)</span>
 
 
-<div class="viewcode-block" id="FunctionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">FunctionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
+<div class="viewcode-block" id="FunctionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">FunctionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.</span>
+<span class="sd">    Class representing satisfaction measures that are simply defined via functions of the ballot and a subset of</span>
+<span class="sd">    projects.</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.election.instance.Instance</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.instance.profile.Profile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        ballot : pabutools.instance.profile.Ballot</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot.</span>
-<span class="sd">        func : Callable[[PBInstance, Ballot, Profile, Iterable[Project]], Fraction]</span>
-<span class="sd">            A function taking as input an instance, a ballot and a subset of projects, and returning the score</span>
-<span class="sd">            as a fraction.</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of</span>
+<span class="sd">            projects, given the instance, the profile and the ballot under consideration.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">        func : function</span>
-<span class="sd">            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the</span>
-<span class="sd">            score of the subset of projects as a fraction.</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of</span>
+<span class="sd">            projects, given the instance, the profile and the ballot under consideration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">,</span>
-        <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]],</span> <span class="n">Number</span><span class="p">],</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+        <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]],</span> <span class="n">Number</span>
+        <span class="p">],</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
+        <span class="n">SatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
 
-<div class="viewcode-block" id="FunctionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.FunctionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined</span>
-<span class="sd">        by the inner function specified at initialisation.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            projects : Iterable[pabutools.election.instance.Project]</span>
-<span class="sd">                The set of projects.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FunctionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">projects</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">cc_sat_func</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">cc_sat_func_app</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-    <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
     <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to 1 if at least one approved project</span>
+<span class="sd">    has been selected, and 0 otherwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            The selected collection of projects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The Chamberlin-Courant satisfaction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="CC_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.CC_Sat">[docs]</a><span class="k">class</span> <span class="nc">CC_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CC_Sat</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cc_sat_func</span><span class="p">)</span></div>
+<span class="k">def</span> <span class="nf">cc_sat_func_card</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to the maximum score assigned to</span>
+<span class="sd">    a selected project in the ballot, and 0 if no selected project has been assigned a score.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            The selected collection of projects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The Chamberlin-Courant satisfaction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span> <span class="ow">and</span> <span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">res</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="CC_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat">[docs]</a><span class="k">class</span> <span class="nc">CC_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Chamberlin-Courant satisfaction. It can only be applied to approval or cardinal ballots.</span>
+
+<span class="sd">    In the case of approval ballots, it is equal to 1 if at least one selected project is approved, and 0 otherwise.</span>
+
+<span class="sd">    In the case of cardinal ballots, it is equal to the maximum score assigned to a selected project in the ballot,</span>
+<span class="sd">    and 0 if no selected project has been assigned a score.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
+            <span class="n">FunctionalSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cc_sat_func_app</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
+            <span class="n">FunctionalSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cc_sat_func_card</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The Chamberlin-Courant satisfaction cannot be used for ballots for type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">cost_sqrt_sat_func</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-    <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
     <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">total_cost</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">])))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the cost square root satisfaction for approval ballots. It is equal to the square root of the total cost of</span>
+<span class="sd">    the approved and selected projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            The selected collection of projects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The cost square root satisfaction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">total_cost</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">))))</span>
 
 
-<div class="viewcode-block" id="Cost_Sqrt_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.Cost_Sqrt_Sat">[docs]</a><span class="k">class</span> <span class="nc">Cost_Sqrt_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Cost_Sqrt_Sat</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cost_sqrt_sat_func</span>
-        <span class="p">)</span></div>
+<div class="viewcode-block" id="Cost_Sqrt_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat">[docs]</a><span class="k">class</span> <span class="nc">Cost_Sqrt_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cost square root satisfaction. It can only be applied to approval ballots. It is equal to the square root of</span>
+<span class="sd">    the total cost of the approved and selected projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
+            <span class="n">FunctionalSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cost_sqrt_sat_func</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The cost square root satisfaction cannot be used with ballot types </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)))</span></div>
 
 
 <span class="k">def</span> <span class="nf">cost_log_sat_func</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-    <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
     <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">total_cost</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">])))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the cost slog satisfaction for approval ballots. It is equal to the log of the total cost of</span>
+<span class="sd">    the approved and selected projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            The selected collection of projects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The log root satisfaction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">total_cost</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">))))</span>
 
 
-<div class="viewcode-block" id="Cost_Log_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.Cost_Log_Sat">[docs]</a><span class="k">class</span> <span class="nc">Cost_Log_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">ApprovalBallot</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Cost_Log_Sat</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cost_log_sat_func</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Cost_Log_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat">[docs]</a><span class="k">class</span> <span class="nc">Cost_Log_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of</span>
+<span class="sd">    the total cost of the approved and selected projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
+            <span class="n">FunctionalSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cost_log_sat_func</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The cost log satisfaction cannot be used with ballot types </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)))</span></div>
 </pre></div>
 
                 </article>

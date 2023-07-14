@@ -7,7 +7,13 @@ from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallo
 from pabutools.election.instance import Project
 
 
-class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
+class AbstractOrdinalBallot:
+    """
+    Abstract class for cumulative ballots. Essentially used for typing purposes.
+    """
+
+
+class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
     """
     Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
     preferences. It derives from the Python class `tuple` and can be used as one.
@@ -37,10 +43,10 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
     """
 
     def __init__(
-        self,
-        iterable: Iterable[Project] = (),
-        name: str | None = None,
-        meta: dict | None = None,
+            self,
+            iterable: Iterable[Project] = (),
+            name: str | None = None,
+            meta: dict | None = None,
     ) -> None:
         tuple.__init__(self)
         if name is None:
@@ -54,9 +60,10 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
             else:
                 meta = dict()
         FrozenBallot.__init__(self, name, meta)
+        AbstractOrdinalBallot.__init__(self)
 
     def __new__(
-        cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
+            cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
     ):
         if len(set(iterable)) != len(iterable):
             raise ValueError(
@@ -70,7 +77,7 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
         return tuple.__hash__(self)
 
 
-class OrdinalBallot(dict, Ballot):
+class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
     """
     Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
     preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).
@@ -101,10 +108,10 @@ class OrdinalBallot(dict, Ballot):
     """
 
     def __init__(
-        self,
-        iterable: Iterable[Project] = (),
-        name: str | None = None,
-        meta: dict | None = None,
+            self,
+            iterable: Iterable[Project] = (),
+            name: str | None = None,
+            meta: dict | None = None,
     ) -> None:
         if name is None:
             if isinstance(iterable, AbstractBallot):
@@ -118,6 +125,7 @@ class OrdinalBallot(dict, Ballot):
                 meta = dict()
         dict.__init__(self, {e: None for e in iterable})
         Ballot.__init__(self, name=name, meta=meta)
+        AbstractOrdinalBallot.__init__(self)
 
     def append(self, project: Project) -> None:
         """

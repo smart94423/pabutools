@@ -4,75 +4,107 @@ from collections.abc import Callable, Iterable
 from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
-from pabutools.election.ballot import OrdinalBallot
+from pabutools.election.ballot import AbstractOrdinalBallot
 from pabutools.election.instance import Instance, Project
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pabutools.election.profile import Profile, MultiProfile
+    from pabutools.election.profile import AbstractProfile
 
 
 class PositionalSatisfaction(SatisfactionMeasure):
     """
-    Class representing satisfaction functions that are based on the position of the projects in an ordinal ballot.
-    For a set of projects, the total satisfaction is additive.
+    Class representing satisfaction measures that are based on the position of the projects in an ordinal ballot.
 
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance : :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        ballot : pabutools.instance.profile.OrdinalBallot
-            The ordinal ballot.
-        func : function
-            A function taking as input an instance, a ballot and a subset of projects, and returning the score
-            as a fraction.
+        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
+            The ballot.
+        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]
+            The positional function mapping ordinal ballots and projects to numbers. That represents the actual
+            satisfaction function.
+        aggregation_func : Callable[[Iterable[Number]], Number]
+            The aggregation function used to aggregate the positional scores for a collection of projects.
+
     Attributes
     ----------
-        func : function
-            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
-            score of the subset of projects as a fraction.
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
+            The ballot.
+        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]
+            The positional function mapping ordinal ballots and projects to numbers. That represents the actual
+            satisfaction function.
+        aggregation_func : Callable[[Iterable[Number]], Number]
+            The aggregation function used to aggregate the positional scores for a collection of projects.
     """
 
     def __init__(
         self,
         instance: Instance,
-        profile: Profile,
-        ballot: OrdinalBallot,
-        positional_func: Callable[[OrdinalBallot, Project], Number],
+        profile: AbstractProfile,
+        ballot: AbstractOrdinalBallot,
+        positional_func: Callable[[AbstractOrdinalBallot, Project], Number],
         aggregation_func: Callable[[Iterable[Number]], Number],
     ):
-        super(PositionalSatisfaction, self).__init__(instance, profile, ballot)
+        SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.positional_func = positional_func
         self.aggregation_func = aggregation_func
         self.instance = instance
 
     def sat(self, projects: Iterable[Project]):
-        """
-        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
-        by the inner function specified at initialisation.
-        Parameters
-        ----------
-            projects : Iterable[pabutools.election.instance.Project]
-                The set of projects.
-        Returns
-        -------
-            float
-        """
         scores = [self.positional_func(self.ballot, project) for project in projects]
         return self.aggregation_func(scores)
 
 
-def borda_sat_func(ballot: OrdinalBallot, project: Project) -> int:
+def borda_sat_func(ballot: AbstractOrdinalBallot, project: Project) -> int:
+    """
+    Returns the Borda score of the project. If the project does not appear in the ballot, 0 is returned.
+
+    Parameters
+    ----------
+        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractOrdinalBallot`
+            The ordinal ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The project.
+
+    Returns
+    -------
+        int
+            The Borda score of the projects.
+
+    """
     if project not in ballot:
         return 0
     return len(ballot) - ballot.index(project) - 1
 
 
 class Additive_Borda_Sat(PositionalSatisfaction):
-    def __init__(self, instance: Instance, profile: Profile, ballot: OrdinalBallot):
-        super(Additive_Borda_Sat, self).__init__(
-            instance, profile, ballot, borda_sat_func, sum
-        )
+    """
+    Additive Borda satisfaction. It can only be applied to ordinal ballots. It is equal to the sum of the Borda scores
+    of the selected projects in the ballots. The Borda score is the length of the ballot minus 1 plus the index of the
+    project in the ballot
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
+            The ballot.
+    """
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractOrdinalBallot):
+        if isinstance(ballot, AbstractOrdinalBallot):
+            PositionalSatisfaction.__init__(self, instance, profile, ballot, borda_sat_func, sum)
+        else:
+            raise ValueError(
+                "The additive Borda satisfaction cannot be used for ballots for type {}".format(type(ballot))
+            )

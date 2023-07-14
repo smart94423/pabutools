@@ -8,8 +8,13 @@ from pabutools.election.instance import Project
 
 from numbers import Number
 
+class AbstractCardinalBallot:
+    """
+    Abstract class for cardinal ballots. Essentially used for typing purposes.
+    """
 
-class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
+
+class FrozenCardinalBallot(dict[Project, Number], FrozenBallot, AbstractCardinalBallot):
     """
     Frozen cardinal ballot, that is, a ballot in which the voter assigned scores to projects.
     Since there is not frozen dictionary implemented in Python, this class simply inherits from the Python class `dict`,
@@ -57,6 +62,7 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
             else:
                 meta = dict()
         FrozenBallot.__init__(self, name=name, meta=meta)
+        AbstractCardinalBallot.__init__(self)
 
     def __setitem__(self, key, value):
         raise ValueError("You cannot set values of a FrozenCardinalBallot")
@@ -65,7 +71,7 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot):
         return tuple.__hash__(tuple(self.keys()))
 
 
-class CardinalBallot(dict[Project, Number], Ballot):
+class CardinalBallot(dict[Project, Number], Ballot, AbstractCardinalBallot):
     """
     A cardinal ballot, that is, a ballot in which the voter assigned scores to projects. This class inherits from the
     Python class `dict` and can be used as one.
@@ -114,6 +120,7 @@ class CardinalBallot(dict[Project, Number], Ballot):
             else:
                 meta = dict
         Ballot.__init__(self, name=name, meta=meta)
+        AbstractCardinalBallot.__init__(self)
 
     def complete(self, projects: Iterable[Project], default_score: Number) -> None:
         """

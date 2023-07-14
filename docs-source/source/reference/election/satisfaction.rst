@@ -20,3 +20,33 @@ Satisfaction module
     :members:
     :show-inheritance:
     :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.functionalsatisfaction.CC_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:

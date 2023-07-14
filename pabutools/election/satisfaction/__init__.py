@@ -21,48 +21,60 @@ Individual satisfaction measures are defined according to three different classe
 * :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction` for satisfaction measures that can be defined as the sum of a function over projects;
 * :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction` for satisfaction measures defined based on the position of the projects in an ordering.
 
-The following satisfaction measures have already been implemented:
+The following satisfaction measures have already been implemented. Note that they do not apply to all types of ballots.
 
 .. list-table::
-   :widths: 25 25 50
+   :widths: 25 25 25 25
    :header-rows: 1
 
    * - Satisfaction Measure
      - Class
      - Type
+     - Ballot Type
    * - Chamberlin-Courant
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.CC_Sat`
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot` :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
    * - Cost Square Root
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat`
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Cost Log
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat`
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Cardinality
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Relative Cardinality
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cost_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Relative Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Non Normalised Relative Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Non_Normalised_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Effort
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Effort_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
    * - Additive for Cardinal Ballots
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
    * - Additive Borda
      - :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat`
      - :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
 """
 
 from pabutools.election.satisfaction.satisfactionmeasure import (
