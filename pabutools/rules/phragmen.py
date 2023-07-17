@@ -1,3 +1,6 @@
+"""
+Phragmèn's methods.
+"""
 from collections.abc import Iterable
 from copy import deepcopy
 from numbers import Number
@@ -35,7 +38,7 @@ def sequential_phragmen(
     The inner algorithm to compute the outcome of the sequential Phragmén's rule.
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile | pabutools.instance.profile.ApprovalMultiProfile
             The profile.
@@ -43,7 +46,7 @@ def sequential_phragmen(
             The initial load distribution of the voters.
         initial_budget_allocation : collection of pabutools.election.instance.Project
             An initial budget allocation, typically empty.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.

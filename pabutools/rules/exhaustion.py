@@ -16,9 +16,9 @@ def completion_by_rule_combination(
     non-exhaustive.
     Parameters. For now, only resolute rules are supported
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
         rule_sequence:
             Iterable of the rule functions
@@ -63,9 +63,9 @@ def exhaustion_by_budget_increase(
     the budget limit is exceeded by the rule with increased budget.
     For now, only resolute rules are supported.
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
         rule:
             The rule function

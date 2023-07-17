@@ -37,7 +37,7 @@ class TieBreakingRule:
         based on the instance or/and on the profile.
         Parameters
         ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.profile.Profile
             The profile.
@@ -66,7 +66,7 @@ class TieBreakingRule:
         projects according to the tie-breaking rule and return the first project of the order.
         Parameters
         ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.profile.Profile
             The profile.

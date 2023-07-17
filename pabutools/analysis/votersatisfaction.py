@@ -28,7 +28,7 @@ def avg_satisfaction(
     ----------
         instance : pabutools.instance.pbinstance.PBInstance
             The instance.
-        profile : pabutools.instance.profile.Profile | pabutools.instance.profile.MultiProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile` | pabutools.instance.profile.MultiProfile
             The profile.
         budget_allocation : collection of pabutools.instance.pbinstance.Project
             Collection of projects

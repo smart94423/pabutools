@@ -1,3 +1,6 @@
+"""
+Welfare-maximizing rules.
+"""
 from collections.abc import Iterable
 
 import mip
@@ -86,11 +89,11 @@ def max_welfare(
     Welfare maximiser.
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
-        sat_class : class
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
             inhereting from pabutools.instance.satisfaction.Satisfaction.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is

@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -519,8 +522,6 @@ document.write(`
         <li><a href="reference/election/profile.html#pabutools.election.profile.cumulativeprofile.CumulativeProfile.complete">(CumulativeProfile method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/rules/index.html#pabutools.rules.completion_by_rule_combination">completion_by_rule_combination() (in module pabutools.rules)</a>
-</li>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot.copy">copy() (ApprovalBallot method)</a>
 
       <ul>
@@ -621,8 +622,6 @@ document.write(`
         <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.elements">(SatisfactionMultiProfile method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/rules/index.html#pabutools.rules.exhaustion_by_budget_increase">exhaustion_by_budget_increase() (in module pabutools.rules)</a>
-</li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.extend">extend() (ApprovalMultiProfile method)</a>
 
       <ul>
@@ -708,6 +707,8 @@ document.write(`
       <ul>
         <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.func">(FunctionalSatisfaction attribute)</a>
 </li>
+        <li><a href="reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule.func">(TieBreakingRule attribute)</a>
+</li>
       </ul></li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction">FunctionalSatisfaction (class in pabutools.election.satisfaction.functionalsatisfaction)</a>
 </li>
@@ -759,7 +760,7 @@ document.write(`
 </li>
       <li><a href="reference/election/instance.html#pabutools.election.instance.get_random_instance">get_random_instance() (in module pabutools.election.instance)</a>
 </li>
-      <li><a href="reference/rules/index.html#pabutools.rules.greedy_welfare">greedy_welfare() (in module pabutools.rules)</a>
+      <li><a href="reference/rules/index.html#pabutools.rules.greedywelfare.greedy_welfare">greedy_welfare() (in module pabutools.rules.greedywelfare)</a>
 </li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure">GroupSatisfactionMeasure (class in pabutools.election.satisfaction.satisfactionmeasure)</a>
 </li>
@@ -1031,8 +1032,6 @@ document.write(`
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/rules/index.html#pabutools.rules.max_welfare">max_welfare() (in module pabutools.rules)</a>
-</li>
       <li><a href="reference/election/ballot.html#pabutools.election.ballot.ballot.AbstractBallot.meta">meta (AbstractBallot attribute)</a>
 
       <ul>
@@ -1059,8 +1058,6 @@ document.write(`
         <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot.meta">(OrdinalBallot attribute)</a>
 </li>
       </ul></li>
-      <li><a href="reference/rules/index.html#pabutools.rules.method_of_equal_shares">method_of_equal_shares() (in module pabutools.rules)</a>
-</li>
       <li>
     module
 
@@ -1077,7 +1074,11 @@ document.write(`
 </li>
         <li><a href="reference/election/satisfaction.html#module-pabutools.election.satisfaction">pabutools.election.satisfaction</a>
 </li>
-        <li><a href="reference/rules/index.html#module-pabutools.rules">pabutools.rules</a>
+        <li><a href="reference/fractions.html#module-pabutools.fractions">pabutools.fractions</a>
+</li>
+        <li><a href="reference/tiebreaking.html#module-pabutools.tiebreaking">pabutools.tiebreaking</a>
+</li>
+        <li><a href="reference/utils.html#module-pabutools.utils">pabutools.utils</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1190,12 +1191,14 @@ document.write(`
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/election/libraries.html#pabutools.election.preflib.ordinal_to_preflib">ordinal_to_preflib() (in module pabutools.election.preflib)</a>
+      <li><a href="reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule.order">order() (TieBreakingRule method)</a>
 </li>
-      <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot">OrdinalBallot (class in pabutools.election.ballot.ordinalballot)</a>
+      <li><a href="reference/election/libraries.html#pabutools.election.preflib.ordinal_to_preflib">ordinal_to_preflib() (in module pabutools.election.preflib)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot">OrdinalBallot (class in pabutools.election.ballot.ordinalballot)</a>
+</li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile">OrdinalMultiProfile (class in pabutools.election.profile.ordinalprofile)</a>
 </li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile">OrdinalProfile (class in pabutools.election.profile.ordinalprofile)</a>
@@ -1249,10 +1252,24 @@ document.write(`
 </li>
       </ul></li>
       <li>
-    pabutools.rules
+    pabutools.fractions
 
       <ul>
-        <li><a href="reference/rules/index.html#module-pabutools.rules">module</a>
+        <li><a href="reference/fractions.html#module-pabutools.fractions">module</a>
+</li>
+      </ul></li>
+      <li>
+    pabutools.tiebreaking
+
+      <ul>
+        <li><a href="reference/tiebreaking.html#module-pabutools.tiebreaking">module</a>
+</li>
+      </ul></li>
+      <li>
+    pabutools.utils
+
+      <ul>
+        <li><a href="reference/utils.html#module-pabutools.utils">module</a>
 </li>
       </ul></li>
       <li><a href="reference/election/libraries.html#pabutools.election.pabulib.parse_pabulib">parse_pabulib() (in module pabutools.election.pabulib)</a>
@@ -1417,8 +1434,6 @@ document.write(`
 </li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile">SatisfactionProfile (class in pabutools.election.satisfaction.satisfactionprofile)</a>
 </li>
-      <li><a href="reference/rules/index.html#pabutools.rules.sequential_phragmen">sequential_phragmen() (in module pabutools.rules)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.setdefault">setdefault() (ApprovalMultiProfile method)</a>
@@ -1481,6 +1496,8 @@ document.write(`
         <li><a href="reference/election/instance.html#pabutools.election.instance.Project.targets">(Project attribute)</a>
 </li>
       </ul></li>
+      <li><a href="reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule">TieBreakingRule (class in pabutools.tiebreaking)</a>
+</li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.total">total() (ApprovalMultiProfile method)</a>
 
       <ul>
@@ -1493,10 +1510,10 @@ document.write(`
         <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total">(SatisfactionMultiProfile method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/election/instance.html#pabutools.election.instance.total_cost">total_cost() (in module pabutools.election.instance)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/election/instance.html#pabutools.election.instance.total_cost">total_cost() (in module pabutools.election.instance)</a>
+</li>
       <li><a href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction">total_satisfaction() (GroupSatisfactionMeasure method)</a>
 
       <ul>
@@ -1529,6 +1546,8 @@ document.write(`
         <li><a href="reference/election/instance.html#pabutools.election.instance.Instance.union">(Instance method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule.untie">untie() (TieBreakingRule method)</a>
+</li>
       <li><a href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile.update">update() (ApprovalMultiProfile method)</a>
 
       <ul>

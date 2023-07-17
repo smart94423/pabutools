@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -253,6 +252,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
+<span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">GroupSatisfactionMeasure</span>
+
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">MultiProfile</span><span class="p">,</span> <span class="n">SatisfactionMultiProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">Profile</span>
@@ -282,7 +283,7 @@ document.write(`
 <span class="k">def</span> <span class="nf">mes_scheme</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">SatisfactionProfile</span> <span class="o">|</span> <span class="n">SatisfactionMultiProfile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
     <span class="n">initial_budget</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
@@ -293,7 +294,7 @@ document.write(`
 <span class="sd">    details on this voting rule.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.election.instance.Instance</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
 <span class="sd">        profile : pabutools.instance.profile.ApprovalProfile</span>
 <span class="sd">            The profile.</span>
@@ -303,7 +304,7 @@ document.write(`
 <span class="sd">            The budget distributed to the agents initially.</span>
 <span class="sd">        initial_budget_allocation : collection of pabutools.election.instance.Project</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule</span>
+<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
@@ -458,7 +459,7 @@ document.write(`
 <span class="sd">    lead to a violation of the budget constraint are skipped.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : pabutools.election.instance.Instance</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
 <span class="sd">        profile : pabutools.instance.profile.ApprovalProfile</span>
 <span class="sd">            The profile.</span>
@@ -470,7 +471,7 @@ document.write(`
 <span class="sd">        sat_profile : pabutools.instance.satisfaction.SatisfactionFunction</span>
 <span class="sd">            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is</span>
 <span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
-<span class="sd">        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule, optional</span>
+<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">            Defaults to lexico_tie_breaking.</span>
 <span class="sd">        resoluteness : bool, optional</span>

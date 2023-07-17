@@ -1,6 +1,11 @@
+"""
+The method of equal shares.
+"""
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from numbers import Number
+
+from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
 
 from pabutools.election import MultiProfile, SatisfactionMultiProfile
 from pabutools.election.instance import Instance, Project
@@ -31,7 +36,7 @@ class MESVoter:
 def mes_scheme(
     instance: Instance,
     profile: Profile,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
+    sat_profile: GroupSatisfactionMeasure,
     initial_budget: Number,
     initial_budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
@@ -42,7 +47,7 @@ def mes_scheme(
     details on this voting rule.
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
@@ -52,7 +57,7 @@ def mes_scheme(
             The budget distributed to the agents initially.
         initial_budget_allocation : collection of pabutools.election.instance.Project
             An initial budget allocation, typically empty.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
@@ -207,7 +212,7 @@ def method_of_equal_shares(
     lead to a violation of the budget constraint are skipped.
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
         profile : pabutools.instance.profile.ApprovalProfile
             The profile.
@@ -219,7 +224,7 @@ def method_of_equal_shares(
         sat_profile : pabutools.instance.satisfaction.SatisfactionFunction
             The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
             provided, but a satisfaction function is, the former is computed from the latter.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule, optional
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
             Defaults to lexico_tie_breaking.
         resoluteness : bool, optional
