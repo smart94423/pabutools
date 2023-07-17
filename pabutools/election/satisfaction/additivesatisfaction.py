@@ -10,6 +10,8 @@ from pabutools.fractions import frac
 
 from typing import TYPE_CHECKING
 
+from mip import Model, xsum, maximize, BINARY
+
 if TYPE_CHECKING:
     from pabutools.election.profile import AbstractProfile
 
@@ -113,13 +115,13 @@ class AdditiveSatisfaction(SatisfactionMeasure):
 def cardinality_sat_func(
     instance: Instance,
     profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
+    ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
 ) -> int:
     """
-    Computes the cardinality satisfaction for approval ballots. It is equal to 1 if the project is approved and 0
-    otherwise.
+    Computes the cardinality satisfaction for ballots. It is equal to 1 if the project is appears in the ballot and
+    0 otherwise.
 
     Parameters
     ----------
@@ -127,7 +129,7 @@ def cardinality_sat_func(
             The instance.
         profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
         project : :py:class:`~pabutools.election.instance.Project`
             The selected project.
@@ -138,29 +140,14 @@ def cardinality_sat_func(
     -------
         int
             The cardinality satisfaction.
-
     """
     return int(project in ballot)
 
 
 class Cardinality_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
-        super(Cardinality_Sat, self).__init__(
-            instance, profile, ballot, cardinality_sat_func
-        )
-
-
-def relative_cardinality_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
-    project: Project,
-    precomputed_values: dict,
-) -> int:
     """
-    Computes the relative cardinality satisfaction for approval ballots. If the project is approved then it is equal
-    to 1 divided by the largest number of approved projects that can be selected in any budget allocation. If the
-    project is not approved, or if the previous denominator is 0, then it is equal to 0.
+    The cardinality satisfaction for ballots. It is equal to the number of selected projects appearing in the ballot.
+    It applies to all ballot types that support the `in` operator.
 
     Parameters
     ----------
@@ -168,7 +155,32 @@ def relative_cardinality_sat_func(
             The instance.
         profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+        AdditiveSatisfaction.__init__(self, instance, profile, ballot, cardinality_sat_func)
+
+
+def relative_cardinality_sat_func(
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
+) -> int:
+    """
+    Computes the relative cardinality satisfaction. If the project appears in the ballot, it is equal
+    to 1 divided by the largest number of projects from the ballot that can be selected in any budget allocation. If the
+    project does not appear in the ballot, or if the previous denominator is 0, then it is equal to 0.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
         project : :py:class:`~pabutools.election.instance.Project`
             The selected project.
@@ -177,7 +189,7 @@ def relative_cardinality_sat_func(
 
     Returns
     -------
-        int
+        Number
             The relative cardinality satisfaction.
 
     """
@@ -189,83 +201,219 @@ def relative_cardinality_sat_func(
 
 
 class Relative_Cardinality_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
-        super(Relative_Cardinality_Sat, self).__init__(
-            instance, profile, ballot, relative_cardinality_sat_func
+    """
+    The cardinality satisfaction for ballots. If the project appears in the ballot, it is equal
+    to 1 divided by the largest number of projects from the ballot that can be selected in any budget allocation. If the
+    project does not appear in the ballot, or if the previous denominator is 0, then it is equal to 0.
+    It applies to all ballot types that support the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+        AdditiveSatisfaction.__init__(
+            self, instance, profile, ballot, relative_cardinality_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        ballot_sorted = sorted(ballot, key=lambda p: (p.cost))
-        i, c = 0, 0
-        while i < len(ballot) and c + ballot_sorted[i].cost <= instance.budget_limit:
-            c += ballot_sorted[i].cost
-            i += 1
-        return {"max_budget_allocation_card": i}
+        ballot_sorted = sorted(ballot, key=lambda proj: proj.cost)
+        cost = 0
+        selected = 0
+        for p in ballot_sorted:
+            new_total_cost = p.cost + cost
+            if new_total_cost > instance.budget_limit:
+                break
+            cost = new_total_cost
+            selected += 1
+        return {"max_budget_allocation_card": selected}
 
 
 def cost_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
-    project: Project,
-    precomputed_values: dict,
-) -> Number:
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
+) -> int:
+    """
+    Computes the cost satisfaction for ballots. It is equal to the cost of the project if it appears in the
+    ballot and 0 otherwise.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        int
+            The cost satisfaction.
+    """
     return int(project in ballot) * project.cost
 
 
 class Cost_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
-        super(Cost_Sat, self).__init__(instance, profile, ballot, cost_sat_func)
+    """
+    The cost satisfaction for ballots. It is equal to the total cost of the selected projects appearing in the ballot.
+    It applies to all ballot types that support the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+        AdditiveSatisfaction.__init__(self, instance, profile, ballot, cost_sat_func)
 
 
 def relative_cost_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> int:
+    """
+    Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost
+    of the project divided by the total cost of the most expensive subset of projects appearing in the ballot. It is
+    0 if the project does not appear in the ballot.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The relative cost satisfaction.
+    """
     if precomputed_values["max_budget_allocation_cost"] == 0:
-        return 0  # TODO
+        return 0
     return frac(
         int(project in ballot), precomputed_values["max_budget_allocation_cost"]
     )
 
 
 class Relative_Cost_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
+    """
+    The relative cost satisfaction for ballots. It is equal to the total cost of the selected projects appearing in the
+    ballot, divided by the total cost of the most expensive subset of projects appearing in the ballot. It applies to
+    all ballot types that support the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
         super(Relative_Cost_Sat, self).__init__(
             instance, profile, ballot, relative_cost_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"max_budget_allocation_cost": 1}
+        mip_model = Model()
+        p_vars = {p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot}
+        mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in ballot))
+        mip_model += xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
+        mip_model.optimize()
+        max_cost = mip_model.objective.x
+        return {"max_budget_allocation_cost": max_cost}
 
 
-def relative_cost_non_normalised_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
-    project: Project,
-    precomputed_values: dict,
-) -> Number:
+def relative_cost_approx_normaliser_sat_func(
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
+    ) -> int:
+    """
+    Computes the relative cost satisfaction for ballots using an approximate normaliser: the total cost of the projects
+    appearing in the ballot. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
+    for the version with the exact normaliser. 
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The relative cost satisfaction with an approximate normaliser.
+    """
     return frac(
         int(project in ballot) * project.cost, precomputed_values["total_ballot_cost"]
     )
 
 
-class Relative_Cost_Non_Normalised_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
-        super(Relative_Cost_Non_Normalised_Sat, self).__init__(
-            instance, profile, ballot, relative_cost_non_normalised_sat_func
+class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
+    """
+    The cost relative satisfaction for ballots, used with an approximate normaliser (since the exact version can take
+    long to compute). It is equal to the total cost of the selected projects appearing in the ballot,
+    divided by the total cost of the projects appearing in the ballot. It applies to all ballot types that support the 
+    `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+        super(Relative_Cost_Approx_Normaliser_Sat, self).__init__(
+            instance, profile, ballot, relative_cost_approx_normaliser_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         return {"total_ballot_cost": total_cost([p for p in ballot if p in ballot])}
 
@@ -273,10 +421,32 @@ class Relative_Cost_Non_Normalised_Sat(AdditiveSatisfaction):
 def effort_sat_func(
     instance: Instance,
     profile: AbstractProfile,
-    ballot: AbstractApprovalBallot,
+    ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
 ) -> Number:
+    """
+    Computes the effort satisfaction for ballots. If the project appears in the ballot, it is equal to the cost of the
+    project, divided by the number of voters who included the project in their ballot.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The effort satisfaction.
+    """
     projects = [project for b in profile if project in b]
     if projects:
         return int(project in ballot) * frac(project.cost, len(projects))
@@ -284,7 +454,22 @@ def effort_sat_func(
 
 
 class Effort_Sat(AdditiveSatisfaction):
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractApprovalBallot):
+    """
+    The effort satisfaction. It is equal to the sum over the selected projects appearing in the
+    ballot of the cost of the project divided by the number of voters who included the project in their ballot. It
+    applies to all ballot types that support the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
         super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
 
 
@@ -295,13 +480,54 @@ def additive_card_sat_func(
     project: Project,
     precomputed_values: dict,
 ) -> Number:
+    """
+    Computes the additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the project.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The additive satisfaction for cardinal ballots.
+    """
     return ballot.get(project, 0)
 
 
 class Additive_Cardinal_Sat(AdditiveSatisfaction):
+    """
+    The additive satisfaction for cardinal ballots. It is equal to the sum over the selected projects appearing in the
+    ballot of the score assigned to the project by the voter. It only applies to cardinal ballots.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+            The ballot.
+    """
     def __init__(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractCardinalBallot
     ) -> None:
-        super(Additive_Cardinal_Sat, self).__init__(
-            instance, profile, ballot, additive_card_sat_func
-        )
+        if isinstance(ballot, AbstractCardinalBallot):
+            AdditiveSatisfaction.__init__(self,
+                instance, profile, ballot, additive_card_sat_func
+            )
+        else:
+            raise ValueError(
+                "The additive satisfaction for cardinal ballots cannot be used for ballots of type {}".format(
+                    type(ballot)
+                )
+            )

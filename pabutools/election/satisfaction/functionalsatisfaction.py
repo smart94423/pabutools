@@ -164,7 +164,7 @@ class CC_Sat(FunctionalSatisfaction):
             )
         else:
             raise ValueError(
-                "The Chamberlin-Courant satisfaction cannot be used for ballots for type {}".format(
+                "The Chamberlin-Courant satisfaction cannot be used for ballots of type {}".format(
                     type(ballot)
                 )
             )

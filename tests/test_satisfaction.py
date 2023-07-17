@@ -15,7 +15,7 @@ from pabutools.election.satisfaction import *
 from pabutools.election.satisfaction.additivesatisfaction import (
     Relative_Cardinality_Sat,
     Relative_Cost_Sat,
-    Relative_Cost_Non_Normalised_Sat,
+    Relative_Cost_Approx_Normaliser_Sat,
 )
 from pabutools.fractions import frac
 
@@ -167,7 +167,7 @@ class TestSatisfaction(TestCase):
         sat_profile = SatisfactionProfile(
             profile=profile,
             instance=instance,
-            sat_class=Relative_Cost_Non_Normalised_Sat,
+            sat_class=Relative_Cost_Approx_Normaliser_Sat,
         )
         assert sat_profile[0].sat([projects[0]]) == frac(4, 10)
         assert sat_profile[0].sat(projects[1:]) == frac(6, 10)

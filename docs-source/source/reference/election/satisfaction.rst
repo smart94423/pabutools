@@ -41,6 +41,45 @@ Satisfaction module
     :show-inheritance:
     :inherited-members:
 
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Cost_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Effort_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
 .. autoclass:: pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction
     :members:
     :show-inheritance:

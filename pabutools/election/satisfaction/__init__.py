@@ -46,23 +46,23 @@ The following satisfaction measures have already been implemented. Note that the
    * - Cardinality
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+     - all
    * - Relative Cardinality
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+     - all
    * - Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cost_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+     - all
    * - Relative Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
-   * - Non Normalised Relative Cost
-     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Non_Normalised_Sat`
+     - all
+   * - Approx Normaliser Relative Cost
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+     - all
    * - Effort
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Effort_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
@@ -93,7 +93,7 @@ from pabutools.election.satisfaction.additivesatisfaction import (
     Effort_Sat,
     Relative_Cost_Sat,
     Relative_Cardinality_Sat,
-    Relative_Cost_Non_Normalised_Sat,
+    Relative_Cost_Approx_Normaliser_Sat,
 )
 from pabutools.election.satisfaction.functionalsatisfaction import (
     FunctionalSatisfaction,
@@ -118,7 +118,7 @@ __all__ = [
     "Effort_Sat",
     "Relative_Cost_Sat",
     "Relative_Cardinality_Sat",
-    "Relative_Cost_Non_Normalised_Sat",
+    "Relative_Cost_Approx_Normaliser_Sat",
     "FunctionalSatisfaction",
     "CC_Sat",
     "Cost_Log_Sat",

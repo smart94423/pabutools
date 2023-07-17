@@ -2,9 +2,12 @@
 Ballots, that is, the information submitted by the voters during the election.
 """
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
+
+from pabutools.election import Project
 
 
-class AbstractBallot(ABC):
+class AbstractBallot(ABC, Iterable[Project]):
     """
     Abstract class representing the ballots, i.e., the information submitted by the voters. Essentially used for
     type-hint purposes.

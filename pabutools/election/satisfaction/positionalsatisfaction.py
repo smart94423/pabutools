@@ -106,5 +106,5 @@ class Additive_Borda_Sat(PositionalSatisfaction):
             PositionalSatisfaction.__init__(self, instance, profile, ballot, borda_sat_func, sum)
         else:
             raise ValueError(
-                "The additive Borda satisfaction cannot be used for ballots for type {}".format(type(ballot))
+                "The additive Borda satisfaction cannot be used for ballots of type {}".format(type(ballot))
             )

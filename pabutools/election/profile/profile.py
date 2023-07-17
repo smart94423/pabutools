@@ -17,7 +17,7 @@ from pabutools.election.ballot import AbstractBallot, FrozenBallot, Ballot
 from pabutools.election.instance import Instance
 
 
-class AbstractProfile(ABC, Iterable):
+class AbstractProfile(ABC, Iterable[AbstractBallot]):
     """
     Abstract class representing a profile, that is, a collection of ballots. This class is only meant to be inherited.
 
