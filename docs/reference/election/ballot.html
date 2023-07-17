@@ -327,6 +327,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.ApprovalBallot.union"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.union()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.get_random_approval_ballot"><code class="docutils literal notranslate"><span class="pre">get_random_approval_ballot()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.meta</span></code></a></li>
@@ -675,6 +676,27 @@ strings. Could for instance store the gender of the voter, their location etc.</
 <p>(i.e. all elements that are in either set.)</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.ballot.approvalballot.get_random_approval_ballot">
+<span class="sig-name descname"><span class="pre">get_random_approval_ballot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RandomAppBallot'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><span class="pre">ApprovalBallot</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/ballot/approvalballot.html#get_random_approval_ballot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.ballot.approvalballot.get_random_approval_ballot" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates a random approval ballot in which each project is approved with probability 0.5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projects</strong> (Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – A collection of projects.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The identifier of the ballot.
+Defaults to <cite>“RandomAppBallot”</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The randomly-generated approval ballot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><em>ApprovalBallot</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -1210,6 +1232,7 @@ strings. Could for instance store the gender of the voter, their location etc.</
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.ApprovalBallot.union"><code class="docutils literal notranslate"><span class="pre">ApprovalBallot.union()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.get_random_approval_ballot"><code class="docutils literal notranslate"><span class="pre">get_random_approval_ballot()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.name"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.ballot.approvalballot.FrozenApprovalBallot.meta"><code class="docutils literal notranslate"><span class="pre">FrozenApprovalBallot.meta</span></code></a></li>

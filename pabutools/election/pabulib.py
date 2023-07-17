@@ -1,5 +1,5 @@
 """
-Tools to work with PaBuLib instances.
+Tools to work with PaBuLib.
 """
 from copy import deepcopy
 
@@ -12,6 +12,7 @@ from pabutools.election.ballot import (
     CumulativeBallot,
 )
 from pabutools.election.profile import (
+    AbstractProfile,
     ApprovalProfile,
     CardinalProfile,
     CumulativeProfile,
@@ -22,16 +23,20 @@ import csv
 import os
 
 
-def parse_pabulib(file_path):
+def parse_pabulib(file_path: str) -> tuple[Instance, AbstractProfile]:
     """
-    Parses a PaBuLib files and returns the corresponding instance and profile.
+    Parses a PaBuLib files and returns the corresponding instance and profile. The returned profile will be of the
+    correct type depending on the metadata in the file.
+
     Parameters
     ----------
         file_path : str
             Path to the PaBuLib file to be parsed.
+
     Returns
     -------
-        Tuple of pabutools.instances.instance.PBInstance and pabutools.instances.profile.Profile
+        tuple[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.Profile`]
+            The instance and the profile corresponding to the file.
     """
     instance = Instance()
     ballots = []

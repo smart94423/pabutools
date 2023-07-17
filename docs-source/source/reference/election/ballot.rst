@@ -23,6 +23,8 @@ Ballot module
     :members:
     :show-inheritance:
 
+.. autofunction:: pabutools.election.ballot.approvalballot.get_random_approval_ballot
+
 .. autoclass:: pabutools.election.ballot.approvalballot.FrozenApprovalBallot
     :members:
     :show-inheritance:
