@@ -11,13 +11,34 @@ from pabutools.election import (
     Project,
     total_cost,
     ApprovalProfile,
-    ApprovalMultiProfile,
+    ApprovalMultiProfile, AbstractApprovalBallot, AbstractApprovalProfile,
 )
 from pabutools.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 
 class PhragmenVoter:
-    def __init__(self, ballot, load, multiplicity):
+    """
+    Class used to summarise a voter during a run of the Phragmèn's sequential rule.
+
+    Parameters
+    ----------
+        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot of the voter.
+        load: Number
+            The initial load of the voter.
+        multiplicity: int
+            The multiplicity of the ballot.
+
+    Attributes
+    ----------
+        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot of the voter.
+        load: Number
+            The initial load of the voter.
+        multiplicity: int
+            The multiplicity of the ballot.
+    """
+    def __init__(self, ballot: AbstractApprovalBallot, load: Number, multiplicity: int):
         self.ballot = ballot
         self.load = load
         self.multiplicity = multiplicity
@@ -28,32 +49,42 @@ class PhragmenVoter:
 
 def sequential_phragmen(
     instance: Instance,
-    profile: ApprovalProfile | ApprovalMultiProfile,
+    profile: AbstractApprovalProfile,
     initial_loads: list[Number] = None,
     initial_budget_allocation: Iterable[Project] = None,
-    tie_breaking: TieBreakingRule = lexico_tie_breaking,
+    tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
 ) -> list[Project] | list[list[Project]]:
     """
-    The inner algorithm to compute the outcome of the sequential Phragmén's rule.
+    Phragmèn's sequential rule. It works as follows. Voters receive money in a virtual currency. They all start with a
+    budget of 0 and that budget continuously increases. As soon asa group of supporters have enough virtual currency to
+    buy a project they all approve, the project is bought. The rule stops as soon as there is a project that could be
+    bought  but only by violating the budget constraint.
+
+    Note that this rule can only be applied to profile of approval ballots.
+
     Parameters
     ----------
         instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile | pabutools.instance.profile.ApprovalMultiProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        initial_loads : list[Fraction]
-            The initial load distribution of the voters.
-        initial_budget_allocation : collection of pabutools.election.instance.Project
+        initial_loads: list[Number], optional
+            A list of initial load, one per ballot in `profile`. By defaults, the initial load is `0`.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
+            Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
+
     Returns
     -------
-        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
 
     def aux(
@@ -141,6 +172,8 @@ def sequential_phragmen(
                             resolute,
                         )
 
+    if tie_breaking is None:
+        tie_breaking = lexico_tie_breaking
     if initial_budget_allocation is None:
         initial_budget_allocation = []
     current_cost = total_cost(initial_budget_allocation)

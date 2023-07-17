@@ -1,24 +1,24 @@
 from pabutools.election import Cost_Sat, total_cost, Cardinality_Sat
 from pabutools.rules import (
-    greedy_welfare,
+    greedy_utilitarian_welfare,
     sequential_phragmen,
     method_of_equal_shares,
     completion_by_rule_combination,
     exhaustion_by_budget_increase,
 )
-from pabutools.rules.maxwelfare import max_welfare
+from pabutools.rules.maxwelfare import max_utilitarian_welfare
 
 
 def greed_cost_res(instance, profile):
-    return greedy_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
+    return greedy_utilitarian_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
 
 
 def maxwelfare_cost_res(instance, profile):
-    return max_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
+    return max_utilitarian_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
 
 
 def greed_card_res(instance, profile):
-    return greedy_welfare(
+    return greedy_utilitarian_welfare(
         instance, profile, sat_class=Cardinality_Sat, resoluteness=True
     )
 
@@ -43,7 +43,7 @@ def mes_cost_res_ex(instance, profile):
     return completion_by_rule_combination(
         instance,
         profile,
-        [exhaustion_by_budget_increase, greedy_welfare],
+        [exhaustion_by_budget_increase, greedy_utilitarian_welfare],
         [
             {
                 "rule": method_of_equal_shares,
@@ -59,7 +59,7 @@ def mes_card_res_ex(instance, profile):
     return completion_by_rule_combination(
         instance,
         profile,
-        [exhaustion_by_budget_increase, greedy_welfare],
+        [exhaustion_by_budget_increase, greedy_utilitarian_welfare],
         [
             {
                 "rule": method_of_equal_shares,

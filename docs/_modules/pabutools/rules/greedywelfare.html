@@ -269,7 +269,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">lexico_tie_breaking</span><span class="p">,</span> <span class="n">TieBreakingRule</span>
 
 
-<span class="k">def</span> <span class="nf">greedy_scheme</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">greedy_utilitarian_scheme</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
@@ -303,7 +303,6 @@ document.write(`
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="nf">aux</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">sats</span><span class="p">,</span> <span class="n">allocs</span><span class="p">,</span> <span class="n">alloc</span><span class="p">,</span> <span class="n">tie</span><span class="p">,</span> <span class="n">resolute</span><span class="p">):</span>
         <span class="n">current_cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
         <span class="n">feasible</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
@@ -359,7 +358,7 @@ document.write(`
         <span class="k">return</span> <span class="n">all_budget_allocations</span>
 
 
-<span class="k">def</span> <span class="nf">greedy_scheme_additive</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">greedy_utilitarian_scheme_additive</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
@@ -392,7 +391,7 @@ document.write(`
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">resoluteness</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">greedy_scheme</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">greedy_utilitarian_scheme</span><span class="p">(</span>
             <span class="n">instance</span><span class="p">,</span>
             <span class="n">profile</span><span class="p">,</span>
             <span class="n">sat_profile</span><span class="p">,</span>
@@ -427,7 +426,7 @@ document.write(`
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="greedy_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.greedywelfare.greedy_welfare">[docs]</a><span class="k">def</span> <span class="nf">greedy_welfare</span><span class="p">(</span>
+<div class="viewcode-block" id="greedy_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.greedywelfare.greedy_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">greedy_utilitarian_welfare</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -438,9 +437,9 @@ document.write(`
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that</span>
-<span class="sd">    lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would</span>
-<span class="sd">    lead to a violation of the budget constraint are skipped.</span>
+<span class="sd">    General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting</span>
+<span class="sd">    a project that lead to the highest increase in total satisfaction divided by the cost of the project. Projects that</span>
+<span class="sd">    would lead to a violation of the budget constraint are skipped.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -489,7 +488,7 @@ document.write(`
         <span class="n">is_sat_additive</span> <span class="o">=</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">sat_class</span><span class="p">,</span> <span class="n">AdditiveSatisfaction</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_sat_additive</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">greedy_scheme_additive</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">greedy_utilitarian_scheme_additive</span><span class="p">(</span>
             <span class="n">instance</span><span class="p">,</span>
             <span class="n">profile</span><span class="p">,</span>
             <span class="n">sat_profile</span><span class="p">,</span>
@@ -497,7 +496,7 @@ document.write(`
             <span class="n">tie_breaking</span><span class="p">,</span>
             <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="k">return</span> <span class="n">greedy_scheme</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">greedy_utilitarian_scheme</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span>
         <span class="n">profile</span><span class="p">,</span>
         <span class="n">sat_profile</span><span class="p">,</span>

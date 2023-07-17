@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -248,7 +251,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.rules.phragmen</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Phragmèn&#39;s methods.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
@@ -258,13 +264,34 @@ document.write(`
     <span class="n">Project</span><span class="p">,</span>
     <span class="n">total_cost</span><span class="p">,</span>
     <span class="n">ApprovalProfile</span><span class="p">,</span>
-    <span class="n">ApprovalMultiProfile</span><span class="p">,</span>
+    <span class="n">ApprovalMultiProfile</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">TieBreakingRule</span><span class="p">,</span> <span class="n">lexico_tie_breaking</span>
 
 
 <span class="k">class</span> <span class="nc">PhragmenVoter</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class used to summarise a voter during a run of the Phragmèn&#39;s sequential rule.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot of the voter.</span>
+<span class="sd">        load: Number</span>
+<span class="sd">            The initial load of the voter.</span>
+<span class="sd">        multiplicity: int</span>
+<span class="sd">            The multiplicity of the ballot.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot of the voter.</span>
+<span class="sd">        load: Number</span>
+<span class="sd">            The initial load of the voter.</span>
+<span class="sd">        multiplicity: int</span>
+<span class="sd">            The multiplicity of the ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span> <span class="o">=</span> <span class="n">ballot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="n">load</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>
@@ -273,34 +300,44 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span>
 
 
-<div class="viewcode-block" id="sequential_phragmen"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.sequential_phragmen">[docs]</a><span class="k">def</span> <span class="nf">sequential_phragmen</span><span class="p">(</span>
+<div class="viewcode-block" id="sequential_phragmen"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.phragmen.sequential_phragmen">[docs]</a><span class="k">def</span> <span class="nf">sequential_phragmen</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">ApprovalProfile</span> <span class="o">|</span> <span class="n">ApprovalMultiProfile</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
     <span class="n">initial_loads</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="n">lexico_tie_breaking</span><span class="p">,</span>
+    <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The inner algorithm to compute the outcome of the sequential Phragmén&#39;s rule.</span>
+<span class="sd">    Phragmèn&#39;s sequential rule. It works as follows. Voters receive money in a virtual currency. They all start with a</span>
+<span class="sd">    budget of 0 and that budget continuously increases. As soon asa group of supporters have enough virtual currency to</span>
+<span class="sd">    buy a project they all approve, the project is bought. The rule stops as soon as there is a project that could be</span>
+<span class="sd">    bought  but only by violating the budget constraint.</span>
+
+<span class="sd">    Note that this rule can only be applied to profile of approval ballots.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.instance.profile.ApprovalProfile | pabutools.instance.profile.ApprovalMultiProfile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        initial_loads : list[Fraction]</span>
-<span class="sd">            The initial load distribution of the voters.</span>
-<span class="sd">        initial_budget_allocation : collection of pabutools.election.instance.Project</span>
+<span class="sd">        initial_loads: list[Number], optional</span>
+<span class="sd">            A list of initial load, one per ballot in `profile`. By defaults, the initial load is `0`.</span>
+<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
+<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional</span>
 <span class="sd">            The tie-breaking rule used.</span>
+<span class="sd">            Defaults to the lexicographic tie-breaking.</span>
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute</span>
+<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
+<span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">aux</span><span class="p">(</span>
@@ -388,6 +425,8 @@ document.write(`
                             <span class="n">resolute</span><span class="p">,</span>
                         <span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">tie_breaking</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tie_breaking</span> <span class="o">=</span> <span class="n">lexico_tie_breaking</span>
     <span class="k">if</span> <span class="n">initial_budget_allocation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">initial_budget_allocation</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current_cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>

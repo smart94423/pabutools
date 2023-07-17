@@ -16,7 +16,7 @@ from pabutools.election.satisfaction import (
 from pabutools.tiebreaking import lexico_tie_breaking, TieBreakingRule
 
 
-def greedy_scheme(
+def greedy_utilitarian_scheme(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
@@ -50,7 +50,6 @@ def greedy_scheme(
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
-
     def aux(inst, prof, sats, allocs, alloc, tie, resolute):
         current_cost = total_cost(alloc)
         feasible = set(
@@ -106,7 +105,7 @@ def greedy_scheme(
         return all_budget_allocations
 
 
-def greedy_scheme_additive(
+def greedy_utilitarian_scheme_additive(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
@@ -139,7 +138,7 @@ def greedy_scheme_additive(
             (`resoluteness = False`).
     """
     if not resoluteness:
-        return greedy_scheme(
+        return greedy_utilitarian_scheme(
             instance,
             profile,
             sat_profile,
@@ -174,7 +173,7 @@ def greedy_scheme_additive(
     return sorted(selection)
 
 
-def greedy_welfare(
+def greedy_utilitarian_welfare(
     instance: Instance,
     profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
@@ -185,9 +184,9 @@ def greedy_welfare(
     initial_budget_allocation: Iterable[Project] = None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
-    General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
-    lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would
-    lead to a violation of the budget constraint are skipped.
+    General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting
+    a project that lead to the highest increase in total satisfaction divided by the cost of the project. Projects that
+    would lead to a violation of the budget constraint are skipped.
 
     Parameters
     ----------
@@ -236,7 +235,7 @@ def greedy_welfare(
         is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
 
     if is_sat_additive:
-        return greedy_scheme_additive(
+        return greedy_utilitarian_scheme_additive(
             instance,
             profile,
             sat_profile,
@@ -244,7 +243,7 @@ def greedy_welfare(
             tie_breaking,
             resoluteness=resoluteness,
         )
-    return greedy_scheme(
+    return greedy_utilitarian_scheme(
         instance,
         profile,
         sat_profile,

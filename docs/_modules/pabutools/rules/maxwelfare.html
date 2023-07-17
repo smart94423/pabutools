@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -248,7 +251,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.rules.maxwelfare</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Welfare-maximizing rules.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 
 <span class="kn">import</span> <span class="nn">mip</span>
 <span class="kn">from</span> <span class="nn">mip</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">xsum</span><span class="p">,</span> <span class="n">maximize</span><span class="p">,</span> <span class="n">BINARY</span>
@@ -261,16 +267,37 @@ document.write(`
     <span class="n">Project</span><span class="p">,</span>
     <span class="n">total_cost</span><span class="p">,</span>
     <span class="n">MultiProfile</span><span class="p">,</span>
-    <span class="n">SatisfactionMultiProfile</span><span class="p">,</span>
+    <span class="n">GroupSatisfactionMeasure</span>
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">max_welfare_scheme</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">max_utilitarian_welfare_scheme</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">SatisfactionProfile</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The inner algorithm for the welfare maximizing rule. It generates the corresponding budget allocations using a</span>
+<span class="sd">    linear program solver. Note that there is no control over the way ties are broken.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
+<span class="sd">            The profile of satisfaction functions.</span>
+<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            An initial budget allocation, typically empty.</span>
+<span class="sd">        resoluteness : bool, optional</span>
+<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
+<span class="sd">            Defaults to True.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
+<span class="sd">            (`resoluteness = False`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">score</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">([</span><span class="n">p</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">}</span>
 
     <span class="n">mip_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="s2">&quot;MaxWelfare&quot;</span><span class="p">)</span>
@@ -324,38 +351,45 @@ document.write(`
     <span class="p">]</span>
 
 
-<div class="viewcode-block" id="max_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.max_welfare">[docs]</a><span class="k">def</span> <span class="nf">max_welfare</span><span class="p">(</span>
+<div class="viewcode-block" id="max_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.maxwelfare.max_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">max_utilitarian_welfare</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span> <span class="o">|</span> <span class="n">MultiProfile</span><span class="p">,</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">SatisfactionProfile</span> <span class="o">|</span> <span class="n">SatisfactionMultiProfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Welfare maximiser.</span>
+<span class="sd">    Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is</span>
+<span class="sd">    defined as the sum of the satisfactin of the voters, where the satisfaction is computed using the satisfaction</span>
+<span class="sd">    measure given as a parameter. The satisfaction measure is assumed to be additive. The bugdet allocation(s) are</span>
+<span class="sd">    computed using a linear program solver. Note that there is no control over the way ties are broken.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.instance.profile.ApprovalProfile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
 <span class="sd">        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
 <span class="sd">            The class defining the satisfaction function used to measure the social welfare. It should be a class</span>
 <span class="sd">            inhereting from pabutools.instance.satisfaction.Satisfaction.</span>
 <span class="sd">            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is</span>
 <span class="sd">            provided, the satisfaction argument is disregarded.</span>
-<span class="sd">        sat_profile : pabutools.instance.satisfaction.SatisfactionFunction</span>
+<span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
 <span class="sd">            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is</span>
 <span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
+<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            An initial budget allocation, typically empty.</span>
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">        initial_budget_allocation : collection of pabutools.election.instance.Project, optional</span>
-<span class="sd">            A potential initial budget allocation.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        set of pabutools.election.instance.Project</span>
+<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
+<span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">initial_budget_allocation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">budget_allocation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
@@ -369,7 +403,7 @@ document.write(`
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="o">=</span><span class="n">sat_class</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">max_welfare_scheme</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">max_utilitarian_welfare_scheme</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span> <span class="n">sat_profile</span><span class="p">,</span> <span class="n">budget_allocation</span><span class="p">,</span> <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span>
     <span class="p">)</span></div>
 </pre></div>

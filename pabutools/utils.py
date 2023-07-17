@@ -1,4 +1,7 @@
-from collections.abc import Iterable
+"""
+Collection of util functions.
+"""
+from collections.abc import Iterable, Generator
 from itertools import combinations, chain
 from numbers import Number
 
@@ -7,7 +10,21 @@ import numpy as np
 from pabutools.fractions import frac
 
 
-def mean_generator(generator: Iterable[Number] | Iterable[tuple[Number, int]]):
+def mean_generator(generator: Iterable[Number] | Iterable[tuple[Number, int]]) -> Number:
+    """
+    Computes the mean of a sequence of numbers given as a generator. If the generator contains tuples, the first element
+    is assumed to be the value and the second its multiplicity.
+
+    Parameters
+    ----------
+        generator: Iterable[Number] | Iterable[tuple[Number, int]
+            The generator.
+
+    Returns
+    -------
+        Number
+            The mean of the values.
+    """
     n = 0
     mean = 0
     for x in generator:
@@ -22,12 +39,39 @@ def mean_generator(generator: Iterable[Number] | Iterable[tuple[Number, int]]):
     return mean
 
 
-def powerset(iterable):
+def powerset(iterable: Iterable) -> Generator:
+    """
+    Returns a generator of all the subsets of a given iterable.
+
+    Parameters
+    ----------
+        iterable: Iterable
+            An iterable.
+
+    Returns
+    -------
+        Generator
+            A generator of all the subsets of the iterable.
+    """
     s = list(iterable)
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def gini_coefficient(values):
+def gini_coefficient(values) -> Number:
+    """
+    Returns the Gini coefficient of the vector of values given as argument.
+
+    Parameters
+    ----------
+        values
+            A vector of values.
+
+    Returns
+    -------
+        Number
+            The Gini coefficient.
+
+    """
     if np.any(values < 0):
         raise ValueError(
             "Negative values not supported by gini coefficient implementation."

@@ -276,7 +276,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -292,6 +294,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.frac"><code class="docutils literal notranslate"><span class="pre">frac()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.str_as_frac"><code class="docutils literal notranslate"><span class="pre">str_as_frac()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.FRACTION"><code class="docutils literal notranslate"><span class="pre">FRACTION</span></code></a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -303,6 +315,49 @@ document.write(`
                   
   <section id="module-pabutools.fractions">
 <span id="fractions"></span><h1>Fractions<a class="headerlink" href="#module-pabutools.fractions" title="Permalink to this heading">#</a></h1>
+<p>Module introducing all the functions used to handle fractions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.fractions.frac">
+<span class="sig-name descname"><span class="pre">frac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Number</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../_modules/pabutools/fractions.html#frac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.fractions.frac" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a fraction instantiated from the module defined by the <cite>FRACTION</cite> constant. If more than two numbers are
+provided, an error is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Number</strong> – One or two numbers.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fraction.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.fractions.str_as_frac">
+<span class="sig-name descname"><span class="pre">str_as_frac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../_modules/pabutools/fractions.html#str_as_frac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.fractions.str_as_frac" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a string to a fraction instantiated from the module defined by the <cite>FRACTION</cite> constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> – A string representing a number.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fraction.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pabutools.fractions.FRACTION">
+<span class="sig-name descname"><span class="pre">FRACTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gmpy2'</span></em><a class="headerlink" href="#pabutools.fractions.FRACTION" title="Permalink to this definition">#</a></dt>
+<dd><p>Constant describing which module to use for computing fractions. It can either be “gmpy2” or “float”. The default is
+“gmpy2”.</p>
+</dd></dl>
+
 </section>
 
 
@@ -344,6 +399,22 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.frac"><code class="docutils literal notranslate"><span class="pre">frac()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.str_as_frac"><code class="docutils literal notranslate"><span class="pre">str_as_frac()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.fractions.FRACTION"><code class="docutils literal notranslate"><span class="pre">FRACTION</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
