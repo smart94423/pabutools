@@ -4,7 +4,10 @@ Cumulative ballots, i.e., ballots in which the voters distribute a given amount 
 from abc import ABC
 
 from pabutools.election.ballot.ballot import FrozenBallot, AbstractBallot
-from pabutools.election.ballot.cardinalballot import CardinalBallot, AbstractCardinalBallot
+from pabutools.election.ballot.cardinalballot import (
+    CardinalBallot,
+    AbstractCardinalBallot,
+)
 from pabutools.election.instance import Project
 
 from numbers import Number
@@ -16,7 +19,9 @@ class AbstractCumulativeBallot(AbstractCardinalBallot, ABC):
     """
 
 
-class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot, AbstractCumulativeBallot):
+class FrozenCumulativeBallot(
+    dict[Project, Number], FrozenBallot, AbstractCumulativeBallot
+):
     """
     Frozen cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
     This is a special type of cardinal ballot
@@ -50,10 +55,10 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot, AbstractCumula
     """
 
     def __init__(
-            self,
-            init: dict[Project, Number] = None,
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: dict[Project, Number] = None,
+        name: str | None = None,
+        meta: dict | None = None,
     ):
         if init is None:
             init = dict()
@@ -110,10 +115,10 @@ class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
     """
 
     def __init__(
-            self,
-            init: dict[Project, Number] = None,
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: dict[Project, Number] = None,
+        name: str | None = None,
+        meta: dict | None = None,
     ):
         if init is None:
             init = dict()

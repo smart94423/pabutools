@@ -11,7 +11,9 @@ from pabutools.election import (
     Project,
     total_cost,
     ApprovalProfile,
-    ApprovalMultiProfile, AbstractApprovalBallot, AbstractApprovalProfile,
+    ApprovalMultiProfile,
+    AbstractApprovalBallot,
+    AbstractApprovalProfile,
 )
 from pabutools.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
@@ -38,6 +40,7 @@ class PhragmenVoter:
         multiplicity: int
             The multiplicity of the ballot.
     """
+
     def __init__(self, ballot: AbstractApprovalBallot, load: Number, multiplicity: int):
         self.ballot = ballot
         self.load = load

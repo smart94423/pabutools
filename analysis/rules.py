@@ -10,11 +10,15 @@ from pabutools.rules.maxwelfare import max_utilitarian_welfare
 
 
 def greed_cost_res(instance, profile):
-    return greedy_utilitarian_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
+    return greedy_utilitarian_welfare(
+        instance, profile, sat_class=Cost_Sat, resoluteness=True
+    )
 
 
 def maxwelfare_cost_res(instance, profile):
-    return max_utilitarian_welfare(instance, profile, sat_class=Cost_Sat, resoluteness=True)
+    return max_utilitarian_welfare(
+        instance, profile, sat_class=Cost_Sat, resoluteness=True
+    )
 
 
 def greed_card_res(instance, profile):

@@ -1,3 +1,6 @@
+"""
+Module testing the ballots.
+"""
 from unittest import TestCase
 
 from pabutools.election import (
@@ -10,7 +13,10 @@ from pabutools.election import (
     FrozenCardinalBallot,
     FrozenCumulativeBallot,
     FrozenOrdinalBallot,
-    get_random_approval_ballot, AbstractBallot, FrozenBallot, Ballot,
+    get_random_approval_ballot,
+    AbstractBallot,
+    FrozenBallot,
+    Ballot,
 )
 from tests.test_class_inheritence import check_members_equality
 
@@ -255,13 +261,21 @@ class TestBallot(TestCase):
         assert o >= o
         assert o != o1
         assert o1 < o < o2
+        assert not o1 > o > o2
         assert o2 > o > o1
+        assert not o2 < o < o1
         assert o1 < o2
+        assert not o1 > o2
         assert o2 > o1
+        assert not o2 < o1
         assert o1 <= o <= o2
+        assert not o1 >= o >= o2
         assert o2 >= o >= o1
+        assert not o2 <= o <= o1
         assert o1 <= o2
+        assert not o1 >= o2
         assert o2 >= o1
+        assert not o2 <= o1
         assert o2 != o
         with self.assertRaises(TypeError):
             o += 1
@@ -299,20 +313,23 @@ class TestBallot(TestCase):
         """
         General tests for unspecified ballots.
         """
+
         # Default of the constructors
         class MyAbstractBallot(AbstractBallot, list):
             pass
+
         b = MyAbstractBallot()
         assert b.meta == dict()
 
         class MyFrozenBallot(FrozenBallot, list):
             pass
+
         b = MyFrozenBallot()
         assert b.meta == dict()
 
         class MyBallot(Ballot, list):
             def frozen(self) -> FrozenBallot:
                 pass
+
         b = MyBallot()
         assert b.meta == dict()
-

@@ -1,3 +1,6 @@
+"""
+Module testing the custom fractions.
+"""
 from unittest import TestCase
 from pabutools.fractions import *
 

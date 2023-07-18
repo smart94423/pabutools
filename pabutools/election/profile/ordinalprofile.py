@@ -170,7 +170,7 @@ OrdinalProfile._wrap_methods(
         "__rmul__",
         "copy",
         "reverse",
-        "__getitem__"
+        "__getitem__",
     ]
 )
 

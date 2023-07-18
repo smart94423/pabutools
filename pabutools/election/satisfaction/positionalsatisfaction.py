@@ -104,10 +104,20 @@ class Additive_Borda_Sat(PositionalSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractOrdinalBallot):
+
+    def __init__(
+        self,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractOrdinalBallot,
+    ):
         if isinstance(ballot, AbstractOrdinalBallot):
-            PositionalSatisfaction.__init__(self, instance, profile, ballot, borda_sat_func, sum)
+            PositionalSatisfaction.__init__(
+                self, instance, profile, ballot, borda_sat_func, sum
+            )
         else:
             raise ValueError(
-                "The additive Borda satisfaction cannot be used for ballots of type {}".format(type(ballot))
+                "The additive Borda satisfaction cannot be used for ballots of type {}".format(
+                    type(ballot)
+                )
             )

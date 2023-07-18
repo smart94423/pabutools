@@ -211,6 +211,8 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = ApprovalBallot
+        if instance is None and isinstance(init, AbstractApprovalProfile):
+            instance = init.instance
         Profile.__init__(
             self,
             init=init,

@@ -50,6 +50,7 @@ def greedy_utilitarian_scheme(
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
+
     def aux(inst, prof, sats, allocs, alloc, tie, resolute):
         current_cost = total_cost(alloc)
         feasible = set(

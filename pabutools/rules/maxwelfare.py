@@ -14,7 +14,7 @@ from pabutools.election import (
     Project,
     total_cost,
     MultiProfile,
-    GroupSatisfactionMeasure
+    GroupSatisfactionMeasure,
 )
 
 

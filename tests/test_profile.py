@@ -1,3 +1,6 @@
+"""
+Module for testing profiles.
+"""
 from unittest import TestCase
 
 from pabutools.election import (
@@ -18,6 +21,7 @@ from pabutools.election import (
     FrozenCardinalBallot,
     CardinalMultiProfile,
 )
+from tests.test_class_inheritence import check_members_equality
 
 
 class TestProfile(TestCase):
@@ -51,72 +55,51 @@ class TestProfile(TestCase):
     def test_approval_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         instance = Instance(projects, budget_limit=1)
-        b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        b2 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        b3 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-        profile = ApprovalProfile((b1, b2, b3), instance=instance)
+
+        b1 = ApprovalBallot((projects[0], projects[1]))
+        b2 = ApprovalBallot((projects[2], projects[3]))
+        b3 = ApprovalBallot((projects[4], projects[5]))
+
+        # Test constructor
+        profile = ApprovalProfile(
+            [b1] * 5 + [b2] * 8 + [b3] * 5,
+            instance=instance,
+            legal_min_cost=2,
+            legal_max_cost=9,
+            legal_min_length=3,
+            legal_max_length=10,
+        )
+        profile2 = ApprovalProfile(profile)
+        check_members_equality(profile, profile2)
+
+        # Test party list check
+        profile = ApprovalProfile([b1] * 5 + [b2] * 8 + [b3] * 5, instance=instance)
+        assert len(profile) == 18
         assert profile.is_party_list() is True
-        b4 = ApprovalBallot((projects[4], projects[5]))
-        b5 = ApprovalBallot((projects[4], projects[5]))
-        profile = profile.__add__([b4, b5])
-        assert len(profile) == 5
-        assert profile.is_party_list() is True
-        b6 = ApprovalBallot([projects[0], projects[4]])
-        profile.append(b6)
+        b4 = ApprovalBallot([projects[0], projects[4]])
+        profile.append(b4)
         assert profile.is_party_list() is False
+
+        # Test other methods
         assert len(profile.approved_projects()) == 6
         assert profile.is_trivial() is True
         instance.budget_limit = 3
         assert profile.is_trivial() is False
 
+        # Test ballot validation
         card_ballot = CardinalBallot({projects[1]: 5, projects[2]: 2})
         with self.assertRaises(TypeError):
             profile.append(card_ballot)
         with self.assertRaises(TypeError):
-            ApprovalProfile((card_ballot))
-
+            ApprovalProfile([card_ballot])
         profile.ballot_validation = False
         profile.append(card_ballot)
 
-        profile.legal_min_length = 1
-        profile.legal_max_length = 5
-        profile.legal_min_cost = 10
-        profile.legal_max_cost = 100
-        profile2 = ApprovalProfile([b1, b2, b3])
-        profile3 = profile.__add__(profile2)
-        assert len(profile3) == 10
-        assert profile3[0] == b1
-        assert profile3[1] == b2
-        assert profile3[2] == b3
-        assert profile3[3] == b4
-        assert profile3[4] == b5
-        assert profile3[5] == b6
-        assert profile3[6] == card_ballot
-        assert profile3[7] == b1
-        assert profile3[8] == b2
-        assert profile3[9] == b3
-        assert profile.legal_min_length == 1
-        assert profile.legal_max_length == 5
-        assert profile.legal_min_cost == 10
-        assert profile.legal_max_cost == 100
-
-        profile2.legal_min_length = 1
-        profile2.legal_max_length = 5
-        profile2.legal_min_cost = 10
-        profile2.legal_max_cost = 100
-        profile2 *= 3
-        assert len(profile2) == 9
-        assert profile2[0] == profile2[3] == profile2[6]
-        assert profile2[1] == profile2[4] == profile2[7]
-        assert profile2[2] == profile2[5] == profile2[8]
-        assert profile2.legal_min_length == 1
-        assert profile2.legal_max_length == 5
-        assert profile2.legal_min_cost == 10
-        assert profile2.legal_max_cost == 100
-
+        # Test random profile
         random_profile = get_random_approval_profile(instance, 10)
         assert len(random_profile) == 10
 
+        # Test approval profiles generator
         new_inst = Instance(
             [Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3
         )
@@ -132,6 +115,8 @@ class TestProfile(TestCase):
         b4 = FrozenApprovalBallot(
             (projects[1], projects[4]), name="name", meta={"metakey": 0}
         )
+
+        # Test that multiprofile behave as expected
         multiprofile = ApprovalMultiProfile((b1, b2, b3, b4))
         assert len(multiprofile) == 4
         assert multiprofile.total() == 4
@@ -139,6 +124,7 @@ class TestProfile(TestCase):
         assert len(multiprofile) == 4
         assert multiprofile.total() == 5
 
+        # Test constructor from profile
         profile = ApprovalProfile(
             [ApprovalBallot(projects[:2])] * 4 + [ApprovalBallot(projects[:5])] * 10
         )
@@ -146,6 +132,10 @@ class TestProfile(TestCase):
         multiprofile = ApprovalMultiProfile(profile=profile)
         assert len(multiprofile) == 2
         assert multiprofile.total() == 14
+
+        # Test constructor from multiprofile
+        m = ApprovalMultiProfile(multiprofile)
+        check_members_equality(multiprofile, m)
 
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

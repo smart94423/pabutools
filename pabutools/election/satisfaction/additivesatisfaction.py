@@ -7,7 +7,11 @@ from collections.abc import Callable, Iterable
 from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
-from pabutools.election.ballot import AbstractBallot, AbstractApprovalBallot, AbstractCardinalBallot
+from pabutools.election.ballot import (
+    AbstractBallot,
+    AbstractApprovalBallot,
+    AbstractCardinalBallot,
+)
 from pabutools.election.instance import Instance, Project, total_cost
 from pabutools.fractions import frac
 
@@ -57,7 +61,9 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         instance: Instance,
         profile: AbstractProfile,
         ballot: AbstractBallot,
-        func: Callable[[Instance, AbstractProfile, AbstractBallot, Project, dict], Number],
+        func: Callable[
+            [Instance, AbstractProfile, AbstractBallot, Project, dict], Number
+        ],
     ) -> None:
         super(AdditiveSatisfaction, self).__init__(instance, profile, ballot)
         self.func = func
@@ -89,7 +95,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
 
     def get_project_sat(self, project: Project) -> Number:
         """
-        Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid 
+        Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
         re-computing it.
 
         Parameters
@@ -161,8 +167,13 @@ class Cardinality_Sat(AdditiveSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
-        AdditiveSatisfaction.__init__(self, instance, profile, ballot, cardinality_sat_func)
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        AdditiveSatisfaction.__init__(
+            self, instance, profile, ballot, cardinality_sat_func
+        )
 
 
 def relative_cardinality_sat_func(
@@ -219,7 +230,10 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         AdditiveSatisfaction.__init__(
             self, instance, profile, ballot, relative_cardinality_sat_func
         )
@@ -240,11 +254,11 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
 
 
 def cost_sat_func(
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractBallot,
-        project: Project,
-        precomputed_values: dict,
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
 ) -> int:
     """
     Computes the cost satisfaction for ballots. It is equal to the cost of the project if it appears in the
@@ -285,16 +299,19 @@ class Cost_Sat(AdditiveSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         AdditiveSatisfaction.__init__(self, instance, profile, ballot, cost_sat_func)
 
 
 def relative_cost_sat_func(
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractBallot,
-        project: Project,
-        precomputed_values: dict,
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
 ) -> int:
     """
     Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost
@@ -341,7 +358,10 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         super(Relative_Cost_Sat, self).__init__(
             instance, profile, ballot, relative_cost_sat_func
         )
@@ -350,7 +370,9 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         mip_model = Model()
-        p_vars = {p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot}
+        p_vars = {
+            p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot
+        }
         mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in ballot))
         mip_model += xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
         mip_model.optimize()
@@ -359,16 +381,16 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
 
 
 def relative_cost_approx_normaliser_sat_func(
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractBallot,
-        project: Project,
-        precomputed_values: dict,
-    ) -> int:
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
+) -> int:
     """
     Computes the relative cost satisfaction for ballots using an approximate normaliser: the total cost of the projects
     appearing in the ballot. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
-    for the version with the exact normaliser. 
+    for the version with the exact normaliser.
 
     Parameters
     ----------
@@ -397,7 +419,7 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     """
     The cost relative satisfaction for ballots, used with an approximate normaliser (since the exact version can take
     long to compute). It is equal to the total cost of the selected projects appearing in the ballot,
-    divided by the total cost of the projects appearing in the ballot. It applies to all ballot types that support the 
+    divided by the total cost of the projects appearing in the ballot. It applies to all ballot types that support the
     `in` operator.
 
     Parameters
@@ -410,7 +432,9 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
             The ballot.
     """
 
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         super(Relative_Cost_Approx_Normaliser_Sat, self).__init__(
             instance, profile, ballot, relative_cost_approx_normaliser_sat_func
         )
@@ -472,7 +496,9 @@ class Effort_Sat(AdditiveSatisfaction):
             The ballot.
     """
 
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
 
 
@@ -521,12 +547,16 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
             The ballot.
     """
+
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractCardinalBallot
+        self,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractCardinalBallot,
     ) -> None:
         if isinstance(ballot, AbstractCardinalBallot):
-            AdditiveSatisfaction.__init__(self,
-                instance, profile, ballot, additive_card_sat_func
+            AdditiveSatisfaction.__init__(
+                self, instance, profile, ballot, additive_card_sat_func
             )
         else:
             raise ValueError(

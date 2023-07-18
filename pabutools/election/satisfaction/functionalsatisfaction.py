@@ -12,7 +12,7 @@ from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeas
 from pabutools.election.ballot import (
     AbstractBallot,
     AbstractApprovalBallot,
-    AbstractCardinalBallot
+    AbstractCardinalBallot,
 )
 from pabutools.election.instance import Instance, Project, total_cost
 
@@ -21,7 +21,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from pabutools.election.profile import (
         AbstractProfile,
-
     )
 
 
@@ -154,6 +153,7 @@ class CC_Sat(FunctionalSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
+
     def __init__(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
@@ -217,13 +217,20 @@ class Cost_Sqrt_Sat(FunctionalSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         if isinstance(ballot, AbstractApprovalBallot):
             FunctionalSatisfaction.__init__(
                 self, instance, profile, ballot, cost_sqrt_sat_func
             )
         else:
-            raise ValueError("The cost square root satisfaction cannot be used with ballot types {}".format(type(ballot)))
+            raise ValueError(
+                "The cost square root satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )
 
 
 def cost_log_sat_func(
@@ -270,8 +277,17 @@ class Cost_Log_Sat(FunctionalSatisfaction):
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
     """
-    def __init__(self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot):
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
         if isinstance(ballot, AbstractApprovalBallot):
-            FunctionalSatisfaction.__init__(self, instance, profile, ballot, cost_log_sat_func)
+            FunctionalSatisfaction.__init__(
+                self, instance, profile, ballot, cost_log_sat_func
+            )
         else:
-            raise ValueError("The cost log satisfaction cannot be used with ballot types {}".format(type(ballot)))
+            raise ValueError(
+                "The cost log satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )

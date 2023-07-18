@@ -111,4 +111,3 @@ class Ballot(AbstractBallot):
             FrozenBallot
                 The ballot in its frozen form.
         """
-        ...

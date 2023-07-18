@@ -10,7 +10,9 @@ import numpy as np
 from pabutools.fractions import frac
 
 
-def mean_generator(generator: Iterable[Number] | Iterable[tuple[Number, int]]) -> Number:
+def mean_generator(
+    generator: Iterable[Number] | Iterable[tuple[Number, int]]
+) -> Number:
     """
     Computes the mean of a sequence of numbers given as a generator. If the generator contains tuples, the first element
     is assumed to be the value and the second its multiplicity.

@@ -4,23 +4,28 @@ Tools to work with PrefLib.
 import preflibtools.instances as preflib
 from preflibtools.instances import PrefLibInstance
 
-from pabutools.election import Instance, Project, AbstractApprovalProfile, AbstractCardinalProfile, \
-    AbstractOrdinalProfile
+from pabutools.election import (
+    Instance,
+    Project,
+    AbstractApprovalProfile,
+    AbstractCardinalProfile,
+    AbstractOrdinalProfile,
+)
 
 
 def init_preflib_instance(
-        preflib_inst: PrefLibInstance,
-        instance: Instance,
-        file_path: str,
-        file_name: str,
-        modification_type: str,
-        relates_to: str,
-        related_files: str,
-        title: str,
-        description: str,
-        publication_date: str,
-        modification_date: str,
-        alternative_names: dict[Project, str]
+    preflib_inst: PrefLibInstance,
+    instance: Instance,
+    file_path: str,
+    file_name: str,
+    modification_type: str,
+    relates_to: str,
+    related_files: str,
+    title: str,
+    description: str,
+    publication_date: str,
+    modification_date: str,
+    alternative_names: dict[Project, str],
 ) -> None:
     """
     Initialises a PrefLib instance with all the necessary parameters.
@@ -72,18 +77,18 @@ def init_preflib_instance(
 
 
 def approval_to_preflib(
-        instance: Instance,
-        profile: AbstractApprovalProfile,
-        file_path: str = "",
-        file_name: str = "",
-        modification_type: str = "original",
-        relates_to: str = None,
-        related_files: str = None,
-        title: str = "",
-        description: str = "",
-        publication_date: str = "",
-        modification_date: str = "",
-        alternative_names: dict[Project, str] = None,
+    instance: Instance,
+    profile: AbstractApprovalProfile,
+    file_path: str = "",
+    file_name: str = "",
+    modification_type: str = "original",
+    relates_to: str = None,
+    related_files: str = None,
+    title: str = "",
+    description: str = "",
+    publication_date: str = "",
+    modification_date: str = "",
+    alternative_names: dict[Project, str] = None,
 ) -> preflib.CategoricalInstance:
     """
     Converts a participatory budgeting instance and profile of approval ballots into a PrefLib instance.
@@ -150,18 +155,18 @@ def approval_to_preflib(
 
 
 def cardinal_to_preflib(
-        instance: Instance,
-        profile: AbstractCardinalProfile,
-        file_path: str = "",
-        file_name: str = "",
-        modification_type: str = "original",
-        relates_to: str = None,
-        related_files: str = None,
-        title: str = "",
-        description: str = "",
-        publication_date: str = "",
-        modification_date: str = "",
-        alternative_names: dict[Project, str] = None,
+    instance: Instance,
+    profile: AbstractCardinalProfile,
+    file_path: str = "",
+    file_name: str = "",
+    modification_type: str = "original",
+    relates_to: str = None,
+    related_files: str = None,
+    title: str = "",
+    description: str = "",
+    publication_date: str = "",
+    modification_date: str = "",
+    alternative_names: dict[Project, str] = None,
 ) -> preflib.OrdinalInstance:
     """
     Converts a participatory budgeting instance and profile of cardinal ballots into a PrefLib instance.
@@ -224,18 +229,18 @@ def cardinal_to_preflib(
 
 
 def ordinal_to_preflib(
-        instance: Instance,
-        profile: AbstractOrdinalProfile,
-        file_path: str = "",
-        file_name: str = "",
-        modification_type: str = "original",
-        relates_to: str = None,
-        related_files: str = None,
-        title: str = "",
-        description: str = "",
-        publication_date: str = "",
-        modification_date: str = "",
-        alternative_names: dict[Project, str] = None,
+    instance: Instance,
+    profile: AbstractOrdinalProfile,
+    file_path: str = "",
+    file_name: str = "",
+    modification_type: str = "original",
+    relates_to: str = None,
+    related_files: str = None,
+    title: str = "",
+    description: str = "",
+    publication_date: str = "",
+    modification_date: str = "",
+    alternative_names: dict[Project, str] = None,
 ) -> preflib.OrdinalInstance:
     """
     Converts a participatory budgeting instance and profile of ordinal ballots into a PrefLib instance.

@@ -49,7 +49,11 @@ from pabutools.election.ballot.cumulativeballot import (
     CumulativeBallot,
     FrozenCumulativeBallot,
 )
-from pabutools.election.ballot.ordinalballot import AbstractOrdinalBallot, OrdinalBallot, FrozenOrdinalBallot
+from pabutools.election.ballot.ordinalballot import (
+    AbstractOrdinalBallot,
+    OrdinalBallot,
+    FrozenOrdinalBallot,
+)
 
 __all__ = [
     "Ballot",

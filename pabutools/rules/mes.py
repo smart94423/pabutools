@@ -42,7 +42,14 @@ class MESVoter:
         multiplicity: int
             The multiplicity of the ballot.
     """
-    def __init__(self, ballot: AbstractBallot, sat: SatisfactionMeasure, budget: Number, multiplicity: int):
+
+    def __init__(
+        self,
+        ballot: AbstractBallot,
+        sat: SatisfactionMeasure,
+        budget: Number,
+        multiplicity: int,
+    ):
         self.ballot = ballot
         self.sat = sat
         self.budget = budget

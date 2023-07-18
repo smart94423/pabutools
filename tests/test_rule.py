@@ -24,7 +24,11 @@ from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 from pabutools.rules.maxwelfare import max_utilitarian_welfare
 from pabutools.rules.mes import method_of_equal_shares
 
-ALL_SAT_RULES = [greedy_utilitarian_welfare, max_utilitarian_welfare, method_of_equal_shares]
+ALL_SAT_RULES = [
+    greedy_utilitarian_welfare,
+    max_utilitarian_welfare,
+    method_of_equal_shares,
+]
 ALL_NON_SAT_RULES = [sequential_phragmen]
 ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat]
 

@@ -44,10 +44,10 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
     """
 
     def __init__(
-            self,
-            init: Iterable[Project] = (),
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: Iterable[Project] = (),
+        name: str | None = None,
+        meta: dict | None = None,
     ) -> None:
         tuple.__init__(self)
         if name is None:
@@ -64,7 +64,7 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
         AbstractOrdinalBallot.__init__(self)
 
     def __new__(
-            cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
+        cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
     ):
         if len(set(iterable)) != len(iterable):
             raise ValueError(
@@ -109,10 +109,10 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
     """
 
     def __init__(
-            self,
-            init: Iterable[Project] = (),
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: Iterable[Project] = (),
+        name: str | None = None,
+        meta: dict | None = None,
     ) -> None:
         if name is None:
             if isinstance(init, AbstractBallot):
@@ -191,7 +191,11 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
                 The project at position `index`.
         """
         if index > len(self):
-            raise ValueError("Index {} invalid for ordinal ballot of length {}.".format(index, len(self)))
+            raise ValueError(
+                "Index {} invalid for ordinal ballot of length {}.".format(
+                    index, len(self)
+                )
+            )
         i = 0
         for e in self:
             if i == index:

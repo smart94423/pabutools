@@ -1,3 +1,6 @@
+"""
+Module testing class inheritance for basic Python classes (list, tuple, etc...).
+"""
 from copy import deepcopy
 
 from unittest import TestCase
