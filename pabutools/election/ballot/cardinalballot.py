@@ -1,14 +1,16 @@
 """
 Cardinal ballots, i.e., ballots in which the voters map projects to scores.
 """
-from collections.abc import Iterable
+from abc import ABC
+from collections.abc import Iterable, Mapping
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
 from pabutools.election.instance import Project
 
 from numbers import Number
 
-class AbstractCardinalBallot:
+
+class AbstractCardinalBallot(ABC, Mapping[Project, Number]):
     """
     Abstract class for cardinal ballots. Essentially used for typing purposes.
     """
@@ -22,7 +24,7 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot, AbstractCardinal
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -46,19 +48,19 @@ class FrozenCardinalBallot(dict[Project, Number], FrozenBallot, AbstractCardinal
 
     def __init__(
         self,
-        d: dict[Project, Number] = (),
+        init: dict[Project, Number] = (),
         name: str | None = None,
         meta: dict | None = None,
     ):
-        dict.__init__(self, d)
+        dict.__init__(self, init)
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
         FrozenBallot.__init__(self, name=name, meta=meta)
@@ -78,7 +80,7 @@ class CardinalBallot(dict[Project, Number], Ballot, AbstractCardinalBallot):
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -102,21 +104,21 @@ class CardinalBallot(dict[Project, Number], Ballot, AbstractCardinalBallot):
 
     def __init__(
         self,
-        d: dict[Project, Number] = None,
+        init: dict[Project, Number] = None,
         name: str | None = None,
         meta: dict | None = None,
     ):
-        if d is None:
-            d = dict()
-        dict.__init__(self, d)
+        if init is None:
+            init = dict()
+        dict.__init__(self, init)
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
         Ballot.__init__(self, name=name, meta=meta)

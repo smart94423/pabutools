@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -252,6 +255,7 @@ document.write(`
 <span class="sd">Approval ballots, i.e., ballots in which the voters indicate which projects they approve of.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 
@@ -259,7 +263,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">Ballot</span><span class="p">,</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">AbstractBallot</span>
 
 
-<div class="viewcode-block" id="AbstractApprovalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.approvalballot.AbstractApprovalBallot">[docs]</a><span class="k">class</span> <span class="nc">AbstractApprovalBallot</span><span class="p">:</span>
+<div class="viewcode-block" id="AbstractApprovalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.approvalballot.AbstractApprovalBallot">[docs]</a><span class="k">class</span> <span class="nc">AbstractApprovalBallot</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for approval ballots. Essentially used for typing purposes.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
@@ -272,7 +276,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
 <span class="sd">            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
 <span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
@@ -296,19 +300,19 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">approved</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">tuple</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">approved</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">name</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
-                <span class="n">meta</span> <span class="o">=</span> <span class="n">approved</span><span class="o">.</span><span class="n">meta</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">meta</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span>
         <span class="n">FrozenBallot</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
@@ -330,7 +334,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
 <span class="sd">            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the set. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the</span>
 <span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
@@ -354,19 +358,19 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">approved</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">set</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">approved</span><span class="p">)</span>
+        <span class="nb">set</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">approved</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">name</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
-                <span class="n">meta</span> <span class="o">=</span> <span class="n">approved</span><span class="o">.</span><span class="n">meta</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">):</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">meta</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">Ballot</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
@@ -390,7 +394,7 @@ document.write(`
             <span class="k">def</span> <span class="nf">inner_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span> <span class="n">method</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">approved</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">result</span>
 
             <span class="n">inner_method</span><span class="o">.</span><span class="n">fn_name</span> <span class="o">=</span> <span class="n">method</span>
@@ -426,7 +430,7 @@ document.write(`
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">get_random_approval_ballot</span><span class="p">(</span>
+<div class="viewcode-block" id="get_random_approval_ballot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.approvalballot.get_random_approval_ballot">[docs]</a><span class="k">def</span> <span class="nf">get_random_approval_ballot</span><span class="p">(</span>
     <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RandomAppBallot&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ApprovalBallot</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -448,7 +452,7 @@ document.write(`
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
             <span class="n">ballot</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ballot</span>
+    <span class="k">return</span> <span class="n">ballot</span></div>
 </pre></div>
 
                 </article>

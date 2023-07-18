@@ -1,13 +1,14 @@
 """
 Ordinal ballots, i.e., ballots in which the voters order the projects given their preferences.
 """
+from abc import ABC
 from collections.abc import Iterable
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
 from pabutools.election.instance import Project
 
 
-class AbstractOrdinalBallot:
+class AbstractOrdinalBallot(ABC, Iterable[Project]):
     """
     Abstract class for cumulative ballots. Essentially used for typing purposes.
     """
@@ -20,7 +21,7 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
 
     Parameters
     ----------
-        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -44,19 +45,19 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
 
     def __init__(
             self,
-            iterable: Iterable[Project] = (),
+            init: Iterable[Project] = (),
             name: str | None = None,
             meta: dict | None = None,
     ) -> None:
         tuple.__init__(self)
         if name is None:
-            if isinstance(iterable, AbstractBallot):
-                name = iterable.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(iterable, AbstractBallot):
-                meta = iterable.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
         FrozenBallot.__init__(self, name, meta)
@@ -85,7 +86,7 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
 
     Parameters
     ----------
-        iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -109,21 +110,21 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
 
     def __init__(
             self,
-            iterable: Iterable[Project] = (),
+            init: Iterable[Project] = (),
             name: str | None = None,
             meta: dict | None = None,
     ) -> None:
         if name is None:
-            if isinstance(iterable, AbstractBallot):
-                name = iterable.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(iterable, AbstractBallot):
-                meta = iterable.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
-        dict.__init__(self, {e: None for e in iterable})
+        dict.__init__(self, {e: None for e in init})
         Ballot.__init__(self, name=name, meta=meta)
         AbstractOrdinalBallot.__init__(self)
 
@@ -217,7 +218,7 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
                 return True
             elif e2 > e1:
                 return False
-        return len(self) == len(other)
+        return len(self) <= len(other)
 
     def __repr__(self) -> str:
         return list(self.keys()).__repr__()

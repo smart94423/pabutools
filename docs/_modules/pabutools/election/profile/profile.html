@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -391,7 +394,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
+<span class="sd">        init : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
 <span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the</span>
 <span class="sd">            list. If activated, the types of the ballots are validated. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
@@ -420,7 +423,7 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -433,9 +436,9 @@ document.write(`
         <span class="k">if</span> <span class="n">ballot_validation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
             <span class="n">ballot_validation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">ballot_validation</span>
         <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">ballot_validation</span><span class="p">,</span> <span class="n">ballot_type</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">init</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">)</span>
+        <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Profile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.Profile.multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">Ballot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -514,7 +517,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
+<span class="sd">        init : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional</span>
 <span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the</span>
 <span class="sd">            list. If activated, the types of the ballots are validated. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
@@ -543,7 +546,7 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -556,9 +559,9 @@ document.write(`
         <span class="k">if</span> <span class="n">ballot_validation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
             <span class="n">ballot_validation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">ballot_validation</span>
         <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">ballot_validation</span><span class="p">,</span> <span class="n">ballot_type</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">init</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">Counter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">)</span>
+        <span class="n">Counter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MultiProfile.multiplicity"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.profile.MultiProfile.multiplicity">[docs]</a>    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">FrozenBallot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">ballot</span><span class="p">]</span></div>

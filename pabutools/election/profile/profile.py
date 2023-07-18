@@ -141,7 +141,7 @@ class Profile(list, AbstractProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the
             list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -170,7 +170,7 @@ class Profile(list, AbstractProfile):
 
     def __init__(
         self,
-        iterable: Iterable[Ballot] = (),
+        init: Iterable[Ballot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[Ballot] = None,
@@ -183,9 +183,9 @@ class Profile(list, AbstractProfile):
         if ballot_validation is None and isinstance(instance, AbstractProfile):
             ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
-        for item in iterable:
+        for item in init:
             self.validate_ballot(item)
-        list.__init__(self, iterable)
+        list.__init__(self, init)
 
     def multiplicity(self, ballot: Ballot) -> int:
         """
@@ -264,7 +264,7 @@ class MultiProfile(Counter, AbstractProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.ballot.Ballot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as initializer for the
             list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -293,7 +293,7 @@ class MultiProfile(Counter, AbstractProfile):
 
     def __init__(
         self,
-        iterable: Iterable[FrozenBallot] = (),
+        init: Iterable[FrozenBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[FrozenBallot] = None,
@@ -306,9 +306,9 @@ class MultiProfile(Counter, AbstractProfile):
         if ballot_validation is None and isinstance(instance, AbstractProfile):
             ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
-        for item in iterable:
+        for item in init:
             self.validate_ballot(item)
-        Counter.__init__(self, iterable)
+        Counter.__init__(self, init)
 
     def multiplicity(self, ballot: FrozenBallot) -> int:
         return self[ballot]

@@ -2,6 +2,7 @@
 Approval ballots, i.e., ballots in which the voters indicate which projects they approve of.
 """
 import random
+from abc import ABC
 
 from collections.abc import Iterable
 
@@ -9,7 +10,7 @@ from pabutools.election.instance import Project
 from pabutools.election.ballot.ballot import Ballot, FrozenBallot, AbstractBallot
 
 
-class AbstractApprovalBallot:
+class AbstractApprovalBallot(ABC, Iterable[Project]):
     """
     Abstract class for approval ballots. Essentially used for typing purposes.
     """
@@ -22,7 +23,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
 
     Parameters
     ----------
-        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -46,19 +47,19 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
 
     def __init__(
         self,
-        approved: Iterable[Project] = (),
+        init: Iterable[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
         tuple.__init__(self)
         if name is None:
-            if isinstance(approved, AbstractBallot):
-                name = approved.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(approved, AbstractBallot):
-                meta = approved.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
         FrozenBallot.__init__(self, name, meta)
@@ -80,7 +81,7 @@ class ApprovalBallot(set[Project], Ballot, AbstractApprovalBallot):
 
     Parameters
     ----------
-        approved: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the set. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -104,19 +105,19 @@ class ApprovalBallot(set[Project], Ballot, AbstractApprovalBallot):
 
     def __init__(
         self,
-        approved: Iterable[Project] = (),
+        init: Iterable[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
-        set.__init__(self, approved)
+        set.__init__(self, init)
         if name is None:
-            if isinstance(approved, AbstractBallot):
-                name = approved.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(approved, AbstractBallot):
-                meta = approved.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
         Ballot.__init__(self, name, meta)
@@ -140,7 +141,7 @@ class ApprovalBallot(set[Project], Ballot, AbstractApprovalBallot):
             def inner_method(self, *args):
                 result = getattr(super(cls, self), method)(*args)
                 if isinstance(result, set) and not isinstance(result, cls):
-                    result = cls(approved=result, name=self.name, meta=self.meta)
+                    result = cls(init=result, name=self.name, meta=self.meta)
                 return result
 
             inner_method.fn_name = method

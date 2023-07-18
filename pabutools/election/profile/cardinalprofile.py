@@ -86,7 +86,7 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot` that is used an
             initializer for the list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -135,7 +135,7 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
 
     def __init__(
         self,
-        iterable: Iterable[CardinalBallot] = (),
+        init: Iterable[CardinalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[Ballot] = None,
@@ -144,14 +144,14 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_min_length = iterable.legal_min_length
-        if legal_max_length is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_max_length = iterable.legal_max_length
-        if legal_min_score is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_min_score = iterable.legal_min_score
-        if legal_max_score is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_max_score = iterable.legal_max_score
+        if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_length = init.legal_min_length
+        if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_length = init.legal_max_length
+        if legal_min_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_score = init.legal_min_score
+        if legal_max_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_score = init.legal_max_score
         AbstractCardinalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -160,12 +160,12 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
             legal_max_score=legal_max_score,
         )
         if ballot_type is None:
-            if isinstance(iterable, AbstractProfile):
-                ballot_type = iterable.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = CardinalBallot
         super(CardinalProfile, self).__init__(
-            iterable=iterable,
+            init=init,
             instance=instance,
             ballot_validation=ballot_validation,
             ballot_type=ballot_type,
@@ -246,6 +246,7 @@ CardinalProfile._wrap_methods(
         "__rmul__",
         "copy",
         "reverse",
+        "__getitem__"
     ]
 )
 
@@ -259,7 +260,7 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot` that is used an
             initializer for the list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -308,7 +309,7 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
 
     def __init__(
         self,
-        iterable: Iterable[FrozenCardinalBallot] = (),
+        init: Iterable[FrozenCardinalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[FrozenBallot] = None,
@@ -318,14 +319,14 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_min_length = iterable.legal_min_length
-        if legal_max_length is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_max_length = iterable.legal_max_length
-        if legal_min_score is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_min_score = iterable.legal_min_score
-        if legal_max_score is None and isinstance(iterable, AbstractCardinalProfile):
-            legal_max_score = iterable.legal_max_score
+        if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_length = init.legal_min_length
+        if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_length = init.legal_max_length
+        if legal_min_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_score = init.legal_min_score
+        if legal_max_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_score = init.legal_max_score
         AbstractCardinalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -334,12 +335,12 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
             legal_max_score=legal_max_score,
         )
         if ballot_type is None:
-            if isinstance(iterable, AbstractProfile):
-                ballot_type = iterable.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenCardinalBallot
         super(CardinalMultiProfile, self).__init__(
-            iterable=iterable,
+            init=init,
             instance=instance,
             ballot_validation=ballot_validation,
             ballot_type=ballot_type,

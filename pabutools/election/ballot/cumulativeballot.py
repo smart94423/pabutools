@@ -1,14 +1,16 @@
 """
 Cumulative ballots, i.e., ballots in which the voters distribute a given amount of points to the projects.
 """
+from abc import ABC
+
 from pabutools.election.ballot.ballot import FrozenBallot, AbstractBallot
-from pabutools.election.ballot.cardinalballot import CardinalBallot
+from pabutools.election.ballot.cardinalballot import CardinalBallot, AbstractCardinalBallot
 from pabutools.election.instance import Project
 
 from numbers import Number
 
 
-class AbstractCumulativeBallot:
+class AbstractCumulativeBallot(AbstractCardinalBallot, ABC):
     """
     Abstract class for cumulative ballots. Essentially used for typing purposes.
     """
@@ -25,7 +27,7 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot, AbstractCumula
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -49,21 +51,21 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot, AbstractCumula
 
     def __init__(
             self,
-            d: dict[Project, Number] = None,
+            init: dict[Project, Number] = None,
             name: str | None = None,
             meta: dict | None = None,
     ):
-        if d is None:
-            d = dict()
-        dict.__init__(self, d)
+        if init is None:
+            init = dict()
+        dict.__init__(self, init)
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
         FrozenBallot.__init__(self, name=name, meta=meta)
@@ -85,7 +87,7 @@ class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -109,23 +111,23 @@ class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
 
     def __init__(
             self,
-            d: dict[Project, Number] = None,
+            init: dict[Project, Number] = None,
             name: str | None = None,
             meta: dict | None = None,
     ):
-        if d is None:
-            d = dict()
+        if init is None:
+            init = dict()
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
-        CardinalBallot.__init__(self, d, name=name, meta=meta)
+        CardinalBallot.__init__(self, init, name=name, meta=meta)
         AbstractCumulativeBallot.__init__(self)
 
     def frozen(self) -> FrozenCumulativeBallot:

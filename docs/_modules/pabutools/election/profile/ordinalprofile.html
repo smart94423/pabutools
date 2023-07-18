@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -131,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -302,7 +304,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ordinalballot.OrdinalBallot`], optional</span>
+<span class="sd">        init : Iterable[:py:class:`~pabutools.election.ballot.ordinalballot.OrdinalBallot`], optional</span>
 <span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ordinalballot.OrdinalBallot` that is used an</span>
 <span class="sd">            initializer for the list. If activated, the types of the ballots are validated. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
@@ -341,30 +343,30 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">OrdinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">OrdinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrdinalBallot</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
-            <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_length</span>
-        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
-            <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_max_length</span>
+        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+            <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_length</span>
+        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+            <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_length</span>
         <span class="n">AbstractOrdinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
             <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
-                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">ballot_type</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">OrdinalBallot</span>
         <span class="n">Profile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">iterable</span><span class="o">=</span><span class="n">iterable</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">ballot_validation</span><span class="o">=</span><span class="n">ballot_validation</span><span class="p">,</span>
             <span class="n">ballot_type</span><span class="o">=</span><span class="n">ballot_type</span><span class="p">,</span>
@@ -421,6 +423,7 @@ document.write(`
         <span class="s2">&quot;__rmul__&quot;</span><span class="p">,</span>
         <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
         <span class="s2">&quot;reverse&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__getitem__&quot;</span>
     <span class="p">]</span>
 <span class="p">)</span>
 
@@ -434,7 +437,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        iterable : Iterable[:py:class:`~pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot`], optional</span>
+<span class="sd">        init : Iterable[:py:class:`~pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot`], optional</span>
 <span class="sd">            An iterable of :py:class:`~pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot` that is used an</span>
 <span class="sd">            initializer for the list. If activated, the types of the ballots are validated. In case an</span>
 <span class="sd">            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the</span>
@@ -473,7 +476,7 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenOrdinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FrozenOrdinalBallot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ballot_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">FrozenBallot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -481,23 +484,23 @@ document.write(`
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
-            <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_min_length</span>
-        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
-            <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">legal_max_length</span>
+        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+            <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_length</span>
+        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+            <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_length</span>
         <span class="n">AbstractOrdinalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
             <span class="n">legal_max_length</span><span class="o">=</span><span class="n">legal_max_length</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">ballot_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
-                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">iterable</span><span class="o">.</span><span class="n">ballot_type</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">):</span>
+                <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">ballot_type</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">FrozenOrdinalBallot</span>
         <span class="n">MultiProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">iterable</span><span class="o">=</span><span class="n">iterable</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">ballot_validation</span><span class="o">=</span><span class="n">ballot_validation</span><span class="p">,</span>
             <span class="n">ballot_type</span><span class="o">=</span><span class="n">ballot_type</span><span class="p">,</span>

@@ -25,7 +25,7 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+        init : Iterable[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             An iterable of :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure` used
             as initialize of the list.
         instance : :py:class:`~pabutools.election.instance.Instance`, optional
@@ -48,12 +48,12 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
 
     def __init__(
         self,
-        iterable: Iterable[SatisfactionMeasure] = (),
+        init: Iterable[SatisfactionMeasure] = (),
         instance: Instance = None,
         profile: Profile = None,
         sat_class: type[SatisfactionMeasure] = None,
     ) -> None:
-        list.__init__(self, iterable)
+        list.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
         if instance is None:
             instance = Instance()
@@ -131,6 +131,7 @@ SatisfactionProfile._wrap_methods(
         "__rmul__",
         "copy",
         "reverse",
+        "__getitem__",
     ]
 )
 

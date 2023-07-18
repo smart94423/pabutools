@@ -216,6 +216,18 @@ def check_list_members(initial_list, included_objects, additional_objects):
     new_list *= 5
     check_members_equality(initial_list, new_list)
 
+    new_list = deepcopy(initial_list)
+    new_list = new_list[1:5]
+    check_members_equality(initial_list, new_list)
+
+    new_list = deepcopy(initial_list)
+    new_list = new_list[:-1]
+    check_members_equality(initial_list, new_list)
+
+    new_list = deepcopy(initial_list)
+    new_list = new_list[0:5:2]
+    check_members_equality(initial_list, new_list)
+
 
 class TestAnalysis(TestCase):
     def test_instance_members(self):

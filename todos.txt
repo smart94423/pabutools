@@ -7,5 +7,3 @@ Check the ballots for which the satisfaction work.
 Update type for Counter initializer.
 
 Rename all initialiser to init.
-
-List slice for profile.

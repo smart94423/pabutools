@@ -133,7 +133,7 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` that is used an
             initializer for the list. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -182,7 +182,7 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
 
     def __init__(
         self,
-        iterable: Iterable[ApprovalBallot] = (),
+        init: Iterable[ApprovalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[AbstractBallot] | None = None,
@@ -191,14 +191,14 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
         legal_min_cost: Number | None = None,
         legal_max_cost: Number | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_min_length = iterable.legal_min_length
-        if legal_max_length is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_max_length = iterable.legal_max_length
-        if legal_min_cost is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_min_cost = iterable.legal_min_cost
-        if legal_max_cost is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_max_cost = iterable.legal_max_cost
+        if legal_min_length is None and isinstance(init, AbstractApprovalProfile):
+            legal_min_length = init.legal_min_length
+        if legal_max_length is None and isinstance(init, AbstractApprovalProfile):
+            legal_max_length = init.legal_max_length
+        if legal_min_cost is None and isinstance(init, AbstractApprovalProfile):
+            legal_min_cost = init.legal_min_cost
+        if legal_max_cost is None and isinstance(init, AbstractApprovalProfile):
+            legal_max_cost = init.legal_max_cost
         AbstractApprovalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -207,13 +207,13 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
             legal_max_cost=legal_max_cost,
         )
         if ballot_type is None:
-            if isinstance(iterable, AbstractProfile):
-                ballot_type = iterable.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = ApprovalBallot
         Profile.__init__(
             self,
-            iterable=iterable,
+            init=init,
             instance=instance,
             ballot_validation=ballot_validation,
             ballot_type=ballot_type,
@@ -275,6 +275,7 @@ ApprovalProfile._wrap_methods(
         "__rmul__",
         "copy",
         "reverse",
+        "__getitem__",
     ]
 )
 
@@ -334,7 +335,7 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
 
     Parameters
     ----------
-        iterable : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot`], optional
+        init : Iterable[:py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot`], optional
             An iterable of :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot` that is used an
             initializer for the counter. If activated, the types of the ballots are validated. In case an
             :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
@@ -383,7 +384,7 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
 
     def __init__(
         self,
-        iterable: Iterable[FrozenApprovalBallot] = (),
+        init: Iterable[FrozenApprovalBallot] = (),
         instance: Instance | None = None,
         ballot_validation: bool = True,
         ballot_type: type[FrozenBallot] = None,
@@ -393,14 +394,14 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
         legal_min_cost: Number | None = None,
         legal_max_cost: Number | None = None,
     ):
-        if legal_min_length is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_min_length = iterable.legal_min_length
-        if legal_max_length is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_max_length = iterable.legal_max_length
-        if legal_min_cost is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_min_cost = iterable.legal_min_cost
-        if legal_max_cost is None and isinstance(iterable, AbstractApprovalProfile):
-            legal_max_cost = iterable.legal_max_cost
+        if legal_min_length is None and isinstance(init, AbstractApprovalProfile):
+            legal_min_length = init.legal_min_length
+        if legal_max_length is None and isinstance(init, AbstractApprovalProfile):
+            legal_max_length = init.legal_max_length
+        if legal_min_cost is None and isinstance(init, AbstractApprovalProfile):
+            legal_min_cost = init.legal_min_cost
+        if legal_max_cost is None and isinstance(init, AbstractApprovalProfile):
+            legal_max_cost = init.legal_max_cost
         AbstractApprovalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -409,12 +410,12 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
             legal_max_cost=legal_max_cost,
         )
         if ballot_type is None:
-            if isinstance(iterable, AbstractProfile):
-                ballot_type = iterable.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenApprovalBallot
         super(ApprovalMultiProfile, self).__init__(
-            iterable=iterable,
+            init=init,
             instance=instance,
             ballot_validation=ballot_validation,
             ballot_type=ballot_type,
