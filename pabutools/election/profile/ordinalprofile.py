@@ -1,5 +1,6 @@
 from abc import ABC
 from collections.abc import Iterable
+from copy import deepcopy
 
 from pabutools.election.ballot import (
     Ballot,
@@ -231,10 +232,16 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(init, AbstractOrdinalProfile):
-            legal_min_length = init.legal_min_length
-        if legal_max_length is None and isinstance(init, AbstractOrdinalProfile):
-            legal_max_length = init.legal_max_length
+        if legal_min_length is None:
+            if isinstance(init, AbstractOrdinalProfile):
+                legal_min_length = init.legal_min_length
+            elif profile:
+                legal_min_length = profile.legal_min_length
+        if legal_max_length is None:
+            if isinstance(init, AbstractOrdinalProfile):
+                legal_max_length = init.legal_max_length
+            elif profile:
+                legal_max_length = profile.legal_max_length
         AbstractOrdinalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -245,6 +252,11 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenOrdinalBallot
+        if instance is None:
+            if isinstance(init, AbstractOrdinalProfile):
+                instance = init.instance
+            elif profile:
+                instance = profile.instance
         MultiProfile.__init__(
             self,
             init=init,
@@ -277,7 +289,27 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
         for n in names:
             wrap_method_closure(n)
 
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
 
 OrdinalMultiProfile._wrap_methods(
-    ["copy", "__ior__", "__or__", "__ror__", "__reversed__"]
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
 )

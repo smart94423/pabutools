@@ -65,7 +65,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
             [Instance, AbstractProfile, AbstractBallot, Project, dict], Number
         ],
     ) -> None:
-        super(AdditiveSatisfaction, self).__init__(instance, profile, ballot)
+        SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.func = func
         self.scores = dict()
         self.precomputed_values = self.preprocessing(instance, profile, ballot)
@@ -362,8 +362,8 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
     def __init__(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        super(Relative_Cost_Sat, self).__init__(
-            instance, profile, ballot, relative_cost_sat_func
+        AdditiveSatisfaction.__init__(
+            self, instance, profile, ballot, relative_cost_sat_func
         )
 
     def preprocessing(
@@ -435,8 +435,8 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     def __init__(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        super(Relative_Cost_Approx_Normaliser_Sat, self).__init__(
-            instance, profile, ballot, relative_cost_approx_normaliser_sat_func
+        AdditiveSatisfaction.__init__(
+            self, instance, profile, ballot, relative_cost_approx_normaliser_sat_func
         )
 
     def preprocessing(
@@ -499,7 +499,7 @@ class Effort_Sat(AdditiveSatisfaction):
     def __init__(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        super(Effort_Sat, self).__init__(instance, profile, ballot, effort_sat_func)
+        AdditiveSatisfaction.__init__(self, instance, profile, ballot, effort_sat_func)
 
 
 def additive_card_sat_func(

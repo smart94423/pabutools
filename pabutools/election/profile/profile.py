@@ -52,8 +52,8 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
         ballot_validation: bool = True,
         ballot_type: type[AbstractBallot] = None,
     ) -> None:
-        super(ABC, self).__init__()
-        super(Iterable, self).__init__()
+        ABC.__init__(self)
+        Iterable.__init__(self)
         if instance is None:
             instance = Instance()
         self.instance = instance
@@ -96,7 +96,6 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
             int
                 The multiplicity of the ballots.
         """
-        ...
 
     @abstractmethod
     def as_sat_profile(
@@ -116,7 +115,6 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
             py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
                 A satisfaction profile, that is, a collection of satisfaction measures for all the voters.
         """
-        ...
 
     @abstractmethod
     def num_ballots(self) -> int:
@@ -131,7 +129,6 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
                 The number of voters.
 
         """
-        ...
 
 
 class Profile(list, AbstractProfile):
@@ -239,21 +236,20 @@ class Profile(list, AbstractProfile):
 
     def __setitem__(self, index, item):
         self.validate_ballot(item)
-        super().__setitem__(index, item)
+        list.__setitem__(self, index, item)
 
     def insert(self, index: int, item: Ballot) -> None:
         self.validate_ballot(item)
-        super().insert(index, item)
+        list.insert(self, index, item)
 
     def append(self, item: Ballot) -> None:
         self.validate_ballot(item)
-        super().append(item)
+        list.append(self, item)
 
     def extend(self, other) -> None:
-        if isinstance(other, type(self)):
-            super().extend(other)
-        else:
-            super().extend(item for item in other if self.validate_ballot(item) is None)
+        for item in other:
+            self.validate_ballot(item)
+        list.extend(self, other)
 
 
 class MultiProfile(Counter, AbstractProfile):
@@ -323,7 +319,7 @@ class MultiProfile(Counter, AbstractProfile):
 
     def __setitem__(self, key, value):
         self.validate_ballot(key)
-        super().__setitem__(key, value)
+        Counter.__setitem__(self, key, value)
 
     def append(self, ballot: AbstractBallot):
         """

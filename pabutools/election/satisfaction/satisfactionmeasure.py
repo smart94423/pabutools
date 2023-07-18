@@ -102,7 +102,8 @@ class GroupSatisfactionMeasure(ABC, Iterable):
     """
 
     def __init__(self):
-        super().__init__()
+        ABC.__init__(self)
+        Iterable.__init__(self)
 
     @abstractmethod
     def multiplicity(self, sat: SatisfactionMeasure) -> int:

@@ -1,5 +1,6 @@
 from abc import ABC
 from collections.abc import Iterable
+from copy import deepcopy
 from numbers import Number
 
 from pabutools.election.profile.profile import AbstractProfile
@@ -188,7 +189,8 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = CumulativeBallot
-        super(CumulativeProfile, self).__init__(
+        CardinalProfile.__init__(
+            self,
             init=init,
             instance=instance,
             ballot_validation=ballot_validation,
@@ -342,22 +344,36 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         legal_min_total_score: Number | None = None,
         legal_max_total_score: Number | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
-            legal_min_length = init.legal_min_length
-        if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
-            legal_max_length = init.legal_max_length
-        if legal_min_score is None and isinstance(init, AbstractCardinalProfile):
-            legal_min_score = init.legal_min_score
-        if legal_max_score is None and isinstance(init, AbstractCardinalProfile):
-            legal_max_score = init.legal_max_score
-        if legal_min_total_score is None and isinstance(
-            init, AbstractCumulativeProfile
-        ):
-            legal_min_total_score = init.legal_min_total_score
-        if legal_max_total_score is None and isinstance(
-            init, AbstractCumulativeProfile
-        ):
-            legal_max_total_score = init.legal_max_total_score
+        if legal_min_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_length = init.legal_min_length
+            elif profile:
+                legal_min_length = profile.legal_min_length
+        if legal_max_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_length = init.legal_max_length
+            elif profile:
+                legal_max_length = profile.legal_max_length
+        if legal_min_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_score = init.legal_min_score
+            elif profile:
+                legal_min_score = profile.legal_min_score
+        if legal_max_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_score = init.legal_max_score
+            elif profile:
+                legal_max_score = profile.legal_max_score
+        if legal_min_total_score is None:
+            if isinstance(init, AbstractCumulativeProfile):
+                legal_min_total_score = init.legal_min_total_score
+            elif profile:
+                legal_min_total_score = profile.legal_min_total_score
+        if legal_max_total_score is None:
+            if isinstance(init, AbstractCumulativeProfile):
+                legal_max_total_score = init.legal_max_total_score
+            elif profile:
+                legal_max_total_score = profile.legal_max_total_score
         AbstractCumulativeProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -372,7 +388,13 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenCumulativeBallot
-        super(CumulativeMultiProfile, self).__init__(
+        if instance is None:
+            if isinstance(init, AbstractCardinalProfile):
+                instance = init.instance
+            elif profile:
+                instance = profile.instance
+        CardinalMultiProfile.__init__(
+            self,
             init=init,
             instance=instance,
             ballot_validation=ballot_validation,
@@ -413,7 +435,27 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         for n in names:
             wrap_method_closure(n)
 
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
 
 CumulativeMultiProfile._wrap_methods(
-    ["copy", "__ior__", "__or__", "__ror__", "__reversed__"]
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
 )

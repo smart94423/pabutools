@@ -137,6 +137,9 @@ class TestProfile(TestCase):
         m = ApprovalMultiProfile(multiprofile)
         check_members_equality(multiprofile, m)
 
+        # Test empty constructor
+        ApprovalMultiProfile()
+
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         instance = Instance(projects, budget_limit=1)

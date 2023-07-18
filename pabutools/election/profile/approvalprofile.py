@@ -3,6 +3,7 @@ Approval profiles, i.e., collections of approval ballots.
 """
 from abc import ABC
 from collections.abc import Iterable, Generator
+from copy import deepcopy
 from itertools import product
 from numbers import Number
 
@@ -396,14 +397,26 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
         legal_min_cost: Number | None = None,
         legal_max_cost: Number | None = None,
     ):
-        if legal_min_length is None and isinstance(init, AbstractApprovalProfile):
-            legal_min_length = init.legal_min_length
-        if legal_max_length is None and isinstance(init, AbstractApprovalProfile):
-            legal_max_length = init.legal_max_length
-        if legal_min_cost is None and isinstance(init, AbstractApprovalProfile):
-            legal_min_cost = init.legal_min_cost
-        if legal_max_cost is None and isinstance(init, AbstractApprovalProfile):
-            legal_max_cost = init.legal_max_cost
+        if legal_min_length is None:
+            if isinstance(init, AbstractApprovalProfile):
+                legal_min_length = init.legal_min_length
+            elif profile:
+                legal_min_length = profile.legal_min_length
+        if legal_max_length is None:
+            if isinstance(init, AbstractApprovalProfile):
+                legal_max_length = init.legal_max_length
+            elif profile:
+                legal_max_length = profile.legal_max_length
+        if legal_min_cost is None:
+            if isinstance(init, AbstractApprovalProfile):
+                legal_min_cost = init.legal_min_cost
+            elif profile:
+                legal_min_cost = profile.legal_min_cost
+        if legal_max_cost is None:
+            if isinstance(init, AbstractApprovalProfile):
+                legal_max_cost = init.legal_max_cost
+            elif profile:
+                legal_max_cost = profile.legal_max_cost
         AbstractApprovalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -416,7 +429,13 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenApprovalBallot
-        super(ApprovalMultiProfile, self).__init__(
+        if instance is None:
+            if isinstance(init, AbstractApprovalProfile):
+                instance = init.instance
+            elif profile:
+                instance = profile.instance
+        MultiProfile.__init__(
+            self,
             init=init,
             instance=instance,
             ballot_validation=ballot_validation,
@@ -448,6 +467,15 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
 
         for n in names:
             wrap_method_closure(n)
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
+
 
 
 ApprovalMultiProfile._wrap_methods(

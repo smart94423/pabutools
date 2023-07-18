@@ -68,7 +68,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
     def __new__(
         cls, approved: Iterable[Project] = (), name: str = "", meta: dict | None = None
     ):
-        return super(FrozenApprovalBallot, cls).__new__(cls, tuple(approved))
+        return tuple.__new__(cls, tuple(approved))
 
     def __hash__(self):
         return tuple.__hash__(self)

@@ -1,5 +1,6 @@
 from abc import ABC
 from collections.abc import Iterable
+from copy import deepcopy
 from numbers import Number
 
 from pabutools.election.ballot import (
@@ -144,6 +145,7 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
+
         if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
             legal_min_length = init.legal_min_length
         if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
@@ -164,7 +166,8 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = CardinalBallot
-        super(CardinalProfile, self).__init__(
+        Profile.__init__(
+            self,
             init=init,
             instance=instance,
             ballot_validation=ballot_validation,
@@ -319,14 +322,26 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
-        if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
-            legal_min_length = init.legal_min_length
-        if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
-            legal_max_length = init.legal_max_length
-        if legal_min_score is None and isinstance(init, AbstractCardinalProfile):
-            legal_min_score = init.legal_min_score
-        if legal_max_score is None and isinstance(init, AbstractCardinalProfile):
-            legal_max_score = init.legal_max_score
+        if legal_min_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_length = init.legal_min_length
+            elif profile:
+                legal_min_length = profile.legal_min_length
+        if legal_max_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_length = init.legal_max_length
+            elif profile:
+                legal_max_length = profile.legal_max_length
+        if legal_min_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_score = init.legal_min_score
+            elif profile:
+                legal_min_score = profile.legal_min_score
+        if legal_max_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_score = init.legal_max_score
+            elif profile:
+                legal_max_score = profile.legal_max_score
         AbstractCardinalProfile.__init__(
             self,
             legal_min_length=legal_min_length,
@@ -339,7 +354,13 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenCardinalBallot
-        super(CardinalMultiProfile, self).__init__(
+        if instance is None:
+            if isinstance(init, AbstractCardinalProfile):
+                instance = init.instance
+            elif profile:
+                instance = profile.instance
+        MultiProfile.__init__(
+            self,
             init=init,
             instance=instance,
             ballot_validation=ballot_validation,
@@ -372,7 +393,28 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         for n in names:
             wrap_method_closure(n)
 
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
+
 
 CardinalMultiProfile._wrap_methods(
-    ["copy", "__ior__", "__or__", "__ror__", "__reversed__"]
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
 )

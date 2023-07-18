@@ -72,7 +72,7 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
                     iterable
                 )
             )
-        return super(FrozenOrdinalBallot, cls).__new__(cls, tuple(iterable))
+        return tuple.__new__(cls, tuple(iterable))
 
     def __hash__(self):
         return tuple.__hash__(self)
