@@ -22,7 +22,7 @@ from pabutools.election import (
 )
 
 
-def check_members_equality(obj1, obj2):
+def check_members_equality(obj1, obj2, verbose=False):
     assert type(obj1) == type(obj2)
     obj1_attrs = [
         a
@@ -36,7 +36,8 @@ def check_members_equality(obj1, obj2):
     ]
     assert obj1_attrs == obj2_attrs
     for attr in obj1_attrs:
-        # print("{} : {}    {}".format(attr, obj1.__getattribute__(attr), obj2.__getattribute__(attr)))
+        if verbose:
+            print("{} : {}    {}".format(attr, obj1.__getattribute__(attr), obj2.__getattribute__(attr)))
         assert obj1.__getattribute__(attr) == obj2.__getattribute__(attr)
 
 

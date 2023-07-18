@@ -2,6 +2,7 @@
 Approval profiles, i.e., collections of approval ballots.
 """
 from abc import ABC
+from collections import Counter
 from collections.abc import Iterable, Generator
 from copy import deepcopy
 from itertools import product
@@ -467,15 +468,6 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
 
         for n in names:
             wrap_method_closure(n)
-
-    def __deepcopy__(self, memo):
-        cls = self.__class__
-        result = cls.__new__(cls)
-        memo[id(self)] = result
-        for k, v in self.__dict__.items():
-            setattr(result, k, deepcopy(v, memo))
-        return result
-
 
 
 ApprovalMultiProfile._wrap_methods(
