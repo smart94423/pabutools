@@ -154,7 +154,7 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
             res.append(key)
         return res
 
-    def index(self, project) -> int:
+    def index(self, project: Project) -> int:
         """
         Returns the index of the project given as argument by looping through all the projects until finding it.
         If the required project is not found, a `ValueError` is raised.
@@ -175,6 +175,28 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
                 return i
             i += 1
         raise ValueError("{} is not in the ballot".format(project))
+
+    def at_index(self, index: int) -> Project:
+        """
+        Returns the project at index `index`. A `ValueError` is raised if the index is invalid.
+
+        Parameters
+        ----------
+            index : int
+                The index.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.instance.Project`
+                The project at position `index`.
+        """
+        if index > len(self):
+            raise ValueError("Index {} invalid for ordinal ballot of length {}.".format(index, len(self)))
+        i = 0
+        for e in self:
+            if i == index:
+                return e
+            i += 1
 
     def frozen(self) -> FrozenOrdinalBallot:
         """

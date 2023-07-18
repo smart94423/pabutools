@@ -226,7 +226,19 @@ class TestBallot(TestCase):
         b1.__repr__()
         b1.__str__()
         with self.assertRaises(ValueError):
-            b2.index(123)
+            b2.index(Project())
+        with self.assertRaises(ValueError):
+            b2.at_index(123)
+
+        # Test addition of ordinal ballots
+        b3 = b1 + b2
+        assert len(b3) == len(b1) == len(b2)
+        b3 += OrdinalBallot([projects[5], projects[9]])
+        assert len(b3) == 5
+        assert b3.at_index(3) == projects[5]
+        assert b3.at_index(4) == projects[9]
+        with self.assertRaises(TypeError):
+            b3 += 123
 
         # Test reversing order
         b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
@@ -242,17 +254,15 @@ class TestBallot(TestCase):
         assert o <= o
         assert o >= o
         assert o != o1
-        assert o1 < o
+        assert o1 < o < o2
+        assert o2 > o > o1
         assert o1 < o2
-        assert o > o1
         assert o2 > o1
-        assert o1 <= o
+        assert o1 <= o <= o2
+        assert o2 >= o >= o1
         assert o1 <= o2
-        assert o >= o1
         assert o2 >= o1
         assert o2 != o
-        assert o2 > o
-        assert o2 >= o
         with self.assertRaises(TypeError):
             o += 1
         with self.assertRaises(TypeError):
