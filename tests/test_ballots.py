@@ -10,7 +10,7 @@ from pabutools.election import (
     FrozenCardinalBallot,
     FrozenCumulativeBallot,
     FrozenOrdinalBallot,
-    get_random_approval_ballot,
+    get_random_approval_ballot, AbstractBallot, FrozenBallot, Ballot,
 )
 from tests.test_class_inheritence import check_members_equality
 
@@ -294,3 +294,25 @@ class TestBallot(TestCase):
 
         # Test frozen ballots methods
         hash(frozen_ballot1)
+
+    def test_ballot(self):
+        """
+        General tests for unspecified ballots.
+        """
+        # Default of the constructors
+        class MyAbstractBallot(AbstractBallot, list):
+            pass
+        b = MyAbstractBallot()
+        assert b.meta == dict()
+
+        class MyFrozenBallot(FrozenBallot, list):
+            pass
+        b = MyFrozenBallot()
+        assert b.meta == dict()
+
+        class MyBallot(Ballot, list):
+            def frozen(self) -> FrozenBallot:
+                pass
+        b = MyBallot()
+        assert b.meta == dict()
+

@@ -228,7 +228,7 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
         for e1, e2 in zip(self, other):
             if e1 < e2:
                 return True
-            elif e2 > e1:
+            elif e2 < e1:
                 return False
         return len(self) < len(other)
 
@@ -238,7 +238,7 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
         for e1, e2 in zip(self, other):
             if e1 < e2:
                 return True
-            elif e2 > e1:
+            elif e2 < e1:
                 return False
         return len(self) <= len(other)
 
