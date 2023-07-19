@@ -49,7 +49,7 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
     def __init__(
         self,
         instance: Instance | None = None,
-        ballot_validation: bool = True,
+        ballot_validation: bool = None,
         ballot_type: type[AbstractBallot] = None,
     ) -> None:
         ABC.__init__(self)
@@ -178,10 +178,15 @@ class Profile(list, AbstractProfile):
             else:
                 ballot_validation = True
         if ballot_type is None:
-            if isinstance(instance, AbstractProfile):
-                ballot_type = instance.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = Ballot
+        if instance is None:
+            if isinstance(init, AbstractProfile):
+                instance = init.instance
+            else:
+                instance = Instance()
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
         if ballot_validation:
             for item in init:
@@ -303,10 +308,15 @@ class MultiProfile(Counter, AbstractProfile):
             else:
                 ballot_validation = True
         if ballot_type is None:
-            if isinstance(instance, AbstractProfile):
-                ballot_type = instance.ballot_type
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
             else:
                 ballot_type = FrozenBallot
+        if instance is None:
+            if isinstance(init, AbstractProfile):
+                instance = init.instance
+            else:
+                instance = Instance()
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
         if ballot_validation:
             for item in init:

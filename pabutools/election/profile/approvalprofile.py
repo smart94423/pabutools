@@ -395,7 +395,7 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
         self,
         init: Iterable[FrozenApprovalBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = True,
+        ballot_validation: bool = None,
         ballot_type: type[FrozenBallot] = None,
         profile: ApprovalProfile = None,
         legal_min_length: int | None = None,
