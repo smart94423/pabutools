@@ -20,6 +20,10 @@ from pabutools.election import (
     ApprovalMultiProfile,
     FrozenCardinalBallot,
     CardinalMultiProfile,
+    FrozenCumulativeBallot,
+    CumulativeMultiProfile,
+    FrozenOrdinalBallot,
+    OrdinalMultiProfile,
 )
 from tests.test_class_inheritence import check_members_equality
 
@@ -129,9 +133,13 @@ class TestProfile(TestCase):
             [ApprovalBallot(projects[:2])] * 4 + [ApprovalBallot(projects[:5])] * 10
         )
         assert len(profile) == 14
-        multiprofile = ApprovalMultiProfile(profile=profile)
-        assert len(multiprofile) == 2
-        assert multiprofile.total() == 14
+        multiprofile1 = ApprovalMultiProfile(profile=profile)
+        assert len(multiprofile1) == 2
+        assert multiprofile1.total() == 14
+        multiprofile2 = profile.as_multiprofile()
+        check_members_equality(multiprofile1, multiprofile2)
+        assert len(multiprofile2) == 2
+        assert multiprofile2.total() == 14
 
         # Test constructor from multiprofile
         m = ApprovalMultiProfile(multiprofile)
@@ -213,7 +221,11 @@ class TestProfile(TestCase):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         b1 = FrozenCardinalBallot({projects[1]: 8}, name="name", meta={"metakey": 0})
         b2 = FrozenCardinalBallot({projects[0]: 10}, name="name", meta={"metakey": 0})
-        b3 = FrozenCardinalBallot({projects[i]: i for i in range(len(projects))}, name="name", meta={"metakey": 0})
+        b3 = FrozenCardinalBallot(
+            {projects[i]: i for i in range(len(projects))},
+            name="name",
+            meta={"metakey": 0},
+        )
         b4 = FrozenCardinalBallot(
             {projects[3]: 1, projects[1]: 4}, name="name", meta={"metakey": 0}
         )
@@ -228,12 +240,17 @@ class TestProfile(TestCase):
 
         # Test constructor from profile
         profile = CardinalProfile(
-            [CardinalBallot({projects[2]: 5})] * 4 + [CardinalBallot({projects[5]: 8})] * 10
+            [CardinalBallot({projects[2]: 5})] * 4
+            + [CardinalBallot({projects[5]: 8})] * 10
         )
         assert len(profile) == 14
-        multiprofile = CardinalMultiProfile(profile=profile)
-        assert len(multiprofile) == 2
-        assert multiprofile.total() == 14
+        multiprofile1 = CardinalMultiProfile(profile=profile)
+        assert len(multiprofile1) == 2
+        assert multiprofile1.total() == 14
+        multiprofile2 = profile.as_multiprofile()
+        check_members_equality(multiprofile1, multiprofile2)
+        assert len(multiprofile2) == 2
+        assert multiprofile2.total() == 14
 
         # Test constructor from multiprofile
         m = CardinalMultiProfile(multiprofile)
@@ -281,39 +298,77 @@ class TestProfile(TestCase):
                 projects[5]: -457851,
             }
         )
-        profile = CumulativeProfile((b1, b2, b3), instance=instance)
+
+        # General test
+        profile = CumulativeProfile(
+            (b1, b2, b3),
+            instance=instance,
+            legal_min_score=2,
+            legal_max_score=9,
+            legal_min_length=3,
+            legal_max_length=10,
+            legal_min_total_score=0,
+            legal_max_total_score=24,
+        )
         assert len(profile) == 3
         assert profile[0] == b1
         assert profile[1] == b2
         assert profile[2] == b3
 
-        profile.legal_min_length = 6
-        profile.legal_max_length = 7
-        profile.legal_min_score = 6
-        profile.legal_max_score = 10
-        profile.legal_min_total_score = 1
-        profile.legal_max_total_score = 1000
-        profile = profile.__add__(CumulativeProfile([b4]))
-        assert profile[3] == b4
-        assert profile.legal_min_length == 6
-        assert profile.legal_max_length == 7
-        assert profile.legal_min_score == 6
-        assert profile.legal_max_score == 10
-        assert profile.legal_min_total_score == 1
-        assert profile.legal_max_total_score == 1000
-        profile *= 4
-        assert len(profile) == 16
-        assert profile[0] == profile[4] == profile[8] == profile[12]
-        assert profile[1] == profile[5] == profile[9] == profile[13]
-        assert profile[2] == profile[6] == profile[10] == profile[14]
-        assert profile[3] == profile[7] == profile[11] == profile[15]
-        assert profile[3] == b4
-        assert profile.legal_min_length == 6
-        assert profile.legal_max_length == 7
-        assert profile.legal_min_score == 6
-        assert profile.legal_max_score == 10
-        assert profile.legal_min_total_score == 1
-        assert profile.legal_max_total_score == 1000
+        # Test constructor
+        profile2 = CumulativeProfile(profile)
+        check_members_equality(profile, profile2)
+
+        # Test ballot validation
+        app_ballot = ApprovalBallot([projects[0], projects[2]])
+        with self.assertRaises(TypeError):
+            profile.append(app_ballot)
+        with self.assertRaises(TypeError):
+            CumulativeProfile([app_ballot])
+        profile.ballot_validation = False
+        profile.append(app_ballot)
+
+    def test_cum_multiprofile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        b1 = FrozenCumulativeBallot({projects[1]: 8}, name="name", meta={"metakey": 0})
+        b2 = FrozenCumulativeBallot({projects[0]: 10}, name="name", meta={"metakey": 0})
+        b3 = FrozenCumulativeBallot(
+            {projects[i]: i for i in range(len(projects))},
+            name="name",
+            meta={"metakey": 0},
+        )
+        b4 = FrozenCumulativeBallot(
+            {projects[3]: 1, projects[1]: 4}, name="name", meta={"metakey": 0}
+        )
+
+        # Test that multiprofile behave as expected
+        multiprofile = CumulativeMultiProfile((b1, b2, b3, b4))
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 4
+        multiprofile.append(b1)
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 5
+
+        # Test constructor from profile
+        profile = CumulativeProfile(
+            [CumulativeBallot({projects[2]: 25})] * 4
+            + [CumulativeBallot({projects[5]: 8})] * 10
+        )
+        assert len(profile) == 14
+        multiprofile1 = CumulativeMultiProfile(profile=profile)
+        assert len(multiprofile1) == 2
+        assert multiprofile1.total() == 14
+        multiprofile2 = profile.as_multiprofile()
+        check_members_equality(multiprofile1, multiprofile2)
+        assert len(multiprofile2) == 2
+        assert multiprofile2.total() == 14
+
+        # Test constructor from multiprofile
+        m = CumulativeMultiProfile(multiprofile)
+        check_members_equality(multiprofile, m)
+
+        # Test empty constructor
+        CumulativeMultiProfile()
 
     def test_ordinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -321,11 +376,58 @@ class TestProfile(TestCase):
         b1 = OrdinalBallot([projects[0], projects[1], projects[2]])
         b2 = OrdinalBallot([projects[4], projects[5], projects[3]])
         b3 = OrdinalBallot([projects[2], projects[3], projects[7]])
-        profile = OrdinalProfile((b1, b2, b3), instance=instance)
+
+        # General test
+        profile = OrdinalProfile((b1, b2, b3), instance=instance, legal_min_length=1, legal_max_length=423)
         assert len(profile) == 3
-        profile = profile.__add__(OrdinalProfile([b1, b2]))
-        assert profile.instance == instance
-        assert len(profile) == 5
-        profile *= 5
-        assert profile.instance == instance
-        assert len(profile) == 25
+
+        # Test constructor
+        profile2 = OrdinalProfile(profile)
+        check_members_equality(profile, profile2)
+
+        # Test ballot validation
+        app_ballot = ApprovalBallot([projects[0], projects[2]])
+        with self.assertRaises(TypeError):
+            profile.append(app_ballot)
+        with self.assertRaises(TypeError):
+            OrdinalProfile([app_ballot])
+        profile.ballot_validation = False
+        profile.append(app_ballot)
+
+    def test_ord_multiprofile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        b1 = FrozenOrdinalBallot(projects[1:8], name="name", meta={"metakey": 0})
+        b2 = FrozenOrdinalBallot(projects[:-1], name="name", meta={"metakey": 0})
+        b3 = FrozenOrdinalBallot(
+            {projects[1], projects[4]}, name="name", meta={"metakey": 0}
+        )
+        b4 = FrozenOrdinalBallot(tuple(projects), name="name", meta={"metakey": 0})
+
+        # Test that multiprofile behave as expected
+        multiprofile = OrdinalMultiProfile((b1, b2, b3, b4))
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 4
+        multiprofile.append(b1)
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 5
+
+        # Test constructor from profile
+        profile = OrdinalProfile(
+            [OrdinalBallot(set(projects))] * 4
+            + [OrdinalBallot([projects[5], projects[0]])] * 10
+        )
+        assert len(profile) == 14
+        multiprofile1 = OrdinalMultiProfile(profile=profile)
+        assert len(multiprofile1) == 2
+        assert multiprofile1.total() == 14
+        multiprofile2 = profile.as_multiprofile()
+        check_members_equality(multiprofile1, multiprofile2)
+        assert len(multiprofile2) == 2
+        assert multiprofile2.total() == 14
+
+        # Test constructor from multiprofile
+        m = OrdinalMultiProfile(multiprofile)
+        check_members_equality(multiprofile, m)
+
+        # Test empty constructor
+        OrdinalMultiProfile()
