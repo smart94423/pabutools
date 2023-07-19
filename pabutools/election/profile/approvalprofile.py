@@ -186,7 +186,7 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
         self,
         init: Iterable[ApprovalBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = True,
+        ballot_validation: bool = None,
         ballot_type: type[AbstractBallot] | None = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
@@ -208,6 +208,11 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
             legal_min_cost=legal_min_cost,
             legal_max_cost=legal_max_cost,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type
@@ -425,6 +430,11 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
             legal_min_cost=legal_min_cost,
             legal_max_cost=legal_max_cost,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type

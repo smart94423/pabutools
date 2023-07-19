@@ -184,6 +184,11 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
             legal_min_total_score=legal_min_total_score,
             legal_max_total_score=legal_max_total_score,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type
@@ -385,6 +390,11 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
             legal_min_total_score=legal_min_total_score,
             legal_max_total_score=legal_max_total_score,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type

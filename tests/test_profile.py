@@ -35,6 +35,7 @@ class TestProfile(TestCase):
         b2 = ApprovalBallot()
         b3 = ApprovalBallot()
 
+        # Test general operations on profiles
         profile = profile.__add__(Profile([b1, b2]))
         assert len(profile) == 2
         profile *= 3
@@ -55,6 +56,11 @@ class TestProfile(TestCase):
         assert len(profile) == 12
         assert profile[-1] == b2
         assert profile[-2] == b2
+
+        # Test constructor from another profile
+        profile1 = Profile(instance=Instance(), ballot_type=str, ballot_validation=False)
+        profile2 = Profile(profile1)
+        check_members_equality(profile1, profile2)
 
     def test_approval_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

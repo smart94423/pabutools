@@ -106,6 +106,11 @@ class OrdinalProfile(Profile, AbstractOrdinalProfile):
             legal_min_length=legal_min_length,
             legal_max_length=legal_max_length,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type
@@ -248,6 +253,11 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
             legal_min_length=legal_min_length,
             legal_max_length=legal_max_length,
         )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(init, AbstractProfile):
                 ballot_type = init.ballot_type

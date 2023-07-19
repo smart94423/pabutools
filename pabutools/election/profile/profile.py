@@ -169,19 +169,23 @@ class Profile(list, AbstractProfile):
         self,
         init: Iterable[Ballot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = True,
+        ballot_validation: bool = None,
         ballot_type: type[Ballot] = None,
     ) -> None:
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(instance, AbstractProfile):
                 ballot_type = instance.ballot_type
             else:
                 ballot_type = Ballot
-        if ballot_validation is None and isinstance(instance, AbstractProfile):
-            ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
-        for item in init:
-            self.validate_ballot(item)
+        if ballot_validation:
+            for item in init:
+                self.validate_ballot(item)
         list.__init__(self, init)
 
     def multiplicity(self, ballot: Ballot) -> int:
@@ -210,7 +214,6 @@ class Profile(list, AbstractProfile):
             :py:class:`~pabutools.election.profile.profile.MultiProfile`
                 The multiprofile corresponding to the profile.
         """
-        ...
 
     def as_sat_profile(self, sat_class: type[SatisfactionMeasure]):
         return SatisfactionProfile(
@@ -291,19 +294,23 @@ class MultiProfile(Counter, AbstractProfile):
         self,
         init: Iterable[FrozenBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = True,
+        ballot_validation: bool = None,
         ballot_type: type[FrozenBallot] = None,
     ) -> None:
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
         if ballot_type is None:
             if isinstance(instance, AbstractProfile):
                 ballot_type = instance.ballot_type
             else:
                 ballot_type = FrozenBallot
-        if ballot_validation is None and isinstance(instance, AbstractProfile):
-            ballot_validation = instance.ballot_validation
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
-        for item in init:
-            self.validate_ballot(item)
+        if ballot_validation:
+            for item in init:
+                self.validate_ballot(item)
         Counter.__init__(self, init)
 
     def multiplicity(self, ballot: FrozenBallot) -> int:
