@@ -339,7 +339,8 @@ def relative_cost_sat_func(
     if precomputed_values["max_budget_allocation_cost"] == 0:
         return 0
     return frac(
-        int(project in ballot) * project.cost, precomputed_values["max_budget_allocation_cost"]
+        int(project in ballot) * project.cost,
+        precomputed_values["max_budget_allocation_cost"],
     )
 
 

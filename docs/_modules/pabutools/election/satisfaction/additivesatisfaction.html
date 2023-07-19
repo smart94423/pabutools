@@ -592,7 +592,8 @@ document.write(`
     <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="n">frac</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">]</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
+        <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
 

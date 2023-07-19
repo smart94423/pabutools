@@ -56,7 +56,10 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
         list.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
         if instance is None:
-            instance = Instance()
+            if isinstance(init, SatisfactionProfile):
+                instance = init.instance
+            else:
+                instance = Instance()
         self.instance = instance
         if profile is None:
             if sat_class is not None:
@@ -183,6 +186,11 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             init = {}
         Counter.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
+        if instance is None:
+            if isinstance(init, SatisfactionProfile):
+                instance = init.instance
+            else:
+                instance = Instance()
         self.instance = instance
         if profile is None and multiprofile is None:
             if sat_class is not None:

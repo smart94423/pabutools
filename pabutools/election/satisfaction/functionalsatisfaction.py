@@ -262,7 +262,9 @@ def cost_log_sat_func(
             The log root satisfaction.
 
     """
-    return frac(np.log(float(1 + total_cost(tuple(p for p in projects if p in ballot)))))
+    return frac(
+        np.log(float(1 + total_cost(tuple(p for p in projects if p in ballot))))
+    )
 
 
 class Cost_Log_Sat(FunctionalSatisfaction):

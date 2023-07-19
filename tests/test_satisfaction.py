@@ -18,29 +18,91 @@ from pabutools.election.satisfaction.additivesatisfaction import (
     Relative_Cost_Approx_Normaliser_Sat,
 )
 from pabutools.fractions import frac
+from tests.test_class_inheritence import check_members_equality
 
 
 class TestSatisfaction(TestCase):
-
     def test_satisfaction_profile(self):
         instance = get_random_instance(10, 1, 10)
         profile = get_random_approval_profile(instance, 30)
-        try:
-            sat_profile = SatisfactionProfile(sat_class=CC_Sat)
-        except TypeError:
-            pass
-        try:
-            sat_profile = SatisfactionProfile(profile=profile)
-        except TypeError:
-            pass
+
+        # Test error when either a profile or a satisfaction measure is not given
+        with self.assertRaises(TypeError):
+            SatisfactionProfile(sat_class=CC_Sat)
+        with self.assertRaises(TypeError):
+            SatisfactionProfile(profile=profile)
+
+        # Test that the sat profile is correctly initialised
         sat_profile = SatisfactionProfile(sat_class=CC_Sat, profile=profile)
         assert len(sat_profile) == len(profile)
-        sat_profile2 = SatisfactionProfile(sat_class=CC_Sat, profile=profile)
-        assert len(sat_profile2) == len(sat_profile2)
+
+        # Test operations on satisfaction profiles
+        sat_profile2 = deepcopy(sat_profile)
+        assert len(sat_profile) == len(sat_profile2)
         sat_profile3 = sat_profile + sat_profile2
         assert len(sat_profile3) == 2 * len(profile)
         sat_profile3 *= 4
         assert len(sat_profile3) == 8 * len(profile)
+
+        # Test constructor from another sat profile
+        new_sat_profile = SatisfactionProfile(sat_profile)
+        check_members_equality(sat_profile, new_sat_profile)
+
+        # Test empty constructor
+        SatisfactionProfile()
+
+    def test_satisfaction_multiprofile(self):
+        instance = get_random_instance(10, 1, 10)
+        profile = get_random_approval_profile(instance, 30)
+        multiprofile = profile.as_multiprofile()
+
+        # Test error when either a profile or a satisfaction measure is not given
+        with self.assertRaises(TypeError):
+            SatisfactionMultiProfile(sat_class=CC_Sat)
+        with self.assertRaises(TypeError):
+            SatisfactionMultiProfile(profile=profile)
+        with self.assertRaises(TypeError):
+            SatisfactionMultiProfile(multiprofile=multiprofile)
+
+        # Test that the sat profile is correctly initialised
+        sat_multiprofile1 = SatisfactionMultiProfile(sat_class=CC_Sat, profile=profile)
+        assert len(sat_multiprofile1) == len(multiprofile)
+        sat_multiprofile2 = SatisfactionMultiProfile(
+            sat_class=CC_Sat, multiprofile=multiprofile
+        )
+        assert len(sat_multiprofile2) == len(multiprofile)
+
+        # Test constructor from another sat multiprofile
+        new_sat_multiprofile = SatisfactionMultiProfile(sat_multiprofile1)
+        check_members_equality(sat_multiprofile1, new_sat_multiprofile)
+
+        # Test empty constructor
+        SatisfactionMultiProfile()
+
+        # Test equivalence with simple profile
+        for sat_class in [
+            Cost_Sat,
+            Relative_Cost_Sat,
+            Relative_Cost_Approx_Normaliser_Sat,
+            Cardinality_Sat,
+            Relative_Cardinality_Sat,
+            Effort_Sat,
+            Cost_Log_Sat,
+            Cost_Sqrt_Sat,
+            CC_Sat,
+        ]:
+            for _ in range(10):
+                instance = get_random_instance(100, 0, 100)
+                profile = get_random_approval_profile(instance, 100)
+                sat_profile = SatisfactionProfile(
+                    instance=instance, profile=profile, sat_class=sat_class
+                )
+                total_sat1 = sat_profile.total_satisfaction(list(instance)[:20])
+                sat_multiprofile = SatisfactionMultiProfile(
+                    instance=instance, profile=profile, sat_class=sat_class
+                )
+                total_sat2 = sat_multiprofile.total_satisfaction(list(instance)[:20])
+                assert total_sat1 == total_sat2
 
     def test_cc_sat(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
@@ -140,13 +202,21 @@ class TestSatisfaction(TestCase):
         assert sat_profile[2].sat([]) == 0
 
     def test_rel_cost_sat(self):
-        projects = [Project("p1", 4), Project("p2", 2), Project("p3", 3), Project("p4", 1), Project("p5", 20)]
+        projects = [
+            Project("p1", 4),
+            Project("p2", 2),
+            Project("p3", 3),
+            Project("p4", 1),
+            Project("p5", 20),
+        ]
         instance = Instance(projects, budget_limit=6)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1]))
         b3 = ApprovalBallot((projects[4],))
         profile = ApprovalProfile([b1, b2, b3], instance=instance)
-        sat_profile = SatisfactionProfile(profile=profile, instance=instance, sat_class=Relative_Cost_Sat)
+        sat_profile = SatisfactionProfile(
+            profile=profile, instance=instance, sat_class=Relative_Cost_Sat
+        )
         assert sat_profile[0].precomputed_values["max_budget_allocation_cost"] == 6
         assert sat_profile[0].sat([projects[0]]) == frac(4, 6)
         assert sat_profile[0].sat(projects[1:]) == 1

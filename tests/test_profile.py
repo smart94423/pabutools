@@ -23,7 +23,10 @@ from pabutools.election import (
     FrozenCumulativeBallot,
     CumulativeMultiProfile,
     FrozenOrdinalBallot,
-    OrdinalMultiProfile, Profile, Ballot, MultiProfile,
+    OrdinalMultiProfile,
+    Profile,
+    Ballot,
+    MultiProfile,
 )
 from tests.test_class_inheritence import check_members_equality
 
@@ -52,13 +55,22 @@ class TestProfile(TestCase):
         assert len(profile) == 10
         assert profile[-1] == b1
         assert profile[-2] == b1
-        profile.extend((b2, b2,))
+        profile.extend(
+            (
+                b2,
+                b2,
+            )
+        )
         assert len(profile) == 12
         assert profile[-1] == b2
         assert profile[-2] == b2
 
         # Test constructor from another profile
-        profile1 = Profile(instance=Instance([Project("qsd", 1)]), ballot_type=str, ballot_validation=False)
+        profile1 = Profile(
+            instance=Instance([Project("qsd", 1)]),
+            ballot_type=str,
+            ballot_validation=False,
+        )
         profile2 = Profile(profile1)
         check_members_equality(profile1, profile2)
 
@@ -72,7 +84,11 @@ class TestProfile(TestCase):
         profile.extend([b2, b3])
 
         # Test constructor from another profile
-        profile1 = MultiProfile(instance=Instance([Project("qsd", 1)]), ballot_type=str, ballot_validation=False)
+        profile1 = MultiProfile(
+            instance=Instance([Project("qsd", 1)]),
+            ballot_type=str,
+            ballot_validation=False,
+        )
         profile2 = MultiProfile(profile1)
         check_members_equality(profile1, profile2)
 
