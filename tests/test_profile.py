@@ -23,38 +23,38 @@ from pabutools.election import (
     FrozenCumulativeBallot,
     CumulativeMultiProfile,
     FrozenOrdinalBallot,
-    OrdinalMultiProfile,
+    OrdinalMultiProfile, Profile, Ballot,
 )
 from tests.test_class_inheritence import check_members_equality
 
 
 class TestProfile(TestCase):
-    # def test_profile(self):
-    #     profile = Profile()
-    #     b1 = Ballot()
-    #     b2 = Ballot()
-    #     b3 = Ballot()
-    #
-    #     profile = profile.__add__(Profile([b1, b2]))
-    #     assert len(profile) == 2
-    #     profile *= 3
-    #     assert len(profile) == 6
-    #     profile.append(b3)
-    #     assert len(profile) == 7
-    #     profile.insert(1, b1)
-    #     assert profile[1] == b1
-    #     assert profile[2] == b2
-    #     assert len(profile) == 8
-    #     profile.__setitem__(0, b3)
-    #     assert profile[0] == b3
-    #     profile.extend(Profile([b1, b1]))
-    #     assert len(profile) == 10
-    #     assert profile[-1] == b1
-    #     assert profile[-2] == b1
-    #     profile.extend((b2, b2,))
-    #     assert len(profile) == 12
-    #     assert profile[-1] == b2
-    #     assert profile[-2] == b2
+    def test_profile(self):
+        profile = Profile()
+        b1 = ApprovalBallot()
+        b2 = ApprovalBallot()
+        b3 = ApprovalBallot()
+
+        profile = profile.__add__(Profile([b1, b2]))
+        assert len(profile) == 2
+        profile *= 3
+        assert len(profile) == 6
+        profile.append(b3)
+        assert len(profile) == 7
+        profile.insert(1, b1)
+        assert profile[1] == b1
+        assert profile[2] == b2
+        assert len(profile) == 8
+        profile.__setitem__(0, b3)
+        assert profile[0] == b3
+        profile.extend(Profile([b1, b1]))
+        assert len(profile) == 10
+        assert profile[-1] == b1
+        assert profile[-2] == b1
+        profile.extend((b2, b2,))
+        assert len(profile) == 12
+        assert profile[-1] == b2
+        assert profile[-2] == b2
 
     def test_approval_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
