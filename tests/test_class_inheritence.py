@@ -18,7 +18,9 @@ from pabutools.election import (
     CumulativeProfile,
     SatisfactionProfile,
     Additive_Borda_Sat,
-    ApprovalMultiProfile, FrozenApprovalBallot, FrozenCumulativeBallot,
+    ApprovalMultiProfile,
+    FrozenApprovalBallot,
+    FrozenCumulativeBallot,
 )
 
 
@@ -37,7 +39,11 @@ def check_members_equality(obj1, obj2, verbose=False):
     assert obj1_attrs == obj2_attrs
     for attr in obj1_attrs:
         if verbose:
-            print("{} : {}    {}".format(attr, obj1.__getattribute__(attr), obj2.__getattribute__(attr)))
+            print(
+                "{} : {}    {}".format(
+                    attr, obj1.__getattribute__(attr), obj2.__getattribute__(attr)
+                )
+            )
         assert obj1.__getattribute__(attr) == obj2.__getattribute__(attr)
 
 
@@ -363,7 +369,9 @@ class TestAnalysis(TestCase):
         projects = [Project(str(i), i) for i in range(20)]
         instance = Instance(projects)
         ballots = [
-            FrozenApprovalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"})
+            FrozenApprovalBallot(
+                projects, name="app" + str(i), meta={"key" + str(i): "v"}
+            )
             for i in range(20)
         ]
         profile = ApprovalMultiProfile(

@@ -112,6 +112,8 @@ class OrdinalProfile(Profile, AbstractOrdinalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = OrdinalBallot
+        if instance is None and isinstance(init, AbstractOrdinalProfile):
+            instance = init.instance
         Profile.__init__(
             self,
             init=init,
@@ -296,6 +298,7 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
         return result
+
 
 OrdinalMultiProfile._wrap_methods(
     [

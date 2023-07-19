@@ -145,7 +145,6 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
-
         if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
             legal_min_length = init.legal_min_length
         if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
@@ -166,6 +165,8 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = CardinalBallot
+        if instance is None and isinstance(init, AbstractCardinalProfile):
+            instance = init.instance
         Profile.__init__(
             self,
             init=init,

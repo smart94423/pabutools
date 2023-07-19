@@ -142,7 +142,10 @@ class TestProfile(TestCase):
 
     def test_cardinal_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
-        instance = Instance(projects, budget_limit=1)
+        instance = Instance(
+            projects,
+            budget_limit=1,
+        )
         b1 = CardinalBallot(
             {
                 projects[1]: 4,
@@ -179,32 +182,65 @@ class TestProfile(TestCase):
                 projects[5]: -457851,
             }
         )
-        profile = CardinalProfile((b1, b2), instance=instance)
+
+        # General test
+        profile = CardinalProfile(
+            (b1, b2),
+            instance=instance,
+            legal_min_score=2,
+            legal_max_score=9,
+            legal_min_length=3,
+            legal_max_length=10,
+        )
         assert len(profile) == 2
         assert profile[0] == b1
         assert profile[1] == b2
 
-        profile.legal_min_length = 1
-        profile.legal_max_length = 5
-        profile.legal_min_score = 3
-        profile.legal_max_score = 100
-        profile = profile.__add__(CardinalProfile([b3, b4]))
-        assert profile[2] == b3
-        assert profile[3] == b4
-        assert profile.legal_min_length == 1
-        assert profile.legal_max_length == 5
-        assert profile.legal_min_score == 3
-        assert profile.legal_max_score == 100
-        profile *= 10
-        assert len(profile) == 40
-        assert profile[0] == profile[4] == profile[8] == profile[12]
-        assert profile[1] == profile[5] == profile[9] == profile[13]
-        assert profile[2] == profile[6] == profile[10] == profile[14]
-        assert profile[3] == profile[7] == profile[11] == profile[15]
-        assert profile.legal_min_length == 1
-        assert profile.legal_max_length == 5
-        assert profile.legal_min_score == 3
-        assert profile.legal_max_score == 100
+        # Test constructor
+        profile2 = CardinalProfile(profile)
+        check_members_equality(profile, profile2)
+
+        # Test ballot validation
+        app_ballot = ApprovalBallot([projects[1], projects[2]])
+        with self.assertRaises(TypeError):
+            profile.append(app_ballot)
+        with self.assertRaises(TypeError):
+            CardinalProfile([app_ballot])
+        profile.ballot_validation = False
+        profile.append(app_ballot)
+
+    def test_card_multiprofile(self):
+        projects = [Project("p" + str(i), cost=2) for i in range(10)]
+        b1 = FrozenCardinalBallot({projects[1]: 8}, name="name", meta={"metakey": 0})
+        b2 = FrozenCardinalBallot({projects[0]: 10}, name="name", meta={"metakey": 0})
+        b3 = FrozenCardinalBallot({projects[i]: i for i in range(len(projects))}, name="name", meta={"metakey": 0})
+        b4 = FrozenCardinalBallot(
+            {projects[3]: 1, projects[1]: 4}, name="name", meta={"metakey": 0}
+        )
+
+        # Test that multiprofile behave as expected
+        multiprofile = CardinalMultiProfile((b1, b2, b3, b4))
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 4
+        multiprofile.append(b1)
+        assert len(multiprofile) == 4
+        assert multiprofile.total() == 5
+
+        # Test constructor from profile
+        profile = CardinalProfile(
+            [CardinalBallot({projects[2]: 5})] * 4 + [CardinalBallot({projects[5]: 8})] * 10
+        )
+        assert len(profile) == 14
+        multiprofile = CardinalMultiProfile(profile=profile)
+        assert len(multiprofile) == 2
+        assert multiprofile.total() == 14
+
+        # Test constructor from multiprofile
+        m = CardinalMultiProfile(multiprofile)
+        check_members_equality(multiprofile, m)
+
+        # Test empty constructor
+        CardinalMultiProfile()
 
     def test_cumulative_profile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

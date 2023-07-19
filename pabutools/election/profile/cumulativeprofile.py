@@ -189,6 +189,8 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
                 ballot_type = init.ballot_type
             else:
                 ballot_type = CumulativeBallot
+        if instance is None and isinstance(init, AbstractCardinalProfile):
+            instance = init.instance
         CardinalProfile.__init__(
             self,
             init=init,
@@ -442,6 +444,7 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
         return result
+
 
 CumulativeMultiProfile._wrap_methods(
     [
