@@ -370,7 +370,7 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        s: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
 <span class="sd">            An iterable of :py:class:`~pabutools.election.instance.Project` that constitutes the initial set of projects</span>
 <span class="sd">            for the instance. In case an :py:class:`~pabutools.election.instance.Instance` object is passed, the</span>
 <span class="sd">            additional attributes are also copied (except if the corresponding keyword arguments have been given).</span>
@@ -431,7 +431,7 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">s</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+        <span class="n">init</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
         <span class="n">budget_limit</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">categories</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">targets</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -441,60 +441,60 @@ document.write(`
         <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">project_meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Instance</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="nb">set</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">budget_limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">budget_limit</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">budget_limit</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">budget_limit</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="n">budget_limit</span>
 
         <span class="k">if</span> <span class="n">categories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">categories</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">categories</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">categories</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">categories</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">categories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">categories</span>
 
         <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">targets</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">targets</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">targets</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">targets</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">targets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
 
         <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">file_path</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">file_path</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">file_path</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
 
         <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">file_name</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">file_name</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">file_name</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
 
         <span class="k">if</span> <span class="n">parsing_errors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">parsing_errors</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">parsing_errors</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">parsing_errors</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">parsing_errors</span>
 
         <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">meta</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">meta</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">meta</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
 
         <span class="k">if</span> <span class="n">project_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
-                <span class="n">project_meta</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">project_meta</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
+                <span class="n">project_meta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">project_meta</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">project_meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_meta</span> <span class="o">=</span> <span class="n">project_meta</span>

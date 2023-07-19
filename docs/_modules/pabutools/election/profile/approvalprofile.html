@@ -255,7 +255,9 @@ document.write(`
 <span class="sd">Approval profiles, i.e., collections of approval ballots.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
@@ -464,6 +466,8 @@ document.write(`
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">ballot_type</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">ApprovalBallot</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">instance</span>
         <span class="n">Profile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
@@ -647,14 +651,26 @@ document.write(`
         <span class="n">legal_min_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_cost</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
-            <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_length</span>
-        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
-            <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_length</span>
-        <span class="k">if</span> <span class="n">legal_min_cost</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
-            <span class="n">legal_min_cost</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_cost</span>
-        <span class="k">if</span> <span class="n">legal_max_cost</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
-            <span class="n">legal_max_cost</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_cost</span>
+        <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+                <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_length</span>
+            <span class="k">elif</span> <span class="n">profile</span><span class="p">:</span>
+                <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_length</span>
+        <span class="k">if</span> <span class="n">legal_max_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+                <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_length</span>
+            <span class="k">elif</span> <span class="n">profile</span><span class="p">:</span>
+                <span class="n">legal_max_length</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_length</span>
+        <span class="k">if</span> <span class="n">legal_min_cost</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+                <span class="n">legal_min_cost</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_cost</span>
+            <span class="k">elif</span> <span class="n">profile</span><span class="p">:</span>
+                <span class="n">legal_min_cost</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_cost</span>
+        <span class="k">if</span> <span class="n">legal_max_cost</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+                <span class="n">legal_max_cost</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_max_cost</span>
+            <span class="k">elif</span> <span class="n">profile</span><span class="p">:</span>
+                <span class="n">legal_max_cost</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_cost</span>
         <span class="n">AbstractApprovalProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">legal_min_length</span><span class="o">=</span><span class="n">legal_min_length</span><span class="p">,</span>
@@ -667,7 +683,13 @@ document.write(`
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">ballot_type</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ballot_type</span> <span class="o">=</span> <span class="n">FrozenApprovalBallot</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ApprovalMultiProfile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">instance</span>
+            <span class="k">elif</span> <span class="n">profile</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">instance</span>
+        <span class="n">MultiProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
             <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
             <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
             <span class="n">ballot_validation</span><span class="o">=</span><span class="n">ballot_validation</span><span class="p">,</span>

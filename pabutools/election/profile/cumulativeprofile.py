@@ -437,14 +437,6 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         for n in names:
             wrap_method_closure(n)
 
-    def __deepcopy__(self, memo):
-        cls = self.__class__
-        result = cls.__new__(cls)
-        memo[id(self)] = result
-        for k, v in self.__dict__.items():
-            setattr(result, k, deepcopy(v, memo))
-        return result
-
 
 CumulativeMultiProfile._wrap_methods(
     [

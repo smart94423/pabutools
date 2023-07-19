@@ -217,6 +217,12 @@ class TestProfile(TestCase):
         profile.ballot_validation = False
         profile.append(app_ballot)
 
+        # Test completion method
+        profile = CardinalProfile((b1, b2))
+        assert len(set(p for b in profile for p in b)) == 5
+        profile.complete(projects, 0.2)
+        assert len(set(p for b in profile for p in b)) == 10
+
     def test_card_multiprofile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         b1 = FrozenCardinalBallot({projects[1]: 8}, name="name", meta={"metakey": 0})
@@ -328,6 +334,12 @@ class TestProfile(TestCase):
         profile.ballot_validation = False
         profile.append(app_ballot)
 
+        # Test completion method
+        profile = CumulativeProfile((b1, b2))
+        assert len(set(p for b in profile for p in b)) == 5
+        profile.complete(projects, 0.2)
+        assert len(set(p for b in profile for p in b)) == 10
+
     def test_cum_multiprofile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]
         b1 = FrozenCumulativeBallot({projects[1]: 8}, name="name", meta={"metakey": 0})
@@ -378,7 +390,9 @@ class TestProfile(TestCase):
         b3 = OrdinalBallot([projects[2], projects[3], projects[7]])
 
         # General test
-        profile = OrdinalProfile((b1, b2, b3), instance=instance, legal_min_length=1, legal_max_length=423)
+        profile = OrdinalProfile(
+            (b1, b2, b3), instance=instance, legal_min_length=1, legal_max_length=423
+        )
         assert len(profile) == 3
 
         # Test constructor
