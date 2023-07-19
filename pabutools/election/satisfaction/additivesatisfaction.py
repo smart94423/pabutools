@@ -312,7 +312,7 @@ def relative_cost_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> int:
+) -> Number:
     """
     Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost
     of the project divided by the total cost of the most expensive subset of projects appearing in the ballot. It is
@@ -339,7 +339,7 @@ def relative_cost_sat_func(
     if precomputed_values["max_budget_allocation_cost"] == 0:
         return 0
     return frac(
-        int(project in ballot), precomputed_values["max_budget_allocation_cost"]
+        int(project in ballot) * project.cost, precomputed_values["max_budget_allocation_cost"]
     )
 
 
@@ -370,6 +370,7 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         mip_model = Model()
+        mip_model.verbose = 0
         p_vars = {
             p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot
         }
@@ -377,7 +378,7 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         mip_model += xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
         mip_model.optimize()
         max_cost = mip_model.objective.x
-        return {"max_budget_allocation_cost": max_cost}
+        return {"max_budget_allocation_cost": frac(max_cost)}
 
 
 def relative_cost_approx_normaliser_sat_func(

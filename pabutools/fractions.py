@@ -57,7 +57,7 @@ def str_as_frac(s: str) -> Number:
 
     Parameters
     ----------
-        s
+        s: str
             A string representing a number.
 
     Returns

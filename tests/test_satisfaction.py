@@ -21,6 +21,7 @@ from pabutools.fractions import frac
 
 
 class TestSatisfaction(TestCase):
+
     def test_satisfaction_profile(self):
         instance = get_random_instance(10, 1, 10)
         profile = get_random_approval_profile(instance, 30)
@@ -138,18 +139,19 @@ class TestSatisfaction(TestCase):
         assert sat_profile[1].sat(projects[2:]) == 0
         assert sat_profile[2].sat([]) == 0
 
-    # def test_rel_card_sat(self):
-    #     projects = [Project("p1", 4), Project("p2", 2), Project("p3", 3), Project("p4", 1), Project("p5", 20)]
-    #     instance = Instance(projects, budget_limit=6)
-    #     b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
-    #     b2 = ApprovalBallot((projects[0], projects[1]))
-    #     b3 = ApprovalBallot((projects[4],))
-    #     profile = ApprovalProfile([b1, b2, b3], instance=instance)
-    #     sat_profile = SatisfactionProfile(profile=profile, instance=instance, sat_class=Relative_Cost_Unbounded_Sat)
-    #     assert sat_profile[0].sat([projects[0]]) == frac(4, 6)
-    #     assert sat_profile[0].sat(projects[1:]) == 1
-    #     assert sat_profile[1].sat(projects[1:]) == frac(2, 6)
-    #     assert sat_profile[2].sat([]) == 0
+    def test_rel_cost_sat(self):
+        projects = [Project("p1", 4), Project("p2", 2), Project("p3", 3), Project("p4", 1), Project("p5", 20)]
+        instance = Instance(projects, budget_limit=6)
+        b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
+        b2 = ApprovalBallot((projects[0], projects[1]))
+        b3 = ApprovalBallot((projects[4],))
+        profile = ApprovalProfile([b1, b2, b3], instance=instance)
+        sat_profile = SatisfactionProfile(profile=profile, instance=instance, sat_class=Relative_Cost_Sat)
+        assert sat_profile[0].precomputed_values["max_budget_allocation_cost"] == 6
+        assert sat_profile[0].sat([projects[0]]) == frac(4, 6)
+        assert sat_profile[0].sat(projects[1:]) == 1
+        assert sat_profile[1].sat(projects[1:]) == frac(2, 6)
+        assert sat_profile[2].sat([]) == 0
 
     def test_rel_card_unbounded_sat(self):
         projects = [

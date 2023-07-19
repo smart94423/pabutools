@@ -312,13 +312,13 @@ document.write(`
     <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="gini_coefficient"><a class="viewcode-back" href="../../reference/utils.html#pabutools.utils.gini_coefficient">[docs]</a><span class="k">def</span> <span class="nf">gini_coefficient</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="gini_coefficient"><a class="viewcode-back" href="../../reference/utils.html#pabutools.utils.gini_coefficient">[docs]</a><span class="k">def</span> <span class="nf">gini_coefficient</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Number</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Gini coefficient of the vector of values given as argument.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        values</span>
+<span class="sd">        values: Iterable[Number]</span>
 <span class="sd">            A vector of values.</span>
 
 <span class="sd">    Returns</span>
@@ -327,16 +327,23 @@ document.write(`
 <span class="sd">            The Gini coefficient.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Negative values not supported by gini coefficient implementation.&quot;</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">all_nul</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">num_values</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Negative values not supported by gini coefficient implementation.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">all_nul</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">all_nul</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">num_values</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">all_nul</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">sorted_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">cum_sorted_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">sorted_values</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">frac</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cum_sorted_values</span><span class="p">),</span> <span class="n">cum_sorted_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">n</span><span class="p">)</span></div>
+    <span class="n">sorted_values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">total_cum_sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_values</span><span class="p">):</span>
+        <span class="n">total_cum_sum</span> <span class="o">+=</span> <span class="n">v</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_values</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">num_values</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">frac</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">total_cum_sum</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span> <span class="n">num_values</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>

@@ -4,6 +4,8 @@ The :py:class:`~pabutools.election.instance.Project` and the
 :py:class:`~pabutools.election.instance.Instance` classes are defined here.
 """
 from collections.abc import Iterable, Generator
+
+from pabutools.fractions import frac
 from pabutools.utils import powerset
 from numbers import Number
 from math import ceil
@@ -62,6 +64,8 @@ class Project:
         if categories is None:
             categories = {}
         self.name = name
+        if not int(cost) == cost:
+            cost = frac(cost)
         self.cost = cost
         self.categories = categories
         self.targets = targets

@@ -59,13 +59,13 @@ def powerset(iterable: Iterable) -> Generator:
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def gini_coefficient(values) -> Number:
+def gini_coefficient(values: Iterable[Number]) -> Number:
     """
     Returns the Gini coefficient of the vector of values given as argument.
 
     Parameters
     ----------
-        values
+        values: Iterable[Number]
             A vector of values.
 
     Returns
@@ -74,13 +74,20 @@ def gini_coefficient(values) -> Number:
             The Gini coefficient.
 
     """
-    if np.any(values < 0):
-        raise ValueError(
-            "Negative values not supported by gini coefficient implementation."
-        )
-    if np.all(values == 0):
+    all_nul = True
+    num_values = 0
+    for v in values:
+        if v < 0:
+            raise ValueError(
+                "Negative values not supported by gini coefficient implementation."
+            )
+        if all_nul and v > 0:
+            all_nul = False
+        num_values += 1
+    if all_nul:
         return 0
-    n = len(values)
-    sorted_values = np.sort(values)
-    cum_sorted_values = np.cumsum(sorted_values)
-    return frac(n + 1 - frac(2 * np.sum(cum_sorted_values), cum_sorted_values[-1]), n)
+    sorted_values = sorted(values)
+    total_cum_sum = 0
+    for i, v in enumerate(sorted_values):
+        total_cum_sum += v * (num_values - i)
+    return frac(num_values + 1 - frac(2 * total_cum_sum, sum(values)), num_values)

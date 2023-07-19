@@ -18,6 +18,8 @@ from pabutools.election.instance import Instance, Project, total_cost
 
 from typing import TYPE_CHECKING
 
+from pabutools.fractions import frac
+
 if TYPE_CHECKING:
     from pabutools.election.profile import (
         AbstractProfile,
@@ -200,7 +202,7 @@ def cost_sqrt_sat_func(
             The cost square root satisfaction.
 
     """
-    return np.sqrt(float(total_cost(tuple(p for p in projects if p in ballot))))
+    return frac(np.sqrt(float(total_cost(tuple(p for p in projects if p in ballot)))))
 
 
 class Cost_Sqrt_Sat(FunctionalSatisfaction):
@@ -260,7 +262,7 @@ def cost_log_sat_func(
             The log root satisfaction.
 
     """
-    return np.log(float(1 + total_cost(tuple(p for p in projects if p in ballot))))
+    return frac(np.log(float(1 + total_cost(tuple(p for p in projects if p in ballot)))))
 
 
 class Cost_Log_Sat(FunctionalSatisfaction):
