@@ -335,8 +335,8 @@ document.write(`
     <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">modification_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">,</span>
-    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">publication_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -397,10 +397,10 @@ document.write(`
         <span class="n">not_approved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span>
         <span class="n">pref</span> <span class="o">=</span> <span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">not_approved</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pref</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">preferences</span><span class="p">:</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">preflib_inst</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pref</span><span class="p">)</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
 
     <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
 
@@ -468,13 +468,12 @@ document.write(`
     <span class="p">)</span>
     <span class="n">preflib_inst</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;toi&quot;</span>
     <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
-        <span class="n">order</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">]))</span>
         <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
 
     <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
 
@@ -542,12 +541,12 @@ document.write(`
     <span class="p">)</span>
     <span class="n">preflib_inst</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;toi&quot;</span>
     <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
 
     <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
 

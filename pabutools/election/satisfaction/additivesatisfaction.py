@@ -375,11 +375,15 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
         p_vars = {
             p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot
         }
-        mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in ballot))
-        mip_model += xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
-        mip_model.optimize()
-        max_cost = mip_model.objective.x
-        return {"max_budget_allocation_cost": frac(max_cost)}
+        if p_vars:
+            mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in ballot))
+            mip_model += (
+                xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
+            )
+            mip_model.optimize()
+            max_cost = mip_model.objective.x
+            return {"max_budget_allocation_cost": frac(max_cost)}
+        return {"max_budget_allocation_cost": 0}
 
 
 def relative_cost_approx_normaliser_sat_func(
@@ -388,7 +392,7 @@ def relative_cost_approx_normaliser_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> int:
+) -> Number:
     """
     Computes the relative cost satisfaction for ballots using an approximate normaliser: the total cost of the projects
     appearing in the ballot. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
@@ -412,6 +416,8 @@ def relative_cost_approx_normaliser_sat_func(
         Number
             The relative cost satisfaction with an approximate normaliser.
     """
+    if precomputed_values["total_ballot_cost"] == 0:
+        return 0
     return frac(
         int(project in ballot) * project.cost, precomputed_values["total_ballot_cost"]
     )

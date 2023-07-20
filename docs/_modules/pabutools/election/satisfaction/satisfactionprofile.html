@@ -311,6 +311,8 @@ document.write(`
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">SatisfactionProfile</span><span class="p">):</span>
                 <span class="n">instance</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">instance</span>
+            <span class="k">elif</span> <span class="n">profile</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">instance</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">instance</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
@@ -440,8 +442,12 @@ document.write(`
         <span class="n">Counter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
         <span class="n">GroupSatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">SatisfactionProfile</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">SatisfactionMultiProfile</span><span class="p">):</span>
                 <span class="n">instance</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">instance</span>
+            <span class="k">elif</span> <span class="n">profile</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">instance</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">instance</span>
+            <span class="k">elif</span> <span class="n">multiprofile</span> <span class="ow">and</span> <span class="n">multiprofile</span><span class="o">.</span><span class="n">instance</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="n">multiprofile</span><span class="o">.</span><span class="n">instance</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>

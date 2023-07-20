@@ -423,7 +423,8 @@ make clean
 make html
 ```
 
-This will generate the documentation locally (in the folder `docs-source/build`. If you want to push the new documentation, run:
+This will generate the documentation locally (in the folder `docs-source/build`). If you want the documentation 
+to also be updated when pushing, run:
 ```shell
 make github
 ```

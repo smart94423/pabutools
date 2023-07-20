@@ -58,6 +58,8 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
         if instance is None:
             if isinstance(init, SatisfactionProfile):
                 instance = init.instance
+            elif profile and profile.instance:
+                instance = profile.instance
             else:
                 instance = Instance()
         self.instance = instance
@@ -187,8 +189,12 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
         Counter.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
         if instance is None:
-            if isinstance(init, SatisfactionProfile):
+            if isinstance(init, SatisfactionMultiProfile):
                 instance = init.instance
+            elif profile and profile.instance:
+                instance = profile.instance
+            elif multiprofile and multiprofile.instance:
+                instance = multiprofile.instance
             else:
                 instance = Instance()
         self.instance = instance
