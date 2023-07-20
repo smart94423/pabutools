@@ -82,8 +82,8 @@ def approval_to_preflib(
     file_path: str = "",
     file_name: str = "",
     modification_type: str = "original",
-    relates_to: str = None,
-    related_files: str = None,
+    relates_to: str = "",
+    related_files: str = "",
     title: str = "",
     description: str = "",
     publication_date: str = "",
@@ -144,10 +144,10 @@ def approval_to_preflib(
         not_approved = tuple(p for p in instance if p not in ballot)
         pref = (approved, not_approved)
         if pref in preflib_inst.preferences:
-            preflib_inst.multiplicity[pref] += 1
+            preflib_inst.multiplicity[pref] += profile.multiplicity(ballot)
         else:
             preflib_inst.preferences.append(pref)
-            preflib_inst.multiplicity[pref] = 1
+            preflib_inst.multiplicity[pref] = profile.multiplicity(ballot)
 
     preflib_inst.recompute_cardinality_param()
 
@@ -215,13 +215,12 @@ def cardinal_to_preflib(
     )
     preflib_inst.data_type = "toi"
     for ballot in profile:
-        order = list(ballot)
-        order.sort(key=lambda p: ballot[p])
+        order = tuple(sorted(ballot, key=lambda p: ballot[p]))
         if order in preflib_inst.orders:
-            preflib_inst.multiplicity[order] += 1
+            preflib_inst.multiplicity[order] += profile.multiplicity(ballot)
         else:
             preflib_inst.orders.append(order)
-            preflib_inst.multiplicity[order] = 1
+            preflib_inst.multiplicity[order] = profile.multiplicity(ballot)
 
     preflib_inst.recompute_cardinality_param()
 
@@ -289,12 +288,12 @@ def ordinal_to_preflib(
     )
     preflib_inst.data_type = "toi"
     for ballot in profile:
-        order = list(ballot)
+        order = tuple(ballot)
         if order in preflib_inst.orders:
-            preflib_inst.multiplicity[order] += 1
+            preflib_inst.multiplicity[order] += profile.multiplicity(ballot)
         else:
             preflib_inst.orders.append(order)
-            preflib_inst.multiplicity[order] = 1
+            preflib_inst.multiplicity[order] = profile.multiplicity(ballot)
 
     preflib_inst.recompute_cardinality_param()
 

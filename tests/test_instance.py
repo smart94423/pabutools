@@ -10,6 +10,9 @@ class TestInstance(TestCase):
         assert inst.budget_limit == 2
         assert len(inst) == 3
 
+        inst.__str__()
+        inst.__repr__()
+
         with self.assertRaises(KeyError):
             inst.get_project("name_that_does_not_appear")
 

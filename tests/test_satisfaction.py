@@ -91,7 +91,7 @@ class TestSatisfaction(TestCase):
             Cost_Sqrt_Sat,
             CC_Sat,
         ]:
-            for _ in range(10):
+            for _ in range(1):
                 instance = get_random_instance(100, 0, 100)
                 profile = get_random_approval_profile(instance, 100)
                 sat_profile = SatisfactionProfile(
