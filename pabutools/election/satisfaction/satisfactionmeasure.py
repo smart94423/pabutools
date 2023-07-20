@@ -120,7 +120,6 @@ class GroupSatisfactionMeasure(ABC, Iterable):
             int
                 The multiplicity of the satisfaction measure.
         """
-        ...
 
     def total_satisfaction(self, projects: Iterable[Project]) -> Number:
         """

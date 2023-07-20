@@ -3,6 +3,7 @@ from unittest import TestCase
 
 import numpy as np
 
+from pabutools.election import FrozenApprovalBallot
 from pabutools.election.profile import (
     ApprovalProfile,
     CardinalProfile,
@@ -22,6 +23,27 @@ from tests.test_class_inheritence import check_members_equality
 
 
 class TestSatisfaction(TestCase):
+    def test_satisfaction_measure(self):
+        sat1 = Cost_Sat(Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p1", 1)]))
+        sat2 = Cost_Sat(Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p2", 1)]))
+
+        # Test print outcome
+        sat1.__str__()
+        sat1.__repr__()
+
+        # Test operations on sat measures
+        assert sat1 == sat1
+        assert sat1 <= sat1
+        assert sat1 >= sat1
+        assert sat1 != sat2
+        assert sat1 <= sat2
+        assert not sat2 <= sat1
+        assert sat1 < sat2
+        assert not sat2 < sat2
+        assert sat1 != "qsd"
+        assert not sat1 <= "qsd"
+        assert not sat1 < "qsd"
+
     def test_satisfaction_profile(self):
         instance = get_random_instance(10, 1, 10)
         profile = get_random_approval_profile(instance, 30)
@@ -55,6 +77,14 @@ class TestSatisfaction(TestCase):
         instance = get_random_instance(10, 1, 10)
         profile = get_random_approval_profile(instance, 30)
         multiprofile = profile.as_multiprofile()
+
+        # Test extend
+        sat_multiprofile = multiprofile.as_sat_profile(Cost_Log_Sat)
+        assert len(sat_multiprofile) == len(multiprofile)
+        assert sat_multiprofile.total() == multiprofile.total()
+        sat_multiprofile.extend_from_multiprofile(multiprofile, Cost_Log_Sat)
+        assert len(sat_multiprofile) == len(multiprofile)
+        assert sat_multiprofile.total() == multiprofile.total() * 2
 
         # Test error when either a profile or a satisfaction measure is not given
         with self.assertRaises(TypeError):
@@ -167,7 +197,7 @@ class TestSatisfaction(TestCase):
         assert sat_profile[1].sat(projects) == 0
 
         with self.assertRaises(ValueError):
-            CC_Sat(Instance(), OrdinalProfile(), OrdinalBallot())
+            Cost_Sqrt_Sat(Instance(), OrdinalProfile(), OrdinalBallot())
 
     def test_log_sat(self):
         projects = [
@@ -186,7 +216,7 @@ class TestSatisfaction(TestCase):
         assert sat_profile[1].sat(projects) == 0
 
         with self.assertRaises(ValueError):
-            CC_Sat(Instance(), OrdinalProfile(), OrdinalBallot())
+            Cost_Log_Sat(Instance(), OrdinalProfile(), OrdinalBallot())
 
     def test_card_sat(self):
         projects = [
