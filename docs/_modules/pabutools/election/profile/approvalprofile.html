@@ -612,6 +612,9 @@ document.write(`
 <span class="sd">            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type</span>
 <span class="sd">            that is not a subclass of `ballot_type` is added, an exception will be raised.</span>
 <span class="sd">            Defaults to `FrozenApprovalBallot`.</span>
+<span class="sd">        profile: :py:class:`~pabutools.election.profile.approvalprofile.ApprovalProfile`, optional</span>
+<span class="sd">            A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not</span>
+<span class="sd">            specified in the constructor.</span>
 <span class="sd">        legal_min_length : int, optional</span>
 <span class="sd">            The minimum length of an approval ballot per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
@@ -730,7 +733,20 @@ document.write(`
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">inner</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-            <span class="n">wrap_method_closure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+            <span class="n">wrap_method_closure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ballot_validation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ballot_type</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_length</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legal_max_length</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_cost</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">legal_max_cost</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <span class="n">ApprovalMultiProfile</span><span class="o">.</span><span class="n">_wrap_methods</span><span class="p">(</span>

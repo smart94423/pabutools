@@ -20,7 +20,8 @@ from pabutools.election import (
     Additive_Borda_Sat,
     ApprovalMultiProfile,
     FrozenApprovalBallot,
-    FrozenCumulativeBallot,
+    FrozenCumulativeBallot, FrozenCardinalBallot, CardinalMultiProfile, CumulativeMultiProfile, FrozenOrdinalBallot,
+    OrdinalMultiProfile, SatisfactionMultiProfile,
 )
 
 
@@ -384,4 +385,66 @@ class TestAnalysis(TestCase):
             legal_min_cost=2100,
             legal_max_cost=15,
         )
+        check_dict_members(profile, ballots[:10], ballots[10:])
+
+        ballots = [
+            FrozenCardinalBallot(
+                {p: 5 for p in projects},
+                name="app" + str(i),
+                meta={"key" + str(i): "v"},
+            )
+            for i in range(20)
+        ]
+        profile = CardinalMultiProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=10,
+            legal_max_length=100,
+            legal_min_score=1000,
+            legal_max_score=555,
+        )
         # check_dict_members(profile, ballots[:10], ballots[10:])
+
+        ballots = [
+            FrozenCumulativeBallot(
+                {p: 5 for p in projects},
+                name="app" + str(i),
+                meta={"key" + str(i): "v"},
+            )
+            for i in range(20)
+        ]
+        profile = CumulativeMultiProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=105,
+            legal_max_length=120,
+            legal_min_score=1020,
+            legal_max_score=535,
+            legal_min_total_score=87,
+            legal_max_total_score=45,
+        )
+        # check_dict_members(profile, ballots[:10], ballots[10:])
+
+        ballots = [
+            FrozenOrdinalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"})
+            for i in range(20)
+        ]
+        profile = OrdinalMultiProfile(
+            ballots[:10],
+            instance=instance,
+            ballot_validation=False,
+            ballot_type=CumulativeBallot,
+            legal_min_length=10,
+            legal_max_length=100,
+        )
+        check_dict_members(profile, ballots[:10], ballots[10:])
+
+        sat_profile = SatisfactionMultiProfile(
+            instance=instance, multiprofile=profile, sat_class=Additive_Borda_Sat
+        )
+        sats = [Additive_Borda_Sat(instance, profile, ballot) for ballot in ballots]
+        check_dict_members(sat_profile, sats[:10], sats[10:])

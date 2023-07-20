@@ -92,7 +92,6 @@ class TestPreflib(TestCase):
                 description="description",
                 publication_date="publication_date",
                 modification_date="modification_date",
-                alternative_names={p: p.name for p in projects},
             )
             check_preflib_instance(projects, profile, preflib_instance, "")
             assert len(preflib_instance.orders) == 1

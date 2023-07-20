@@ -23,8 +23,10 @@ when it comes to PB data.
 
 ## Installation
 
-Ultimately, the goal is to host this library on pip. For now, use the
-source code provided here.
+The installation should be as easy as:
+```shell
+pip3 install pabutools
+```
 
 ## Documentation
 

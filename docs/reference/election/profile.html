@@ -1527,6 +1527,8 @@ Defaults to <cite>True</cite>.</p></li>
 <li><p><strong>ballot_type</strong> (type[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>], optional) – The type that the ballots are validated against. If <cite>ballot_validation</cite> is <cite>True</cite> and a ballot of a type
 that is not a subclass of <cite>ballot_type</cite> is added, an exception will be raised.
 Defaults to <cite>FrozenApprovalBallot</cite>.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="#pabutools.election.profile.approvalprofile.ApprovalProfile" title="pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a>, optional) – A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+specified in the constructor.</p></li>
 <li><p><strong>legal_min_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum length of an approval ballot per the rules of the election.
 Defaults to <cite>None</cite>.</p></li>
 <li><p><strong>legal_max_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum length of an approval ballot per the rules of the election.
@@ -2339,6 +2341,8 @@ Defaults to <cite>True</cite>.</p></li>
 <li><p><strong>ballot_type</strong> (type[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>], optional) – The type that the ballots are validated against. If <cite>ballot_validation</cite> is <cite>True</cite> and a ballot of a type
 that is not a subclass of <cite>ballot_type</cite> is added, an exception will be raised.
 Defaults to <cite>CardinalBallot</cite>.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="#pabutools.election.profile.cardinalprofile.CardinalProfile" title="pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a>, optional) – A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+specified in the constructor.</p></li>
 <li><p><strong>legal_min_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of projects a voter needs to assign a score to per the rules of the election.
 Defaults to <cite>None</cite>.</p></li>
 <li><p><strong>legal_max_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of projects a voter needs to assign a score to per the rules of the election.
@@ -3101,6 +3105,8 @@ Defaults to <cite>True</cite>.</p></li>
 <li><p><strong>ballot_type</strong> (type[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>], optional) – The type that the ballots are validated against. If <cite>ballot_validation</cite> is <cite>True</cite> and a ballot of a type
 that is not a subclass of <cite>ballot_type</cite> is added, an exception will be raised.
 Defaults to <cite>FrozenCumulativeBallot</cite>.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="#pabutools.election.profile.cumulativeprofile.CumulativeProfile" title="pabutools.election.profile.cumulativeprofile.CumulativeProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeProfile</span></code></a>, optional) – A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+specified in the constructor.</p></li>
 <li><p><strong>legal_min_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of projects a voter needs to assign a score to per the rules of the election.
 Defaults to <cite>None</cite>.</p></li>
 <li><p><strong>legal_max_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of projects a voter needs to assign a score to per the rules of the election.
@@ -3753,6 +3759,8 @@ Defaults to <cite>True</cite>.</p></li>
 <li><p><strong>ballot_type</strong> (type[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>], optional) – The type that the ballots are validated against. If <cite>ballot_validation</cite> is <cite>True</cite> and a ballot of a type
 that is not a subclass of <cite>ballot_type</cite> is added, an exception will be raised.
 Defaults to <cite>ForzenOrdinalBallot</cite>.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="#pabutools.election.profile.ordinalprofile.OrdinalProfile" title="pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a>, optional) – A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+specified in the constructor.</p></li>
 <li><p><strong>legal_min_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum length of an ordinal ballot per the rules of the election.
 Defaults to <cite>None</cite>.</p></li>
 <li><p><strong>legal_max_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum length of an ordinal ballot per the rules of the election.

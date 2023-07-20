@@ -206,6 +206,9 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
             The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
             that is not a subclass of `ballot_type` is added, an exception will be raised.
             Defaults to `ForzenOrdinalBallot`.
+        profile: :py:class:`~pabutools.election.profile.ordinalprofile.OrdinalProfile`, optional
+            A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+            specified in the constructor.
         legal_min_length : int, optional
             The minimum length of an ordinal ballot per the rules of the election.
             Defaults to `None`.
@@ -300,6 +303,16 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
         for n in names:
             wrap_method_closure(n)
 
+    def __reduce__(self):
+        return self.__class__, (
+            dict(self),
+            self.instance,
+            self.ballot_validation,
+            self.ballot_type,
+            None,
+            self.legal_min_length,
+            self.legal_max_length,
+        )
 
 OrdinalMultiProfile._wrap_methods(
     [

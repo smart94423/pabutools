@@ -24,8 +24,12 @@ from tests.test_class_inheritence import check_members_equality
 
 class TestSatisfaction(TestCase):
     def test_satisfaction_measure(self):
-        sat1 = Cost_Sat(Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p1", 1)]))
-        sat2 = Cost_Sat(Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p2", 1)]))
+        sat1 = Cost_Sat(
+            Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p1", 1)])
+        )
+        sat2 = Cost_Sat(
+            Instance(), ApprovalProfile(), FrozenApprovalBallot([Project("p2", 1)])
+        )
 
         # Test print outcome
         sat1.__str__()

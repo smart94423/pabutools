@@ -270,3 +270,49 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
 
     def multiplicity(self, sat: SatisfactionMeasure) -> int:
         return self[sat]
+
+    @classmethod
+    def _wrap_methods(cls, names):
+        def wrap_method_closure(name):
+            def inner(self, *args):
+                result = getattr(super(cls, self), name)(*args)
+                if isinstance(result, dict) and not isinstance(result, cls):
+                    result = cls(
+                        result,
+                        instance=self.instance,
+                    )
+                return result
+
+            inner.fn_name = name
+            setattr(cls, name, inner)
+
+        for n in names:
+            wrap_method_closure(n)
+
+    def __reduce__(self):
+        return self.__class__, (
+            dict(self),
+            self.instance,
+            None,
+            None,
+            None
+        )
+
+
+SatisfactionMultiProfile._wrap_methods(
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
+)
+
