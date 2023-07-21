@@ -130,6 +130,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/rules/index.html">Rules module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -254,29 +257,36 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
 
-<div class="viewcode-block" id="completion_by_rule_combination"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.completion_by_rule_combination">[docs]</a><span class="k">def</span> <span class="nf">completion_by_rule_combination</span><span class="p">(</span>
+<div class="viewcode-block" id="completion_by_rule_combination"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.exhaustion.completion_by_rule_combination">[docs]</a><span class="k">def</span> <span class="nf">completion_by_rule_combination</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
     <span class="n">rule_sequence</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
     <span class="n">rule_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runs the given rules on the given instance and profile in sequence. This is useful if the first rules are</span>
-<span class="sd">    non-exhaustive.</span>
-<span class="sd">    Parameters. For now, only resolute rules are supported</span>
+<span class="sd">    Runs the given rules on the given instance and profile in sequence until an exhaustive budget allocation has been</span>
+<span class="sd">    reached (or all rules have been applied). This is useful if the first rules are non-exhaustive.</span>
+<span class="sd">    Only resolute rules are supported.</span>
+
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
 <span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        rule_sequence:</span>
-<span class="sd">            Iterable of the rule functions</span>
-<span class="sd">        rule_params (optional):</span>
-<span class="sd">            Iterable of dictionaries of additional parameters that are passed to the rule functions</span>
+<span class="sd">        rule_sequence: Iterable[Callable]</span>
+<span class="sd">            Iterable of the rule functions.</span>
+<span class="sd">        rule_params: Iterable[dict], optional</span>
+<span class="sd">            Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule</span>
+<span class="sd">            functions. Defaults to `{}`.</span>
+<span class="sd">        initial_budget_allocation: Iterable[Project], optional</span>
+<span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        list of pabutools.election.instance.Project</span>
+<span class="sd">        Iterable[Project]</span>
+<span class="sd">            The selected projects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rule_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule_sequence</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule_params</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -300,18 +310,19 @@ document.write(`
     <span class="k">return</span> <span class="n">budget_allocation</span></div>
 
 
-<div class="viewcode-block" id="exhaustion_by_budget_increase"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.exhaustion_by_budget_increase">[docs]</a><span class="k">def</span> <span class="nf">exhaustion_by_budget_increase</span><span class="p">(</span>
+<div class="viewcode-block" id="exhaustion_by_budget_increase"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.exhaustion.exhaustion_by_budget_increase">[docs]</a><span class="k">def</span> <span class="nf">exhaustion_by_budget_increase</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
     <span class="n">rule</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">rule_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">rule_params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">budget_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retreived or</span>
-<span class="sd">    the budget limit is exceeded by the rule with increased budget.</span>
-<span class="sd">    For now, only resolute rules are supported.</span>
+<span class="sd">    Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retrieved or</span>
+<span class="sd">    the budget limit is exceeded by the rule with increased budget. For now, only resolute rules are supported.</span>
+
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
@@ -319,11 +330,18 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        rule:</span>
 <span class="sd">            The rule function</span>
-<span class="sd">        rule_params:</span>
-<span class="sd">            A dictionary of additional parameters that are passed to the rule function</span>
+<span class="sd">        rule_params: dict, optional</span>
+<span class="sd">            Dictionary of additional parameters that are passed as keyword arguments to the rule</span>
+<span class="sd">            function. Defaults to `{}`.</span>
+<span class="sd">        initial_budget_allocation: Iterable[Project], optional</span>
+<span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
+<span class="sd">        budget_step: int</span>
+<span class="sd">            The step at which the budget is increased.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        list of pabutools.election.instance.Project</span>
+<span class="sd">        Iterable[Project]</span>
+<span class="sd">            The selected projects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rule_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rule_params</span> <span class="o">=</span> <span class="p">{}</span>

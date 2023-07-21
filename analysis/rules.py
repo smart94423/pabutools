@@ -6,7 +6,7 @@ from pabutools.rules import (
     completion_by_rule_combination,
     exhaustion_by_budget_increase,
 )
-from pabutools.rules.maxwelfare import max_utilitarian_welfare
+from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
 
 
 def greed_cost_res(instance, profile):
@@ -16,7 +16,7 @@ def greed_cost_res(instance, profile):
 
 
 def maxwelfare_cost_res(instance, profile):
-    return max_utilitarian_welfare(
+    return max_additive_utilitarian_welfare(
         instance, profile, sat_class=Cost_Sat, resoluteness=True
     )
 

@@ -1,5 +1,5 @@
 """
-Phragmèn's methods.
+Phragmén's methods.
 """
 from collections.abc import Iterable
 from copy import deepcopy
@@ -20,7 +20,7 @@ from pabutools.tiebreaking import TieBreakingRule, lexico_tie_breaking
 
 class PhragmenVoter:
     """
-    Class used to summarise a voter during a run of the Phragmèn's sequential rule.
+    Class used to summarise a voter during a run of the Phragmén's sequential rule.
 
     Parameters
     ----------
@@ -59,7 +59,7 @@ def sequential_phragmen(
     resoluteness: bool = True,
 ) -> list[Project] | list[list[Project]]:
     """
-    Phragmèn's sequential rule. It works as follows. Voters receive money in a virtual currency. They all start with a
+    Phragmén's sequential rule. It works as follows. Voters receive money in a virtual currency. They all start with a
     budget of 0 and that budget continuously increases. As soon asa group of supporters have enough virtual currency to
     buy a project they all approve, the project is bought. The rule stops as soon as there is a project that could be
     bought  but only by violating the budget constraint.

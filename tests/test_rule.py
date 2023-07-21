@@ -21,12 +21,12 @@ from pabutools.rules.exhaustion import (
     exhaustion_by_budget_increase,
 )
 from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
-from pabutools.rules.maxwelfare import max_utilitarian_welfare
+from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
 from pabutools.rules.mes import method_of_equal_shares
 
 ALL_SAT_RULES = [
     greedy_utilitarian_welfare,
-    max_utilitarian_welfare,
+    max_additive_utilitarian_welfare,
     method_of_equal_shares,
 ]
 ALL_NON_SAT_RULES = [sequential_phragmen]
@@ -72,10 +72,10 @@ def test_elections():
     test_election.irr_results_sat[greedy_utilitarian_welfare][Cardinality_Sat] = sorted(
         [[p[0], p[3]]]
     )
-    test_election.irr_results_sat[max_utilitarian_welfare][Cost_Sat] = sorted(
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cost_Sat] = sorted(
         [[p[0], p[2]], [p[1]], [p[2], p[3]]]
     )
-    test_election.irr_results_sat[max_utilitarian_welfare][Cardinality_Sat] = sorted(
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cardinality_Sat] = sorted(
         [[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]]
     )
     res.append(test_election)
@@ -135,7 +135,7 @@ def test_elections():
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     test_election = TestElection("EmptyProfile", p, inst, prof)
     for sat_class in ALL_SAT:
-        test_election.irr_results_sat[max_utilitarian_welfare][sat_class] = sorted(
+        test_election.irr_results_sat[max_additive_utilitarian_welfare][sat_class] = sorted(
             [sorted(list(b)) for b in inst.budget_allocations()]
         )
         test_election.irr_results_sat[greedy_utilitarian_welfare][sat_class] = sorted(
@@ -161,7 +161,7 @@ def test_elections():
     initial_alloc = p[:1]
     test_election = TestElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
     for sat_class in ALL_SAT:
-        test_election.irr_results_sat[max_utilitarian_welfare][sat_class] = sorted(
+        test_election.irr_results_sat[max_additive_utilitarian_welfare][sat_class] = sorted(
             [sorted(list(b)) for b in inst.budget_allocations() if p[0] in b]
         )
         test_election.irr_results_sat[greedy_utilitarian_welfare][sat_class] = sorted(
@@ -370,9 +370,9 @@ class TestRule(TestCase):
                 assert outcome1 == outcome2
 
     def test_max_welfare(self):
-        run_sat_rule(max_utilitarian_welfare)
+        run_sat_rule(max_additive_utilitarian_welfare)
         with self.assertRaises(ValueError):
-            max_utilitarian_welfare(Instance(), ApprovalProfile())
+            max_additive_utilitarian_welfare(Instance(), ApprovalProfile())
 
     def test_phragmen(self):
         run_non_sat_rule(sequential_phragmen)

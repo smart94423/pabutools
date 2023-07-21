@@ -271,7 +271,7 @@ document.write(`
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">max_utilitarian_welfare_scheme</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">max_additive_utilitarian_welfare_scheme</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">SatisfactionProfile</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
@@ -351,7 +351,7 @@ document.write(`
     <span class="p">]</span>
 
 
-<div class="viewcode-block" id="max_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.maxwelfare.max_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">max_utilitarian_welfare</span><span class="p">(</span>
+<div class="viewcode-block" id="max_additive_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.maxwelfare.max_additive_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">max_additive_utilitarian_welfare</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span> <span class="o">|</span> <span class="n">MultiProfile</span><span class="p">,</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -403,7 +403,7 @@ document.write(`
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="o">=</span><span class="n">sat_class</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">max_utilitarian_welfare_scheme</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">max_additive_utilitarian_welfare_scheme</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span> <span class="n">sat_profile</span><span class="p">,</span> <span class="n">budget_allocation</span><span class="p">,</span> <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span>
     <span class="p">)</span></div>
 </pre></div>

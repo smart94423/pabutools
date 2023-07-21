@@ -14,7 +14,7 @@ from pabutools.election import (
     SatisfactionProfile,
 )
 from pabutools.rules import greedy_utilitarian_welfare
-from pabutools.rules.maxwelfare import max_utilitarian_welfare
+from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
 
 
 def multiprofile_analysis_pool(file):

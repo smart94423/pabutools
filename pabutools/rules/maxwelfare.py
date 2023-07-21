@@ -18,7 +18,7 @@ from pabutools.election import (
 )
 
 
-def max_utilitarian_welfare_scheme(
+def max_additive_utilitarian_welfare_scheme(
     instance: Instance,
     sat_profile: SatisfactionProfile,
     initial_budget_allocation: Iterable[Project],
@@ -98,7 +98,7 @@ def max_utilitarian_welfare_scheme(
     ]
 
 
-def max_utilitarian_welfare(
+def max_additive_utilitarian_welfare(
     instance: Instance,
     profile: Profile | MultiProfile,
     sat_class: type[SatisfactionMeasure] = None,
@@ -150,6 +150,6 @@ def max_utilitarian_welfare(
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
-    return max_utilitarian_welfare_scheme(
+    return max_additive_utilitarian_welfare_scheme(
         instance, sat_profile, budget_allocation, resoluteness=resoluteness
     )
