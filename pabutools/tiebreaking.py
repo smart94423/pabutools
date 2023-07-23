@@ -87,3 +87,10 @@ app_score_tie_breaking = TieBreakingRule(
 )
 min_cost_tie_breaking = TieBreakingRule(lambda inst, prof, proj: proj.cost)
 max_cost_tie_breaking = TieBreakingRule(lambda inst, prof, proj: -proj.cost)
+
+class TieBreakingException(Exception):
+    "Raised when a tie occurs and no tie-breaking rule is provided."
+    pass
+def refuse_to_break_ties(instance: Instance, profile: Profile, project: Project):
+    raise TieBreakingException("A tie occurred, but no tie-breaking rule was provided.")
+refuse_tie_breaking = TieBreakingRule(refuse_to_break_ties)
