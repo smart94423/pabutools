@@ -9,11 +9,38 @@ from pabutools.election import (
     Cost_Sat,
 )
 from pabutools.rules import method_of_equal_shares, greedy_utilitarian_welfare
-from pabutools.rules.composition import popularity_comparison
+from pabutools.rules.composition import social_welfare_comparison, popularity_comparison
 
 
 class TestRuleComposition(TestCase):
     def test_popularity_comparison(self):
+        p = [Project("p0", 100), Project("p1", 1)]
+        inst = Instance(p, budget_limit=100)
+        prof = ApprovalProfile(
+            [ApprovalBallot(p[:1]) for _ in range(99)] + [ApprovalBallot([p[1]])],
+            instance=inst,
+        )
+        results = popularity_comparison(
+            inst,
+            prof,
+            Cardinality_Sat,
+            [method_of_equal_shares, greedy_utilitarian_welfare],
+            [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
+        )
+        assert len(results) == 1
+        assert len(results[0]) == 1
+        assert "p0" in results[0]
+
+        with self.assertRaises(ValueError):
+            popularity_comparison(
+                Instance(),
+                ApprovalProfile(),
+                Cardinality_Sat,
+                [method_of_equal_shares, greedy_utilitarian_welfare],
+                [{"sat_class": Cost_Sat}],
+            )
+
+    def test_social_welfare_comparison(self):
         p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
         inst = Instance(p, budget_limit=3)
         prof = ApprovalProfile(
@@ -23,7 +50,7 @@ class TestRuleComposition(TestCase):
             ],
             instance=inst,
         )
-        results = popularity_comparison(
+        results = social_welfare_comparison(
             inst,
             prof,
             Cardinality_Sat,
@@ -52,7 +79,7 @@ class TestRuleComposition(TestCase):
             ],
             instance=inst,
         )
-        results = popularity_comparison(
+        results = social_welfare_comparison(
             inst,
             prof,
             Cardinality_Sat,
@@ -64,7 +91,7 @@ class TestRuleComposition(TestCase):
         assert results[0] == greedy_utilitarian_welfare(inst, prof, sat_class=Cost_Sat)
 
         with self.assertRaises(ValueError):
-            popularity_comparison(
+            social_welfare_comparison(
                 inst,
                 prof,
                 Cardinality_Sat,
