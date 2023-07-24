@@ -258,93 +258,121 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
 
+<div class="viewcode-block" id="TieBreakingException"><a class="viewcode-back" href="../../reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingException">[docs]</a><span class="k">class</span> <span class="nc">TieBreakingException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a tie occurs and no tie-breaking rule is provided.&quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="TieBreakingRule"><a class="viewcode-back" href="../../reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule">[docs]</a><span class="k">class</span> <span class="nc">TieBreakingRule</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements a tie-breaking rule.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        func : Callable[[PBInstance, Profile, Project], Fraction]</span>
-<span class="sd">        A function taking as input an instance, a profile and a project and returning the value on which the</span>
-<span class="sd">        project will be sorted.</span>
+<span class="sd">        func : Callable[[Instance, Profile, Project], Number]</span>
+<span class="sd">            A function taking as input an instance, a profile and a project and returning the value on which the</span>
+<span class="sd">            project will be sorted.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">        func : Callable[[PBInstance, Profile, Project], Fraction]</span>
-<span class="sd">        A function taking as input an instance, a profile and a project and returning the value on which the</span>
-<span class="sd">        project will be sorted.</span>
+<span class="sd">        func : Callable[[Instance, Profile, Project], Number]</span>
+<span class="sd">            A function taking as input an instance, a profile and a project and returning the value on which the</span>
+<span class="sd">            project will be sorted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">Project</span><span class="p">],</span> <span class="n">Number</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
 
 <div class="viewcode-block" id="TieBreakingRule.order"><a class="viewcode-back" href="../../reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule.order">[docs]</a>    <span class="k">def</span> <span class="nf">order</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-            <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-            <span class="n">key</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
+        <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Break the ties among all the projects provided in input and returns them ordered. The tie-breaking can be</span>
 <span class="sd">        based on the instance or/and on the profile.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.profile.Profile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.Profile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        projects : collection of pabutools.election.instance.Project</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            The set of projects between which ties are to be broken.</span>
-<span class="sd">        key : function[_ -&gt; pabutools.election.instance.Project]</span>
-<span class="sd">            A key function to select the project from the input.</span>
+<span class="sd">        key : Callable[..., :py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">            A key function to select the project from the input. Defaults to `lambda x: x`.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            list of pabutools.election.instance.Project</span>
+<span class="sd">            list[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">                The projects, ordered by the tie-breaking.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="n">projects</span><span class="p">,</span>
             <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">project</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">key</span><span class="p">(</span><span class="n">project</span><span class="p">)),</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="TieBreakingRule.untie"><a class="viewcode-back" href="../../reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule.untie">[docs]</a>    <span class="k">def</span> <span class="nf">untie</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
-            <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-            <span class="n">key</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
+        <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Break the ties among all the projects provided in input and returns a single project. Orders the</span>
 <span class="sd">        projects according to the tie-breaking rule and return the first project of the order.</span>
+
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
 <span class="sd">            The instance.</span>
-<span class="sd">        profile : pabutools.profile.Profile</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.Profile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        projects : collection of pabutools.election.instance.Project</span>
+<span class="sd">        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            The set of projects between which ties are to be broken.</span>
-<span class="sd">        key : function[_ -&gt; pabutools.election.instance.Project]</span>
-<span class="sd">            A key function to select the project from the input.</span>
+<span class="sd">        key : Callable[..., :py:class:`~pabutools.election.instance.Project`], optional</span>
+<span class="sd">            A key function to select the project from the input. Defaults to `lambda x: x`.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            pabutools.election.instance.Project</span>
+<span class="sd">            :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">                The first project according to the tie-breaking.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">projects</span><span class="p">,</span> <span class="n">key</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
 
 
 <span class="n">lexico_tie_breaking</span> <span class="o">=</span> <span class="n">TieBreakingRule</span><span class="p">(</span><span class="k">lambda</span> <span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements lexicographic tie breaking, i.e., tie-breaking based on the name of the projects.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">app_score_tie_breaking</span> <span class="o">=</span> <span class="n">TieBreakingRule</span><span class="p">(</span>
     <span class="k">lambda</span> <span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="o">-</span><span class="n">prof</span><span class="o">.</span><span class="n">approval_score</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
 <span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements tie breaking based on the approval score wher the projects with the highest number of supporters in the </span>
+<span class="sd">profile is selected. Can only be applied to approval profiles.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">min_cost_tie_breaking</span> <span class="o">=</span> <span class="n">TieBreakingRule</span><span class="p">(</span><span class="k">lambda</span> <span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements lexicographic tie breaking based on the cost where ties are broken in favour of the project with the lowest </span>
+<span class="sd">cost.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">max_cost_tie_breaking</span> <span class="o">=</span> <span class="n">TieBreakingRule</span><span class="p">(</span><span class="k">lambda</span> <span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="o">-</span><span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="TieBreakingException"><a class="viewcode-back" href="../../reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingException">[docs]</a><span class="k">class</span> <span class="nc">TieBreakingException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a tie occurs and no tie-breaking rule is provided.&quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements lexicographic tie breaking based on the cost where ties are broken in favour of the project with the highest</span>
+<span class="sd">cost.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">refuse_to_break_ties</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">):</span>
@@ -352,6 +380,9 @@ document.write(`
 
 
 <span class="n">refuse_tie_breaking</span> <span class="o">=</span> <span class="n">TieBreakingRule</span><span class="p">(</span><span class="n">refuse_to_break_ties</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Special tie-breaking function that simply raises an error when a tie needs to be broken.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
                 </article>

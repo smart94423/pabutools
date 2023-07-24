@@ -305,6 +305,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.mes.method_of_equal_shares"><code class="docutils literal notranslate"><span class="pre">method_of_equal_shares()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.exhaustion.completion_by_rule_combination"><code class="docutils literal notranslate"><span class="pre">completion_by_rule_combination()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.exhaustion.exhaustion_by_budget_increase"><code class="docutils literal notranslate"><span class="pre">exhaustion_by_budget_increase()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.composition.popularity_comparison"><code class="docutils literal notranslate"><span class="pre">popularity_comparison()</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -518,6 +519,32 @@ function. Defaults to <cite>{}</cite>.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.rules.composition.popularity_comparison">
+<span class="sig-name descname"><span class="pre">popularity_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../election/instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><span class="pre">Profile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sat_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><span class="pre">SatisfactionMeasure</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_budget_allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/pabutools/rules/composition.html#popularity_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.rules.composition.popularity_comparison" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the outcome of several rules and returns the one that is the most preferred by the voters according to a
+given satisfaction measure. Should only be applied to resolute rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance</strong> (<a class="reference internal" href="../election/instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="../election/profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
+<li><p><strong>sat_class</strong> (type[<a class="reference internal" href="../election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>]) – The satisfaction measure used to do the comparison.</p></li>
+<li><p><strong>rule_sequence</strong> (<em>Iterable</em><em>[</em><em>Callable</em><em>]</em>) – Iterable of the rule functions.</p></li>
+<li><p><strong>rule_params</strong> (<em>Iterable</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule
+functions. Defaults to <cite>{}</cite>.</p></li>
+<li><p><strong>initial_budget_allocation</strong> (<em>Iterable</em><em>[</em><a class="reference internal" href="../election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><em>Project</em></a><em>]</em><em>, </em><em>optional</em>) – An initial budget allocation, typically empty. Defaults to <cite>[]</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>All the budget allocations yielding the maximum total satisfaction for the outcomes of the rules.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Iterable[Iterable[<a class="reference internal" href="../election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -574,6 +601,7 @@ function. Defaults to <cite>{}</cite>.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.mes.method_of_equal_shares"><code class="docutils literal notranslate"><span class="pre">method_of_equal_shares()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.exhaustion.completion_by_rule_combination"><code class="docutils literal notranslate"><span class="pre">completion_by_rule_combination()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.exhaustion.exhaustion_by_budget_increase"><code class="docutils literal notranslate"><span class="pre">exhaustion_by_budget_increase()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.rules.composition.popularity_comparison"><code class="docutils literal notranslate"><span class="pre">popularity_comparison()</span></code></a></li>
 </ul>
   </nav></div>
 

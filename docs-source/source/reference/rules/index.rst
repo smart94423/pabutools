@@ -14,3 +14,5 @@ Rules module
 .. autofunction:: pabutools.rules.exhaustion.completion_by_rule_combination
 
 .. autofunction:: pabutools.rules.exhaustion.exhaustion_by_budget_increase
+
+.. autofunction:: pabutools.rules.composition.popularity_comparison
