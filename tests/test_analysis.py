@@ -4,6 +4,7 @@ from pabutools.analysis.instanceproperties import *
 from pabutools.analysis.profileproperties import *
 from pabutools.analysis.votersatisfaction import *
 from pabutools.analysis.category import *
+from pabutools.election import CardinalProfile
 from pabutools.election.profile.approvalprofile import (
     ApprovalProfile,
     ApprovalMultiProfile,

@@ -6,7 +6,7 @@ import math
 
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import ApprovalProfile, Profile
-from pabutools.election.profile.profile import MultiProfile
+from pabutools.election.profile.profile import MultiProfile, AbstractProfile
 from pabutools.election.satisfaction import (
     SatisfactionMeasure,
     CC_Sat,
@@ -19,29 +19,33 @@ from pabutools.utils import gini_coefficient, mean_generator
 
 def avg_satisfaction(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     budget_allocation: Iterable[Project],
-    satisfaction: type[SatisfactionMeasure],
-) -> Number | float:
-    """Computes the average satisfaction for a given instance, profile and satisfaction function
+    sat_class: type[SatisfactionMeasure],
+) -> Number:
+    """
+    Computes the average satisfaction for a given instance, profile and satisfaction measure.
+
     Parameters
     ----------
-        instance : pabutools.instance.pbinstance.PBInstance
+        instance : :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile` | pabutools.instance.profile.MultiProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        budget_allocation : collection of pabutools.instance.pbinstance.Project
-            Collection of projects
-        satisfaction : class
-            The class defining the satisfaction function used to measure the social welfare. It should be a class
-            inhereting from pabutools.instance.satisfaction.Satisfaction.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            Collection of projects.
+        sat_class: type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction measure used to do the comparison.
+
     Returns
     -------
-        average satisfaction"""
+        Number
+            The average satisfaction of a voter for the budget allocation.
+    """
 
     return mean_generator(
         (
-            satisfaction(instance, profile, ballot).sat(budget_allocation),
+            sat_class(instance, profile, ballot).sat(budget_allocation),
             profile.multiplicity(ballot),
         )
         for ballot in profile
@@ -49,22 +53,63 @@ def avg_satisfaction(
 
 
 def percent_non_empty_handed(
-    instance: Instance, profile: ApprovalProfile, budget_allocation: Iterable[Project]
-) -> Number | float:
+    instance: Instance, profile: AbstractProfile, budget_allocation: Iterable[Project]
+) -> Number:
+    """
+    Computes the percentage of voter for which at least one project from the budget allocation also appears in their
+    ballot.
+
+    It mostly makes sense for approval ballots, though any profile of ballots supporting the `in` operator can be used.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            Collection of projects.
+
+    Returns
+    -------
+        Number
+            The percentage of non-empty handed voters.
+    """
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
 def gini_coefficient_of_satisfaction(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     budget_allocation: Iterable[Project],
-    satisfaction: type[SatisfactionMeasure],
+    sat_class: type[SatisfactionMeasure],
     invert: bool = False,
-) -> Number | float:
+) -> Number:
+    """
+    Computes the Gini coefficient of the satisfaction of the voters.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            Collection of projects.
+        sat_class: type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction measure used to do the comparison.
+        invert: bool, optional
+            Set to `True` to return 1 minus the Gini coefficient. Defaults to `False`.
+
+    Returns
+    -------
+        Number
+            The Gini coefficient of the satisfaction of the voters.
+    """
     voter_satisfactions = []
     for ballot in profile:
         voter_satisfaction = frac(
-            satisfaction(instance, profile, ballot).sat(budget_allocation)
+            sat_class(instance, profile, ballot).sat(budget_allocation)
         )
         for i in range(profile.multiplicity(ballot)):
             voter_satisfactions.append(voter_satisfaction)
@@ -78,21 +123,45 @@ def satisfaction_histogram(
     instance: Instance,
     profile: Profile | MultiProfile,
     budget_allocation: Iterable[Project],
-    satisfaction: type[SatisfactionMeasure],
-    max_satisfaction: float,
+    sat_class: type[SatisfactionMeasure],
+    max_satisfaction: Number,
     num_bins: int = 20,
-) -> list[float]:
+) -> list[Number]:
+    """
+    Computes the data necessary to plot a histogram of the satisfaction of the voters. Each bin contains the percentage
+    of voters whose satisfaction corresponds to the bin.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            Collection of projects.
+        sat_class: type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction measure used to do the comparison.
+        max_satisfaction: Number
+            The normaliser for the satisfaction.
+        num_bins: int, optional
+            The number of bins of the histogram. Defaults to `20`.
+
+    Returns
+    -------
+        list[Number]
+            A list of values, one per bin of the histogram.
+    """
     if isinstance(profile, MultiProfile):
         sat_profile = SatisfactionMultiProfile(
-            instance=instance, multiprofile=profile, sat_class=satisfaction
+            instance=instance, multiprofile=profile, sat_class=sat_class
         )
     else:
         sat_profile = SatisfactionMultiProfile(
-            instance=instance, profile=profile, sat_class=satisfaction
+            instance=instance, profile=profile, sat_class=sat_class
         )
 
-    hist_data = [0.0 for i in range(num_bins)]
-    for i, ballot in enumerate(sat_profile):
+    hist_data = [0.0 for _ in range(num_bins)]
+    for ballot in sat_profile:
         satisfaction = ballot.sat(budget_allocation)
         if satisfaction >= max_satisfaction:
             hist_data[-1] += sat_profile.multiplicity(ballot)

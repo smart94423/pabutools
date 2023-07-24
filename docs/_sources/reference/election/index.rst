@@ -2,6 +2,8 @@ Election module
 ===============
 
 .. toctree::
+    :maxdepth: 2
+
     Instance <instance>
     Ballot <ballot>
     Profile <profile>

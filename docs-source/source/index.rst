@@ -1,10 +1,8 @@
-.. pabutools documentation master file, created by
-   sphinx-quickstart on Wed Jun 28 12:03:46 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Pabutools: PB as easy as ABC
+============================
 
-pabutools' reference guide
-==========================
+(For the pun, see the awesome `ABC <https://github.com/martinlackner/abcvoting>`_)
+
 
 .. toctree::
    :maxdepth: 2

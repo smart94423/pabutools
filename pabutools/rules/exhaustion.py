@@ -27,7 +27,7 @@ def completion_by_rule_combination(
         rule_params: Iterable[dict], optional
             Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule
             functions. Defaults to `{}`.
-        initial_budget_allocation: Iterable[Project], optional
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             An initial budget allocation, typically empty. Defaults to `[]`.
 
     Returns
