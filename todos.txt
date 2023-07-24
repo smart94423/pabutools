@@ -4,4 +4,6 @@ Check the ballots for which the satisfaction work.
 
 Update type for Counter initializer.
 
-Correct the FrozenCardinalBallots
+Correct the FrozenCardinalBallots that are now implemented with a dirty trick.
+
+Implement MES with when non-supporters can pay.
