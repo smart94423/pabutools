@@ -14,7 +14,7 @@ from pabutools.election import (
     Project,
     total_cost,
     MultiProfile,
-    GroupSatisfactionMeasure,
+    GroupSatisfactionMeasure, AbstractProfile,
 )
 
 
@@ -100,7 +100,7 @@ def max_additive_utilitarian_welfare_scheme(
 
 def max_additive_utilitarian_welfare(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
     sat_profile: GroupSatisfactionMeasure = None,
     resoluteness: bool = True,

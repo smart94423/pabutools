@@ -121,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Pabutools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Complete Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/election/index.html">Election module</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../reference/election/instance.html">Instance</a></li>
@@ -263,7 +263,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">GroupSatisfactionMeasure</span>
 
-<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">MultiProfile</span><span class="p">,</span> <span class="n">SatisfactionMultiProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">MultiProfile</span><span class="p">,</span> <span class="n">SatisfactionMultiProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">AbstractProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span><span class="p">,</span> <span class="n">SatisfactionProfile</span>
@@ -525,7 +525,7 @@ document.write(`
 
 <div class="viewcode-block" id="method_of_equal_shares"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.mes.method_of_equal_shares">[docs]</a><span class="k">def</span> <span class="nf">method_of_equal_shares</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span> <span class="o">|</span> <span class="n">MultiProfile</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

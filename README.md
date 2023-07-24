@@ -70,3 +70,5 @@ After having pushed, the documentation will automatically be updated.
 Note that a large part of the documentation is done by hand (to ensure proper display and correct ordering). 
 This means that if you create new class of functions that should appear in the documentation, you may have
 to add they yourself using to autodoc directives (take inspiration from the files in `docs-source/source`). 
+
+If you want to help, check the `todos.txt` file, several todos are described there.

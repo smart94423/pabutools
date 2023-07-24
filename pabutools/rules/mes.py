@@ -7,7 +7,7 @@ from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
 
-from pabutools.election import MultiProfile, SatisfactionMultiProfile, AbstractBallot
+from pabutools.election import MultiProfile, SatisfactionMultiProfile, AbstractBallot, AbstractProfile
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import Profile
 from pabutools.election.satisfaction import SatisfactionMeasure, SatisfactionProfile
@@ -269,7 +269,7 @@ def mes_scheme(
 
 def method_of_equal_shares(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
     sat_profile: GroupSatisfactionMeasure = None,
     tie_breaking: TieBreakingRule = None,

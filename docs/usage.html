@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Usage &#8212; Pabutools</title>
+    <title>Complete Guide &#8212; Pabutools</title>
   
   
   
@@ -124,7 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Pabutools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Complete Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="reference/election/index.html">Election module</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="reference/election/instance.html">Instance</a></li>
@@ -292,7 +292,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Usage</h1>
+    <h1>Complete Guide</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -310,7 +310,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinal-profiles">Ordinal Profiles</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-libraries">Preference Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiprofile">Multiprofile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-libraries">Preference Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PaBuLib</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preflib">PrefLib</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#satisfaction-measures">Satisfaction Measures</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-satisfaction-functions">Functional Satisfaction Functions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-satisfaction-functions">Additive Satisfaction Functions</a></li>
@@ -318,8 +323,17 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#satisfaction-functions-already-defined">Satisfaction Functions Already Defined</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rules">Rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rules">Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-utilitarian-welfare-maximiser">Additive Utilitarian Welfare Maximiser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-approximation-of-the-welfare-maximiser">Greedy Approximation of the Welfare Maximiser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-phragmen-s-rule">Sequential Phragmèn’s Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-of-equal-shares">Method of Equal Shares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exhaustion-methods">Exhaustion Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-composition">Rule Composition</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tie-breaking">Tie-Breaking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fractions">Fractions</a></li>
 </ul>
             </nav>
         </div>
@@ -331,9 +345,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h1>
-<p>This is a more complete guide for how to use the Pabutools. For a more basic tutorial,
+  <section id="complete-guide">
+<h1>Complete Guide<a class="headerlink" href="#complete-guide" title="Permalink to this heading">#</a></h1>
+<p>This is a more complete guide on how to use Pabutools. For a more basic tutorial,
 check the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quick Start</span></a> page.</p>
 <section id="instances">
 <h2>Instances<a class="headerlink" href="#instances" title="Permalink to this heading">#</a></h2>
@@ -343,12 +357,12 @@ projects that are being voted on, together with the budget limit.</p>
 <p>The main class here is <a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>.
 This class inherits from the Python class <cite>set</cite> and behaves as a set of projects,
 with additional information. Projects are instantiations of the class
-<a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> that stores a project’ name and cost
+<a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, which stores a project’s name and cost
 (and potential additional information). Let’s see an example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
 <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>   <span class="c1"># There are many optional parameters</span>
-<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor takes name and cost of the project</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor takes the name and cost of the project</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>   <span class="c1"># Use the set methods to add/delete projects to an instance</span>
 <span class="n">p2</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
@@ -356,10 +370,10 @@ with additional information. Projects are instantiations of the class
 <span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Importantly, any Python comparison between two projects (equality etc…) is done on the
+<p>Importantly, any Python comparison between two projects (equality, etc…) is done based on the
 name of the projects. Since an instance is a set, adding a project <cite>Project(“p”, 1)</cite> and
 another project <cite>Project(“p”, 3)</cite> will lead to an instance with a single project.</p>
-<p>An instance also stores additional information such as the budget limit of the election,
+<p>An instance also stores additional information such as the budget limit of the election
 and additional metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># The budget limit</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">meta</span>   <span class="c1"># dict storing metadata on the instance</span>
@@ -367,7 +381,7 @@ and additional metadata.</p>
 </pre></div>
 </div>
 <p>Several methods can be called on an instance to run through all the budget allocations,
-test the feasiblity of a set of projects etc…</p>
+test the feasibility of a set of projects, etc…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_allocations</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is a feasible budget allocation&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">])</span>   <span class="c1"># Returns False</span>
@@ -379,16 +393,16 @@ test the feasiblity of a set of projects etc…</p>
 <h2>Profiles<a class="headerlink" href="#profiles" title="Permalink to this heading">#</a></h2>
 <p>For reference, see the modules <a class="reference internal" href="reference/election/ballot.html#module-pabutools.election.ballot" title="pabutools.election.ballot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ballot</span></code></a> and
 <a class="reference internal" href="reference/election/profile.html#module-pabutools.election.profile" title="pabutools.election.profile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">profile</span></code></a>.</p>
-<p>A profile is the second basic component of a participatory budgeting election, it stores
+<p>A profile is the second basic component of a participatory budgeting election; it stores
 the ballots of the voters.</p>
 <p>We provide one general class <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>
-that inherits from the Python class <cite>list</cite> and that is inherited from by all specific
-profile types. It is really meant to be an abstract class and should not really be used
+that inherits from the Python class <cite>list</cite> and is inherited from by all specific
+profile types. It is really meant to be an abstract class and should not be used
 for any other purpose than inheritance. Similarly, we provide a class
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a> that will be inherited by specific
 ballot formats.</p>
-<p>A profile is linked to an instance, which is given as a parameter, and then stored in
-an attribute. It also implements a validation of the ballots to ensure consistency
+<p>A profile is linked to an instance, which is given as a parameter and then stored in
+an attribute. It also implements validation of the ballots to ensure consistency
 of the ballots in a profile.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">Ballot</span>
 
@@ -444,9 +458,9 @@ It inherits from the <a class="reference internal" href="reference/election/prof
 
 <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="n">b1</span> <span class="o">=</span> <span class="n">CardinalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">0</span><span class="p">})</span>   <span class="c1"># Cardinal ballot scoring 5 for p1 and 0 for p2</span>
-<span class="n">b2</span> <span class="o">=</span> <span class="n">CardinalBallot</span><span class="p">()</span>
-<span class="n">b2</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">9</span>   <span class="c1"># Assign score to p0</span>
-<span class="n">profile</span> <span class="o">=</span> <span class="n">CardinalProfile</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">])</span>
+<span class="n">b1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>   <span class="c1"># The ballot becomes p0 &gt; p4 &gt; p2 &gt; p1</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">CardinalProfile</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -482,11 +496,76 @@ represents such ballots. It inherits from the Python class <cite>list</cite> and
 </div>
 </section>
 </section>
+<section id="multiprofile">
+<h2>Multiprofile<a class="headerlink" href="#multiprofile" title="Permalink to this heading">#</a></h2>
+<p>For reference, see the modules <a class="reference internal" href="reference/election/profile.html#module-pabutools.election.profile" title="pabutools.election.profile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">profile</span></code></a>.</p>
+<p>In some cases, it is faster to use multisets instead of lists for the profiles. We have
+implemented this through multiprofiles. A multiprofile is a collection of ballots in which
+each ballot is stored once, together with its multiplicity. Importantly, we always our
+implementations always allow for profiles and multiprofiles to be used interchangeably.</p>
+<p>Multiprofiles are defined through the class
+<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a> that inherits from the Python
+class <cite>Counter</cite>. Each specific type of profile has its multiprofile counterpart:
+<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile" title="pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a>,
+<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile" title="pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a>,
+<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile" title="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a>,
+and <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile" title="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a>.</p>
+<p>Since ballots are used as dictionary keys in a multiprofile, they need not be mutable.
+We have thus implemented the class <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.FrozenBallot" title="pabutools.election.ballot.ballot.FrozenBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenBallot</span></code></a>
+which corresponds to the non-mutable correspondence to a ballot. All specific ballot types
+have their frozen counterparts:
+<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot" title="pabutools.election.ballot.approvalballot.FrozenApprovalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenApprovalBallot</span></code></a>,
+<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot" title="pabutools.election.ballot.cardinalballot.FrozenCardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenCardinalBallot</span></code></a>,
+<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot" title="pabutools.election.ballot.cumulativeballot.FrozenCumulativeBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenCumulativeBallot</span></code></a>,
+and <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot" title="pabutools.election.ballot.ordinalballot.FrozenOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenOrdinalBallot</span></code></a>.</p>
+<p>Ballots can easily be frozen:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">FrozenApprovalBallot</span>
+
+<span class="n">app_ballot</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)})</span>
+<span class="c1"># Freezing a ballot using the frozen method of a ballot</span>
+<span class="n">frozen_ballot</span> <span class="o">=</span> <span class="n">app_ballot</span><span class="o">.</span><span class="n">frozen</span><span class="p">()</span>
+
+<span class="c1"># Freezing a ballot using the frozen ballot constructor</span>
+<span class="n">frozen_ballot</span> <span class="o">=</span> <span class="n">FrozenApprovalBallot</span><span class="p">(</span><span class="n">app_ballot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Similarly profiles can easily be turned into multiprofiles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">FrozenApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalMultiProfile</span>
+
+<span class="n">b1</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)})</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)})</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">])</span>
+
+<span class="c1"># Multiprofile from the method of a profile</span>
+<span class="n">multiprofile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_multiprofile</span><span class="p">()</span>
+
+<span class="c1"># Multiprofile using the constructor</span>
+<span class="n">frozen_ballot</span> <span class="o">=</span> <span class="n">ApprovalMultiProfile</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What is the gain of multiprofiles, you would ask? Well, we can show that using multiprofile
+speeds up the computation as long as voters do not approve of more than 7 projects on average.</p>
+<a class="reference internal image-reference" href="_images/RuntimeProfileMultiprofile.png"><img alt="Analysis of the runtime using profiles and multiprofiles" src="_images/RuntimeProfileMultiprofile.png" style="width: 600px;" /></a>
+<p>For the above plot, we computed the outcome of the rules on the data hosted on
+<a class="reference external" href="http://pabulib.org">pabulib</a> both when using profiles and multiprofiles. We measured the
+runtime and plotted the following measure:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>multiprofile_runtime<span class="w"> </span>-<span class="w"> </span>profile_runtime<span class="o">)</span><span class="w"> </span>/<span class="w"> </span>max<span class="o">(</span>multiprofile_runtime,<span class="w"> </span>profile_runtime<span class="o">)</span>
+</pre></div>
+</div>
+<p>To get more insights, we also plot the actual runtime for each type of profiles:</p>
+<a class="reference internal image-reference" href="_images/RuntimeMESCost.png"><img alt="Analysis of the runtime of MES[Cost_Sat] using profiles and multiprofiles" src="_images/RuntimeMESCost.png" style="width: 600px;" /></a>
+<p>(Note the log scale above)</p>
+</section>
 <section id="preference-libraries">
 <h2>Preference Libraries<a class="headerlink" href="#preference-libraries" title="Permalink to this heading">#</a></h2>
-<p>We provide full support of the PB data hosted on the
-[pabulib](<a class="reference external" href="http://pabulib.org">http://pabulib.org</a>) website. The function
-<cite>pabutools.election.parse_pabulib</cite> can be used to parse a file
+<p>For reference, see <a class="reference internal" href="reference/election/libraries.html#preflibraries"><span class="std std-ref">Preference Libraries</span></a>.</p>
+<p>We provide support for standard preference libraries that are widely used.</p>
+<section id="id1">
+<h3>PaBuLib<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>We provide full support for the participatory budgeting data hosted on the
+<a class="reference external" href="http://pabulib.org">pabulib</a> website. The function
+<a class="reference internal" href="reference/election/libraries.html#pabutools.election.pabulib.parse_pabulib" title="pabutools.election.pabulib.parse_pabulib"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a> can be used to parse a file
 formatted according to the pabulib format. It returns the instance
 and the profile, using the suitable profile class given the ballot
 format in the data.</p>
@@ -495,7 +574,7 @@ format in the data.</p>
 <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib</span><span class="p">(</span><span class="s2">&quot;path_to_the_file&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Pabulib files provide a whole range of metadata, not all of which are
+<p>Pabulib files provide a whole range of metadata, not all of which is
 relevant to everyone. These metadata are stored in the <cite>meta</cite>
 members of the instance and profile classes.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
@@ -508,11 +587,11 @@ members of the instance and profile classes.</p>
 </pre></div>
 </div>
 <p>There are several metadata that are stored as members of the relevant
-classes. These for instance include all the constraints (when known)
+classes. These, for instance, include all the constraints (when known)
 the voters faced when submitting their ballots. It includes the minimum
-length of a ballot, or the number of points that have to be distributed
+length of a ballot or the number of points that have to be distributed
 for instance.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### For ApprovalProfile, CardinalProfile, CumulativeProfile and OrdinalProfile</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### For ApprovalProfile, CardinalProfile, CumulativeProfile, and OrdinalProfile</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_length</span>   <span class="c1"># Imposed minimum length of the ballots in the profile</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_length</span>   <span class="c1"># Imposed maximum length of the ballots in the profile</span>
 
@@ -530,33 +609,62 @@ for instance.</p>
 </pre></div>
 </div>
 </section>
+<section id="preflib">
+<h3>PrefLib<a class="headerlink" href="#preflib" title="Permalink to this heading">#</a></h3>
+<p>We also support the PrefLib format, providing functions to move save a participatory
+budgeting election into a PrefLib instance.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">CardinalProfile</span><span class="p">,</span> <span class="n">OrdinalProfile</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">approval_to_preflib</span><span class="p">,</span> <span class="n">cardinal_to_preflib</span><span class="p">,</span> <span class="n">ordinal_to_preflib</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
+
+<span class="c1"># Approval profiles are mapped to categorical instances for PrefLib</span>
+<span class="n">app_profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">()</span>
+<span class="n">preflib_instance</span> <span class="o">=</span> <span class="n">approval_to_preflib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">app_profile</span><span class="p">)</span>
+
+<span class="c1"># Cardinal profiles are mapped to ordinal instances for PrefLib</span>
+<span class="n">card_profile</span> <span class="o">=</span> <span class="n">CardinalProfile</span><span class="p">()</span>
+<span class="n">preflib_instance</span> <span class="o">=</span> <span class="n">cardinal_to_preflib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">card_profile</span><span class="p">)</span>
+
+<span class="c1"># Ordinal profiles are mapped to ordinal instances for PrefLib</span>
+<span class="n">ord_profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">()</span>
+<span class="n">preflib_instance</span> <span class="o">=</span> <span class="n">ordinal_to_preflib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">ord_profile</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="satisfaction-measures">
 <h2>Satisfaction Measures<a class="headerlink" href="#satisfaction-measures" title="Permalink to this heading">#</a></h2>
-<p>Many concepts, including celebrated PB rules, are not using the ballots
-directly but rather proxies for the satisfaction of the voters that are
-deduced from the ballots.</p>
-<p>We provide many satisfaction functions, and flexible ways to create new ones.
-A satisfaction function is a class that inherits from <cite>Satisfaction</cite>,
-i.e., a class initialised for a given instance, profile, and ballot and
-that implements a <cite>sat</cite> method that is used to compute the
-satisfaction. Since a satisfaction function corresponds to a single ballot,
-we also provide a <cite>SatisfactionProfile</cite> class. This class inherits
-from the Python class <cite>list</cite> and implements a satisfaction profile.</p>
+<p>Many concepts, including celebrated participatory budgeting rules, are not using the ballots
+directly but rather proxies for the satisfaction of the voters that are deduced from the ballots.</p>
+<p>We provide many satisfaction functions and flexible ways to create new ones.
+A satisfaction function is a class that inherits from
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>,
+i.e., a class initialized for a given instance, profile, and ballot and
+that implements a <cite>sat</cite> method used to compute the satisfaction. Since a satisfaction function corresponds to a single ballot,
+we also provide a <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a>
+class. This class inherits from the Python class <cite>list</cite> and implements a
+satisfaction profile. Note that there is also a class
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMultiProfile</span></code></a>,
+implementing satisfaction profiles as multisets.</p>
 <p>The typical workflow is thus to gather the ballots in a profile, then
-convert it into a collection of satisfaction functions, that are finally
-provided as input of a rule.</p>
+convert it into a collection of satisfaction functions, which are finally
+provided as input to a rule.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">SatisfactionProfile</span><span class="p">,</span> <span class="n">SatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
 
 <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib</span><span class="p">(</span><span class="s2">&quot;path_to_the_file&quot;</span><span class="p">)</span>
 <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">SatisfactionProfile</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
+
 <span class="c1"># We define a satisfaction function:</span>
 <span class="k">class</span> <span class="nc">MySatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">100</span> <span class="k">if</span> <span class="s2">&quot;p1&quot;</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span>
+
 <span class="c1"># We populate the satisfaction profile</span>
 <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
     <span class="n">sat_profile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MySatisfaction</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">))</span>
+
 <span class="c1"># The satisfaction profile is ready for use</span>
 <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">sat_profile</span><span class="p">)</span>
 </pre></div>
@@ -569,7 +677,7 @@ directly provided.</p>
 
 <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib</span><span class="p">(</span><span class="s2">&quot;path_to_the_file&quot;</span><span class="p">)</span>
 <span class="c1"># If a profile and a sat_class are given to the constructor, the satisfaction profile</span>
-<span class="c1"># is directly initialised with one instance of the sat_class per ballot in the profile.</span>
+<span class="c1"># is directly initialized with one instance of the sat_class per ballot in the profile.</span>
 <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">SatisfactionProfile</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">Cardinality_Sat</span><span class="p">)</span>
 <span class="c1"># The satisfaction profile is ready for use</span>
 <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">sat_profile</span><span class="p">)</span>
@@ -578,11 +686,12 @@ directly provided.</p>
 <p>We now present useful tools we provide to define satisfaction functions.</p>
 <section id="functional-satisfaction-functions">
 <h3>Functional Satisfaction Functions<a class="headerlink" href="#functional-satisfaction-functions" title="Permalink to this heading">#</a></h3>
-<p>We also provide more specific ways of defining satisfaction function.
-The class <cite>FunctionalSatisfaction</cite> corresponds to satisfaction
-function that are defined by a function taking as argument an instance,
-a profile, a ballot and a set of projects. We illustrate its use by
-defining the Chamberlin-Courant satisfaction function with approval
+<p>We also provide more specific ways of defining satisfaction functions.
+The class
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction" title="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a>
+corresponds to a satisfaction function that is defined by a function taking as
+arguments an instance, a profile, a ballot, and a set of projects. We illustrate
+its use by defining the Chamberlin-Courant satisfaction function with approval
 (equals to 1 if at least one approved project is selected and
 0 otherwise).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">FunctionalSatisfaction</span>
@@ -601,9 +710,11 @@ defining the Chamberlin-Courant satisfaction function with approval
 <p>Another important set of satisfaction functions are the additive ones,
 i.e., the ones for which the satisfaction for a set of projects is
 equal to the satisfaction of each individual project. The class
-<cite>AdditiveSatisfaction</cite> implements them. It inherits from the
-<cite>Satisfaction</cite> class and its constructor takes as a parameter
-a function mapping instance, profile, ballot and project to a score.
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a>
+implements them. It inherits from the
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>
+class, and its constructor takes as a parameter
+a function mapping instance, profile, ballot, and project to a score.
 We illustrate its use by presenting how to define the cardinality
 satisfaction function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AdditiveSatisfaction</span>
@@ -622,7 +733,8 @@ satisfaction function.</p>
 <p>Positional satisfaction functions are to be used with ordinal ballots.
 When using them, the satisfaction of a voter is a function of the
 position of the projects in the ballot of the voter. The class
-<cite>PositionalSatisfaction</cite> implements them. The constructor takes
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a>
+implements them. The constructor takes
 as parameters two functions: one mapping ballots and projects to a score,
 and a second one aggregating the individual scores for sets of projects.
 We illustrate its usage by defining the additive Borda satisfaction
@@ -646,24 +758,443 @@ function.</p>
 in the library and can be imported from <cite>pabutools.election</cite>. We list
 them below.</p>
 <ul class="simple">
-<li><p><cite>CC_Sat</cite> implements the Chamberlin-Courant satisfaction function for approval ballots.</p></li>
-<li><p><cite>Cost_Sqrt_Sat</cite> defines the satisfaction as the square root of the total cost of the selected and approed projects.</p></li>
-<li><p><cite>Cost_Log_Sat</cite> defines the satisfaction as the log of the total cost of the approved and selected projects.</p></li>
-<li><p><cite>Cardinality_Sat</cite> defines the satisfaction as the number of approved and selected projects.</p></li>
-<li><p><cite>Cost_Sat</cite> defines the satisfaction as the total cost of the approved and selected projects.</p></li>
-<li><p><cite>Effort_Sat</cite> defines the satisfaction as the total share of a voter</p></li>
-<li><p><cite>Additive_Cardinal_Sat</cite> defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.</p></li>
-<li><p><cite>Additive_Borda_Sat</cite> defines the satisfaction as the sum of the Borda scores of the selected projects.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.CC_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">CC_Sat</span></code></a> implements the Chamberlin-Courant satisfaction function for approval ballots.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sqrt_Sat</span></code></a> defines the satisfaction as the square root of the total cost of the selected and approved projects.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Log_Sat</span></code></a> defines the satisfaction as the log of the total cost of the approved and selected projects.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cardinality_Sat</span></code></a> defines the satisfaction as the number of approved and selected projects.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a> defines the satisfaction as the number of approved and selected projects divided by the size of the ballot.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a> defines the satisfaction as the total cost of the approved and selected projects.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cost_Sat</span></code></a> defines the satisfaction as the total cost of the approved and selected projects divided by the total cost of the most expensive subset of the ballot.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cost_Approx_Normaliser_Sat</span></code></a> resembles the previous but uses the total cost of the ballot as the normalizer.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a> defines the satisfaction as the total share of a voter.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat</span></code></a> defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat" title="pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a> defines the satisfaction as the sum of the Borda scores of the selected projects.</p></li>
 </ul>
 </section>
 </section>
 <section id="rules">
 <h2>Rules<a class="headerlink" href="#rules" title="Permalink to this heading">#</a></h2>
-<p>See the module <cite>pabutools.rules</cite>.</p>
+<p>For reference, see the module <a class="reference internal" href="reference/rules/index.html#module-pabutools.rules" title="pabutools.rules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rules</span></code></a>.</p>
+<p>We provide the implementation of the most celebrated rules for participatory budgeting.</p>
+<section id="additive-utilitarian-welfare-maximiser">
+<h3>Additive Utilitarian Welfare Maximiser<a class="headerlink" href="#additive-utilitarian-welfare-maximiser" title="Permalink to this heading">#</a></h3>
+<p>The first rule we provide is the one that returns the budget allocations maximizing the
+utilitarian social welfare, when the satisfaction measure is additive.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">max_additive_utilitarian_welfare</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># By passing a sat_class, the profile is automatically converted to a satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">max_additive_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span>
+<span class="p">)</span>
+
+<span class="c1"># Or we can directly pass the satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">max_additive_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># An initial budget allocation can be given</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">max_additive_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># We can get the irresolute outcome, i.e., a set of tied budget allocations</span>
+<span class="n">irresolute_outcome</span> <span class="o">=</span> <span class="n">max_additive_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="greedy-approximation-of-the-welfare-maximiser">
+<h3>Greedy Approximation of the Welfare Maximiser<a class="headerlink" href="#greedy-approximation-of-the-welfare-maximiser" title="Permalink to this heading">#</a></h3>
+<p>We have also implemented standard greedy rules. The usage is more or less the same as
+before though, more functionalities are offered.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span>
+<span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># By passing a sat_class, the profile is automatically converted to a satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span>
+<span class="p">)</span>
+
+<span class="c1"># Or we can directly pass the satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># If the satisfaction is known to be additive, we can say so to speed up computations</span>
+<span class="c1"># This is highly recommended</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">is_sat_additive</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># An initial budget allocation can be given</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># The tie-breaking rule can be decided</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">tie_breaking</span><span class="o">=</span><span class="n">app_score_tie_breaking</span>
+<span class="p">)</span>
+
+<span class="c1"># We can get the irresolute outcome, i.e., a set of tied budget allocations</span>
+<span class="n">irresolute_outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sequential-phragmen-s-rule">
+<h3>Sequential Phragmèn’s Rule<a class="headerlink" href="#sequential-phragmen-s-rule" title="Permalink to this heading">#</a></h3>
+<p>The sequential Phragmén’s rule has also been implemented. It behaves like other rules,
+though it does not rely on a satisfaction measure.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">sequential_phragmen</span>
+<span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># By passing a sat_class, the profile is automatically converted to a satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span>
+<span class="p">)</span>
+
+<span class="c1"># An initial budget allocation can be given</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># The tie-breaking rule can be decided</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">tie_breaking</span><span class="o">=</span><span class="n">app_score_tie_breaking</span>
+<span class="p">)</span>
+
+<span class="c1"># We can get the irresolute outcome, i.e., a set of tied budget allocations</span>
+<span class="n">irresolute_outcome</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="method-of-equal-shares">
+<h3>Method of Equal Shares<a class="headerlink" href="#method-of-equal-shares" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">method_of_equal_shares</span>
+<span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># By passing a sat_class, the profile is automatically converted to a satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span>
+<span class="p">)</span>
+
+<span class="c1"># Or we can directly pass the satisfaction profile</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># An initial budget allocation can be given</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># The tie-breaking rule can be decided</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">Cost_Sat</span><span class="p">),</span>
+    <span class="n">tie_breaking</span><span class="o">=</span><span class="n">app_score_tie_breaking</span>
+<span class="p">)</span>
+
+<span class="c1"># We can get the irresolute outcome, i.e., a set of tied budget allocations</span>
+<span class="n">irresolute_outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exhaustion-methods">
+<h3>Exhaustion Methods<a class="headerlink" href="#exhaustion-methods" title="Permalink to this heading">#</a></h3>
+<p>Since not all rules we have introduced return exhaustive budget allocations, we also provide standard
+methods to render their outcome exhaustive.</p>
+<p>The first method is to apply a sequence of rules until reaching an exhaustive budget allocation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">completion_by_rule_combination</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># Here we apply two rules: first MES with the cost satisfaction,</span>
+<span class="c1"># and then the greedy rule with the cardinality satisfaction</span>
+<span class="n">budget_allocation_mes_iterated</span> <span class="o">=</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">method_of_equal_shares</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+    <span class="p">[{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cardinality_Sat</span><span class="p">}],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The second method consists of increasing the budget limit of the instance, in the hope that the
+rule would then return a budget allocation that is exhaustive for the original instance. If at any
+point the rule returns a budget allocation that is not feasible for the original budget limit, then
+the previously returned budget allocation is returned.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">method_of_equal_shares</span><span class="p">,</span> <span class="n">exhaustion_by_budget_increase</span>
+<span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># Here we apply the MES rule with cost satisfaction until finding a suitable outcome</span>
+<span class="n">budget_allocation_mes_iterated</span> <span class="o">=</span> <span class="n">exhaustion_by_budget_increase</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">method_of_equal_shares</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+    <span class="n">budget_step</span><span class="o">=</span><span class="n">frac</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that since these two functions behave as rules, they can be combined. For instance, one
+can first run MES with an increasing budget, and then complete the outcome with the greedy
+method (which only does something if the outcome is not already exhaustive).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">completion_by_rule_combination</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">exhaustion_by_budget_increase</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+    <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">method_of_equal_shares</span><span class="p">,</span>
+            <span class="s2">&quot;rule_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rule-composition">
+<h3>Rule Composition<a class="headerlink" href="#rule-composition" title="Permalink to this heading">#</a></h3>
+<dl class="simple">
+<dt>We also provide standard ways to compose rules, such as selecting the outcome that is</dt><dd><p>most preferred for a given satisfaction measure.</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">popularity_comparison</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># Here we apply two rules: MES and greedy with the cost satisfaction,</span>
+<span class="c1"># and return the most preferred outcome based on Cardinality_Sat</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">popularity_comparison</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">Cardinality_Sat</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">method_of_equal_shares</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+    <span class="p">[{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">}],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>To run the rule as it was implemented in Wieliczka and Świece, for instance, one would run the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">exhaustion_by_budget_increase</span><span class="p">,</span> <span class="n">popularity_comparison</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">8</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="c1"># First define MES iterated and completed (to simplify)</span>
+<span class="k">def</span> <span class="nf">mes_full</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
+        <span class="n">instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">exhaustion_by_budget_increase</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+        <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">method_of_equal_shares</span><span class="p">,</span>
+                <span class="s2">&quot;rule_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+            <span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+
+<span class="c1"># Then run a popularity comparison between MES in full and Greedy Cardinality</span>
+<span class="n">popularity_comparison</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">,</span>
+    <span class="n">Cardinality_Sat</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">mes_full</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+    <span class="p">[{},</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cardinality_Sat</span><span class="p">}]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="tie-breaking">
 <h2>Tie-Breaking<a class="headerlink" href="#tie-breaking" title="Permalink to this heading">#</a></h2>
-<p>See the module <cite>pabutools.tiebreaking</cite>.</p>
+<p>For reference, see the module <a class="reference internal" href="reference/tiebreaking.html#module-pabutools.tiebreaking" title="pabutools.tiebreaking"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tiebreaking</span></code></a>.</p>
+<p>We provide several ways to break ties between several projects. All tie-breaking rules are
+instantiations of the <a class="reference internal" href="reference/tiebreaking.html#pabutools.tiebreaking.TieBreakingRule" title="pabutools.tiebreaking.TieBreakingRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">pabutools.tiebreaking.TieBreakingRule</span></code></a> class.
+This class defines two functions <cite>untie</cite> and <cite>order</cite> that respectively return a single project
+from a set of several or order a list of projects.</p>
+<p>We profile several tie-breaking rules.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">max_cost_tie_breaking</span><span class="p">,</span> <span class="n">min_cost_tie_breaking</span>
+<span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span><span class="p">,</span> <span class="n">lexico_tie_breaking</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p0&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+    <span class="n">ApprovalBallot</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+    <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+<span class="p">])</span>
+
+<span class="n">min_cost_tie_breaking</span><span class="o">.</span><span class="n">untie</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>   <span class="c1"># Returns p0</span>
+<span class="n">max_cost_tie_breaking</span><span class="o">.</span><span class="n">untie</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>   <span class="c1"># Returns p1</span>
+
+<span class="n">app_score_tie_breaking</span><span class="o">.</span><span class="n">untie</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>   <span class="c1"># Returns p1</span>
+<span class="n">app_score_tie_breaking</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>   <span class="c1"># Returns [p1, p2, p0]</span>
+
+<span class="n">lexico_tie_breaking</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>   <span class="c1"># Returns [p0, p1, p2]</span>
+</pre></div>
+</div>
+<p>These are mainly used as arguments for the rules, as seen above.</p>
+</section>
+<section id="fractions">
+<h2>Fractions<a class="headerlink" href="#fractions" title="Permalink to this heading">#</a></h2>
+<p>For reference, see the module <a class="reference internal" href="reference/fractions.html#module-pabutools.fractions" title="pabutools.fractions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fractions</span></code></a>.</p>
+<p>We provide a customizable way to handle fractions. In general, all fractions should be defined
+using the <a class="reference internal" href="reference/fractions.html#pabutools.fractions.frac" title="pabutools.fractions.frac"><code class="xref py py-func docutils literal notranslate"><span class="pre">frac()</span></code></a> function provided in the <a class="reference internal" href="reference/fractions.html#module-pabutools.fractions" title="pabutools.fractions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fractions</span></code></a>
+module. Not doing so may lead to undesirable behaviors (i.e., errors).</p>
+<p>To make a fraction, simply follow this guide:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span><span class="p">,</span> <span class="n">str_as_frac</span>
+
+<span class="c1"># Define a fraction</span>
+<span class="n">fraction</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Define a fraction from an integer</span>
+<span class="n">fraction_from_int</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Define a fraction from a float</span>
+<span class="n">fraction_from_int</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="mf">2.6</span><span class="p">)</span>
+
+<span class="c1"># Define a fraction from a string</span>
+<span class="n">fraction_from_str</span> <span class="o">=</span> <span class="n">str_as_frac</span><span class="p">(</span><span class="s2">&quot;2.3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, the <a class="reference external" href="https://gmpy2.readthedocs.io/en/latest/mpq.html">gmpy2</a> module is used to
+handle fractions. To change this, simply change the value of the <cite>FRACTION</cite> constant.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pabutools.fractions</span>
+
+<span class="c1"># The default value</span>
+<span class="n">pabutools</span><span class="o">.</span><span class="n">fractions</span><span class="o">.</span><span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
+
+<span class="c1"># Change to Python float</span>
+<span class="n">pabutools</span><span class="o">.</span><span class="n">fractions</span><span class="o">.</span><span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
+</pre></div>
+</div>
+<p>Changing the <cite>FRACTION</cite> constant changes the algorithm used to handle fractions.</p>
 </section>
 </section>
 
@@ -723,7 +1254,12 @@ them below.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinal-profiles">Ordinal Profiles</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-libraries">Preference Libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiprofile">Multiprofile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-libraries">Preference Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PaBuLib</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preflib">PrefLib</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#satisfaction-measures">Satisfaction Measures</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-satisfaction-functions">Functional Satisfaction Functions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-satisfaction-functions">Additive Satisfaction Functions</a></li>
@@ -731,8 +1267,17 @@ them below.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#satisfaction-functions-already-defined">Satisfaction Functions Already Defined</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rules">Rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rules">Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-utilitarian-welfare-maximiser">Additive Utilitarian Welfare Maximiser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-approximation-of-the-welfare-maximiser">Greedy Approximation of the Welfare Maximiser</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-phragmen-s-rule">Sequential Phragmèn’s Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-of-equal-shares">Method of Equal Shares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exhaustion-methods">Exhaustion Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-composition">Rule Composition</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tie-breaking">Tie-Breaking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fractions">Fractions</a></li>
 </ul>
   </nav></div>
 

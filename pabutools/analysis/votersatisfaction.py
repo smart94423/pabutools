@@ -121,7 +121,7 @@ def gini_coefficient_of_satisfaction(
 
 def satisfaction_histogram(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     budget_allocation: Iterable[Project],
     sat_class: type[SatisfactionMeasure],
     max_satisfaction: Number,

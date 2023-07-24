@@ -450,7 +450,7 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"total_ballot_cost": total_cost([p for p in ballot if p in ballot])}
+        return {"total_ballot_cost": total_cost([p for p in ballot])}
 
 
 def effort_sat_func(

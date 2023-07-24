@@ -1,3 +1,5 @@
+.. _preflibraries:
+
 Preference Libraries
 ====================
 

@@ -19,7 +19,7 @@ author = "Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.napoleon", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.napoleon", "sphinx.ext.viewcode", "sphinx.ext.autodoc", "sphinx.ext.imgmath"]
 
 add_module_names = False
 autodoc_member_order = "groupwise"
