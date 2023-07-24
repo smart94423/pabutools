@@ -32,6 +32,11 @@ pip3 install pabutools
 ## Documentation
 
 The complete documentation is available [here](https://pbvoting.github.io/pabutools/).
+You will find there the [installation instructions](https://pbvoting.github.io/pabutools/installation.html),
+a [short guide](https://pbvoting.github.io/pabutools/quickstart.html) for a quick start,
+a [complete guide](https://pbvoting.github.io/pabutools/usage.html) for more advanced usage,
+and the usual [reference guide](https://pbvoting.github.io/pabutools/reference/index.html) to
+get all the details.
 
 ## Development
 
