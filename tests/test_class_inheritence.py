@@ -20,8 +20,13 @@ from pabutools.election import (
     Additive_Borda_Sat,
     ApprovalMultiProfile,
     FrozenApprovalBallot,
-    FrozenCumulativeBallot, FrozenCardinalBallot, CardinalMultiProfile, CumulativeMultiProfile, FrozenOrdinalBallot,
-    OrdinalMultiProfile, SatisfactionMultiProfile,
+    FrozenCumulativeBallot,
+    FrozenCardinalBallot,
+    CardinalMultiProfile,
+    CumulativeMultiProfile,
+    FrozenOrdinalBallot,
+    OrdinalMultiProfile,
+    SatisfactionMultiProfile,
 )
 
 
@@ -430,7 +435,9 @@ class TestAnalysis(TestCase):
         # check_dict_members(profile, ballots[:10], ballots[10:])
 
         ballots = [
-            FrozenOrdinalBallot(projects, name="app" + str(i), meta={"key" + str(i): "v"})
+            FrozenOrdinalBallot(
+                projects, name="app" + str(i), meta={"key" + str(i): "v"}
+            )
             for i in range(20)
         ]
         profile = OrdinalMultiProfile(

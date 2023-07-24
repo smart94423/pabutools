@@ -22,6 +22,7 @@ from pabutools.election.profile import (
 import csv
 import os
 
+
 def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProfile]:
     """
     Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile will be of the
@@ -40,7 +41,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
     instance = Instance()
     ballots = []
     optional_sets = {"categories": set(), "targets": set()}
-    
+
     lines = file_content.splitlines()
     section = ""
     header = []
@@ -65,9 +66,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
                             entry.strip() for entry in row[i].split(",")
                         ]
                         p.categories = set(project_meta["categories"])
-                        optional_sets["categories"].update(
-                            project_meta["categories"]
-                        )
+                        optional_sets["categories"].update(project_meta["categories"])
                     elif key in ["target", "targets"]:
                         project_meta["targets"] = [
                             entry.strip() for entry in row[i].split(",")
@@ -92,9 +91,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
             elif instance.meta["vote_type"] == "scoring":
                 ballot = CardinalBallot()
                 points = ballot_meta["points"].split(",")
-                for index, project_name in enumerate(
-                    ballot_meta["vote"].split(",")
-                ):
+                for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                     ballot[instance.get_project(project_name)] = str_as_frac(
                         points[index].strip()
                     )
@@ -103,9 +100,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
             elif instance.meta["vote_type"] == "cumulative":
                 ballot = CumulativeBallot()
                 points = ballot_meta["points"].split(",")
-                for index, project_name in enumerate(
-                    ballot_meta["vote"].split(",")
-                ):
+                for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                     ballot[instance.get_project(project_name)] = str_as_frac(
                         points[index].strip()
                     )
@@ -207,6 +202,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
 
     return instance, profile
 
+
 def parse_pabulib(file_path: str) -> tuple[Instance, AbstractProfile]:
     """
     Parses a PaBuLib files and returns the corresponding instance and profile. The returned profile will be of the
@@ -222,7 +218,7 @@ def parse_pabulib(file_path: str) -> tuple[Instance, AbstractProfile]:
         tuple[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.Profile`]
             The instance and the profile corresponding to the file.
     """
-    
+
     with open(file_path, "r", newline="", encoding="utf-8-sig") as csvfile:
         instance, profile = parse_pabulib_from_string(csvfile.read())
 

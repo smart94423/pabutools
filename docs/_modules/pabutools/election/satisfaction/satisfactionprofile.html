@@ -543,13 +543,7 @@ document.write(`
             <span class="n">wrap_method_closure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
-            <span class="kc">None</span><span class="p">,</span>
-            <span class="kc">None</span><span class="p">,</span>
-            <span class="kc">None</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
 <span class="n">SatisfactionMultiProfile</span><span class="o">.</span><span class="n">_wrap_methods</span><span class="p">(</span>
@@ -568,7 +562,6 @@ document.write(`
         <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 <span class="p">)</span>
-
 </pre></div>
 
                 </article>

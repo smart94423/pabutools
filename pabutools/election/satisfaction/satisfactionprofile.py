@@ -290,13 +290,7 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             wrap_method_closure(n)
 
     def __reduce__(self):
-        return self.__class__, (
-            dict(self),
-            self.instance,
-            None,
-            None,
-            None
-        )
+        return self.__class__, (dict(self), self.instance, None, None, None)
 
 
 SatisfactionMultiProfile._wrap_methods(
@@ -315,4 +309,3 @@ SatisfactionMultiProfile._wrap_methods(
         "copy",
     ]
 )
-

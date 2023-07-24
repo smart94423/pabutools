@@ -465,6 +465,7 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
             self.legal_max_total_score,
         )
 
+
 CumulativeMultiProfile._wrap_methods(
     [
         "__add__",

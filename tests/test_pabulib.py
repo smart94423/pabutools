@@ -66,7 +66,10 @@ voter_id;age;sex;voting_method;vote
         with open("test.pb", "w", encoding="utf-8") as f:
             f.write(contents)
 
-        for instance, profile in [parse_pabulib("test.pb"), parse_pabulib_from_string(contents)]:
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
             assert len(instance) == 4
             assert instance.budget_limit == 51195
             assert len(profile) == 27
@@ -146,11 +149,14 @@ voter_id;vote;points
 9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
 10;6,7;3,3
 11;2,14,8;3,3,1"""
-        
+
         with open("test.pb", "w", encoding="utf-8") as f:
             f.write(contents)
 
-        for instance, profile in [parse_pabulib("test.pb"), parse_pabulib_from_string(contents)]:
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
             assert len(instance) == 30
             assert instance.budget_limit == 1000000
             assert len(profile) == 12
@@ -238,7 +244,10 @@ voter_id;vote;points
         with open("test.pb", "w", encoding="utf-8") as f:
             f.write(contents)
 
-        for instance, profile in [parse_pabulib("test.pb"), parse_pabulib_from_string(contents)]:
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
             assert profile[0][instance.get_project("10")] == 2
             assert profile[0][instance.get_project("9")] == 1
             assert profile[11][instance.get_project("8")] == 1
@@ -436,11 +445,14 @@ voter_id;vote;voting_method;district
 43;84,101,83;internet;PODGÓRZE
 44;4,36,41;internet;KROWODRZA
 """
-        
+
         with open("test.pb", "w", encoding="utf-8") as f:
             f.write(contents)
 
-        for instance, profile in [parse_pabulib("test.pb"), parse_pabulib_from_string(contents)]:
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
             assert len(instance) == 123
             assert instance.budget_limit == 8000100
             assert len(profile) == 45

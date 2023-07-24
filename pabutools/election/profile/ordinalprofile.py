@@ -314,6 +314,7 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
             self.legal_max_length,
         )
 
+
 OrdinalMultiProfile._wrap_methods(
     [
         "__add__",

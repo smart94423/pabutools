@@ -61,7 +61,7 @@ def exhaustion_by_budget_increase(
     instance: Instance,
     profile: Profile,
     rule: Callable,
-    rule_params: dict =None,
+    rule_params: dict = None,
     initial_budget_allocation: Iterable[Project] = None,
     budget_step: int = 1,
 ) -> Iterable[Project]:
