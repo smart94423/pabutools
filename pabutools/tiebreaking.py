@@ -31,7 +31,7 @@ class TieBreakingRule:
         profile: Profile,
         projects: Iterable[Project],
         key: Callable[..., Project] = lambda x: x,
-    ):
+    ) -> list[Project]:
         """
         Break the ties among all the projects provided in input and returns them ordered. The tie-breaking can be
         based on the instance or/and on the profile.
@@ -50,7 +50,7 @@ class TieBreakingRule:
             list of pabutools.election.instance.Project
         """
         return sorted(
-            list(projects),
+            projects,
             key=lambda project: self.func(instance, profile, key(project)),
         )
 
@@ -60,7 +60,7 @@ class TieBreakingRule:
         profile: Profile,
         projects: Iterable[Project],
         key: Callable[..., Project] = lambda x: x,
-    ):
+    ) -> Project:
         """
         Break the ties among all the projects provided in input and returns a single project. Orders the
         projects according to the tie-breaking rule and return the first project of the order.
@@ -88,9 +88,15 @@ app_score_tie_breaking = TieBreakingRule(
 min_cost_tie_breaking = TieBreakingRule(lambda inst, prof, proj: proj.cost)
 max_cost_tie_breaking = TieBreakingRule(lambda inst, prof, proj: -proj.cost)
 
+
 class TieBreakingException(Exception):
-    "Raised when a tie occurs and no tie-breaking rule is provided."
+    """Raised when a tie occurs and no tie-breaking rule is provided."""
+
     pass
+
+
 def refuse_to_break_ties(instance: Instance, profile: Profile, project: Project):
     raise TieBreakingException("A tie occurred, but no tie-breaking rule was provided.")
+
+
 refuse_tie_breaking = TieBreakingRule(refuse_to_break_ties)

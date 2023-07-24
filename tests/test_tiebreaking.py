@@ -66,5 +66,7 @@ class TestTieBreaking(TestCase):
             p[3],
         ]
 
-        self.assertRaises(TieBreakingException, lambda: refuse_tie_breaking.untie(instance, profile, p))
-        self.assertRaises(TieBreakingException, lambda: refuse_tie_breaking.order(instance, profile, p))
+        with self.assertRaises(TieBreakingException):
+            refuse_tie_breaking.untie(instance, profile, p)
+        with self.assertRaises(TieBreakingException):
+            refuse_tie_breaking.order(instance, profile, p)
