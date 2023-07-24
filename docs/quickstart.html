@@ -42,7 +42,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'quickstart';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reference" href="reference/index.html" />
+    <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -124,6 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Pabutools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="reference/election/index.html">Election module</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="reference/election/instance.html">Instance</a></li>
@@ -319,14 +320,14 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h1>
+<span id="quickstart"></span><h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h1>
 <p>Now that the pabutools are installed (if not, see <a class="reference internal" href="installation.html#installation"><span class="std std-ref">Installation</span></a>), you can start
 using them!</p>
 <p>On this page, you will be guided through a simple example.</p>
 <section id="describing-an-election">
 <h2>Describing an Election<a class="headerlink" href="#describing-an-election" title="Permalink to this heading">#</a></h2>
 <p>We start by describing an election. We need to encode at least the projects, the budget
-limit and the ballots of the voters.</p>
+limit, and the ballots of the voters.</p>
 <section id="projects-and-instances">
 <h3>Projects and Instances<a class="headerlink" href="#projects-and-instances" title="Permalink to this heading">#</a></h3>
 <p>The most basic element is the projects, i.e., the
@@ -334,7 +335,7 @@ entities that are voted upon. We start by defining them through the class
 <a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span>
 
-<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor takes name and cost of the project</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor takes the name and cost of the project</span>
 <span class="n">p2</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">p3</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -353,7 +354,7 @@ class. This class derives from the Python <cite>set</cite> class and can be used
 <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># The instance stores the budget limit</span>
 </pre></div>
 </div>
-<p>Importantly, any Python comparison between two projects (equality etc…) is done on
+<p>Importantly, any Python comparison between two projects (equality, etc…) is done based on
 the name of the projects. Since an instance is a set, adding a project
 <cite>Project(“p”, 1)</cite> and another project <cite>Project(“p”, 3)</cite> will lead to an
 instance with a single project.</p>
@@ -368,8 +369,8 @@ through the class <a class="reference internal" href="reference/election/ballot.
 as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">ApprovalBallot</span>
 
-<span class="n">b1</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>   <span class="c1"># Initialise an approval ballot with two projects</span>
-<span class="n">b1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>   <span class="c1"># Add project to approval ballot using set methods</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>   <span class="c1"># Initialize an approval ballot with two projects</span>
+<span class="n">b1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>   <span class="c1"># Add projects to the approval ballot using set methods</span>
 <span class="n">b2</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">})</span>
 <span class="n">b3</span> <span class="o">=</span> <span class="n">ApprovalBallot</span><span class="p">({</span><span class="n">p3</span><span class="p">})</span>
 </pre></div>
@@ -379,7 +380,7 @@ from the Python <cite>set</cite> and can be used as one.</p>
 <p>We can now define the approval profile:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">ApprovalProfile</span>
 
-<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">])</span>   <span class="c1"># Initialise the profile with two ballots</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">ApprovalProfile</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">])</span>   <span class="c1"># Initialize the profile with two ballots</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b3</span><span class="p">)</span>   <span class="c1"># Use list methods to handle the profile</span>
 </pre></div>
 </div>
@@ -390,31 +391,31 @@ the Python class <cite>list</cite>.</p>
 </section>
 <section id="computing-the-outcome-of-an-election">
 <h2>Computing the Outcome of an Election<a class="headerlink" href="#computing-the-outcome-of-an-election" title="Permalink to this heading">#</a></h2>
-<p>The election is ready, we can now work with it. The most natural next step is then to
+<p>The election is ready; we can now work with it. The most natural next step is then to
 compute the winning projects. For that, we turn to the module <a class="reference internal" href="reference/rules/index.html#module-pabutools.rules" title="pabutools.rules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rules</span></code></a>.</p>
-<p>Assuming we want to do like 99% all the cities in the world, we will compute the outcome
+<p>Assuming we want to do like 99% of all the cities in the world, we will compute the outcome
 of the election using the standard greedy method. That works as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span>
 
-<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span><span class="n">instnace</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">)</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This computes the outcome of the greedy approximation of the utilitarian welfare using
 the satisfaction measure
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a>.
-Satisfaction measures have not be discussed yet. Keep in mind that they describe the way
-voters are assumed to assess the quality of a set of project. For instance,
+Satisfaction measures have not been discussed yet. Keep in mind that they describe the way
+voters are assumed to assess the quality of a set of projects. For instance,
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a> measures the
 satisfaction of a voter as the total cost of the projects that have been selected and
 that appear in the voter’s ballot. For more information, check out
 <a class="reference internal" href="reference/election/satisfaction.html#module-pabutools.election.satisfaction" title="pabutools.election.satisfaction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">satisfaction</span></code></a>.</p>
-<p>Other methods can be used such as Phragmén’s sequential rule or the method of equal shares.</p>
+<p>Other methods can be used, such as Phragmén’s sequential rule or the method of equal shares.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">sequential_phragmen</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
 
-<span class="n">outcome1</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span><span class="n">instnace</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
-<span class="n">outcome2</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span><span class="n">instnace</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">)</span>
+<span class="n">outcome1</span> <span class="o">=</span> <span class="n">sequential_phragmen</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
+<span class="n">outcome2</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -442,11 +443,11 @@ that appear in the voter’s ballot. For more information, check out
       </div>
     </a>
     <a class="right-next"
-       href="reference/index.html"
+       href="usage.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Reference</p>
+        <p class="prev-next-title">Usage</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
