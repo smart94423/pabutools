@@ -7,7 +7,12 @@ from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
 
-from pabutools.election import MultiProfile, SatisfactionMultiProfile, AbstractBallot, AbstractProfile
+from pabutools.election import (
+    MultiProfile,
+    SatisfactionMultiProfile,
+    AbstractBallot,
+    AbstractProfile,
+)
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import Profile
 from pabutools.election.satisfaction import SatisfactionMeasure, SatisfactionProfile

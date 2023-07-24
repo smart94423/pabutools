@@ -22,7 +22,7 @@ from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
 from pabutools.rules.mes import method_of_equal_shares
 from pabutools.rules.phragmen import sequential_phragmen
-from pabutools.rules.composition import social_welfare_comparison
+from pabutools.rules.composition import social_welfare_comparison, popularity_comparison
 
 __all__ = [
     "completion_by_rule_combination",
@@ -32,4 +32,5 @@ __all__ = [
     "method_of_equal_shares",
     "sequential_phragmen",
     "social_welfare_comparison",
+    "popularity_comparison",
 ]

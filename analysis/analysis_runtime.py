@@ -127,12 +127,27 @@ def multiprofile_analysis_plot(csv_file="runtime.csv"):
     plt.close("all")
 
     data = read_csv(os.path.join("csv", csv_file), sep=";", encoding="utf-8")
-    res = {"file": [], "rule": [], "profile_runtime": [], "multiprofile_runtime": [], "gain": [], "avg_vote_length_cat": []}
+    res = {
+        "file": [],
+        "rule": [],
+        "profile_runtime": [],
+        "multiprofile_runtime": [],
+        "gain": [],
+        "avg_vote_length_cat": [],
+    }
 
     for file in data["file"].unique():
         for rule in data["rule"].unique():
-            prof_runtime = data[(data["file"] == file) & (data["rule"] == rule) & (data["profile_type"] == "ApprovalProfile")]
-            multi_runtime = data[(data["file"] == file) & (data["rule"] == rule) & (data["profile_type"] == "ApprovalMultiProfile")]
+            prof_runtime = data[
+                (data["file"] == file)
+                & (data["rule"] == rule)
+                & (data["profile_type"] == "ApprovalProfile")
+            ]
+            multi_runtime = data[
+                (data["file"] == file)
+                & (data["rule"] == rule)
+                & (data["profile_type"] == "ApprovalMultiProfile")
+            ]
             if len(prof_runtime) > 0 and len(multi_runtime) > 0:
                 avg_vote_length_cat = prof_runtime["avg_vote_length_cat"].iloc[0]
                 prof_runtime = prof_runtime["runtime"].iloc[0]
@@ -141,7 +156,9 @@ def multiprofile_analysis_plot(csv_file="runtime.csv"):
                 res["rule"].append(rule)
                 res["profile_runtime"].append(prof_runtime)
                 res["multiprofile_runtime"].append(multi_runtime)
-                res["gain"].append((prof_runtime - multi_runtime) / max(prof_runtime, multi_runtime))
+                res["gain"].append(
+                    (prof_runtime - multi_runtime) / max(prof_runtime, multi_runtime)
+                )
                 res["avg_vote_length_cat"].append(avg_vote_length_cat)
     data = pd.DataFrame(res)
     print(data)
@@ -149,17 +166,20 @@ def multiprofile_analysis_plot(csv_file="runtime.csv"):
     sns.set_theme()
 
     g = sns.pointplot(
-        data=data[data["rule"].isin(["greed_cost_res", "mes_cost_res_ex", "maxwelfare_cost_res"])],
+        data=data[
+            data["rule"].isin(
+                ["greed_cost_res", "mes_cost_res_ex", "maxwelfare_cost_res"]
+            )
+        ],
         x="avg_vote_length_cat",
         y="gain",
-        hue="rule"
+        hue="rule",
     )
     g.set_title("Multiprofile Runtime versus Profile Runtime")
     g.set_xlabel("Average length of ballot")
     g.set_ylabel("Runtime gain")
 
     plt.show()
-
 
 
 if __name__ == "__main__":

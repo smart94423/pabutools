@@ -1061,10 +1061,8 @@ method (which only does something if the outcome is not already exhaustive).</p>
 </section>
 <section id="rule-composition">
 <h3>Rule Composition<a class="headerlink" href="#rule-composition" title="Permalink to this heading">#</a></h3>
-<dl class="simple">
-<dt>We also provide standard ways to compose rules, such as selecting the outcome that is</dt><dd><p>most preferred for a given satisfaction measure.</p>
-</dd>
-</dl>
+<p>We also provide standard ways to compose rules, such as selecting the outcome that is
+preferred by the largest number of voters for a given satisfaction measure.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
@@ -1128,6 +1126,8 @@ method (which only does something if the outcome is not already exhaustive).</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>We also provide a similar comparison using utilitarian social welfare through the function
+<a class="reference internal" href="reference/rules/index.html#pabutools.rules.composition.social_welfare_comparison" title="pabutools.rules.composition.social_welfare_comparison"><code class="xref py py-func docutils literal notranslate"><span class="pre">social_welfare_comparison()</span></code></a>.</p>
 </section>
 </section>
 <section id="tie-breaking">

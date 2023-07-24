@@ -16,3 +16,5 @@ Rules module
 .. autofunction:: pabutools.rules.exhaustion.exhaustion_by_budget_increase
 
 .. autofunction:: pabutools.rules.composition.popularity_comparison
+
+.. autofunction:: pabutools.rules.composition.social_welfare_comparison

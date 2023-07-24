@@ -1,7 +1,6 @@
 # pabutools
 
 [![PyPI Status](https://img.shields.io/pypi/v/pabutools.svg)](https://pypi.python.org/pypi/pabutools)
-[![Documentation badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://pbvoting.github.io/pabutools/)
 [![Build badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://github.com/pbvoting/pabutools/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/pbvoting/pabutools/branch/main/graphs/badge.svg)](https://codecov.io/gh/pbvoting/pabutools/tree/main)
 

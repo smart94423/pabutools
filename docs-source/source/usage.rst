@@ -809,7 +809,7 @@ Rule Composition
 ^^^^^^^^^^^^^^^^
 
 We also provide standard ways to compose rules, such as selecting the outcome that is
- most preferred for a given satisfaction measure.
+preferred by the largest number of voters for a given satisfaction measure.
 
 .. code-block:: python
 
@@ -876,6 +876,9 @@ To run the rule as it was implemented in Wieliczka and Świece, for instance, on
         [mes_full, greedy_utilitarian_welfare],
         [{}, {"sat_class": Cardinality_Sat}]
     )
+
+We also provide a similar comparison using utilitarian social welfare through the function
+:py:func:`~pabutools.rules.composition.social_welfare_comparison`.
 
 Tie-Breaking
 ------------
