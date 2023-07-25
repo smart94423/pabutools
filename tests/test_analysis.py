@@ -75,20 +75,20 @@ class TestAnalysis(TestCase):
 
         budget_allocation = []
        
-        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
-        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=11)
+        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
-        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=11)
+        assert(sat_hist == [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
         
         budget_allocation = [projects[0], projects[1], projects[2], projects[5]]
 
-        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
-        assert(sat_hist == [.2, 0, 0, 0, 0, 0.2, 0, .2, 0, .4])
+        sat_hist = satisfaction_histogram(instance, app_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=11)
+        assert(sat_hist == [.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, .2, 0.0, 0.4])
 
-        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=10)
-        assert(sat_hist == [.2, 0, 0, 0, 0, 0.2, 0, .2, 0, .4])
+        sat_hist = satisfaction_histogram(instance, app_multi_profile, budget_allocation, Relative_Cardinality_Sat, max_satisfaction=1, num_bins=11)
+        assert(sat_hist == [.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, .2, 0.0, 0.4])
 
 
     def test_category_properties(self):

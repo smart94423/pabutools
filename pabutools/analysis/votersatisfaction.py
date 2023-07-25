@@ -71,18 +71,17 @@ def satisfaction_histogram(
     budget_allocation: Iterable[Project],
     sat_class: type[SatisfactionMeasure],
     max_satisfaction: float,
-    num_bins: int = 20
+    num_bins: int = 21
 ) -> list[float]:
 
     profile.instance = instance
     sat_profile = profile.as_sat_profile(sat_class=sat_class)
-    hist_data = [0.0 for i in range(num_bins)]
+    hist_data = np.zeros(num_bins, dtype=float)
     for i, ballot in enumerate(sat_profile):
         satisfaction = ballot.sat(budget_allocation)
         if satisfaction >= max_satisfaction:
             hist_data[-1] += sat_profile.multiplicity(ballot)
         else:
-            hist_data[math.floor(satisfaction*num_bins/max_satisfaction)] += sat_profile.multiplicity(ballot)
-    for i in range(len(hist_data)):
-        hist_data[i] = hist_data[i]/profile.total_len()
-    return hist_data
+            hist_data[math.ceil(satisfaction*(num_bins-1)/max_satisfaction)] += sat_profile.multiplicity(ballot)
+    hist_data = hist_data/profile.total_len()
+    return list(hist_data)
