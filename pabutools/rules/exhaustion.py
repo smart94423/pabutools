@@ -10,23 +10,30 @@ def completion_by_rule_combination(
     rule_sequence: Iterable[Callable],
     rule_params: Iterable[dict] = None,
     initial_budget_allocation: Iterable[Project] = None,
-) -> list[Project]:
+) -> Iterable[Project]:
     """
-    Runs the given rules on the given instance and profile in sequence. This is useful if the first rules are
-    non-exhaustive.
-    Parameters. For now, only resolute rules are supported
+    Runs the given rules on the given instance and profile in sequence until an exhaustive budget allocation has been
+    reached (or all rules have been applied). This is useful if the first rules are non-exhaustive.
+    Only resolute rules are supported.
+
+    Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        rule_sequence:
-            Iterable of the rule functions
-        rule_params (optional):
-            Iterable of dictionaries of additional parameters that are passed to the rule functions
+        rule_sequence: Iterable[Callable]
+            Iterable of the rule functions.
+        rule_params: Iterable[dict], optional
+            Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule
+            functions. Defaults to `{}`.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            An initial budget allocation, typically empty. Defaults to `[]`.
+
     Returns
     -------
-        list of pabutools.election.instance.Project
+        Iterable[Project]
+            The selected projects.
     """
     if rule_params is not None and len(rule_sequence) != len(rule_params):
         raise ValueError(
@@ -54,26 +61,34 @@ def exhaustion_by_budget_increase(
     instance: Instance,
     profile: Profile,
     rule: Callable,
-    rule_params=None,
+    rule_params: dict = None,
     initial_budget_allocation: Iterable[Project] = None,
     budget_step: int = 1,
-) -> list[Project]:
+) -> Iterable[Project]:
     """
-    Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retreived or
-    the budget limit is exceeded by the rule with increased budget.
-    For now, only resolute rules are supported.
+    Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retrieved or
+    the budget limit is exceeded by the rule with increased budget. For now, only resolute rules are supported.
+
+    Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
         rule:
             The rule function
-        rule_params:
-            A dictionary of additional parameters that are passed to the rule function
+        rule_params: dict, optional
+            Dictionary of additional parameters that are passed as keyword arguments to the rule
+            function. Defaults to `{}`.
+        initial_budget_allocation: Iterable[Project], optional
+            An initial budget allocation, typically empty. Defaults to `[]`.
+        budget_step: int
+            The step at which the budget is increased.
+
     Returns
     -------
-        list of pabutools.election.instance.Project
+        Iterable[Project]
+            The selected projects.
     """
     if rule_params is None:
         rule_params = {}

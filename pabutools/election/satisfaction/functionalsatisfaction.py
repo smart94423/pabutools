@@ -1,3 +1,6 @@
+"""
+Functional satisfaction measures.
+"""
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable
@@ -6,101 +9,289 @@ from numbers import Number
 import numpy as np
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
-from pabutools.election.ballot import ApprovalBallot
+from pabutools.election.ballot import (
+    AbstractBallot,
+    AbstractApprovalBallot,
+    AbstractCardinalBallot,
+)
 from pabutools.election.instance import Instance, Project, total_cost
 
 from typing import TYPE_CHECKING
 
+from pabutools.fractions import frac
+
 if TYPE_CHECKING:
-    from pabutools.election.profile import Profile, MultiProfile
+    from pabutools.election.profile import (
+        AbstractProfile,
+    )
 
 
 class FunctionalSatisfaction(SatisfactionMeasure):
     """
-    Class representing satisfaction functions simply defined via functions of the ballot and a subset of projects.
+    Class representing satisfaction measures that are simply defined via functions of the ballot and a subset of
+    projects.
+
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance : :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        ballot : pabutools.instance.profile.Ballot
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
-        func : Callable[[PBInstance, Ballot, Profile, Iterable[Project]], Fraction]
-            A function taking as input an instance, a ballot and a subset of projects, and returning the score
-            as a fraction.
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]
+            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
+            projects, given the instance, the profile and the ballot under consideration.
+
     Attributes
     ----------
-        func : function
-            A function taking as input an instance, a profile, a ballot and a subset of projects, and returning the
-            score of the subset of projects as a fraction.
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]
+            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
+            projects, given the instance, the profile and the ballot under consideration.
     """
 
     def __init__(
         self,
-        instance,
-        profile,
-        ballot: ApprovalBallot,
-        func: Callable[[Instance, Profile, ApprovalBallot, Iterable[Project]], Number],
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        func: Callable[
+            [Instance, AbstractProfile, AbstractBallot, Iterable[Project]], Number
+        ],
     ):
-        super(FunctionalSatisfaction, self).__init__(instance, profile, ballot)
+        SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.func = func
-        self.instance = instance
 
-    def sat(self, projects: Iterable[Project]):
-        """
-        Returns the satisfaction of a voter with a given approval ballot for a given subset of projects as defined
-        by the inner function specified at initialisation.
-        Parameters
-        ----------
-            projects : Iterable[pabutools.election.instance.Project]
-                The set of projects.
-        Returns
-        -------
-            float
-        """
+    def sat(self, projects: Iterable[Project]) -> Number:
         return self.func(self.instance, self.profile, self.ballot, projects)
 
 
-def cc_sat_func(
+def cc_sat_func_app(
     instance: Instance,
-    profile: Profile,
-    ballot: ApprovalBallot,
+    profile: AbstractProfile,
+    ballot: AbstractApprovalBallot,
     projects: Iterable[Project],
-) -> Number:
+) -> int:
+    """
+    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to 1 if at least one approved project
+    has been selected, and 0 otherwise.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot.
+        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            The selected collection of projects.
+
+    Returns
+    -------
+        int
+            The Chamberlin-Courant satisfaction.
+
+    """
     return int(any(p in ballot for p in projects))
 
 
+def cc_sat_func_card(
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractCardinalBallot,
+    projects: Iterable[Project],
+) -> Number:
+    """
+    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to the maximum score assigned to
+    a selected project in the ballot, and 0 if no selected project has been assigned a score.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+            The ballot.
+        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            The selected collection of projects.
+
+    Returns
+    -------
+        Number
+            The Chamberlin-Courant satisfaction.
+
+    """
+    res = 0
+    for p in projects:
+        if p in ballot and ballot[p] > res:
+            res = ballot[p]
+    return res
+
+
 class CC_Sat(FunctionalSatisfaction):
-    def __init__(self, instance, profile, ballot: ApprovalBallot):
-        super(CC_Sat, self).__init__(instance, profile, ballot, cc_sat_func)
+    """
+    Chamberlin-Courant satisfaction. It can only be applied to approval or cardinal ballots.
+
+    In the case of approval ballots, it is equal to 1 if at least one selected project is approved, and 0 otherwise.
+
+    In the case of cardinal ballots, it is equal to the maximum score assigned to a selected project in the ballot,
+    and 0 if no selected project has been assigned a score.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        if isinstance(ballot, AbstractApprovalBallot):
+            FunctionalSatisfaction.__init__(
+                self, instance, profile, ballot, cc_sat_func_app
+            )
+        elif isinstance(ballot, AbstractCardinalBallot):
+            FunctionalSatisfaction.__init__(
+                self, instance, profile, ballot, cc_sat_func_card
+            )
+        else:
+            raise ValueError(
+                "The Chamberlin-Courant satisfaction cannot be used for ballots of type {}".format(
+                    type(ballot)
+                )
+            )
 
 
 def cost_sqrt_sat_func(
     instance: Instance,
-    profile: Profile,
-    ballot: ApprovalBallot,
+    profile: AbstractProfile,
+    ballot: AbstractApprovalBallot,
     projects: Iterable[Project],
 ) -> Number:
-    return np.sqrt(float(total_cost([p for p in projects if p in ballot])))
+    """
+    Computes the cost square root satisfaction for approval ballots. It is equal to the square root of the total cost of
+    the approved and selected projects.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot.
+        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            The selected collection of projects.
+
+    Returns
+    -------
+        Number
+            The cost square root satisfaction.
+
+    """
+    return frac(np.sqrt(float(total_cost(tuple(p for p in projects if p in ballot)))))
 
 
 class Cost_Sqrt_Sat(FunctionalSatisfaction):
-    def __init__(self, instance, profile, ballot: ApprovalBallot):
-        super(Cost_Sqrt_Sat, self).__init__(
-            instance, profile, ballot, cost_sqrt_sat_func
-        )
+    """
+    Cost square root satisfaction. It can only be applied to approval ballots. It is equal to the square root of
+    the total cost of the approved and selected projects.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        if isinstance(ballot, AbstractApprovalBallot):
+            FunctionalSatisfaction.__init__(
+                self, instance, profile, ballot, cost_sqrt_sat_func
+            )
+        else:
+            raise ValueError(
+                "The cost square root satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )
 
 
 def cost_log_sat_func(
     instance: Instance,
-    profile: Profile,
-    ballot: ApprovalBallot,
+    profile: AbstractProfile,
+    ballot: AbstractApprovalBallot,
     projects: Iterable[Project],
 ) -> Number:
-    return np.log(float(1 + total_cost([p for p in projects if p in ballot])))
+    """
+    Computes the cost slog satisfaction for approval ballots. It is equal to the log of the total cost of
+    the approved and selected projects.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot.
+        projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            The selected collection of projects.
+
+    Returns
+    -------
+        Number
+            The log root satisfaction.
+
+    """
+    return frac(
+        np.log(float(1 + total_cost(tuple(p for p in projects if p in ballot))))
+    )
 
 
 class Cost_Log_Sat(FunctionalSatisfaction):
-    def __init__(self, instance, profile, ballot: ApprovalBallot):
-        super(Cost_Log_Sat, self).__init__(instance, profile, ballot, cost_log_sat_func)
+    """
+    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of
+    the total cost of the approved and selected projects.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        if isinstance(ballot, AbstractApprovalBallot):
+            FunctionalSatisfaction.__init__(
+                self, instance, profile, ballot, cost_log_sat_func
+            )
+        else:
+            raise ValueError(
+                "The cost log satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )

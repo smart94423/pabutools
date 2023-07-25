@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pabutools.election.preflib &#8212; Pabutools</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pabutools/election/preflib';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Pabutools</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Pabutools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Complete Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../reference/election/index.html">Election module</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/instance.html">Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/ballot.html">Ballot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/profile.html">Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/satisfaction.html">Satisfaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../reference/election/libraries.html">Preference Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/rules/index.html">Rules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/analysis/index.html">Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/tiebreaking.html">Tie-Breaking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/fractions.html">Fractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/utils.html">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/pbvoting/pabutools" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for pabutools.election.preflib</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tools to work with PrefLib.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">preflibtools.instances</span> <span class="k">as</span> <span class="nn">preflib</span>
+<span class="kn">from</span> <span class="nn">preflibtools.instances</span> <span class="kn">import</span> <span class="n">PrefLibInstance</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">Project</span><span class="p">,</span>
+    <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
+    <span class="n">AbstractCardinalProfile</span><span class="p">,</span>
+    <span class="n">AbstractOrdinalProfile</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="init_preflib_instance"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.preflib.init_preflib_instance">[docs]</a><span class="k">def</span> <span class="nf">init_preflib_instance</span><span class="p">(</span>
+    <span class="n">preflib_inst</span><span class="p">:</span> <span class="n">PrefLibInstance</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">modification_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">publication_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">modification_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">alternative_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialises a PrefLib instance with all the necessary parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        preflib_inst : preflibtools.instances.PrefLibInstance</span>
+<span class="sd">            The PrefLib instance to initialise.</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The Pabutools instance used to define the PrefLib one.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the file containing the details of the instance.</span>
+<span class="sd">        file_name: str</span>
+<span class="sd">            The name to the file containing the details of the instance.</span>
+<span class="sd">        modification_type: str</span>
+<span class="sd">            The modification type as described by the PrefLib documentation.</span>
+<span class="sd">        relates_to: str</span>
+<span class="sd">            The files that the PrefLib instance relates to.</span>
+<span class="sd">        related_files: str</span>
+<span class="sd">            The related files to the PrefLib instance.</span>
+<span class="sd">        title: str</span>
+<span class="sd">            The title of the PrefLib instance.</span>
+<span class="sd">        description: str</span>
+<span class="sd">            The description of the PrefLib instance.</span>
+<span class="sd">        publication_date: str</span>
+<span class="sd">            The publication date of the PrefLib instance.</span>
+<span class="sd">        modification_date: str</span>
+<span class="sd">            The last modification date of the PrefLib instance.</span>
+<span class="sd">        alternative_names: dict[:py:class:`~pabutools.election.instance.Project`, str]</span>
+<span class="sd">            A mapping of projects to names of the corresponding alternatives.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">modification_type</span> <span class="o">=</span> <span class="n">modification_type</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">relates_to</span> <span class="o">=</span> <span class="n">relates_to</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">related_files</span> <span class="o">=</span> <span class="n">related_files</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">publication_date</span> <span class="o">=</span> <span class="n">publication_date</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">modification_date</span> <span class="o">=</span> <span class="n">modification_date</span>
+
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">num_alternatives</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">alternative_names</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">alternatives_name</span><span class="p">[</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternative_names</span><span class="p">[</span><span class="n">project</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">alternatives_name</span><span class="p">[</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="approval_to_preflib"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.preflib.approval_to_preflib">[docs]</a><span class="k">def</span> <span class="nf">approval_to_preflib</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">,</span>
+    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">publication_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">alternative_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">preflib</span><span class="o">.</span><span class="n">CategoricalInstance</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a participatory budgeting instance and profile of approval ballots into a PrefLib instance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The Pabutools instance used to define the PrefLib one.</span>
+<span class="sd">        profile: py:class:`~pabutools.election.profile.approvalprofile.AbstractApprovalProfile`</span>
+<span class="sd">            The Pabutools profile of approval ballots.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the file containing the details of the instance.</span>
+<span class="sd">        file_name: str</span>
+<span class="sd">            The name to the file containing the details of the instance.</span>
+<span class="sd">        modification_type: str</span>
+<span class="sd">            The modification type as described by the PrefLib documentation.</span>
+<span class="sd">        relates_to: str</span>
+<span class="sd">            The files that the PrefLib instance relates to.</span>
+<span class="sd">        related_files: str</span>
+<span class="sd">            The related files to the PrefLib instance.</span>
+<span class="sd">        title: str</span>
+<span class="sd">            The title of the PrefLib instance.</span>
+<span class="sd">        description: str</span>
+<span class="sd">            The description of the PrefLib instance.</span>
+<span class="sd">        publication_date: str</span>
+<span class="sd">            The publication date of the PrefLib instance.</span>
+<span class="sd">        modification_date: str</span>
+<span class="sd">            The last modification date of the PrefLib instance.</span>
+<span class="sd">        alternative_names: dict[:py:class:`~pabutools.election.instance.Project`, str]</span>
+<span class="sd">            A mapping of projects to names of the corresponding alternatives.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preflib_inst</span> <span class="o">=</span> <span class="n">preflib</span><span class="o">.</span><span class="n">CategoricalInstance</span><span class="p">()</span>
+    <span class="n">init_preflib_instance</span><span class="p">(</span>
+        <span class="n">preflib_inst</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">,</span>
+        <span class="n">modification_type</span><span class="p">,</span>
+        <span class="n">relates_to</span><span class="p">,</span>
+        <span class="n">related_files</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">,</span>
+        <span class="n">publication_date</span><span class="p">,</span>
+        <span class="n">modification_date</span><span class="p">,</span>
+        <span class="n">alternative_names</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;cat&quot;</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">num_categories</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">categories_name</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Approved&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Not approved&quot;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
+        <span class="n">approved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="n">not_approved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span>
+        <span class="n">pref</span> <span class="o">=</span> <span class="p">(</span><span class="n">approved</span><span class="p">,</span> <span class="n">not_approved</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pref</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">preferences</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">preferences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pref</span><span class="p">)</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">pref</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">preflib_inst</span></div>
+
+
+<div class="viewcode-block" id="cardinal_to_preflib"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.preflib.cardinal_to_preflib">[docs]</a><span class="k">def</span> <span class="nf">cardinal_to_preflib</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractCardinalProfile</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">,</span>
+    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">publication_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">alternative_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">preflib</span><span class="o">.</span><span class="n">OrdinalInstance</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a participatory budgeting instance and profile of cardinal ballots into a PrefLib instance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The Pabutools instance used to define the PrefLib one.</span>
+<span class="sd">        profile: py:class:`~pabutools.election.profile.cardinalprofile.AbstractCardinalProfile`</span>
+<span class="sd">            The Pabutools profile of approval ballots.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the file containing the details of the instance.</span>
+<span class="sd">        file_name: str</span>
+<span class="sd">            The name to the file containing the details of the instance.</span>
+<span class="sd">        modification_type: str</span>
+<span class="sd">            The modification type as described by the PrefLib documentation.</span>
+<span class="sd">        relates_to: str</span>
+<span class="sd">            The files that the PrefLib instance relates to.</span>
+<span class="sd">        related_files: str</span>
+<span class="sd">            The related files to the PrefLib instance.</span>
+<span class="sd">        title: str</span>
+<span class="sd">            The title of the PrefLib instance.</span>
+<span class="sd">        description: str</span>
+<span class="sd">            The description of the PrefLib instance.</span>
+<span class="sd">        publication_date: str</span>
+<span class="sd">            The publication date of the PrefLib instance.</span>
+<span class="sd">        modification_date: str</span>
+<span class="sd">            The last modification date of the PrefLib instance.</span>
+<span class="sd">        alternative_names: dict[:py:class:`~pabutools.election.instance.Project`, str]</span>
+<span class="sd">            A mapping of projects to names of the corresponding alternatives.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preflib_inst</span> <span class="o">=</span> <span class="n">preflib</span><span class="o">.</span><span class="n">OrdinalInstance</span><span class="p">()</span>
+    <span class="n">init_preflib_instance</span><span class="p">(</span>
+        <span class="n">preflib_inst</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">,</span>
+        <span class="n">modification_type</span><span class="p">,</span>
+        <span class="n">relates_to</span><span class="p">,</span>
+        <span class="n">related_files</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">,</span>
+        <span class="n">publication_date</span><span class="p">,</span>
+        <span class="n">modification_date</span><span class="p">,</span>
+        <span class="n">alternative_names</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;toi&quot;</span>
+    <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">preflib_inst</span></div>
+
+
+<div class="viewcode-block" id="ordinal_to_preflib"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.preflib.ordinal_to_preflib">[docs]</a><span class="k">def</span> <span class="nf">ordinal_to_preflib</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractOrdinalProfile</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">,</span>
+    <span class="n">relates_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">related_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">publication_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">modification_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">alternative_names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">preflib</span><span class="o">.</span><span class="n">OrdinalInstance</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a participatory budgeting instance and profile of ordinal ballots into a PrefLib instance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The Pabutools instance used to define the PrefLib one.</span>
+<span class="sd">        profile: py:class:`~pabutools.election.profile.ordinalprofile.AbstractOrdinalProfile`</span>
+<span class="sd">            The Pabutools profile of approval ballots.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the file containing the details of the instance.</span>
+<span class="sd">        file_name: str</span>
+<span class="sd">            The name to the file containing the details of the instance.</span>
+<span class="sd">        modification_type: str</span>
+<span class="sd">            The modification type as described by the PrefLib documentation.</span>
+<span class="sd">        relates_to: str</span>
+<span class="sd">            The files that the PrefLib instance relates to.</span>
+<span class="sd">        related_files: str</span>
+<span class="sd">            The related files to the PrefLib instance.</span>
+<span class="sd">        title: str</span>
+<span class="sd">            The title of the PrefLib instance.</span>
+<span class="sd">        description: str</span>
+<span class="sd">            The description of the PrefLib instance.</span>
+<span class="sd">        publication_date: str</span>
+<span class="sd">            The publication date of the PrefLib instance.</span>
+<span class="sd">        modification_date: str</span>
+<span class="sd">            The last modification date of the PrefLib instance.</span>
+<span class="sd">        alternative_names: dict[:py:class:`~pabutools.election.instance.Project`, str]</span>
+<span class="sd">            A mapping of projects to names of the corresponding alternatives.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preflib_inst</span> <span class="o">=</span> <span class="n">preflib</span><span class="o">.</span><span class="n">OrdinalInstance</span><span class="p">()</span>
+    <span class="n">init_preflib_instance</span><span class="p">(</span>
+        <span class="n">preflib_inst</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">,</span>
+        <span class="n">modification_type</span><span class="p">,</span>
+        <span class="n">relates_to</span><span class="p">,</span>
+        <span class="n">related_files</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">,</span>
+        <span class="n">publication_date</span><span class="p">,</span>
+        <span class="n">modification_date</span><span class="p">,</span>
+        <span class="n">alternative_names</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;toi&quot;</span>
+    <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">+=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+            <span class="n">preflib_inst</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+
+    <span class="n">preflib_inst</span><span class="o">.</span><span class="n">recompute_cardinality_param</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">preflib_inst</span></div>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Simon Rey, Grzegorz Pierczyński, Markus Utke and Piotr Skowron.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

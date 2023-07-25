@@ -1,22 +1,25 @@
+"""
+Greedy approximations of the maximum welfare.
+"""
 from copy import copy
 from collections.abc import Iterable
 
+from pabutools.election.profile import AbstractProfile
+
 from pabutools.fractions import frac
 from pabutools.election.instance import Instance, total_cost, Project
-from pabutools.election.profile import Profile, MultiProfile
 from pabutools.election.satisfaction import (
     AdditiveSatisfaction,
-    SatisfactionProfile,
     SatisfactionMeasure,
-    SatisfactionMultiProfile,
+    GroupSatisfactionMeasure,
 )
 from pabutools.tiebreaking import lexico_tie_breaking, TieBreakingRule
 
 
-def greedy_scheme(
+def greedy_utilitarian_scheme(
     instance: Instance,
-    profile: Profile,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
+    profile: AbstractProfile,
+    sat_profile: GroupSatisfactionMeasure,
     budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
@@ -25,24 +28,27 @@ def greedy_scheme(
     The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that
     lead to the highest increase in total score divided by the cost of the project. Projects that would lead to a
     violation of the budget constraint are skipped.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        sat_profile : pabutools.instance.satisfaction.SatisfactionProfile
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
-        budget_allocation : collection of pabutools.election.instance.Project
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
     Returns
     -------
-        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
 
     def aux(inst, prof, sats, allocs, alloc, tie, resolute):
@@ -100,37 +106,40 @@ def greedy_scheme(
         return all_budget_allocations
 
 
-def greedy_scheme_additive(
+def greedy_utilitarian_scheme_additive(
     instance: Instance,
-    profile: Profile | MultiProfile,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
+    profile: AbstractProfile,
+    sat_profile: GroupSatisfactionMeasure,
     budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
-    Faster version of the inner algorithm for the greedy rule, if the scores are additive.
+    Faster version of the inner algorithm for the greedy rule if the scores are additive.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.Profile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        sat_profile : pabutools.instance.pbinstance.SatisfactionProfile
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
-        budget_allocation : collection of pabutools.election.instance.Project
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
     Returns
     -------
-        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
     if not resoluteness:
-        return greedy_scheme(
+        return greedy_utilitarian_scheme(
             instance,
             profile,
             sat_profile,
@@ -165,49 +174,55 @@ def greedy_scheme_additive(
     return sorted(selection)
 
 
-def greedy_welfare(
+def greedy_utilitarian_welfare(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
+    sat_profile: GroupSatisfactionMeasure = None,
     is_sat_additive: bool = False,
-    tie_breaking: TieBreakingRule = lexico_tie_breaking,
+    tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
     initial_budget_allocation: Iterable[Project] = None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
-    General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
-    lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would
-    lead to a violation of the budget constraint are skipped.
+    General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting
+    a project that lead to the highest increase in total satisfaction divided by the cost of the project. Projects that
+    would lead to a violation of the budget constraint are skipped.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        sat_class : class
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
             inhereting from pabutools.instance.satisfaction.Satisfaction.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
             provided, the satisfaction argument is disregarded.
-        sat_profile : pabutools.instance.satisfaction.SatisfactionFunction
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
             provided, but a satisfaction function is, the former is computed from the latter.
         is_sat_additive : bool
             A boolean indicating if the satisfaction function is additive. This is directly deducted if sat_class
             is provided.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule, optional
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
-            Defaults to lexico_tie_breaking.
+            Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        initial_budget_allocation : collection of pabutools.election.instance.Project, optional
-            A potential initial budget allocation.
+
     Returns
     -------
-        set of pabutools.election.instance.Project
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
+    if tie_breaking is None:
+        tie_breaking = lexico_tie_breaking
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)
     else:
@@ -221,7 +236,7 @@ def greedy_welfare(
         is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
 
     if is_sat_additive:
-        return greedy_scheme_additive(
+        return greedy_utilitarian_scheme_additive(
             instance,
             profile,
             sat_profile,
@@ -229,7 +244,7 @@ def greedy_welfare(
             tie_breaking,
             resoluteness=resoluteness,
         )
-    return greedy_scheme(
+    return greedy_utilitarian_scheme(
         instance,
         profile,
         sat_profile,

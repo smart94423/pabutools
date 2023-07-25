@@ -4,6 +4,8 @@ The :py:class:`~pabutools.election.instance.Project` and the
 :py:class:`~pabutools.election.instance.Instance` classes are defined here.
 """
 from collections.abc import Iterable, Generator
+
+from pabutools.fractions import frac
 from pabutools.utils import powerset
 from numbers import Number
 from math import ceil
@@ -49,7 +51,7 @@ class Project:
     """
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -62,6 +64,8 @@ class Project:
         if categories is None:
             categories = {}
         self.name = name
+        if not int(cost) == cost:
+            cost = frac(cost)
         self.cost = cost
         self.categories = categories
         self.targets = targets
@@ -117,7 +121,7 @@ class Instance(set[Project]):
 
     Parameters
     ----------
-        s: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
             An iterable of :py:class:`~pabutools.election.instance.Project` that constitutes the initial set of projects
             for the instance. In case an :py:class:`~pabutools.election.instance.Instance` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -178,7 +182,7 @@ class Instance(set[Project]):
 
     def __init__(
         self,
-        s: Iterable[Project] = (),
+        init: Iterable[Project] = (),
         budget_limit: Number | None = None,
         categories: set[str] | None = None,
         targets: set[str] | None = None,
@@ -188,60 +192,60 @@ class Instance(set[Project]):
         meta: dict | None = None,
         project_meta: dict | None = None,
     ) -> None:
-        super(Instance, self).__init__(s)
+        set.__init__(self, init)
 
         if budget_limit is None:
-            if isinstance(s, Instance):
-                budget_limit = s.budget_limit
+            if isinstance(init, Instance):
+                budget_limit = init.budget_limit
             else:
                 budget_limit = 0
         self.budget_limit = budget_limit
 
         if categories is None:
-            if isinstance(s, Instance):
-                categories = s.categories
+            if isinstance(init, Instance):
+                categories = init.categories
             else:
                 categories = set()
         self.categories = categories
 
         if targets is None:
-            if isinstance(s, Instance):
-                targets = s.targets
+            if isinstance(init, Instance):
+                targets = init.targets
             else:
                 targets = set()
         self.targets = targets
 
         if file_path is None:
-            if isinstance(s, Instance):
-                file_path = s.file_path
+            if isinstance(init, Instance):
+                file_path = init.file_path
             else:
                 file_path = ""
         self.file_path = file_path
 
         if file_name is None:
-            if isinstance(s, Instance):
-                file_name = s.file_name
+            if isinstance(init, Instance):
+                file_name = init.file_name
             else:
                 file_name = ""
         self.file_name = file_name
 
         if parsing_errors is None:
-            if isinstance(s, Instance):
-                parsing_errors = s.parsing_errors
+            if isinstance(init, Instance):
+                parsing_errors = init.parsing_errors
             else:
                 parsing_errors = False
         self.parsing_errors = parsing_errors
 
         if meta is None:
-            if isinstance(s, Instance):
-                meta = s.meta
+            if isinstance(init, Instance):
+                meta = init.meta
             else:
                 meta = dict()
         self.meta = meta
 
         if project_meta is None:
-            if isinstance(s, Instance):
-                project_meta = s.project_meta
+            if isinstance(init, Instance):
+                project_meta = init.project_meta
             else:
                 project_meta = dict()
         self.project_meta = project_meta

@@ -1,55 +1,67 @@
+"""
+Ordinal ballots, i.e., ballots in which the voters order the projects given their preferences.
+"""
+from abc import ABC
 from collections.abc import Iterable
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
 from pabutools.election.instance import Project
 
 
-class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
+class AbstractOrdinalBallot(ABC, Iterable[Project]):
     """
-        Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
-        preferences. It derives from the Python class `tuple` and can be used as one.
+    Abstract class for cumulative ballots. Essentially used for typing purposes.
+    """
 
-        Parameters
-        ----------
-            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
-                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
-                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
-                additional attributes are also copied (except if the corresponding keyword arguments have been given).
-                Defaults to `()`.
-            name : str, optional
-                The identifier of the ballot.
-                Defaults to `""`.
-            meta : dict, optional
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-                Defaults to `dict()`.
 
-        Attributes
-        ----------
-            name : str
-                The identifier of the ballot.
-            meta : dict
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-        """
+class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
+    """
+    Frozen ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
+    preferences. It derives from the Python class `tuple` and can be used as one.
+
+    Parameters
+    ----------
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the tuple. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
+
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
+
     def __init__(
         self,
-        iterable: Iterable[Project] = (),
+        init: Iterable[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
         tuple.__init__(self)
         if name is None:
-            if isinstance(iterable, AbstractBallot):
-                name = iterable.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(iterable, AbstractBallot):
-                meta = iterable.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
         FrozenBallot.__init__(self, name, meta)
+        AbstractOrdinalBallot.__init__(self)
 
     def __new__(
         cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
@@ -60,59 +72,61 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot):
                     iterable
                 )
             )
-        return super(FrozenOrdinalBallot, cls).__new__(cls, tuple(iterable))
+        return tuple.__new__(cls, tuple(iterable))
 
     def __hash__(self):
         return tuple.__hash__(self)
 
 
-class OrdinalBallot(dict, Ballot):
+class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
     """
-        Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
-        preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).
-        The convention is that the elements are presented from the most preferred one to the least preferred one.
+    Ordinal ballot, that is, a ballot in which the voter has ordered some projects according to their
+    preferences. It behaves as an ordered set (implemented using Python `dict` for technical reasons).
+    The convention is that the elements are presented from the most preferred one to the least preferred one.
 
-        Parameters
-        ----------
-            iterable: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
-                Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
-                :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
-                additional attributes are also copied (except if the corresponding keyword arguments have been given).
-                Defaults to `()`.
-            name : str, optional
-                The identifier of the ballot.
-                Defaults to `""`.
-            meta : dict, optional
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-                Defaults to `dict()`.
+    Parameters
+    ----------
+        init: Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+            Collection of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
+            :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+            Defaults to `()`.
+        name : str, optional
+            The identifier of the ballot.
+            Defaults to `""`.
+        meta : dict, optional
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+            Defaults to `dict()`.
 
-        Attributes
-        ----------
-            name : str
-                The identifier of the ballot.
-            meta : dict
-                Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
-                strings. Could for instance store the gender of the voter, their location etc.
-        """
+    Attributes
+    ----------
+        name : str
+            The identifier of the ballot.
+        meta : dict
+            Additional information concerning the ballot, stored in a dictionary. Keys and values are typically
+            strings. Could for instance store the gender of the voter, their location etc.
+    """
+
     def __init__(
         self,
-        iterable: Iterable[Project] = (),
+        init: Iterable[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
         if name is None:
-            if isinstance(iterable, AbstractBallot):
-                name = iterable.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(iterable, AbstractBallot):
-                meta = iterable.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict()
-        dict.__init__(self, {e: None for e in iterable})
+        dict.__init__(self, {e: None for e in init})
         Ballot.__init__(self, name=name, meta=meta)
+        AbstractOrdinalBallot.__init__(self)
 
     def append(self, project: Project) -> None:
         """
@@ -140,7 +154,7 @@ class OrdinalBallot(dict, Ballot):
             res.append(key)
         return res
 
-    def index(self, project) -> int:
+    def index(self, project: Project) -> int:
         """
         Returns the index of the project given as argument by looping through all the projects until finding it.
         If the required project is not found, a `ValueError` is raised.
@@ -161,6 +175,32 @@ class OrdinalBallot(dict, Ballot):
                 return i
             i += 1
         raise ValueError("{} is not in the ballot".format(project))
+
+    def at_index(self, index: int) -> Project:
+        """
+        Returns the project at index `index`. A `ValueError` is raised if the index is invalid.
+
+        Parameters
+        ----------
+            index : int
+                The index.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.instance.Project`
+                The project at position `index`.
+        """
+        if index > len(self):
+            raise ValueError(
+                "Index {} invalid for ordinal ballot of length {}.".format(
+                    index, len(self)
+                )
+            )
+        i = 0
+        for e in self:
+            if i == index:
+                return e
+            i += 1
 
     def frozen(self) -> FrozenOrdinalBallot:
         """
@@ -192,7 +232,7 @@ class OrdinalBallot(dict, Ballot):
         for e1, e2 in zip(self, other):
             if e1 < e2:
                 return True
-            elif e2 > e1:
+            elif e2 < e1:
                 return False
         return len(self) < len(other)
 
@@ -202,9 +242,9 @@ class OrdinalBallot(dict, Ballot):
         for e1, e2 in zip(self, other):
             if e1 < e2:
                 return True
-            elif e2 > e1:
+            elif e2 < e1:
                 return False
-        return len(self) == len(other)
+        return len(self) <= len(other)
 
     def __repr__(self) -> str:
         return list(self.keys()).__repr__()

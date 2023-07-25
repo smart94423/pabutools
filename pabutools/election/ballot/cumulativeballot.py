@@ -1,14 +1,30 @@
+"""
+Cumulative ballots, i.e., ballots in which the voters distribute a given amount of points to the projects.
+"""
+from abc import ABC
+
 from pabutools.election.ballot.ballot import FrozenBallot, AbstractBallot
-from pabutools.election.ballot.cardinalballot import CardinalBallot
+from pabutools.election.ballot.cardinalballot import (
+    CardinalBallot,
+    AbstractCardinalBallot,
+)
 from pabutools.election.instance import Project
 
 from numbers import Number
 
 
-class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
+class AbstractCumulativeBallot(AbstractCardinalBallot, ABC):
     """
-    Frozen cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of
-    points allocated to the voter. This is a special type of cardinal ballot
+    Abstract class for cumulative ballots. Essentially used for typing purposes.
+    """
+
+
+class FrozenCumulativeBallot(
+    dict[Project, Number], FrozenBallot, AbstractCumulativeBallot
+):
+    """
+    Frozen cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
+    This is a special type of cardinal ballot
     (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).
     Since there is not frozen dictionary implemented in Python, this class simply
     inherits from the Python class `dict`, overriding the `set_item` method to ensure that it is non-mutable
@@ -16,7 +32,7 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -40,24 +56,25 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
 
     def __init__(
         self,
-        d: dict[Project, Number] = None,
+        init: dict[Project, Number] = None,
         name: str | None = None,
         meta: dict | None = None,
     ):
-        if d is None:
-            d = dict()
-        dict.__init__(self, d)
+        if init is None:
+            init = dict()
+        dict.__init__(self, init)
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
         FrozenBallot.__init__(self, name=name, meta=meta)
+        AbstractCumulativeBallot.__init__(self)
 
     def __setitem__(self, key, value):
         raise ValueError("You cannot set values of a FrozenCumulativeBallot")
@@ -66,16 +83,16 @@ class FrozenCumulativeBallot(dict[Project, Number], FrozenBallot):
         return tuple.__hash__(tuple(self.keys()))
 
 
-class CumulativeBallot(CardinalBallot):
+class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
     """
-    Cumulative ballot, that is, a ballot in which the voter assigned scores to projects using a total number of
-    points allocated to the voter. This is a special type of cardinal ballot
+    Cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
+    This is a special type of cardinal ballot
     (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).This class inherits from the
     Python class `dict` and can be used as one.
 
     Parameters
     ----------
-        d: dict[:py:class:`~pabutools.election.instance.Project`], optional
+        init: dict[:py:class:`~pabutools.election.instance.Project`], optional
             Dictionary of :py:class:`~pabutools.election.instance.Project` used to initialise the ballot. In case an
             :py:class:`~pabutools.election.ballot.ballot.AbstractBallot` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
@@ -99,23 +116,24 @@ class CumulativeBallot(CardinalBallot):
 
     def __init__(
         self,
-        d: dict[Project, Number] = None,
+        init: dict[Project, Number] = None,
         name: str | None = None,
         meta: dict | None = None,
     ):
-        if d is None:
-            d = dict()
+        if init is None:
+            init = dict()
         if name is None:
-            if isinstance(d, AbstractBallot):
-                name = d.name
+            if isinstance(init, AbstractBallot):
+                name = init.name
             else:
                 name = ""
         if meta is None:
-            if isinstance(d, AbstractBallot):
-                meta = d.meta
+            if isinstance(init, AbstractBallot):
+                meta = init.meta
             else:
                 meta = dict
-        CardinalBallot.__init__(self, d, name=name, meta=meta)
+        CardinalBallot.__init__(self, init, name=name, meta=meta)
+        AbstractCumulativeBallot.__init__(self)
 
     def frozen(self) -> FrozenCumulativeBallot:
         """

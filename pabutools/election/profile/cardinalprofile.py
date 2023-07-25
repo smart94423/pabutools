@@ -1,4 +1,6 @@
+from abc import ABC
 from collections.abc import Iterable
+from copy import deepcopy
 from numbers import Number
 
 from pabutools.election.ballot import (
@@ -7,40 +9,186 @@ from pabutools.election.ballot import (
     FrozenBallot,
     FrozenCardinalBallot,
 )
-from pabutools.election.profile.profile import Profile, MultiProfile
+from pabutools.election.profile.profile import Profile, MultiProfile, AbstractProfile
 from pabutools.election.instance import Instance, Project
 
 
-class CardinalProfile(Profile):
+class AbstractCardinalProfile(AbstractProfile, ABC):
     """
-    A profile of cardinal ballots. Inherits from `pabutools.instance.profile.Profile`.
+    Abstract class for cardinal profiles. Stores the metadata and the methods specific to cardinal profiles.
+
+    Parameters
+    ----------
+        legal_min_length : int, optional
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_min_score : Number, optional
+            The minimum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+        legal_max_score : Number, optional
+            The maximum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+
     Attributes
     ----------
+        legal_min_length : int
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.
+        legal_max_length : int
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+        legal_min_score : Number
+            The minimum score a project can be assigned by a voter per the rules of the election.
+        legal_max_score : Number
+            The maximum score a project can be assigned by a voter per the rules of the election.
     """
 
     def __init__(
         self,
-        iterable: Iterable[CardinalBallot] = (),
-        instance: Instance | None = None,
-        ballot_validation: bool = True,
-        ballot_type: type[Ballot] = CardinalBallot,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
-    ) -> None:
-        super(CardinalProfile, self).__init__(
-            iterable=iterable,
-            instance=instance,
-            ballot_validation=ballot_validation,
-            ballot_type=ballot_type,
-        )
+    ):
+        AbstractProfile.__init__(self)
+        ABC.__init__(self)
         self.legal_min_length = legal_min_length
         self.legal_max_length = legal_max_length
         self.legal_min_score = legal_min_score
         self.legal_max_score = legal_max_score
 
+    def total_score(self, project: Project) -> Number:
+        """
+        Returns the total score of a project, that is, the sum of scores received from all voters.
+
+        Parameters
+        ----------
+            project : :py:class:`~pabutools.election.instance.Project`
+                The project.
+
+        Returns
+        -------
+            Number
+                The total score assigned to the project.
+        """
+        score = 0
+        for ballot in self:
+            if project in ballot:
+                score += ballot[project] * self.multiplicity(ballot)
+        return score
+
+
+class CardinalProfile(Profile, AbstractCardinalProfile):
+    """
+    A profile of cardinal ballots, that is, a list of cardinal ballots per voters. See the class
+    :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot` for more details on cardinal ballots.
+    This class inherits from the Python `list` class and can thus be used as one.
+
+    Parameters
+    ----------
+        init : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`], optional
+            An iterable of :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot` that is used an
+            initializer for the list. If activated, the types of the ballots are validated. In case an
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+        instance : :py:class:`~pabutools.election.instance.Instance`, optional
+            The instance related to the profile.
+            Defaults to `Instance()`.
+        ballot_validation : bool, optional
+            Boolean indicating whether ballots should be validated before being added to the profile.
+            Defaults to `True`.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+            Defaults to `CardinalBallot`.
+        legal_min_length : int, optional
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_min_score : Number, optional
+            The minimum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+        legal_max_score : Number, optional
+            The maximum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+
+    Attributes
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance related to the profile.
+        ballot_validation : bool
+            Boolean indicating whether ballots should be validated before being added to the profile.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+        legal_min_length : int
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.
+        legal_max_length : int
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+        legal_min_score : Number
+            The minimum score a project can be assigned by a voter per the rules of the election.
+        legal_max_score : Number
+            The maximum score a project can be assigned by a voter per the rules of the election.
+    """
+
+    def __init__(
+        self,
+        init: Iterable[CardinalBallot] = (),
+        instance: Instance | None = None,
+        ballot_validation: bool = None,
+        ballot_type: type[Ballot] = None,
+        legal_min_length: int | None = None,
+        legal_max_length: int | None = None,
+        legal_min_score: Number | None = None,
+        legal_max_score: Number | None = None,
+    ) -> None:
+        if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_length = init.legal_min_length
+        if legal_max_length is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_length = init.legal_max_length
+        if legal_min_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_min_score = init.legal_min_score
+        if legal_max_score is None and isinstance(init, AbstractCardinalProfile):
+            legal_max_score = init.legal_max_score
+        AbstractCardinalProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+            legal_min_score=legal_min_score,
+            legal_max_score=legal_max_score,
+        )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
+        if ballot_type is None:
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
+            else:
+                ballot_type = CardinalBallot
+        if instance is None and isinstance(init, AbstractCardinalProfile):
+            instance = init.instance
+        Profile.__init__(
+            self,
+            init=init,
+            instance=instance,
+            ballot_validation=ballot_validation,
+            ballot_type=ballot_type,
+        )
+
     def as_multiprofile(self):
+        """
+        Converts the profile into a :py:class:`~pabutools.election.profile.cardinalprofile.CardinalMultiProfile`.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.profile.cardinalprofile.CardinalMultiProfile`
+                The multiprofile corresponding to the profile.
+        """
         return CardinalMultiProfile(
             instance=self.instance,
             profile=self,
@@ -52,24 +200,18 @@ class CardinalProfile(Profile):
             legal_max_score=self.legal_max_score,
         )
 
-    def score(self, project: Project) -> Number:
+    def complete(self, projects: Iterable[Project], default_score: Number) -> None:
         """
-        Returns the score of a project, that is, the sum of scores received from all voters.
+        Completes all the ballots such that for all ballots, if a project from `projects` has not been assigned a score,
+        then it is assigned `default_score`.
+
         Parameters
         ----------
-            project : pabutools.instance.instance.Project
-                The project.
-        Returns
-        -------
-            Fraction
+            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The set of all the projects to consider. This is typically the instance.
+            default_score : Number
+                The default score that will be assigned.
         """
-        score = 0
-        for ballot in self:
-            if project in ballot:
-                score += ballot[project]
-        return score
-
-    def complete(self, projects, default_score):
         for ballot in self:
             ballot.complete(projects, default_score)
 
@@ -113,37 +255,133 @@ CardinalProfile._wrap_methods(
         "__rmul__",
         "copy",
         "reverse",
+        "__getitem__",
     ]
 )
 
 
-class CardinalMultiProfile(MultiProfile):
-    """ """
+class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
+    """
+    A multiprofile of cardinal ballots, that is, a multiset of cardinal ballots together with their multiplicity.
+    Ballots needs to be hashable, so the class
+    :py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot` should be used by default here.
+    This class inherits from the Python `Counter` class and can thus be used as one.
+
+    Parameters
+    ----------
+        init : Iterable[:py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot`], optional
+            An iterable of :py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot` that is used an
+            initializer for the list. If activated, the types of the ballots are validated. In case an
+            :py:class:`~pabutools.election.profile.profile.AbstractProfile` object is passed, the
+            additional attributes are also copied (except if the corresponding keyword arguments have been given).
+        instance : :py:class:`~pabutools.election.instance.Instance`, optional
+            The instance related to the profile.
+            Defaults to `Instance()`.
+        ballot_validation : bool, optional
+            Boolean indicating whether ballots should be validated before being added to the profile.
+            Defaults to `True`.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`], optional
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+            Defaults to `CardinalBallot`.
+        profile: :py:class:`~pabutools.election.profile.cardinalprofile.CardinalProfile`, optional
+            A profile used to initialise the multiprofile. Some metadata are taken from the profile if they are not
+            specified in the constructor.
+        legal_min_length : int, optional
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_max_length : int, optional
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+            Defaults to `None`.
+        legal_min_score : Number, optional
+            The minimum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+        legal_max_score : Number, optional
+            The maximum score a project can be assigned by a voter per the rules of the election.
+            Defaults to `None`.
+
+    Attributes
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance related to the profile.
+        ballot_validation : bool
+            Boolean indicating whether ballots should be validated before being added to the profile.
+        ballot_type : type[:py:class:`~pabutools.election.ballot.ballot.AbstractBallot`]
+            The type that the ballots are validated against. If `ballot_validation` is `True` and a ballot of a type
+            that is not a subclass of `ballot_type` is added, an exception will be raised.
+        legal_min_length : int
+            The minimum number of projects a voter needs to assign a score to per the rules of the election.&
+        legal_max_length : int
+            The maximum number of projects a voter needs to assign a score to per the rules of the election.
+        legal_min_score : Number
+            The minimum score a project can be assigned by a voter per the rules of the election.
+        legal_max_score : Number
+            The maximum score a project can be assigned by a voter per the rules of the election.
+    """
 
     def __init__(
         self,
-        iterable: Iterable[FrozenCardinalBallot] = (),
+        init: Iterable[FrozenCardinalBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = True,
-        ballot_type: type[FrozenBallot] = FrozenCardinalBallot,
+        ballot_validation: bool = None,
+        ballot_type: type[FrozenBallot] = None,
         profile: CardinalProfile = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
         legal_min_score: Number | None = None,
         legal_max_score: Number | None = None,
     ) -> None:
-        super(CardinalMultiProfile, self).__init__(
-            iterable=iterable,
+        if legal_min_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_length = init.legal_min_length
+            elif profile:
+                legal_min_length = profile.legal_min_length
+        if legal_max_length is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_length = init.legal_max_length
+            elif profile:
+                legal_max_length = profile.legal_max_length
+        if legal_min_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_min_score = init.legal_min_score
+            elif profile:
+                legal_min_score = profile.legal_min_score
+        if legal_max_score is None:
+            if isinstance(init, AbstractCardinalProfile):
+                legal_max_score = init.legal_max_score
+            elif profile:
+                legal_max_score = profile.legal_max_score
+        AbstractCardinalProfile.__init__(
+            self,
+            legal_min_length=legal_min_length,
+            legal_max_length=legal_max_length,
+            legal_min_score=legal_min_score,
+            legal_max_score=legal_max_score,
+        )
+        if ballot_validation is None:
+            if isinstance(init, AbstractProfile):
+                ballot_validation = init.ballot_validation
+            else:
+                ballot_validation = True
+        if ballot_type is None:
+            if isinstance(init, AbstractProfile):
+                ballot_type = init.ballot_type
+            else:
+                ballot_type = FrozenCardinalBallot
+        if instance is None:
+            if isinstance(init, AbstractCardinalProfile):
+                instance = init.instance
+            elif profile:
+                instance = profile.instance
+        MultiProfile.__init__(
+            self,
+            init=init,
             instance=instance,
             ballot_validation=ballot_validation,
             ballot_type=ballot_type,
         )
         if profile is not None:
             self.extend(profile)
-        self.legal_min_length = legal_min_length
-        self.legal_max_length = legal_max_length
-        self.legal_min_score = legal_min_score
-        self.legal_max_score = legal_max_score
 
     def score(self, project: Project) -> Number:
         """
@@ -186,7 +424,33 @@ class CardinalMultiProfile(MultiProfile):
         for n in names:
             wrap_method_closure(n)
 
+    def __reduce__(self):
+        return self.__class__, (
+            dict(self),
+            self.instance,
+            self.ballot_validation,
+            self.ballot_type,
+            None,
+            self.legal_min_length,
+            self.legal_max_length,
+            self.legal_min_score,
+            self.legal_max_score,
+        )
+
 
 CardinalMultiProfile._wrap_methods(
-    ["copy", "__ior__", "__or__", "__ror__", "__reversed__"]
+    [
+        "__add__",
+        "__and__",
+        "__iadd__",
+        "__iand__",
+        "__ior__",
+        "__isub__",
+        "__imul__",
+        "__mul__",
+        "__or__",
+        "__ror__",
+        "__sub__",
+        "copy",
+    ]
 )

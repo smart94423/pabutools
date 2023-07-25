@@ -1,3 +1,6 @@
+"""
+Welfare-maximizing rules.
+"""
 from collections.abc import Iterable
 
 import mip
@@ -11,16 +14,38 @@ from pabutools.election import (
     Project,
     total_cost,
     MultiProfile,
-    SatisfactionMultiProfile,
+    GroupSatisfactionMeasure,
+    AbstractProfile,
 )
 
 
-def max_welfare_scheme(
+def max_additive_utilitarian_welfare_scheme(
     instance: Instance,
     sat_profile: SatisfactionProfile,
     initial_budget_allocation: Iterable[Project],
     resoluteness: bool = True,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
+    """
+    The inner algorithm for the welfare maximizing rule. It generates the corresponding budget allocations using a
+    linear program solver. Note that there is no control over the way ties are broken.
+
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
+            The profile of satisfaction functions.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
+        resoluteness : bool, optional
+            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
+            Defaults to True.
+    Returns
+    -------
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
+    """
     score = {p: sat_profile.total_satisfaction([p]) for p in instance}
 
     mip_model = Model("MaxWelfare")
@@ -74,38 +99,45 @@ def max_welfare_scheme(
     ]
 
 
-def max_welfare(
+def max_additive_utilitarian_welfare(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
+    sat_profile: GroupSatisfactionMeasure = None,
     resoluteness: bool = True,
     initial_budget_allocation: Iterable[Project] = None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
-    Welfare maximiser.
+    Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is
+    defined as the sum of the satisfactin of the voters, where the satisfaction is computed using the satisfaction
+    measure given as a parameter. The satisfaction measure is assumed to be additive. The bugdet allocation(s) are
+    computed using a linear program solver. Note that there is no control over the way ties are broken.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        sat_class : class
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
             inhereting from pabutools.instance.satisfaction.Satisfaction.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
             provided, the satisfaction argument is disregarded.
-        sat_profile : pabutools.instance.satisfaction.SatisfactionFunction
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
             provided, but a satisfaction function is, the former is computed from the latter.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        initial_budget_allocation : collection of pabutools.election.instance.Project, optional
-            A potential initial budget allocation.
+
     Returns
     -------
-        set of pabutools.election.instance.Project
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)
@@ -119,6 +151,6 @@ def max_welfare(
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
-    return max_welfare_scheme(
+    return max_additive_utilitarian_welfare_scheme(
         instance, sat_profile, budget_allocation, resoluteness=resoluteness
     )

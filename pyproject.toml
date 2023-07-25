@@ -33,7 +33,7 @@ dependencies = [
 dev = [
     "coverage",
     "Sphinx",
-    "sphinx_rtd_theme",
+    "sphinx-book-theme",
     "sphinxcontrib-napoleon",
     "unittest2"
 ]

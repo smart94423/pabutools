@@ -20,11 +20,15 @@ from pabutools.rules.exhaustion import (
     completion_by_rule_combination,
     exhaustion_by_budget_increase,
 )
-from pabutools.rules.greedywelfare import greedy_welfare
-from pabutools.rules.maxwelfare import max_welfare
+from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
+from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
 from pabutools.rules.mes import method_of_equal_shares
 
-ALL_SAT_RULES = [greedy_welfare, max_welfare, method_of_equal_shares]
+ALL_SAT_RULES = [
+    greedy_utilitarian_welfare,
+    max_additive_utilitarian_welfare,
+    method_of_equal_shares,
+]
 ALL_NON_SAT_RULES = [sequential_phragmen]
 ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat]
 
@@ -62,18 +66,18 @@ def dummy_elections():
         instance=inst,
     )
     test_election = DummyElection("AppEx_1", p, inst, prof)
-    test_election.irr_results_sat[greedy_welfare][Cost_Sat] = sorted(
+    test_election.irr_results_sat[greedy_utilitarian_welfare][Cost_Sat] = sorted(
         [[p[0], p[2]], [p[0], p[3]], [p[1]], [p[2], p[3]]]
     )
-    test_election.irr_results_sat[greedy_welfare][Cardinality_Sat] = sorted(
+    test_election.irr_results_sat[greedy_utilitarian_welfare][Cardinality_Sat] = sorted(
         [[p[0], p[3]]]
     )
-    test_election.irr_results_sat[max_welfare][Cost_Sat] = sorted(
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cost_Sat] = sorted(
         [[p[0], p[2]], [p[1]], [p[2], p[3]]]
     )
-    test_election.irr_results_sat[max_welfare][Cardinality_Sat] = sorted(
-        [[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]]
-    )
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][
+        Cardinality_Sat
+    ] = sorted([[p[0], p[3]], [p[0], p[2]], [p[2], p[3]]])
     res.append(test_election)
 
     # Approval example 2
@@ -131,10 +135,10 @@ def dummy_elections():
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     test_election = DummyElection("EmptyProfile", p, inst, prof)
     for sat_class in ALL_SAT:
-        test_election.irr_results_sat[max_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations()]
-        )
-        test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
+        test_election.irr_results_sat[max_additive_utilitarian_welfare][
+            sat_class
+        ] = sorted([sorted(list(b)) for b in inst.budget_allocations()])
+        test_election.irr_results_sat[greedy_utilitarian_welfare][sat_class] = sorted(
             [
                 sorted(list(b))
                 for b in inst.budget_allocations()
@@ -157,10 +161,10 @@ def dummy_elections():
     initial_alloc = p[:1]
     test_election = DummyElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
     for sat_class in ALL_SAT:
-        test_election.irr_results_sat[max_welfare][sat_class] = sorted(
-            [sorted(list(b)) for b in inst.budget_allocations() if p[0] in b]
-        )
-        test_election.irr_results_sat[greedy_welfare][sat_class] = sorted(
+        test_election.irr_results_sat[max_additive_utilitarian_welfare][
+            sat_class
+        ] = sorted([sorted(list(b)) for b in inst.budget_allocations() if p[0] in b])
+        test_election.irr_results_sat[greedy_utilitarian_welfare][sat_class] = sorted(
             [
                 sorted(list(b))
                 for b in inst.budget_allocations()
@@ -315,13 +319,13 @@ def run_non_sat_rule(rule):
 
 class TestRule(TestCase):
     def test_greedy_welfare(self):
-        run_sat_rule(greedy_welfare)
+        run_sat_rule(greedy_utilitarian_welfare)
         with self.assertRaises(ValueError):
-            greedy_welfare(Instance(), ApprovalProfile())
+            greedy_utilitarian_welfare(Instance(), ApprovalProfile())
 
     def test_greedy_multiprofile(self):
         for test_election in ALL_TEST_ELECTIONS:
-            outcome1 = greedy_welfare(
+            outcome1 = greedy_utilitarian_welfare(
                 test_election.instance,
                 test_election.profile,
                 resoluteness=True,
@@ -329,7 +333,7 @@ class TestRule(TestCase):
                 sat_class=Cost_Sat,
             )
             multiprofile = test_election.profile.as_multiprofile()
-            outcome2 = greedy_welfare(
+            outcome2 = greedy_utilitarian_welfare(
                 test_election.instance,
                 multiprofile,
                 sat_class=Cost_Sat,
@@ -344,7 +348,7 @@ class TestRule(TestCase):
                 sat_profile = SatisfactionProfile(
                     profile=test_election.profile, sat_class=Cost_Sat
                 )
-                outcome1 = greedy_welfare(
+                outcome1 = greedy_utilitarian_welfare(
                     test_election.instance,
                     test_election.profile,
                     sat_profile=sat_profile,
@@ -355,7 +359,7 @@ class TestRule(TestCase):
                 sat_multiprofile = SatisfactionMultiProfile(
                     profile=test_election.profile, sat_class=Cost_Sat
                 )
-                outcome2 = greedy_welfare(
+                outcome2 = greedy_utilitarian_welfare(
                     test_election.instance,
                     test_election.profile,
                     sat_profile=sat_multiprofile,
@@ -366,9 +370,9 @@ class TestRule(TestCase):
                 assert outcome1 == outcome2
 
     def test_max_welfare(self):
-        run_sat_rule(max_welfare)
+        run_sat_rule(max_additive_utilitarian_welfare)
         with self.assertRaises(ValueError):
-            max_welfare(Instance(), ApprovalProfile())
+            max_additive_utilitarian_welfare(Instance(), ApprovalProfile())
 
     def test_phragmen(self):
         run_non_sat_rule(sequential_phragmen)
@@ -479,14 +483,14 @@ class TestRule(TestCase):
         budget_allocation_mes_iterated = completion_by_rule_combination(
             instance,
             profile,
-            [method_of_equal_shares, greedy_welfare],
+            [method_of_equal_shares, greedy_utilitarian_welfare],
             [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
         )
         assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
         budget_allocation_mes_iterated = completion_by_rule_combination(
             instance,
             profile,
-            [method_of_equal_shares, greedy_welfare],
+            [method_of_equal_shares, greedy_utilitarian_welfare],
             [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
             initial_budget_allocation=[projects[5]],
         )
@@ -501,19 +505,19 @@ class TestRule(TestCase):
             completion_by_rule_combination(
                 instance,
                 profile,
-                [method_of_equal_shares, greedy_welfare],
+                [method_of_equal_shares, greedy_utilitarian_welfare],
                 [{"sat_class": Cost_Sat}],
             )
 
         with self.assertRaises(ValueError):
             completion_by_rule_combination(
-                instance, profile, [method_of_equal_shares, greedy_welfare]
+                instance, profile, [method_of_equal_shares, greedy_utilitarian_welfare]
             )
 
         completion_by_rule_combination(
             instance,
             profile,
-            [exhaustion_by_budget_increase, greedy_welfare],
+            [exhaustion_by_budget_increase, greedy_utilitarian_welfare],
             [
                 {
                     "rule": method_of_equal_shares,

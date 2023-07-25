@@ -1,0 +1,13 @@
+Do satisfaction work on multiprofile? To check
+
+Check the ballots for which the satisfaction work.
+
+Update type for Counter initializer.
+
+Correct the FrozenCardinalBallots that are now implemented with a dirty trick.
+
+Implement MES with when non-supporters can pay.
+
+Import from PrefLib.
+
+Export to Pabulib.

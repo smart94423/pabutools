@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from numbers import Number
 
 import numpy as np
 from pabutools.election.instance import Instance, Project
@@ -9,7 +10,32 @@ def category_proportionality(
     instance: Instance,
     profile: ApprovalProfile | ApprovalMultiProfile,
     budget_allocation: Iterable[Project],
-) -> float:
+) -> Number:
+    """
+    Computes the difference between the cost allocated per category, and that existing in the profile. More
+    specifically, for each category (an error is raised if not category are specified) we compute the amount of money
+    dedicated to projects from the category in the budget allocation; together with the amount of money allocated to
+    the category in the ballots of the voters. For each category, the average between these two scores is raised to the
+    power 2, the global average over all categories is then considered and we return the exponential of minus that
+    value.
+
+    It mostly makes sense for approval ballots, though any profile of ballots supporting the `in` operator can be used.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            The selected collection of projects.
+
+    Returns
+    -------
+        Number
+            The score for the category proportionality.
+
+    """
     categories = list(instance.categories)
     if len(categories) == 0:
         raise ValueError(

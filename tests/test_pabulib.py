@@ -1,16 +1,14 @@
 from unittest import TestCase
 
 from pabutools.election import OrdinalBallot
-from pabutools.election.pabulib import parse_pabulib
+from pabutools.election.pabulib import parse_pabulib, parse_pabulib_from_string
 
 import os
 
 
 class TestPabulib(TestCase):
     def test_approval(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
 key;value
 description;Local PB in Warsaw, WesoÅ‚a | Plac Wojska Polskiego
 country;Poland
@@ -64,27 +62,31 @@ voter_id;age;sex;voting_method;vote
 94116;33;M;internet;427
 103942;54;M;internet;427
 104255;53;F;internet;427"""
-            )
 
-        instance, profile = parse_pabulib("test.pb")
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
+
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
+            assert len(instance) == 4
+            assert instance.budget_limit == 51195
+            assert len(profile) == 27
+            assert len(profile[0]) == 1
+            assert len(profile[4]) == 4
+            for p in profile[0]:
+                assert p.name == "427"
+                assert p.cost == 15995
+            assert profile.approval_score(instance.get_project("427")) == 16
+            assert len(profile.approved_projects()) == 4
+            assert len(instance.categories) == 5
+            assert len(instance.targets) == 5
+
         os.remove("test.pb")
-        assert len(instance) == 4
-        assert instance.budget_limit == 51195
-        assert len(profile) == 27
-        assert len(profile[0]) == 1
-        assert len(profile[4]) == 4
-        for p in profile[0]:
-            assert p.name == "427"
-            assert p.cost == 15995
-        assert profile.approval_score(instance.get_project("427")) == 16
-        assert len(profile.approved_projects()) == 4
-        assert len(instance.categories) == 5
-        assert len(instance.targets) == 5
 
     def test_cumulative(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
 key;value
 description;Municipal PB in Toulouse
 country;France
@@ -147,33 +149,37 @@ voter_id;vote;points
 9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
 10;6,7;3,3
 11;2,14,8;3,3,1"""
-            )
 
-        instance, profile = parse_pabulib("test.pb")
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
+
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
+            assert len(instance) == 30
+            assert instance.budget_limit == 1000000
+            assert len(profile) == 12
+            assert len(profile[0]) == 4
+            assert len(profile[4]) == 5
+
+            projects = {i: instance.get_project(str(i)) for i in range(1, 31)}
+            assert profile[0][projects[9]] == 1
+            assert profile[0][projects[10]] == 2
+            assert profile[0][projects[11]] == 2
+            assert profile[0][projects[13]] == 2
+            assert profile[4][projects[5]] == 3
+            assert profile[4][projects[10]] == 1
+            assert profile[4][projects[11]] == 1
+            assert profile[4][projects[13]] == 1
+            assert profile[4][projects[20]] == 1
+            assert len(instance.categories) == 0
+            assert len(instance.targets) == 0
+
         os.remove("test.pb")
-        assert len(instance) == 30
-        assert instance.budget_limit == 1000000
-        assert len(profile) == 12
-        assert len(profile[0]) == 4
-        assert len(profile[4]) == 5
-
-        projects = {i: instance.get_project(str(i)) for i in range(1, 31)}
-        assert profile[0][projects[9]] == 1
-        assert profile[0][projects[10]] == 2
-        assert profile[0][projects[11]] == 2
-        assert profile[0][projects[13]] == 2
-        assert profile[4][projects[5]] == 3
-        assert profile[4][projects[10]] == 1
-        assert profile[4][projects[11]] == 1
-        assert profile[4][projects[13]] == 1
-        assert profile[4][projects[20]] == 1
-        assert len(instance.categories) == 0
-        assert len(instance.targets) == 0
 
     def test_scoring(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
 key;value
 description;Municipal PB in Toulouse
 country;France
@@ -234,19 +240,22 @@ voter_id;vote;points
 9;1,6,7,9,10,20,30;1,1,1,1,1,1,1
 10;6,7;3,3
 11;2,14,8;3,3,1"""
-            )
 
-        instance, profile = parse_pabulib("test.pb")
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
+
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
+            assert profile[0][instance.get_project("10")] == 2
+            assert profile[0][instance.get_project("9")] == 1
+            assert profile[11][instance.get_project("8")] == 1
+
         os.remove("test.pb")
 
-        assert profile[0][instance.get_project("10")] == 2
-        assert profile[0][instance.get_project("9")] == 1
-        assert profile[11][instance.get_project("8")] == 1
-
     def test_ordinal(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
 key;value
 description;Municipal PB in Kraków
 country;Poland
@@ -436,28 +445,32 @@ voter_id;vote;voting_method;district
 43;84,101,83;internet;PODGÓRZE
 44;4,36,41;internet;KROWODRZA
 """
+
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
+
+        for instance, profile in [
+            parse_pabulib("test.pb"),
+            parse_pabulib_from_string(contents),
+        ]:
+            assert len(instance) == 123
+            assert instance.budget_limit == 8000100
+            assert len(profile) == 45
+            assert len(profile[44]) == 3
+            assert len(profile[4]) == 3
+
+            assert profile[44] == OrdinalBallot(
+                [
+                    instance.get_project("4"),
+                    instance.get_project("36"),
+                    instance.get_project("41"),
+                ]
             )
 
-        instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
-        assert len(instance) == 123
-        assert instance.budget_limit == 8000100
-        assert len(profile) == 45
-        assert len(profile[44]) == 3
-        assert len(profile[4]) == 3
-
-        assert profile[44] == OrdinalBallot(
-            [
-                instance.get_project("4"),
-                instance.get_project("36"),
-                instance.get_project("41"),
-            ]
-        )
 
     def test_wrong_type(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -490,7 +503,8 @@ voter_id;vote;voting_method;district
                 3;18,3,34;internet;CZYŻYNY
                 4;97,120,117;paper;NOWA HUTA
             """
-            )
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
 
         try:
             _, _ = parse_pabulib("test.pb")
@@ -500,9 +514,7 @@ voter_id;vote;voting_method;district
             os.remove("test.pb")
 
     def test_legal_defaults(self):
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -527,7 +539,8 @@ voter_id;vote;voting_method;district
                 voter_id;vote;voting_method;district
                 0;1,2,3;paper;PODGÓRZE DUCHACKIE
             """
-            )
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
         assert instance.meta["min_length"] == "1"
@@ -539,9 +552,7 @@ voter_id;vote;voting_method;district
         assert profile.legal_min_cost is None
         assert profile.legal_max_cost is None
 
-        with open("test.pb", "w", encoding="utf-8") as f:
-            f.write(
-                """META
+        contents = """META
                 key;value
                 description;Municipal PB in Kraków
                 country;Poland
@@ -566,7 +577,8 @@ voter_id;vote;voting_method;district
                 voter_id;vote;points
                 0;1,2,3;1,2,3
             """
-            )
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
         instance, profile = parse_pabulib("test.pb")
         os.remove("test.pb")
 

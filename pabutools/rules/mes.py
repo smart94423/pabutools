@@ -1,8 +1,18 @@
+"""
+The method of equal shares.
+"""
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from numbers import Number
 
-from pabutools.election import MultiProfile, SatisfactionMultiProfile
+from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
+
+from pabutools.election import (
+    MultiProfile,
+    SatisfactionMultiProfile,
+    AbstractBallot,
+    AbstractProfile,
+)
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import Profile
 from pabutools.election.satisfaction import SatisfactionMeasure, SatisfactionProfile
@@ -12,54 +22,124 @@ from pabutools.tiebreaking import TieBreakingRule
 
 
 class MESVoter:
-    def __init__(self, ballot, sat, budget, multiplicity):
+    """
+    Class used to summarise a voter during a run of the method of equal shares.
+
+    Parameters
+    ----------
+        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot of the voter.
+        sat: SatisfactionMeasure
+            The satisfaction measure corresponding to the ballot.
+        budget: Number
+            The budget of the voter.
+        multiplicity: int
+            The multiplicity of the ballot.
+
+    Attributes
+    ----------
+        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot of the voter.
+        sat: SatisfactionMeasure
+            The satisfaction measure corresponding to the ballot.
+        budget: Number
+            The budget of the voter.
+        multiplicity: int
+            The multiplicity of the ballot.
+    """
+
+    def __init__(
+        self,
+        ballot: AbstractBallot,
+        sat: SatisfactionMeasure,
+        budget: Number,
+        multiplicity: int,
+    ):
         self.ballot = ballot
         self.sat = sat
         self.budget = budget
         self.multiplicity = multiplicity
 
-    def total_sat(self, projs):
+    def total_sat(self, projs: Iterable[Project]) -> Number:
+        """
+        Returns the total satisfaction given a subset of projects. It is equal to the satisfaction for the projects,
+        multiplied by the multiplicity.
+
+        Parameters
+        ----------
+            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The collection of projects.
+
+        Returns
+        -------
+            Number
+                The total satisfaction.
+        """
         return self.multiplicity * self.sat.sat(projs)
 
-    def total_budget(self):
+    def total_budget(self) -> Number:
+        """
+        Returns the total budget of the voters. It is equal to the budget multiplied by the multiplicity.
+
+        Returns
+        -------
+            Number
+                The total budget.
+        """
         return self.multiplicity * self.budget
 
     def budget_over_sat(self, projs):
+        """
+        Returns the budget divided by the satisfaction for a given subset of projects.
+
+        Parameters
+        ----------
+            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The collection of projects.
+
+        Returns
+        -------
+            Number
+                The total satisfaction.
+        """
         return frac(self.budget, self.sat.sat(projs))
 
 
 def mes_scheme(
     instance: Instance,
     profile: Profile,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile,
+    sat_profile: GroupSatisfactionMeasure,
     initial_budget: Number,
     initial_budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
     resoluteness=True,
 ) -> list[Project] | list[list[Project]]:
     """
-    The inner algorithm to compute the outcome of the method of equal shares (MES). See equalshares.net for more
-    details on this voting rule.
+    The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website
+    `equalshares.net <https://equalshares.net/>`_ for details about how to compute the outcome of the rule.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        sat_profile : pabutools.instance.pbinstance.SatisfactionProfile
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
-        initial_budget : float
-            The budget distributed to the agents initially.
-        initial_budget_allocation : collection of pabutools.election.instance.Project
+        initial_budget: Number
+            The initial budget of a voter.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
     Returns
     -------
-        list of pabutools.election.instance.Project if resolute, list of the previous if irresolute
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
 
     def aux(
@@ -194,43 +274,49 @@ def mes_scheme(
 
 def method_of_equal_shares(
     instance: Instance,
-    profile: Profile | MultiProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: SatisfactionProfile | SatisfactionMultiProfile = None,
-    tie_breaking: TieBreakingRule = lexico_tie_breaking,
+    sat_profile: GroupSatisfactionMeasure = None,
+    tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
     initial_budget_allocation: Iterable[Project] = None,
-) -> list[Project] | list[list[Project]]:
+) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
-    General greedy scheme for approval profiles. It selects projects in rounds, each time selecting a project that
-    lead to the highest increase in total satisfaction divided by the cost of the project. Projects that would
-    lead to a violation of the budget constraint are skipped.
+    The Method of Equal Shares (MES). See the website
+    `equalshares.net <https://equalshares.net/>`_ for details about how to compute the outcome of the rule. Note that
+    the satisfaction measure is asssumed to be additive.
+
     Parameters
     ----------
-        instance : pabutools.election.instance.Instance
+        instance: :py:class:`~pabutools.election.instance.Instance`
             The instance.
-        profile : pabutools.instance.profile.ApprovalProfile
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        satisfaction : class
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
             inhereting from pabutools.instance.satisfaction.Satisfaction.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
             provided, the satisfaction argument is disregarded.
-        sat_profile : pabutools.instance.satisfaction.SatisfactionFunction
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
             provided, but a satisfaction function is, the former is computed from the latter.
-        tie_breaking : pabutools.rules.tiebreaking.TieBreakingRule, optional
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
+        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
-            Defaults to lexico_tie_breaking.
+            Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        initial_budget_allocation : collection of pabutools.election.instance.Project, optional
-            A potential initial budget allocation.
+
     Returns
     -------
-        list of pabutools.election.instance.Project
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
     """
+    if tie_breaking is None:
+        tie_breaking = lexico_tie_breaking
     if initial_budget_allocation is not None:
         budget_allocation = list(initial_budget_allocation)
     else:
@@ -246,7 +332,7 @@ def method_of_equal_shares(
         instance,
         profile,
         sat_profile,
-        frac(instance.budget_limit, profile.total_len()),
+        frac(instance.budget_limit, profile.num_ballots()),
         budget_allocation,
         tie_breaking,
         resoluteness=resoluteness,
