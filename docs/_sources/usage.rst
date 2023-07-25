@@ -1,38 +1,37 @@
 Complete Guide
 ==============
 
-This is a more complete guide on how to use Pabutools. For a more basic tutorial,
-check the :ref:`quickstart` page.
+This guide offers a comprehensive explanation on using Pabutools. For a simpler tutorial,
+refer to the :ref:`quickstart` page.
 
 Instances
 ---------
+Please refer to the module :py:mod:`~pabutools.election.instance` for more information.
 
-For reference, see the module :py:mod:`~pabutools.election.instance`.
+A participatory budgeting instance encapsulates all the elements defining the elections. It includes
+the projects up for voting, along with the budget limit.
 
-A participatory budgeting instance describes all the elements that define the elections. It includes the
-projects that are being voted on, together with the budget limit.
-
-The main class here is :py:class:`~pabutools.election.instance.Instance`.
-This class inherits from the Python class `set` and behaves as a set of projects,
-with additional information. Projects are instantiations of the class
-:py:class:`~pabutools.election.instance.Project`, which stores a project's name and cost
-(and potential additional information). Let's see an example.
+The central class is :py:class:`~pabutools.election.instance.Instance`.
+This class inherits from the Python `set` class, behaving as a set of projects,
+augmented with additional information. Projects are instances of the class
+:py:class:`~pabutools.election.instance.Project`, which stores a project's name, cost,
+and any potential additional information. Here's an example:
 
 .. code-block:: python
 
     from pabutools.election import Instance, Project
 
-    instance = Instance()   # There are many optional parameters
-    p1 = Project("p1", 1)   # The constructor takes the name and cost of the project
-    instance.add(p1)   # Use the set methods to add/delete projects to an instance
+    instance = Instance()   # It accepts several optional parameters
+    p1 = Project("p1", 1)   # The constructor requires the name and cost of the project
+    instance.add(p1)   ## Set methods are used to add/remove projects from an instance
     p2 = Project("p2", 1)
     instance.add(p2)
     p3 = Project("p3", 3)
     instance.add(p3)
 
-Importantly, any Python comparison between two projects (equality, etc...) is done based on the
+Notably, any Python comparison between two projects (equality, etc.) is based on the
 name of the projects. Since an instance is a set, adding a project `Project("p", 1)` and
-another project `Project("p", 3)` will lead to an instance with a single project.
+another project `Project("p", 3)` will result in an instance with a single project.
 
 An instance also stores additional information such as the budget limit of the election
 and additional metadata.
@@ -43,8 +42,8 @@ and additional metadata.
     instance.meta   # dict storing metadata on the instance
     instance.project_meta   # dict of (project, dict) storing metadata on the projects
 
-Several methods can be called on an instance to run through all the budget allocations,
-test the feasibility of a set of projects, etc...
+An instance can invoke several methods to iterate through all the budget allocations,
+test the feasibility of a set of projects, and so on.
 
 .. code-block:: python
 
@@ -56,21 +55,21 @@ test the feasibility of a set of projects, etc...
 Profiles
 --------
 
-For reference, see the modules :py:mod:`~pabutools.election.ballot` and
+For reference, please refer to the modules :py:mod:`~pabutools.election.ballot` and
 :py:mod:`~pabutools.election.profile`.
 
-A profile is the second basic component of a participatory budgeting election; it stores
+A profile is the second fundamental component of a participatory budgeting election; it stores
 the ballots of the voters.
 
-We provide one general class :py:class:`~pabutools.election.profile.profile.Profile`
-that inherits from the Python class `list` and is inherited from by all specific
-profile types. It is really meant to be an abstract class and should not be used
+We provide a general class :py:class:`~pabutools.election.profile.profile.Profile`
+that inherits from the Python class `list` and serves as a base for all specific
+profile types. It primarily acts as an abstract class and should not be used
 for any other purpose than inheritance. Similarly, we provide a class
-:py:class:`~pabutools.election.ballot.ballot.Ballot` that will be inherited by specific
+:py:class:`~pabutools.election.ballot.ballot.Ballot` that is used as a base for specific
 ballot formats.
 
-A profile is linked to an instance, which is given as a parameter and then stored in
-an attribute. It also implements validation of the ballots to ensure consistency
+A profile is associated with an instance, which is passed as a parameter and then stored in
+an attribute. It also implements validation of the ballots to ensure the consistency
 of the ballots in a profile.
 
 .. code-block:: python
@@ -79,24 +78,22 @@ of the ballots in a profile.
 
     instance = Instance()
     profile = Profile(instance=instance)
-    profile.ballot_validation = True   # Boolean (de)activating the validation of the ballot type
+    profile.ballot_validation = True   # Boolean to activate/deactivate the validation of the ballot type
     profile.ballot_type = Ballot   # The type used for the ballot validation
     b = {1, 2, 3}
     profile.validate_ballot(b)   # The validator, would raise a TypeError here
 
 Approval Profiles
 ^^^^^^^^^^^^^^^^^
-
 When submitting approval ballots, voters submit a set of projects they approve of.
 Approval ballots are represented through the class
 :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot` that inherits
-both from `set` and from :py:class:`~pabutools.election.ballot.ballot.Ballot`.
+from both `set` and :py:class:`~pabutools.election.ballot.ballot.Ballot`.
 
 A profile of approval ballots, i.e., an approval profile, is instantiated from the class
 :py:class:`~pabutools.election.profile.approvalprofile.ApprovalProfile`. It inherits from
-:py:class:`~pabutools.election.profile.profile.Profile`. The type for the ballot
-validator is by default set to
-:py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`.
+:py:class:`~pabutools.election.profile.profile.Profile`. By default, it sets the type for the ballot
+validator to :py:class:`~pabutools.election.ballot.approvalballot.ApprovalBallot`.
 
 .. code-block:: python
 
@@ -111,23 +108,23 @@ validator is by default set to
     profile.append(b3)
     b1 in profile   # Tests membership, returns True here
 
-Several additional methods are provided in the ApprovalProfile class.
+The :py:class:`~pabutools.election.profile.approvalprofile.ApprovalProfile` class provides several additional methods.
 
 .. code-block:: python
 
     profile.approval_score(p1)   # The approval score of a project, i.e., the number of approvers
-    profile.is_party_list()   # Boolean indicating if the profile is party_list
+    profile.is_party_list()   # Boolean indicating if the profile is a party list profile
 
 Cardinal Profiles
 ^^^^^^^^^^^^^^^^^
 
-When asked for cardinal ballots, voters are asked to associate each project with a score.
+When required to submit cardinal ballots, voters are asked to assign a score to each project.
 Cardinal ballots are represented using the class
 :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`.
-It inherits directly from the Python `dict` class and our
+It directly inherits from the Python `dict` class and our
 :py:class:`~pabutools.election.ballot.ballot.Ballot` class.
 
-A profile of cardinal ballots, i.e., a cardinal profile, is instantiated through the
+A profile of cardinal ballots, i.e., a cardinal profile, is created using the
 :py:class:`~pabutools.election.profile.cardinalprofile.CardinalProfile` class.
 It inherits from the :py:class:`~pabutools.election.profile.profile.Profile` class and validates ballot types using
 :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`.
@@ -148,7 +145,7 @@ Cumulative Profiles
 Cumulative ballots correspond to a specific type of cardinal ballots where the voters are
 allocated a specific number of points that they can distribute among the projects.
 The class :py:class:`~pabutools.election.ballot.cumulativeballot.CumulativeBallot`
-is used to deal with cumulative ballots. It inherits from
+is used to handle cumulative ballots. It inherits from
 :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot` and thus also from
 the Python class `dict`.
 
@@ -160,10 +157,11 @@ that inherits from the :py:class:`~pabutools.election.profile.profile.Profile` c
 Ordinal Profiles
 ^^^^^^^^^^^^^^^^
 
-When ordinal ballots are used, voters are asked to order the projects based on their
+When ordinal ballots are used, voters are asked to rank the projects based on their
 preferences. The class :py:class:`~pabutools.election.ballot.ordinalballot.OrdinalBallot`
-represents such ballots. It inherits from the Python class `list` and our class
-:py:class:`~pabutools.election.ballot.ballot.Ballot`.
+represents such ballots. It inherits from the Python class `list` (actually the class
+`dict` to ensure unicity of the projects, but all `list` methods have been implemented)
+and our class :py:class:`~pabutools.election.ballot.ballot.Ballot`.
 
 Ordinal profiles are handled by the class
 :py:class:`~pabutools.election.profile.ordinalprofile.OrdinalProfile`.
@@ -184,9 +182,8 @@ Multiprofile
 For reference, see the modules :py:mod:`~pabutools.election.profile`.
 
 In some cases, it is faster to use multisets instead of lists for the profiles. We have
-implemented this through multiprofiles. A multiprofile is a collection of ballots in which
-each ballot is stored once, together with its multiplicity. Importantly, we always our
-implementations always allow for profiles and multiprofiles to be used interchangeably.
+implemented this through multiprofiles. A multiprofile is a collection of ballots where
+each ballot is stored once, along with its multiplicity.
 
 Multiprofiles are defined through the class
 :py:class:`~pabutools.election.profile.profile.MultiProfile` that inherits from the Python
@@ -195,10 +192,12 @@ class `Counter`. Each specific type of profile has its multiprofile counterpart:
 :py:class:`~pabutools.election.profile.cardinalprofile.CardinalMultiProfile`,
 :py:class:`~pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile`,
 and :py:class:`~pabutools.election.profile.ordinalprofile.OrdinalMultiProfile`.
+Importantly, our implementations allow for profiles and multiprofiles to be used
+interchangeably (for rules, analysis, etc.).
 
-Since ballots are used as dictionary keys in a multiprofile, they need not be mutable.
+Since ballots are used as dictionary keys in a multiprofile, they have to be immutable.
 We have thus implemented the class :py:class:`~pabutools.election.ballot.ballot.FrozenBallot`
-which corresponds to the non-mutable correspondence to a ballot. All specific ballot types
+which corresponds to the immutable representation of a ballot. All specific ballot types
 have their frozen counterparts:
 :py:class:`~pabutools.election.ballot.approvalballot.FrozenApprovalBallot`,
 :py:class:`~pabutools.election.ballot.cardinalballot.FrozenCardinalBallot`,
@@ -261,18 +260,18 @@ To get more insights, we also plot the actual runtime for each type of profiles:
 Preference Libraries
 --------------------
 
-For reference, see :ref:`preflibraries`.
+See :ref:`preflibraries` for a reference.
 
-We provide support for standard preference libraries that are widely used.
+We provide support for standard preference libraries.
 
 PaBuLib
 ^^^^^^^
 
-We provide full support for the participatory budgeting data hosted on the
-`pabulib <http://pabulib.org>`_ website. The function
-:py:func:`~pabutools.election.pabulib.parse_pabulib` can be used to parse a file
-formatted according to the pabulib format. It returns the instance
-and the profile, using the suitable profile class given the ballot
+Full support is provided for the participatory budgeting data hosted on the
+`pabulib <http://pabulib.org>`_ website. You can use the function
+:py:func:`~pabutools.election.pabulib.parse_pabulib` to parse a file
+that conforms to the pabulib format. This function yields the instance
+and profile based on the appropriate profile class determined by the ballot
 format in the data.
 
 .. code-block:: python
@@ -281,9 +280,8 @@ format in the data.
 
     instance, profile = parse_pabulib("path_to_the_file")
 
-Pabulib files provide a whole range of metadata, not all of which is
-relevant to everyone. These metadata are stored in the `meta`
-members of the instance and profile classes.
+Pabulib files contain an extensive range of metadata. This metadata is
+stored in the `meta` members of the instance and profile classes.
 
 .. code-block:: python
 
@@ -295,11 +293,10 @@ members of the instance and profile classes.
     for ballot in profile:
         ballot.meta    # The meta dict populated with the metadata corresponding to the ballot
 
-There are several metadata that are stored as members of the relevant
-classes. These, for instance, include all the constraints (when known)
-the voters faced when submitting their ballots. It includes the minimum
-length of a ballot or the number of points that have to be distributed
-for instance.
+Several metadata is housed as members of the corresponding
+classes. For example, all known constraints
+that the voters were subjected to when submitting their ballots. This includes the minimum
+length of a ballot or the number of points that must be allocated for instance.
 
 .. code-block:: python
 
@@ -322,7 +319,8 @@ for instance.
 PrefLib
 ^^^^^^^
 
-We also support the PrefLib format, providing functions to move save a participatory
+In addition to `pabulib <http://pabulib.org>`_ , our package also supports the
+`preflib <https://preflib.org>`_  format, providing functions to convert a participatory
 budgeting election into a PrefLib instance.
 
 .. code-block:: python
@@ -347,23 +345,24 @@ budgeting election into a PrefLib instance.
 Satisfaction Measures
 ---------------------
 
-Many concepts, including celebrated participatory budgeting rules, are not using the ballots
-directly but rather proxies for the satisfaction of the voters that are deduced from the ballots.
+In participatory budgeting, various concepts and rules utilize proxies for voter satisfaction,
+which are deduced from the submitted ballots rather than using the ballots directly.
 
-We provide many satisfaction functions and flexible ways to create new ones.
-A satisfaction function is a class that inherits from
-:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`,
-i.e., a class initialized for a given instance, profile, and ballot and
-that implements a `sat` method used to compute the satisfaction. Since a satisfaction function corresponds to a single ballot,
-we also provide a :py:class:`~pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile`
-class. This class inherits from the Python class `list` and implements a
-satisfaction profile. Note that there is also a class
+We offer a range of satisfaction functions and provide flexible ways to create custom ones.
+A satisfaction function is represented by a class that inherits from
+:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`.
+Such a class is initialized with specific parameters: an instance, a profile, and a ballot.
+The class implements a `sat` method used to compute the satisfaction value for that
+particular ballot. Additionally, we introduce
+:py:class:`~pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile`,
+a class that inherits from the Python class `list` and facilitates managing a collection
+of satisfaction functions. We also have
 :py:class:`~pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile`,
-implementing satisfaction profiles as multisets.
+which represents satisfaction profiles as multisets (see our discussion above about multiprofiles).
 
-The typical workflow is thus to gather the ballots in a profile, then
-convert it into a collection of satisfaction functions, which are finally
-provided as input to a rule.
+The typical workflow involves gathering the ballots into a profile, converting them
+into a collection of satisfaction functions, and then using these functions as input to a rule.
+
 
 .. code-block:: python
 
@@ -386,9 +385,8 @@ provided as input to a rule.
     outcome = rule(sat_profile)
 
 
-Because the above can be tedious, we provide simpler ways to define the
-satisfaction profile. Several widely used satisfaction functions are also
-directly provided.
+To simplify the process of defining the satisfaction profile, we offer convenient
+methods and provide several widely used satisfaction functions.
 
 .. code-block:: python
 
@@ -403,19 +401,17 @@ directly provided.
     outcome = rule(sat_profile)
 
 
-We now present useful tools we provide to define satisfaction functions.
+Next, we present additional tools we provide to define satisfaction functions.
 
 Functional Satisfaction Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We also provide more specific ways of defining satisfaction functions.
-The class
-:py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
-corresponds to a satisfaction function that is defined by a function taking as
-arguments an instance, a profile, a ballot, and a set of projects. We illustrate
-its use by defining the Chamberlin-Courant satisfaction function with approval
-(equals to 1 if at least one approved project is selected and
-0 otherwise).
+For more specific ways of defining satisfaction functions, we introduce the class
+:py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`.
+This class corresponds to a satisfaction function defined by a function that takes as arguments
+an instance, a profile, a ballot, and a set of projects. To demonstrate its use, we illustrate
+how to define the Chamberlin-Courant satisfaction function with approval (equal to 1 if
+at least one approved project is selected and 0 otherwise).
 
 .. code-block:: python
 
@@ -433,16 +429,12 @@ its use by defining the Chamberlin-Courant satisfaction function with approval
 Additive Satisfaction Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Another important set of satisfaction functions are the additive ones,
-i.e., the ones for which the satisfaction for a set of projects is
-equal to the satisfaction of each individual project. The class
+We also offer additive satisfaction functions, where the satisfaction for a set
+of projects is equal to the sum of the satisfaction of each individual project. The class
 :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-implements them. It inherits from the
-:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`
-class, and its constructor takes as a parameter
-a function mapping instance, profile, ballot, and project to a score.
-We illustrate its use by presenting how to define the cardinality
-satisfaction function.
+implements such functions. Its constructor takes a function as a parameter that maps
+instance, profile, ballot, and project to a score. As an example, we demonstrate
+how to define the cardinality satisfaction function.
 
 .. code-block:: python
 
@@ -458,15 +450,12 @@ satisfaction function.
 Positional Satisfaction Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Positional satisfaction functions are to be used with ordinal ballots.
-When using them, the satisfaction of a voter is a function of the
-position of the projects in the ballot of the voter. The class
+For ordinal ballots, we have positional satisfaction functions, where a voter's
+satisfaction depends on the position of projects in their ballot. The class
 :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction`
-implements them. The constructor takes
-as parameters two functions: one mapping ballots and projects to a score,
-and a second one aggregating the individual scores for sets of projects.
-We illustrate its usage by defining the additive Borda satisfaction
-function.
+implements these functions. Its constructor takes two functions as parameters: one that maps
+ballots and projects to a score and another that aggregates the individual scores for sets
+of projects. As an example, we define the additive Borda satisfaction function.
 
 .. code-block:: python
 
@@ -485,19 +474,18 @@ function.
 Satisfaction Functions Already Defined
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As we have seen above, several satisfaction functions are already defined
-in the library and can be imported from `pabutools.election`. We list
-them below.
+Several satisfaction functions are already defined in the package and can be imported
+from `pabutools.election`. We list them below.
 
-- :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.CC_Sat` implements the Chamberlin-Courant satisfaction function for approval ballots.
+- :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.CC_Sat` implements the Chamberlin-Courant satisfaction function.
 - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat` defines the satisfaction as the square root of the total cost of the selected and approved projects.
 - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat` defines the satisfaction as the log of the total cost of the approved and selected projects.
 - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat` defines the satisfaction as the number of approved and selected projects.
-- :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat` defines the satisfaction as the number of approved and selected projects divided by the size of the ballot.
+- :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat` defines the satisfaction as the number of approved and selected projects divided by the size the largest feasible subset of the ballot.
 - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cost_Sat` defines the satisfaction as the total cost of the approved and selected projects.
 - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat` defines the satisfaction as the total cost of the approved and selected projects divided by the total cost of the most expensive subset of the ballot.
 - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat` resembles the previous but uses the total cost of the ballot as the normalizer.
-- :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Effort_Sat` defines the satisfaction as the total share of a voter.
+- :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Effort_Sat` defines the satisfaction as the total share of a voter, i.e., the sum over all approved and selected projects of the cost divided by the approval score.
 - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat` defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.
 - :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat` defines the satisfaction as the sum of the Borda scores of the selected projects.
 
@@ -511,8 +499,9 @@ We provide the implementation of the most celebrated rules for participatory bud
 Additive Utilitarian Welfare Maximiser
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first rule we provide is the one that returns the budget allocations maximizing the
-utilitarian social welfare, when the satisfaction measure is additive.
+The first rule provided is the Additive Utilitarian Welfare Maximiser. It aims to return
+budget allocations that maximize the utilitarian social welfare when the satisfaction
+measure is additive.
 
 .. code-block:: python
 
@@ -557,11 +546,20 @@ utilitarian social welfare, when the satisfaction measure is additive.
         resoluteness=False
     )
 
+The outcome of the utilitarian welfare maximiser is computed using a linear program solver
+(through the  `mip package <https://www.python-mip.com/>`_). Irresolute outcomes are
+computed by iteratively adding constraints excluding previously returned budget
+allocations. Note that because the computation is handled via a linear program solver, we
+have no control as to how ties are broken. Moreover, there are no clear ways to adapt this
+for non-additive satisfaction measures.
+
 Greedy Approximation of the Welfare Maximiser
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We have also implemented standard greedy rules. The usage is more or less the same as
-before though, more functionalities are offered.
+The library also implements standard greedy rules. The primary rule used in this
+context is the Greedy Utilitarian Welfare. It behaves similarly to the
+Utilitarian Welfare Maximiser but offers additional functionalities: it is not limited
+to additive satisfaction measures (and runs faster).
 
 .. code-block:: python
 
@@ -627,8 +625,8 @@ before though, more functionalities are offered.
 Sequential Phragmèn's Rule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The sequential Phragmén's rule has also been implemented. It behaves like other rules,
-though it does not rely on a satisfaction measure.
+Another rule provided is the Sequential Phragmèn's Rule, which is different from the
+previous two as it does not rely on a satisfaction measure.
 
 .. code-block:: python
 
@@ -673,6 +671,9 @@ though it does not rely on a satisfaction measure.
 
 Method of Equal Shares
 ^^^^^^^^^^^^^^^^^^^^^^
+
+The Method of Equal Shares is another rule that returns budget allocations based on the satisfaction
+measure provided. For more details, see the `equalshares.net <https://equalshares.net/>`_ website.
 
 .. code-block:: python
 
@@ -729,10 +730,11 @@ Method of Equal Shares
 Exhaustion Methods
 ^^^^^^^^^^^^^^^^^^
 
-Since not all rules we have introduced return exhaustive budget allocations, we also provide standard
+Since not all rules return exhaustive budget allocations, the library offers standard
 methods to render their outcome exhaustive.
 
-The first method is to apply a sequence of rules until reaching an exhaustive budget allocation.
+Two methods are provided: the first applies a sequence of rules until achieving an
+exhaustive budget allocation.
 
 .. code-block:: python
 
@@ -808,7 +810,7 @@ method (which only does something if the outcome is not already exhaustive).
 Rule Composition
 ^^^^^^^^^^^^^^^^
 
-We also provide standard ways to compose rules, such as selecting the outcome that is
+The library also provides ways to compose rules, such as selecting the outcome that is
 preferred by the largest number of voters for a given satisfaction measure.
 
 .. code-block:: python
@@ -836,7 +838,8 @@ preferred by the largest number of voters for a given satisfaction measure.
         [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
     )
 
-To run the rule as it was implemented in Wieliczka and Świece, for instance, one would run the following:
+To run the rule as it was implemented in Wieliczka and Świece, for instance, one would run
+the following:
 
 .. code-block:: python
 
@@ -954,7 +957,7 @@ handle fractions. To change this, simply change the value of the `FRACTION` cons
     pabutools.fractions.FRACTION = "gmpy2"
 
     # Change to Python float
-    pabutools.fractions.FRACTION = "gmpy2"
+    pabutools.fractions.FRACTION = "float"
 
 Changing the `FRACTION` constant changes the algorithm used to handle fractions.
 

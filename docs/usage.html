@@ -347,32 +347,32 @@ document.write(`
                   
   <section id="complete-guide">
 <h1>Complete Guide<a class="headerlink" href="#complete-guide" title="Permalink to this heading">#</a></h1>
-<p>This is a more complete guide on how to use Pabutools. For a more basic tutorial,
-check the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quick Start</span></a> page.</p>
+<p>This guide offers a comprehensive explanation on using Pabutools. For a simpler tutorial,
+refer to the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quick Start</span></a> page.</p>
 <section id="instances">
 <h2>Instances<a class="headerlink" href="#instances" title="Permalink to this heading">#</a></h2>
-<p>For reference, see the module <a class="reference internal" href="reference/election/instance.html#module-pabutools.election.instance" title="pabutools.election.instance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">instance</span></code></a>.</p>
-<p>A participatory budgeting instance describes all the elements that define the elections. It includes the
-projects that are being voted on, together with the budget limit.</p>
-<p>The main class here is <a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>.
-This class inherits from the Python class <cite>set</cite> and behaves as a set of projects,
-with additional information. Projects are instantiations of the class
-<a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, which stores a project’s name and cost
-(and potential additional information). Let’s see an example.</p>
+<p>Please refer to the module <a class="reference internal" href="reference/election/instance.html#module-pabutools.election.instance" title="pabutools.election.instance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">instance</span></code></a> for more information.</p>
+<p>A participatory budgeting instance encapsulates all the elements defining the elections. It includes
+the projects up for voting, along with the budget limit.</p>
+<p>The central class is <a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>.
+This class inherits from the Python <cite>set</cite> class, behaving as a set of projects,
+augmented with additional information. Projects are instances of the class
+<a class="reference internal" href="reference/election/instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, which stores a project’s name, cost,
+and any potential additional information. Here’s an example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
-<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>   <span class="c1"># There are many optional parameters</span>
-<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor takes the name and cost of the project</span>
-<span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>   <span class="c1"># Use the set methods to add/delete projects to an instance</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>   <span class="c1"># It accepts several optional parameters</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># The constructor requires the name and cost of the project</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>   <span class="c1">## Set methods are used to add/remove projects from an instance</span>
 <span class="n">p2</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
 <span class="n">p3</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Importantly, any Python comparison between two projects (equality, etc…) is done based on the
+<p>Notably, any Python comparison between two projects (equality, etc.) is based on the
 name of the projects. Since an instance is a set, adding a project <cite>Project(“p”, 1)</cite> and
-another project <cite>Project(“p”, 3)</cite> will lead to an instance with a single project.</p>
+another project <cite>Project(“p”, 3)</cite> will result in an instance with a single project.</p>
 <p>An instance also stores additional information such as the budget limit of the election
 and additional metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># The budget limit</span>
@@ -380,8 +380,8 @@ and additional metadata.</p>
 <span class="n">instance</span><span class="o">.</span><span class="n">project_meta</span>   <span class="c1"># dict of (project, dict) storing metadata on the projects</span>
 </pre></div>
 </div>
-<p>Several methods can be called on an instance to run through all the budget allocations,
-test the feasibility of a set of projects, etc…</p>
+<p>An instance can invoke several methods to iterate through all the budget allocations,
+test the feasibility of a set of projects, and so on.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_allocations</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is a feasible budget allocation&quot;</span><span class="p">)</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">])</span>   <span class="c1"># Returns False</span>
@@ -391,24 +391,24 @@ test the feasibility of a set of projects, etc…</p>
 </section>
 <section id="profiles">
 <h2>Profiles<a class="headerlink" href="#profiles" title="Permalink to this heading">#</a></h2>
-<p>For reference, see the modules <a class="reference internal" href="reference/election/ballot.html#module-pabutools.election.ballot" title="pabutools.election.ballot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ballot</span></code></a> and
+<p>For reference, please refer to the modules <a class="reference internal" href="reference/election/ballot.html#module-pabutools.election.ballot" title="pabutools.election.ballot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ballot</span></code></a> and
 <a class="reference internal" href="reference/election/profile.html#module-pabutools.election.profile" title="pabutools.election.profile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">profile</span></code></a>.</p>
-<p>A profile is the second basic component of a participatory budgeting election; it stores
+<p>A profile is the second fundamental component of a participatory budgeting election; it stores
 the ballots of the voters.</p>
-<p>We provide one general class <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>
-that inherits from the Python class <cite>list</cite> and is inherited from by all specific
-profile types. It is really meant to be an abstract class and should not be used
+<p>We provide a general class <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>
+that inherits from the Python class <cite>list</cite> and serves as a base for all specific
+profile types. It primarily acts as an abstract class and should not be used
 for any other purpose than inheritance. Similarly, we provide a class
-<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a> that will be inherited by specific
+<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a> that is used as a base for specific
 ballot formats.</p>
-<p>A profile is linked to an instance, which is given as a parameter and then stored in
-an attribute. It also implements validation of the ballots to ensure consistency
+<p>A profile is associated with an instance, which is passed as a parameter and then stored in
+an attribute. It also implements validation of the ballots to ensure the consistency
 of the ballots in a profile.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">Ballot</span>
 
 <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">()</span>
 <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
-<span class="n">profile</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># Boolean (de)activating the validation of the ballot type</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">ballot_validation</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># Boolean to activate/deactivate the validation of the ballot type</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">ballot_type</span> <span class="o">=</span> <span class="n">Ballot</span>   <span class="c1"># The type used for the ballot validation</span>
 <span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">validate_ballot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>   <span class="c1"># The validator, would raise a TypeError here</span>
@@ -419,12 +419,11 @@ of the ballots in a profile.</p>
 <p>When submitting approval ballots, voters submit a set of projects they approve of.
 Approval ballots are represented through the class
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalBallot</span></code></a> that inherits
-both from <cite>set</cite> and from <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a>.</p>
+from both <cite>set</cite> and <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a>.</p>
 <p>A profile of approval ballots, i.e., an approval profile, is instantiated from the class
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile" title="pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a>. It inherits from
-<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>. The type for the ballot
-validator is by default set to
-<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalBallot</span></code></a>.</p>
+<a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>. By default, it sets the type for the ballot
+validator to <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.ApprovalBallot" title="pabutools.election.ballot.approvalballot.ApprovalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalBallot</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">ApprovalProfile</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
@@ -437,20 +436,20 @@ validator is by default set to
 <span class="n">b1</span> <span class="ow">in</span> <span class="n">profile</span>   <span class="c1"># Tests membership, returns True here</span>
 </pre></div>
 </div>
-<p>Several additional methods are provided in the ApprovalProfile class.</p>
+<p>The <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalProfile" title="pabutools.election.profile.approvalprofile.ApprovalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalProfile</span></code></a> class provides several additional methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span><span class="o">.</span><span class="n">approval_score</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>   <span class="c1"># The approval score of a project, i.e., the number of approvers</span>
-<span class="n">profile</span><span class="o">.</span><span class="n">is_party_list</span><span class="p">()</span>   <span class="c1"># Boolean indicating if the profile is party_list</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">is_party_list</span><span class="p">()</span>   <span class="c1"># Boolean indicating if the profile is a party list profile</span>
 </pre></div>
 </div>
 </section>
 <section id="cardinal-profiles">
 <h3>Cardinal Profiles<a class="headerlink" href="#cardinal-profiles" title="Permalink to this heading">#</a></h3>
-<p>When asked for cardinal ballots, voters are asked to associate each project with a score.
+<p>When required to submit cardinal ballots, voters are asked to assign a score to each project.
 Cardinal ballots are represented using the class
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot" title="pabutools.election.ballot.cardinalballot.CardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalBallot</span></code></a>.
-It inherits directly from the Python <cite>dict</cite> class and our
+It directly inherits from the Python <cite>dict</cite> class and our
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a> class.</p>
-<p>A profile of cardinal ballots, i.e., a cardinal profile, is instantiated through the
+<p>A profile of cardinal ballots, i.e., a cardinal profile, is created using the
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile" title="pabutools.election.profile.cardinalprofile.CardinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalProfile</span></code></a> class.
 It inherits from the <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> class and validates ballot types using
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot" title="pabutools.election.ballot.cardinalballot.CardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalBallot</span></code></a>.</p>
@@ -469,7 +468,7 @@ It inherits from the <a class="reference internal" href="reference/election/prof
 <p>Cumulative ballots correspond to a specific type of cardinal ballots where the voters are
 allocated a specific number of points that they can distribute among the projects.
 The class <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cumulativeballot.CumulativeBallot" title="pabutools.election.ballot.cumulativeballot.CumulativeBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeBallot</span></code></a>
-is used to deal with cumulative ballots. It inherits from
+is used to handle cumulative ballots. It inherits from
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot" title="pabutools.election.ballot.cardinalballot.CardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalBallot</span></code></a> and thus also from
 the Python class <cite>dict</cite>.</p>
 <p>As before, a profile of cumulative ballots is defined in the class
@@ -479,10 +478,11 @@ that inherits from the <a class="reference internal" href="reference/election/pr
 </section>
 <section id="ordinal-profiles">
 <h3>Ordinal Profiles<a class="headerlink" href="#ordinal-profiles" title="Permalink to this heading">#</a></h3>
-<p>When ordinal ballots are used, voters are asked to order the projects based on their
+<p>When ordinal ballots are used, voters are asked to rank the projects based on their
 preferences. The class <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ordinalballot.OrdinalBallot" title="pabutools.election.ballot.ordinalballot.OrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalBallot</span></code></a>
-represents such ballots. It inherits from the Python class <cite>list</cite> and our class
-<a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a>.</p>
+represents such ballots. It inherits from the Python class <cite>list</cite> (actually the class
+<cite>dict</cite> to ensure unicity of the projects, but all <cite>list</cite> methods have been implemented)
+and our class <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.Ballot" title="pabutools.election.ballot.ballot.Ballot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ballot</span></code></a>.</p>
 <p>Ordinal profiles are handled by the class
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalProfile" title="pabutools.election.profile.ordinalprofile.OrdinalProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalProfile</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">OrdinalBallot</span><span class="p">,</span> <span class="n">OrdinalProfile</span>
@@ -500,19 +500,20 @@ represents such ballots. It inherits from the Python class <cite>list</cite> and
 <h2>Multiprofile<a class="headerlink" href="#multiprofile" title="Permalink to this heading">#</a></h2>
 <p>For reference, see the modules <a class="reference internal" href="reference/election/profile.html#module-pabutools.election.profile" title="pabutools.election.profile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">profile</span></code></a>.</p>
 <p>In some cases, it is faster to use multisets instead of lists for the profiles. We have
-implemented this through multiprofiles. A multiprofile is a collection of ballots in which
-each ballot is stored once, together with its multiplicity. Importantly, we always our
-implementations always allow for profiles and multiprofiles to be used interchangeably.</p>
+implemented this through multiprofiles. A multiprofile is a collection of ballots where
+each ballot is stored once, along with its multiplicity.</p>
 <p>Multiprofiles are defined through the class
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.profile.MultiProfile" title="pabutools.election.profile.profile.MultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiProfile</span></code></a> that inherits from the Python
 class <cite>Counter</cite>. Each specific type of profile has its multiprofile counterpart:
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.approvalprofile.ApprovalMultiProfile" title="pabutools.election.profile.approvalprofile.ApprovalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApprovalMultiProfile</span></code></a>,
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile" title="pabutools.election.profile.cardinalprofile.CardinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardinalMultiProfile</span></code></a>,
 <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile" title="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">CumulativeMultiProfile</span></code></a>,
-and <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile" title="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a>.</p>
-<p>Since ballots are used as dictionary keys in a multiprofile, they need not be mutable.
+and <a class="reference internal" href="reference/election/profile.html#pabutools.election.profile.ordinalprofile.OrdinalMultiProfile" title="pabutools.election.profile.ordinalprofile.OrdinalMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalMultiProfile</span></code></a>.
+Importantly, our implementations allow for profiles and multiprofiles to be used
+interchangeably (for rules, analysis, etc.).</p>
+<p>Since ballots are used as dictionary keys in a multiprofile, they have to be immutable.
 We have thus implemented the class <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.ballot.FrozenBallot" title="pabutools.election.ballot.ballot.FrozenBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenBallot</span></code></a>
-which corresponds to the non-mutable correspondence to a ballot. All specific ballot types
+which corresponds to the immutable representation of a ballot. All specific ballot types
 have their frozen counterparts:
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.approvalballot.FrozenApprovalBallot" title="pabutools.election.ballot.approvalballot.FrozenApprovalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenApprovalBallot</span></code></a>,
 <a class="reference internal" href="reference/election/ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot" title="pabutools.election.ballot.cardinalballot.FrozenCardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenCardinalBallot</span></code></a>,
@@ -559,24 +560,23 @@ runtime and plotted the following measure:</p>
 </section>
 <section id="preference-libraries">
 <h2>Preference Libraries<a class="headerlink" href="#preference-libraries" title="Permalink to this heading">#</a></h2>
-<p>For reference, see <a class="reference internal" href="reference/election/libraries.html#preflibraries"><span class="std std-ref">Preference Libraries</span></a>.</p>
-<p>We provide support for standard preference libraries that are widely used.</p>
+<p>See <a class="reference internal" href="reference/election/libraries.html#preflibraries"><span class="std std-ref">Preference Libraries</span></a> for a reference.</p>
+<p>We provide support for standard preference libraries.</p>
 <section id="id1">
 <h3>PaBuLib<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<p>We provide full support for the participatory budgeting data hosted on the
-<a class="reference external" href="http://pabulib.org">pabulib</a> website. The function
-<a class="reference internal" href="reference/election/libraries.html#pabutools.election.pabulib.parse_pabulib" title="pabutools.election.pabulib.parse_pabulib"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a> can be used to parse a file
-formatted according to the pabulib format. It returns the instance
-and the profile, using the suitable profile class given the ballot
+<p>Full support is provided for the participatory budgeting data hosted on the
+<a class="reference external" href="http://pabulib.org">pabulib</a> website. You can use the function
+<a class="reference internal" href="reference/election/libraries.html#pabutools.election.pabulib.parse_pabulib" title="pabutools.election.pabulib.parse_pabulib"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a> to parse a file
+that conforms to the pabulib format. This function yields the instance
+and profile based on the appropriate profile class determined by the ballot
 format in the data.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
 
 <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib</span><span class="p">(</span><span class="s2">&quot;path_to_the_file&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Pabulib files provide a whole range of metadata, not all of which is
-relevant to everyone. These metadata are stored in the <cite>meta</cite>
-members of the instance and profile classes.</p>
+<p>Pabulib files contain an extensive range of metadata. This metadata is
+stored in the <cite>meta</cite> members of the instance and profile classes.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
 
 <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib</span><span class="p">(</span><span class="s2">&quot;path_to_the_file&quot;</span><span class="p">)</span>
@@ -586,11 +586,10 @@ members of the instance and profile classes.</p>
     <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span>    <span class="c1"># The meta dict populated with the metadata corresponding to the ballot</span>
 </pre></div>
 </div>
-<p>There are several metadata that are stored as members of the relevant
-classes. These, for instance, include all the constraints (when known)
-the voters faced when submitting their ballots. It includes the minimum
-length of a ballot or the number of points that have to be distributed
-for instance.</p>
+<p>Several metadata is housed as members of the corresponding
+classes. For example, all known constraints
+that the voters were subjected to when submitting their ballots. This includes the minimum
+length of a ballot or the number of points that must be allocated for instance.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### For ApprovalProfile, CardinalProfile, CumulativeProfile, and OrdinalProfile</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_length</span>   <span class="c1"># Imposed minimum length of the ballots in the profile</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_length</span>   <span class="c1"># Imposed maximum length of the ballots in the profile</span>
@@ -611,7 +610,8 @@ for instance.</p>
 </section>
 <section id="preflib">
 <h3>PrefLib<a class="headerlink" href="#preflib" title="Permalink to this heading">#</a></h3>
-<p>We also support the PrefLib format, providing functions to move save a participatory
+<p>In addition to <a class="reference external" href="http://pabulib.org">pabulib</a> , our package also supports the
+<a class="reference external" href="https://preflib.org">preflib</a>  format, providing functions to convert a participatory
 budgeting election into a PrefLib instance.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">CardinalProfile</span><span class="p">,</span> <span class="n">OrdinalProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">approval_to_preflib</span><span class="p">,</span> <span class="n">cardinal_to_preflib</span><span class="p">,</span> <span class="n">ordinal_to_preflib</span>
@@ -635,21 +635,21 @@ budgeting election into a PrefLib instance.</p>
 </section>
 <section id="satisfaction-measures">
 <h2>Satisfaction Measures<a class="headerlink" href="#satisfaction-measures" title="Permalink to this heading">#</a></h2>
-<p>Many concepts, including celebrated participatory budgeting rules, are not using the ballots
-directly but rather proxies for the satisfaction of the voters that are deduced from the ballots.</p>
-<p>We provide many satisfaction functions and flexible ways to create new ones.
-A satisfaction function is a class that inherits from
-<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>,
-i.e., a class initialized for a given instance, profile, and ballot and
-that implements a <cite>sat</cite> method used to compute the satisfaction. Since a satisfaction function corresponds to a single ballot,
-we also provide a <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a>
-class. This class inherits from the Python class <cite>list</cite> and implements a
-satisfaction profile. Note that there is also a class
+<p>In participatory budgeting, various concepts and rules utilize proxies for voter satisfaction,
+which are deduced from the submitted ballots rather than using the ballots directly.</p>
+<p>We offer a range of satisfaction functions and provide flexible ways to create custom ones.
+A satisfaction function is represented by a class that inherits from
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>.
+Such a class is initialized with specific parameters: an instance, a profile, and a ballot.
+The class implements a <cite>sat</cite> method used to compute the satisfaction value for that
+particular ballot. Additionally, we introduce
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionProfile</span></code></a>,
+a class that inherits from the Python class <cite>list</cite> and facilitates managing a collection
+of satisfaction functions. We also have
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMultiProfile</span></code></a>,
-implementing satisfaction profiles as multisets.</p>
-<p>The typical workflow is thus to gather the ballots in a profile, then
-convert it into a collection of satisfaction functions, which are finally
-provided as input to a rule.</p>
+which represents satisfaction profiles as multisets (see our discussion above about multiprofiles).</p>
+<p>The typical workflow involves gathering the ballots into a profile, converting them
+into a collection of satisfaction functions, and then using these functions as input to a rule.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">SatisfactionProfile</span><span class="p">,</span> <span class="n">SatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
 
@@ -669,9 +669,8 @@ provided as input to a rule.</p>
 <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">sat_profile</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Because the above can be tedious, we provide simpler ways to define the
-satisfaction profile. Several widely used satisfaction functions are also
-directly provided.</p>
+<p>To simplify the process of defining the satisfaction profile, we offer convenient
+methods and provide several widely used satisfaction functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">SatisfactionProfile</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">parse_pabulib</span>
 
@@ -683,17 +682,15 @@ directly provided.</p>
 <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">sat_profile</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We now present useful tools we provide to define satisfaction functions.</p>
+<p>Next, we present additional tools we provide to define satisfaction functions.</p>
 <section id="functional-satisfaction-functions">
 <h3>Functional Satisfaction Functions<a class="headerlink" href="#functional-satisfaction-functions" title="Permalink to this heading">#</a></h3>
-<p>We also provide more specific ways of defining satisfaction functions.
-The class
-<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction" title="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a>
-corresponds to a satisfaction function that is defined by a function taking as
-arguments an instance, a profile, a ballot, and a set of projects. We illustrate
-its use by defining the Chamberlin-Courant satisfaction function with approval
-(equals to 1 if at least one approved project is selected and
-0 otherwise).</p>
+<p>For more specific ways of defining satisfaction functions, we introduce the class
+<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction" title="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionalSatisfaction</span></code></a>.
+This class corresponds to a satisfaction function defined by a function that takes as arguments
+an instance, a profile, a ballot, and a set of projects. To demonstrate its use, we illustrate
+how to define the Chamberlin-Courant satisfaction function with approval (equal to 1 if
+at least one approved project is selected and 0 otherwise).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">FunctionalSatisfaction</span>
 
 <span class="k">def</span> <span class="nf">cc_sat_func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">projects</span><span class="p">):</span>
@@ -707,16 +704,12 @@ its use by defining the Chamberlin-Courant satisfaction function with approval
 </section>
 <section id="additive-satisfaction-functions">
 <h3>Additive Satisfaction Functions<a class="headerlink" href="#additive-satisfaction-functions" title="Permalink to this heading">#</a></h3>
-<p>Another important set of satisfaction functions are the additive ones,
-i.e., the ones for which the satisfaction for a set of projects is
-equal to the satisfaction of each individual project. The class
+<p>We also offer additive satisfaction functions, where the satisfaction for a set
+of projects is equal to the sum of the satisfaction of each individual project. The class
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a>
-implements them. It inherits from the
-<a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a>
-class, and its constructor takes as a parameter
-a function mapping instance, profile, ballot, and project to a score.
-We illustrate its use by presenting how to define the cardinality
-satisfaction function.</p>
+implements such functions. Its constructor takes a function as a parameter that maps
+instance, profile, ballot, and project to a score. As an example, we demonstrate
+how to define the cardinality satisfaction function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AdditiveSatisfaction</span>
 
 <span class="k">def</span> <span class="nf">cardinality_sat_func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
@@ -730,15 +723,12 @@ satisfaction function.</p>
 </section>
 <section id="positional-satisfaction-functions">
 <h3>Positional Satisfaction Functions<a class="headerlink" href="#positional-satisfaction-functions" title="Permalink to this heading">#</a></h3>
-<p>Positional satisfaction functions are to be used with ordinal ballots.
-When using them, the satisfaction of a voter is a function of the
-position of the projects in the ballot of the voter. The class
+<p>For ordinal ballots, we have positional satisfaction functions, where a voter’s
+satisfaction depends on the position of projects in their ballot. The class
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a>
-implements them. The constructor takes
-as parameters two functions: one mapping ballots and projects to a score,
-and a second one aggregating the individual scores for sets of projects.
-We illustrate its usage by defining the additive Borda satisfaction
-function.</p>
+implements these functions. Its constructor takes two functions as parameters: one that maps
+ballots and projects to a score and another that aggregates the individual scores for sets
+of projects. As an example, we define the additive Borda satisfaction function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">PositionalSatisfaction</span>
 
 <span class="k">def</span> <span class="nf">borda_sat_func</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
@@ -754,19 +744,18 @@ function.</p>
 </section>
 <section id="satisfaction-functions-already-defined">
 <h3>Satisfaction Functions Already Defined<a class="headerlink" href="#satisfaction-functions-already-defined" title="Permalink to this heading">#</a></h3>
-<p>As we have seen above, several satisfaction functions are already defined
-in the library and can be imported from <cite>pabutools.election</cite>. We list
-them below.</p>
+<p>Several satisfaction functions are already defined in the package and can be imported
+from <cite>pabutools.election</cite>. We list them below.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.CC_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">CC_Sat</span></code></a> implements the Chamberlin-Courant satisfaction function for approval ballots.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.CC_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">CC_Sat</span></code></a> implements the Chamberlin-Courant satisfaction function.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sqrt_Sat</span></code></a> defines the satisfaction as the square root of the total cost of the selected and approved projects.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat" title="pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Log_Sat</span></code></a> defines the satisfaction as the log of the total cost of the approved and selected projects.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cardinality_Sat</span></code></a> defines the satisfaction as the number of approved and selected projects.</p></li>
-<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a> defines the satisfaction as the number of approved and selected projects divided by the size of the ballot.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cardinality_Sat</span></code></a> defines the satisfaction as the number of approved and selected projects divided by the size the largest feasible subset of the ballot.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost_Sat</span></code></a> defines the satisfaction as the total cost of the approved and selected projects.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cost_Sat</span></code></a> defines the satisfaction as the total cost of the approved and selected projects divided by the total cost of the most expensive subset of the ballot.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Relative_Cost_Approx_Normaliser_Sat</span></code></a> resembles the previous but uses the total cost of the ballot as the normalizer.</p></li>
-<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a> defines the satisfaction as the total share of a voter.</p></li>
+<li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effort_Sat</span></code></a> defines the satisfaction as the total share of a voter, i.e., the sum over all approved and selected projects of the cost divided by the approval score.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat</span></code></a> defines the satisfaction as the sum of the scores of the selected projects, where the scores are taken from the cardinal ballot of the voter.</p></li>
 <li><p><a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat" title="pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a> defines the satisfaction as the sum of the Borda scores of the selected projects.</p></li>
 </ul>
@@ -778,8 +767,9 @@ them below.</p>
 <p>We provide the implementation of the most celebrated rules for participatory budgeting.</p>
 <section id="additive-utilitarian-welfare-maximiser">
 <h3>Additive Utilitarian Welfare Maximiser<a class="headerlink" href="#additive-utilitarian-welfare-maximiser" title="Permalink to this heading">#</a></h3>
-<p>The first rule we provide is the one that returns the budget allocations maximizing the
-utilitarian social welfare, when the satisfaction measure is additive.</p>
+<p>The first rule provided is the Additive Utilitarian Welfare Maximiser. It aims to return
+budget allocations that maximize the utilitarian social welfare when the satisfaction
+measure is additive.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">max_additive_utilitarian_welfare</span>
 
@@ -822,11 +812,19 @@ utilitarian social welfare, when the satisfaction measure is additive.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>The outcome of the utilitarian welfare maximiser is computed using a linear program solver
+(through the  <a class="reference external" href="https://www.python-mip.com/">mip package</a>). Irresolute outcomes are
+computed by iteratively adding constraints excluding previously returned budget
+allocations. Note that because the computation is handled via a linear program solver, we
+have no control as to how ties are broken. Moreover, there are no clear ways to adapt this
+for non-additive satisfaction measures.</p>
 </section>
 <section id="greedy-approximation-of-the-welfare-maximiser">
 <h3>Greedy Approximation of the Welfare Maximiser<a class="headerlink" href="#greedy-approximation-of-the-welfare-maximiser" title="Permalink to this heading">#</a></h3>
-<p>We have also implemented standard greedy rules. The usage is more or less the same as
-before though, more functionalities are offered.</p>
+<p>The library also implements standard greedy rules. The primary rule used in this
+context is the Greedy Utilitarian Welfare. It behaves similarly to the
+Utilitarian Welfare Maximiser but offers additional functionalities: it is not limited
+to additive satisfaction measures (and runs faster).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span>
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
@@ -890,8 +888,8 @@ before though, more functionalities are offered.</p>
 </section>
 <section id="sequential-phragmen-s-rule">
 <h3>Sequential Phragmèn’s Rule<a class="headerlink" href="#sequential-phragmen-s-rule" title="Permalink to this heading">#</a></h3>
-<p>The sequential Phragmén’s rule has also been implemented. It behaves like other rules,
-though it does not rely on a satisfaction measure.</p>
+<p>Another rule provided is the Sequential Phragmèn’s Rule, which is different from the
+previous two as it does not rely on a satisfaction measure.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">sequential_phragmen</span>
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
@@ -935,6 +933,8 @@ though it does not rely on a satisfaction measure.</p>
 </section>
 <section id="method-of-equal-shares">
 <h3>Method of Equal Shares<a class="headerlink" href="#method-of-equal-shares" title="Permalink to this heading">#</a></h3>
+<p>The Method of Equal Shares is another rule that returns budget allocations based on the satisfaction
+measure provided. For more details, see the <a class="reference external" href="https://equalshares.net/">equalshares.net</a> website.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span><span class="p">,</span> <span class="n">Cost_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">method_of_equal_shares</span>
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">app_score_tie_breaking</span>
@@ -989,9 +989,10 @@ though it does not rely on a satisfaction measure.</p>
 </section>
 <section id="exhaustion-methods">
 <h3>Exhaustion Methods<a class="headerlink" href="#exhaustion-methods" title="Permalink to this heading">#</a></h3>
-<p>Since not all rules we have introduced return exhaustive budget allocations, we also provide standard
+<p>Since not all rules return exhaustive budget allocations, the library offers standard
 methods to render their outcome exhaustive.</p>
-<p>The first method is to apply a sequence of rules until reaching an exhaustive budget allocation.</p>
+<p>Two methods are provided: the first applies a sequence of rules until achieving an
+exhaustive budget allocation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
@@ -1061,7 +1062,7 @@ method (which only does something if the outcome is not already exhaustive).</p>
 </section>
 <section id="rule-composition">
 <h3>Rule Composition<a class="headerlink" href="#rule-composition" title="Permalink to this heading">#</a></h3>
-<p>We also provide standard ways to compose rules, such as selecting the outcome that is
+<p>The library also provides ways to compose rules, such as selecting the outcome that is
 preferred by the largest number of voters for a given satisfaction measure.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
@@ -1087,7 +1088,8 @@ preferred by the largest number of voters for a given satisfaction measure.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>To run the rule as it was implemented in Wieliczka and Świece, for instance, one would run the following:</p>
+<p>To run the rule as it was implemented in Wieliczka and Świece, for instance, one would run
+the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
@@ -1191,7 +1193,7 @@ handle fractions. To change this, simply change the value of the <cite>FRACTION<
 <span class="n">pabutools</span><span class="o">.</span><span class="n">fractions</span><span class="o">.</span><span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
 
 <span class="c1"># Change to Python float</span>
-<span class="n">pabutools</span><span class="o">.</span><span class="n">fractions</span><span class="o">.</span><span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
+<span class="n">pabutools</span><span class="o">.</span><span class="n">fractions</span><span class="o">.</span><span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;float&quot;</span>
 </pre></div>
 </div>
 <p>Changing the <cite>FRACTION</cite> constant changes the algorithm used to handle fractions.</p>

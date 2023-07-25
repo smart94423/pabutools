@@ -1,4 +1,4 @@
-# pabutools
+# Pabutools: PB as easy as [ABC](https://github.com/martinlackner/abcvoting)
 
 [![PyPI Status](https://img.shields.io/pypi/v/pabutools.svg)](https://pypi.python.org/pypi/pabutools)
 [![Build badge](https://github.com/pbvoting/pabutools/workflows/build/badge.svg?branch=main)](https://github.com/pbvoting/pabutools/actions/workflows/build.yml)
