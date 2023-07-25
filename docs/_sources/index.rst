@@ -23,11 +23,3 @@ In particular, we provide full support for the instances taken from
     quickstart
     usage
     reference/index
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
