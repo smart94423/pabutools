@@ -12,7 +12,7 @@ from pabutools.election.ballot import (
     CumulativeBallot,
 )
 from pabutools.election.profile import (
-    AbstractProfile,
+    Profile,
     ApprovalProfile,
     CardinalProfile,
     CumulativeProfile,
@@ -23,7 +23,7 @@ import csv
 import os
 
 
-def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProfile]:
+def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
     """
     Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile will be of the
     correct type depending on the metadata in the file.
@@ -203,7 +203,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, AbstractProf
     return instance, profile
 
 
-def parse_pabulib(file_path: str) -> tuple[Instance, AbstractProfile]:
+def parse_pabulib(file_path: str) -> tuple[Instance, Profile]:
     """
     Parses a PaBuLib files and returns the corresponding instance and profile. The returned profile will be of the
     correct type depending on the metadata in the file.
