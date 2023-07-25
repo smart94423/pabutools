@@ -71,7 +71,7 @@ def category_proportionality(
                 app_cost_per_category[category] / app_total_cost * profile.multiplicity(ballot)
             )
     for category in categories:
-        proportional_app_cost_per_category[category] /= profile.total_len()
+        proportional_app_cost_per_category[category] /= profile.num_ballots()
 
     mean_square_diff = 0.0
     for category in categories:
