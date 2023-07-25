@@ -16,15 +16,15 @@ in Brazil in the late 80's and is now a widely implemented. See the
 [Wikipedia page](https://en.wikipedia.org/wiki/Participatory_budgeting)
 for more details.
 
-In this library we provide the tools to handle PB instances of different
-kinds, together with voting rules to determine the outcome of the elections
-and some analytic tools. In particular, we provide full support for the
-instances taken from [pabulib](http://pabulib.org), the reference library
-when it comes to PB data.
+In this library, we provide tools that
+* handle PB instances of different kinds,
+* compute voting rules to determine the outcome of the elections,
+* analyse outcomes, and
+* provide full support for the instances taken from the [pabulib](http://pabulib.org) library of PB data.
 
 ## Installation
 
-The installation should be as easy as:
+The package can be installed [from PyPI](https://pypi.org/project/pabutools/) using:
 ```shell
 pip3 install pabutools
 ```
@@ -32,11 +32,11 @@ pip3 install pabutools
 ## Documentation
 
 The complete documentation is available [here](https://pbvoting.github.io/pabutools/).
-You will find there the [installation instructions](https://pbvoting.github.io/pabutools/installation.html),
-a [short guide](https://pbvoting.github.io/pabutools/quickstart.html) for a quick start,
-a [complete guide](https://pbvoting.github.io/pabutools/usage.html) for more advanced usage,
-and the usual [reference guide](https://pbvoting.github.io/pabutools/reference/index.html) to
-get all the details.
+It includes
+* [installation instructions](https://pbvoting.github.io/pabutools/installation.html),
+* a [short guide](https://pbvoting.github.io/pabutools/quickstart.html) for a quick start,
+* a [complete guide](https://pbvoting.github.io/pabutools/usage.html) for more advanced usage, and
+* a [reference guide](https://pbvoting.github.io/pabutools/reference/index.html) to get all the details.
 
 ## Development
 
