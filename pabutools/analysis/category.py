@@ -3,12 +3,12 @@ from numbers import Number
 
 import numpy as np
 from pabutools.election.instance import Instance, Project
-from pabutools.election.profile import ApprovalProfile
+from pabutools.election.profile import ApprovalProfile, ApprovalMultiProfile
 
 
 def category_proportionality(
     instance: Instance,
-    profile: ApprovalProfile,
+    profile: ApprovalProfile | ApprovalMultiProfile,
     budget_allocation: Iterable[Project],
 ) -> Number:
     """
@@ -68,10 +68,10 @@ def category_proportionality(
                 app_cost_per_category[category] += project.cost
         for category in categories:
             proportional_app_cost_per_category[category] += (
-                app_cost_per_category[category] / app_total_cost
+                app_cost_per_category[category] / app_total_cost * profile.multiplicity(ballot)
             )
     for category in categories:
-        proportional_app_cost_per_category[category] /= len(profile)
+        proportional_app_cost_per_category[category] /= profile.num_ballots()
 
     mean_square_diff = 0.0
     for category in categories:

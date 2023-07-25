@@ -383,6 +383,23 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         if profile is not None:
             self.extend(profile)
 
+    def score(self, project: Project) -> Number:
+        """
+        Returns the score of a project, that is, the sum of scores received from all voters.
+        Parameters
+        ----------
+            project : pabutools.instance.instance.Project
+                The project.
+        Returns
+        -------
+            Fraction
+        """
+        score = 0
+        for ballot, multiplicity in self.items():
+            if project in ballot:
+                score += ballot[project] * multiplicity
+        return score
+
     @classmethod
     def _wrap_methods(cls, names):
         def wrap_method_closure(name):

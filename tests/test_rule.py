@@ -33,7 +33,7 @@ ALL_NON_SAT_RULES = [sequential_phragmen]
 ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat]
 
 
-class TestElection:
+class DummyElection:
     def __init__(
         self, name="", projects=None, instance=None, profile=None, initial_alloc=None
     ):
@@ -52,7 +52,7 @@ class TestElection:
             self.irr_results_non_sat[rule] = None
 
 
-def test_elections():
+def dummy_elections():
     res = []
 
     # Approval example 1
@@ -65,7 +65,7 @@ def test_elections():
         ],
         instance=inst,
     )
-    test_election = TestElection("AppEx_1", p, inst, prof)
+    test_election = DummyElection("AppEx_1", p, inst, prof)
     test_election.irr_results_sat[greedy_utilitarian_welfare][Cost_Sat] = sorted(
         [[p[0], p[2]], [p[0], p[3]], [p[1]], [p[2], p[3]]]
     )
@@ -92,7 +92,7 @@ def test_elections():
         ],
         instance=inst,
     )
-    test_election = TestElection("AppEx_2", p, inst, prof)
+    test_election = DummyElection("AppEx_2", p, inst, prof)
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
@@ -120,7 +120,7 @@ def test_elections():
         ],
         instance=inst,
     )
-    test_election = TestElection("AppEx_3", p, inst, prof)
+    test_election = DummyElection("AppEx_3", p, inst, prof)
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
@@ -133,7 +133,7 @@ def test_elections():
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
     inst = Instance(p, budget_limit=3)
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
-    test_election = TestElection("EmptyProfile", p, inst, prof)
+    test_election = DummyElection("EmptyProfile", p, inst, prof)
     for sat_class in ALL_SAT:
         test_election.irr_results_sat[max_additive_utilitarian_welfare][
             sat_class
@@ -159,7 +159,7 @@ def test_elections():
     inst = Instance(p, budget_limit=3)
     prof = ApprovalProfile([ApprovalBallot()], instance=inst)
     initial_alloc = p[:1]
-    test_election = TestElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
+    test_election = DummyElection("EmptyProfile_Initial", p, inst, prof, initial_alloc)
     for sat_class in ALL_SAT:
         test_election.irr_results_sat[max_additive_utilitarian_welfare][
             sat_class
@@ -181,7 +181,7 @@ def test_elections():
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
     inst = Instance(p, budget_limit=7)
     prof = ApprovalProfile([ApprovalBallot(p)], instance=inst)
-    test_election = TestElection("AllAfford", p, inst, prof)
+    test_election = DummyElection("AllAfford", p, inst, prof)
     for rule in ALL_SAT_RULES:
         for sat_class in ALL_SAT:
             test_election.irr_results_sat[rule][sat_class] = sorted([p])
@@ -217,7 +217,7 @@ def test_elections():
         ],
         instance=inst,
     )
-    test_election = TestElection("RunningEx LackSkow23", p, inst, prof)
+    test_election = DummyElection("RunningEx LackSkow23", p, inst, prof)
     test_election.irr_results_non_sat[sequential_phragmen] = sorted([p[:4]])
     for sat_class in [Cost_Sat, Cardinality_Sat, Cost_Sqrt_Sat, Cost_Log_Sat]:
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = sorted(
@@ -228,7 +228,7 @@ def test_elections():
     return res
 
 
-ALL_TEST_ELECTIONS = test_elections()
+ALL_TEST_ELECTIONS = dummy_elections()
 
 
 def run_sat_rule(rule):

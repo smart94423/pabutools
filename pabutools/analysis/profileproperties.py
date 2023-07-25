@@ -31,7 +31,7 @@ def avg_ballot_length(instance: Instance, profile: AbstractProfile) -> Number:
 
     """
     return mean_generator(
-        len(ballot) * profile.multiplicity(ballot) for ballot in profile
+        (len(ballot), profile.multiplicity(ballot)) for ballot in profile
     )
 
 
@@ -52,9 +52,13 @@ def median_ballot_length(instance: Instance, profile: AbstractProfile) -> int:
             The median length of the ballots in the profile.
 
     """
-    return int(
-        np.median([len(ballot) * profile.multiplicity(ballot) for ballot in profile])
-    )
+    ballot_lengths = np.zeros(profile.num_ballots())
+    index = 0
+    for ballot in profile:
+        for j in range(profile.multiplicity(ballot)):
+            ballot_lengths[index] = len(ballot)
+            index += 1
+    return int(np.median(ballot_lengths))
 
 
 def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
@@ -75,7 +79,7 @@ def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
 
     """
     return mean_generator(
-        total_cost(ballot) * profile.multiplicity(ballot) for ballot in profile
+        (total_cost(ballot), profile.multiplicity(ballot)) for ballot in profile
     )
 
 
@@ -96,11 +100,13 @@ def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
             The median cost of the ballots in the profile.
 
     """
-    return float(
-        np.median(
-            [total_cost(ballot) * profile.multiplicity(ballot) for ballot in profile]
-        )
-    )
+    ballot_costs = np.zeros(profile.num_ballots())
+    index = 0
+    for ballot in profile:
+        for j in range(profile.multiplicity(ballot)):
+            ballot_costs[index] = total_cost(ballot)
+            index += 1
+    return np.median(ballot_costs)
 
 
 def avg_approval_score(instance: Instance, profile: AbstractApprovalProfile) -> Number:

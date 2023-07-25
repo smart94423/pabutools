@@ -125,7 +125,7 @@ def satisfaction_histogram(
     budget_allocation: Iterable[Project],
     sat_class: type[SatisfactionMeasure],
     max_satisfaction: Number,
-    num_bins: int = 20,
+    num_bins: int = 21,
 ) -> list[Number]:
     """
     Computes the data necessary to plot a histogram of the satisfaction of the voters. Each bin contains the percentage
@@ -151,6 +151,7 @@ def satisfaction_histogram(
         list[Number]
             A list of values, one per bin of the histogram.
     """
+
     if isinstance(profile, MultiProfile):
         sat_profile = SatisfactionMultiProfile(
             instance=instance, multiprofile=profile, sat_class=sat_class
@@ -167,7 +168,7 @@ def satisfaction_histogram(
             hist_data[-1] += sat_profile.multiplicity(ballot)
         else:
             hist_data[
-                math.floor(satisfaction * num_bins / max_satisfaction)
+                math.ceil(satisfaction*(num_bins-1)/max_satisfaction)
             ] += sat_profile.multiplicity(ballot)
     for i in range(len(hist_data)):
         hist_data[i] = hist_data[i] / profile.num_ballots()
