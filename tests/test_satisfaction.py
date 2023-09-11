@@ -315,22 +315,34 @@ class TestSatisfaction(TestCase):
             Project("p4", 1),
             Project("p5", 20),
         ]
-        instance = Instance(projects, budget_limit=6)
+        instance_1 = Instance(projects, budget_limit=60)
+        instance_2 = Instance(projects, budget_limit=7)
         b1 = ApprovalBallot((projects[0], projects[1], projects[2], projects[3]))
         b2 = ApprovalBallot((projects[0], projects[1]))
         b3 = ApprovalBallot((projects[4],))
         b4 = ApprovalBallot()
-        profile = ApprovalProfile([b1, b2, b3, b4], instance=instance)
-        sat_profile = SatisfactionProfile(
+        profile = ApprovalProfile([b1, b2, b3, b4], instance=instance_1)
+        sat_profile_1 = SatisfactionProfile(
             profile=profile,
-            instance=instance,
+            instance=instance_1,
             sat_class=Relative_Cost_Approx_Normaliser_Sat,
         )
-        assert sat_profile[0].sat([projects[0]]) == frac(4, 10)
-        assert sat_profile[0].sat(projects[1:]) == frac(6, 10)
-        assert sat_profile[1].sat(projects[1:]) == frac(2, 6)
-        assert sat_profile[2].sat([]) == 0
-        assert sat_profile[3].sat(projects) == 0
+        assert sat_profile_1[0].sat([projects[0]]) == frac(4, 10)
+        assert sat_profile_1[0].sat(projects[1:]) == frac(6, 10)
+        assert sat_profile_1[1].sat(projects[1:]) == frac(2, 6)
+        assert sat_profile_1[2].sat([]) == 0
+        assert sat_profile_1[3].sat(projects) == 0
+
+        sat_profile_2 = SatisfactionProfile(
+            profile=profile,
+            instance=instance_2,
+            sat_class=Relative_Cost_Approx_Normaliser_Sat,
+        )
+        assert sat_profile_2[0].sat([projects[0]]) == frac(4, 7)
+        assert sat_profile_2[0].sat(projects[1:]) == frac(6, 7)
+        assert sat_profile_2[1].sat(projects[1:]) == frac(2, 6)
+        assert sat_profile_2[2].sat(projects[:3]) == 0
+        assert sat_profile_2[3].sat(projects) == 0
 
     def test_effot_sat(self):
         projects = [

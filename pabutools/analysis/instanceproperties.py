@@ -3,6 +3,7 @@ from pabutools.election.instance import Instance, total_cost
 from numbers import Number
 
 import numpy as np
+from mip import Model, xsum, maximize, BINARY
 
 from pabutools.fractions import frac
 
@@ -100,3 +101,63 @@ def std_dev_project_cost(instance: Instance) -> Number:
 
     """
     return float(np.std([project.cost for project in instance], dtype=np.float64))
+
+
+
+def max_budget_allocation_cardinality(instance: Instance) -> int:
+    """
+    Returns the maximum number of projects that can be chosen with respect to the budget limit.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+
+    Returns
+    -------
+        int
+            The maximum number of projects that can be chosen with respect to the budget limit.
+
+    """
+    projects_sorted = sorted(instance, key=lambda proj: proj.cost)
+    cost = 0
+    selected = 0
+    for p in projects_sorted:
+        new_total_cost = p.cost + cost
+        if new_total_cost > instance.budget_limit:
+            break
+        cost = new_total_cost
+        selected += 1
+    return selected
+
+
+def max_budget_allocation_cost(instance: Instance) -> Number:
+    """
+    Returns the maximum cost that can be spent with respect to the budget limit. This number is different from the limit,
+    since the costs of the projects might not add up to the limit exactly.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+
+    Returns
+    -------
+        int
+            The maximum cost that can be spent with respect to the budget limit.
+
+    """
+    mip_model = Model()
+    mip_model.verbose = 0
+    p_vars = {
+        p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in instance
+    }
+    if p_vars:
+        mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in instance))
+        mip_model += (
+            xsum(p_vars[p] * p.cost for p in instance) <= instance.budget_limit
+        )
+        mip_model.optimize()
+        max_cost = mip_model.objective.x
+        return frac(max_cost)
+    return 0

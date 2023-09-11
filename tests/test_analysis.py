@@ -193,16 +193,20 @@ class TestAnalysis(TestCase):
     def test_instance_properties(self):
         projects = [
             Project("p1", cost=1),
-            Project("p2", cost=2),
-            Project("p3", cost=6),
+            Project("p2", cost=1),
+            Project("p3", cost=1),
+            Project("p4", cost=1),
+            Project("p5", cost=6),
         ]
-        instance = Instance(projects, budget_limit=6)
+        instance = Instance(projects, budget_limit=8)
 
-        assert sum_project_cost(instance) == 9
-        assert avg_project_cost(instance) == 3
-        assert median_project_cost(instance) == 2
-        assert funding_scarcity(instance) == frac(3, 2)
-        assert std_dev_project_cost(instance) == np.sqrt(14.0 / 3)
+        assert sum_project_cost(instance) == 10
+        assert avg_project_cost(instance) == 2
+        assert median_project_cost(instance) == 1
+        assert funding_scarcity(instance) == frac(5, 4)
+        assert std_dev_project_cost(instance) == 2
+        assert max_budget_allocation_cardinality(instance) == 4
+        assert max_budget_allocation_cost(instance) == 8
 
         instance = Instance(projects)
         with self.assertRaises(ValueError):

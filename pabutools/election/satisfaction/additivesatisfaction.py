@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 from numbers import Number
+from pabutools.analysis.instanceproperties import max_budget_allocation_cardinality, max_budget_allocation_cost
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import (
@@ -17,7 +18,6 @@ from pabutools.fractions import frac
 
 from typing import TYPE_CHECKING
 
-from mip import Model, xsum, maximize, BINARY
 
 if TYPE_CHECKING:
     from pabutools.election.profile import AbstractProfile
@@ -241,16 +241,9 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        ballot_sorted = sorted(ballot, key=lambda proj: proj.cost)
-        cost = 0
-        selected = 0
-        for p in ballot_sorted:
-            new_total_cost = p.cost + cost
-            if new_total_cost > instance.budget_limit:
-                break
-            cost = new_total_cost
-            selected += 1
-        return {"max_budget_allocation_card": selected}
+        # here we compute the maximum card sat of the ballot with reespect to the budget limit
+        dummy_instance = Instance(ballot, budget_limit=instance.budget_limit)
+        return {"max_budget_allocation_card": max_budget_allocation_cardinality(dummy_instance)}
 
 
 def cost_sat_func(
@@ -370,20 +363,9 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        mip_model = Model()
-        mip_model.verbose = 0
-        p_vars = {
-            p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in ballot
-        }
-        if p_vars:
-            mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in ballot))
-            mip_model += (
-                xsum(p_vars[p] * p.cost for p in ballot) <= instance.budget_limit
-            )
-            mip_model.optimize()
-            max_cost = mip_model.objective.x
-            return {"max_budget_allocation_cost": frac(max_cost)}
-        return {"max_budget_allocation_cost": 0}
+        # here we compute the maximum cost sat of the ballot with reespect to the budget limit
+        dummy_instance = Instance(ballot, budget_limit=instance.budget_limit)
+        return {"max_budget_allocation_cost": max_budget_allocation_cost(dummy_instance)}
 
 
 def relative_cost_approx_normaliser_sat_func(
@@ -394,8 +376,8 @@ def relative_cost_approx_normaliser_sat_func(
     precomputed_values: dict,
 ) -> Number:
     """
-    Computes the relative cost satisfaction for ballots using an approximate normaliser: the total cost of the projects
-    appearing in the ballot. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
+    Computes the relative cost satisfaction for ballots using an approximate normaliser: the minimum of the total cost of the projects
+    appearing in the ballot and the total budget. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
     for the version with the exact normaliser.
 
     Parameters
@@ -416,10 +398,10 @@ def relative_cost_approx_normaliser_sat_func(
         Number
             The relative cost satisfaction with an approximate normaliser.
     """
-    if precomputed_values["total_ballot_cost"] == 0:
+    if precomputed_values["normalizer"] == 0:
         return 0
     return frac(
-        int(project in ballot) * project.cost, precomputed_values["total_ballot_cost"]
+        int(project in ballot) * project.cost, precomputed_values["normalizer"]
     )
 
 
@@ -450,7 +432,7 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"total_ballot_cost": total_cost([p for p in ballot])}
+        return {"normalizer": min(total_cost([p for p in ballot]), instance.budget_limit)}
 
 
 def effort_sat_func(
