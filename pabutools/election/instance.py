@@ -9,6 +9,7 @@ from pabutools.fractions import frac
 from pabutools.utils import powerset
 from numbers import Number
 from math import ceil
+from mip import Model, xsum, maximize, BINARY
 
 import random
 
@@ -108,6 +109,68 @@ def total_cost(projects: Iterable[Project]) -> Number:
             The total cost
     """
     return sum(p.cost for p in projects)
+
+
+def max_budget_allocation_cardinality(projects: Iterable[Project], budget_limit: Number) -> int:
+    """
+    Returns the maximum number of projects that can be chosen with respect to the budget limit.
+
+    Parameters
+    ----------
+        projects : iterable[:py:class:`~pabutools.election.instance.Project`]
+            An iterable of projects.
+        budget_limit : Number
+            the budget limit
+
+    Returns
+    -------
+        int
+            The maximum number of projects that can be chosen with respect to the budget limit.
+
+    """
+    projects_sorted = sorted(projects, key=lambda proj: proj.cost)
+    cost = 0
+    selected = 0
+    for p in projects_sorted:
+        new_total_cost = p.cost + cost
+        if new_total_cost > budget_limit:
+            break
+        cost = new_total_cost
+        selected += 1
+    return selected
+
+
+def max_budget_allocation_cost(projects: Iterable[Project], budget_limit: Number) -> Number:
+    """
+    Returns the maximum total cost over all subsets of projects with respect to the budget limit.
+
+    Parameters
+    ----------
+        projects : iterable[:py:class:`~pabutools.election.instance.Project`]
+            An iterable of projects.
+        budget_limit : Number
+            the budget limit
+
+    Returns
+    -------
+        int
+            The maximum total cost over all subsets of projects with respect to the budget limit.
+
+    """
+    mip_model = Model()
+    mip_model.verbose = 0
+    p_vars = {
+        p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in projects
+    }
+    if p_vars:
+        mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in projects))
+        mip_model += (
+            xsum(p_vars[p] * p.cost for p in projects) <= budget_limit
+        )
+        mip_model.optimize()
+        max_cost = mip_model.objective.x
+        return frac(max_cost)
+    return 0
 
 
 class Instance(set[Project]):

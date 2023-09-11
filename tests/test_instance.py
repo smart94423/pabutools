@@ -59,8 +59,10 @@ class TestInstance(TestCase):
         assert inst2.project_meta == inst.project_meta
 
     def test_projects(self):
-        projects = [Project("p{}".format(i), 1) for i in range(10)]
-        assert total_cost(projects) == 10
+        projects = [Project("p{}".format(i), (i+1)*2) for i in range(10)]
+        assert total_cost(projects) == 110
+        assert max_budget_allocation_cardinality(projects, budget_limit=30) == 5
+        assert max_budget_allocation_cost(projects, budget_limit=29) == 28
         project = Project("p", 10)
         assert project == Project("p", 2)
         assert project == "p"

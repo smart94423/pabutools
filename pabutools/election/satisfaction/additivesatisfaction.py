@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 from numbers import Number
-from pabutools.analysis.instanceproperties import max_budget_allocation_cardinality, max_budget_allocation_cost
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import (
@@ -13,7 +12,7 @@ from pabutools.election.ballot import (
     AbstractApprovalBallot,
     AbstractCardinalBallot,
 )
-from pabutools.election.instance import Instance, Project, total_cost
+from pabutools.election.instance import Instance, Project, total_cost, max_budget_allocation_cardinality, max_budget_allocation_cost
 from pabutools.fractions import frac
 
 from typing import TYPE_CHECKING
@@ -241,9 +240,7 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        # here we compute the maximum card sat of the ballot with reespect to the budget limit
-        dummy_instance = Instance(ballot, budget_limit=instance.budget_limit)
-        return {"max_budget_allocation_card": max_budget_allocation_cardinality(dummy_instance)}
+        return {"max_budget_allocation_card": max_budget_allocation_cardinality(ballot, instance.budget_limit)}
 
 
 def cost_sat_func(
@@ -363,9 +360,7 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        # here we compute the maximum cost sat of the ballot with reespect to the budget limit
-        dummy_instance = Instance(ballot, budget_limit=instance.budget_limit)
-        return {"max_budget_allocation_cost": max_budget_allocation_cost(dummy_instance)}
+        return {"max_budget_allocation_cost": max_budget_allocation_cost(ballot, instance.budget_limit)}
 
 
 def relative_cost_approx_normaliser_sat_func(

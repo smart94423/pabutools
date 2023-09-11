@@ -205,8 +205,6 @@ class TestAnalysis(TestCase):
         assert median_project_cost(instance) == 1
         assert funding_scarcity(instance) == frac(5, 4)
         assert std_dev_project_cost(instance) == 2
-        assert max_budget_allocation_cardinality(instance) == 4
-        assert max_budget_allocation_cost(instance) == 8
 
         instance = Instance(projects)
         with self.assertRaises(ValueError):
