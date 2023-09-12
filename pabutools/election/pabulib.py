@@ -14,11 +14,16 @@ from pabutools.election.ballot import (
 from pabutools.election.profile import (
     Profile,
     ApprovalProfile,
+    AbstractApprovalProfile,
     CardinalProfile,
+    AbstractCardinalProfile,
     CumulativeProfile,
+    AbstractCumulativeProfile,
     OrdinalProfile,
+    AbstractOrdinalProfile
 )
 
+import urllib.request
 import csv
 import os
 
@@ -226,3 +231,139 @@ def parse_pabulib(file_path: str) -> tuple[Instance, Profile]:
     instance.file_name = os.path.basename(file_path)
 
     return instance, profile
+
+
+def parse_pabulib_from_url(url: str) -> tuple[Instance, Profile]:
+    """
+    Parses a PaBuLib files given a URL and returns the corresponding instance and profile. The returned profile will be
+    of the correct type depending on the metadata in the file.
+
+    Parameters
+    ----------
+        url : str
+            URL to the PaBuLib file to be parsed.
+
+    Returns
+    -------
+        tuple[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.Profile`]
+            The instance and the profile corresponding to the file.
+    """
+
+    data = urllib.request.urlopen(url)
+    lines = data.read().decode("utf-8-sig")
+    data.close()
+
+    instance, profile = parse_pabulib_from_string(lines)
+
+    instance.file_path = url
+    instance.file_name = url.split("/")[-1]
+
+    return instance, profile
+
+
+def write_pabulib(instance, profile, file_path):
+    """Writes an instance and a profile to a file using the pabulib format. The specific format to use is decided based
+    on the class of the profile.
+
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile: :py:class:`~pabutools.election.profile.profile.Profile`
+            The profile.
+        file_path: str
+            The path to the output file.
+    """
+    def update_meta_value(meta_dict, inst_meta, field, mandatory=False):
+        if field in inst_meta:
+            meta_dict[field] = inst_meta[field]
+        elif mandatory:
+            meta_dict[field] = "Auto-filled " + str(field)
+
+    meta = {}
+    update_meta_value(meta, instance.meta, "description", mandatory=True)
+    update_meta_value(meta, instance.meta, "country", mandatory=True)
+    update_meta_value(meta, instance.meta, "unit", mandatory=True)
+    update_meta_value(meta, instance.meta, "subunit")
+    update_meta_value(meta, instance.meta, "instance", mandatory=True)
+    meta["num_projects"] = len(instance)
+    meta["num_votes"] = profile.num_ballots()
+    meta["budget"] = instance.budget_limit
+    if isinstance(profile, AbstractApprovalProfile):
+        meta["vote_type"] = "approval"
+    elif isinstance(profile, AbstractCumulativeProfile):
+        meta["vote_type"] = "cumulative"
+    elif isinstance(profile, AbstractCardinalProfile):
+        meta["vote_type"] = "scoring"
+    elif isinstance(profile, AbstractOrdinalProfile):
+        meta["vote_type"] = "ordinal"
+    update_meta_value(meta, instance.meta, "rule", mandatory=True)
+    update_meta_value(meta, instance.meta, "date_begin", mandatory=False)
+    update_meta_value(meta, instance.meta, "date_end", mandatory=False)
+    update_meta_value(meta, instance.meta, "date_language", mandatory=False)
+    update_meta_value(meta, instance.meta, "date_edition", mandatory=False)
+    update_meta_value(meta, instance.meta, "date_district", mandatory=False)
+    update_meta_value(meta, instance.meta, "date_comment", mandatory=False)
+    if profile.legal_min_length:
+        meta["min_length"] = str(profile.legal_min_length)
+    if profile.legal_max_length:
+        meta["max_length"] = str(profile.legal_max_length)
+    if isinstance(profile, AbstractApprovalProfile):
+        if profile.legal_min_cost:
+            meta["min_sum_cost"] = str(profile.legal_min_cost)
+        if profile.legal_max_cost:
+            meta["max_sum_cost"] = str(profile.legal_max_cost)
+    elif isinstance(profile, AbstractCumulativeProfile):
+        if profile.legal_min_score:
+            meta["min_points"] = str(profile.legal_min_score)
+        if profile.legal_max_score:
+            meta["max_points"] = str(profile.legal_max_score)
+        if profile.legal_min_total_score:
+            meta["min_sum_points"] = str(profile.legal_min_total_score)
+        if profile.legal_max_total_score:
+            meta["max_sum_points"] = str(profile.legal_max_total_score)
+        else:
+            meta["max_sum_points"] = "Auto-filled max_sum_points"
+    elif isinstance(profile, AbstractCardinalProfile):
+        if profile.legal_min_score:
+            meta["min_points"] = str(profile.legal_min_score)
+        if profile.legal_max_score:
+            meta["max_points"] = str(profile.legal_max_score)
+        update_meta_value(meta, instance.meta, "default_score", mandatory=False)
+    elif isinstance(profile, AbstractOrdinalProfile):
+        update_meta_value(meta, instance.meta, "scoring_fn", mandatory=False)
+    for key, value in instance.meta.items():
+        if key not in meta:
+            meta[key] = value
+
+    project_dicts = []
+    project_keys = ["project_id", "cost"]
+    for project in instance:
+        project_meta = {"project_id": project.name, "cost": project.cost}
+        if "name" in instance.project_meta[project]:
+            project_meta["name"] = instance.project_meta[project]["name"]
+            if "name" not in project_keys:
+                    project_keys.append("name")
+        if project.categories:
+            project_meta["category"] = ",".join(project.categories)
+            if "category" not in project_keys:
+                project_keys.append("category")
+        if project.targets:
+            project_meta["target"] = ",".join(project.targets)
+            if "target" not in project_keys:
+                project_keys.append("target")
+        for key, value in instance.project_meta[project].items():
+            if key not in project_meta and key not in ["categories", "targets"]:
+                project_meta[key] = value
+                if key not in project_keys:
+                    project_keys.append(key)
+        project_dicts.append(project_meta)
+    project_dicts.sort(key=lambda d: int(d["project_id"]))
+
+    with open(file_path, "w", encoding="utf-8-sig") as f:
+        f.write("META\nkey;value\n")
+        for key, value in meta.items():
+            f.write(f"{key};{value}\n")
+        f.write("PROJECTS\n" + ";".join(project_keys) + "\n")
+        for project_dict in project_dicts:
+            f.write(";".join([str(project_dict.get(key, "")) for key in project_keys]) + "\n")
