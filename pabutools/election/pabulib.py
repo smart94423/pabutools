@@ -262,8 +262,8 @@ def parse_pabulib_from_url(url: str) -> tuple[Instance, Profile]:
 
 
 def write_pabulib(instance, profile, file_path):
-    """Writes an instance and a profile to a file using the pabulib format. The specific format to use is decided based
-    on the class of the profile.
+    """Writes an instance and a profile to a file using the pabulib format (as specified in
+    https://arxiv.org/pdf/2305.11035.pdf).
 
     Parameters
     ----------
@@ -343,7 +343,7 @@ def write_pabulib(instance, profile, file_path):
         if "name" in instance.project_meta[project]:
             project_meta["name"] = instance.project_meta[project]["name"]
             if "name" not in project_keys:
-                    project_keys.append("name")
+                project_keys.append("name")
         if project.categories:
             project_meta["category"] = ",".join(project.categories)
             if "category" not in project_keys:
@@ -360,6 +360,33 @@ def write_pabulib(instance, profile, file_path):
         project_dicts.append(project_meta)
     project_dicts.sort(key=lambda d: int(d["project_id"]))
 
+    vote_dicts = []
+    vote_keys = []
+    for index, ballot in enumerate(profile):
+        vote_meta = {"voter_id": index}
+        if "age" in ballot.meta:
+            vote_meta["age"] = ballot.meta["age"]
+            if "age" not in vote_keys:
+                vote_keys.append("age")
+        if "sex" in ballot.meta:
+            vote_meta["sex"] = ballot.meta["sex"]
+            if "sex" not in vote_keys:
+                vote_keys.append("sex")
+        if "voting_method" in ballot.meta:
+            vote_meta["voting_method"] = ballot.meta["voting_method"]
+            if "voting_method" not in vote_keys:
+                vote_keys.append("voting_method")
+        vote_meta["vote"] = ",".join([p.name for p in ballot])
+        if isinstance(profile, AbstractCardinalProfile):
+            vote_meta["points"] = ",".join([str(float(ballot[p])) for p in ballot])
+        for key, value in ballot.meta.items():
+            if key not in vote_meta:
+                vote_meta[key] = value
+                if key not in vote_keys:
+                    project_keys.append(key)
+        for mul in range(profile.multiplicity(ballot)):
+            vote_dicts.append(vote_meta)
+
     with open(file_path, "w", encoding="utf-8-sig") as f:
         f.write("META\nkey;value\n")
         for key, value in meta.items():
@@ -367,3 +394,6 @@ def write_pabulib(instance, profile, file_path):
         f.write("PROJECTS\n" + ";".join(project_keys) + "\n")
         for project_dict in project_dicts:
             f.write(";".join([str(project_dict.get(key, "")) for key in project_keys]) + "\n")
+        f.write("VOTES\n" + ";".join(project_keys) + "\n")
+        for vote_dict in vote_dicts:
+            f.write(";".join([str(vote_dict.get(key, "")) for key in vote_keys]) + "\n")
