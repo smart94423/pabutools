@@ -3,6 +3,7 @@ Greedy approximations of the maximum welfare.
 """
 from copy import copy
 from collections.abc import Iterable
+from math import inf
 
 from pabutools.election.profile import AbstractProfile
 
@@ -68,10 +69,13 @@ def greedy_utilitarian_scheme(
             argmax_marginal_score = []
             for project in feasible:
                 new_alloc = copy(alloc) + [project]
-                total_marginal_score = frac(
-                    sats.total_satisfaction(new_alloc) - sats.total_satisfaction(alloc),
-                    project.cost,
-                )
+                if project.cost > 0:
+                    total_marginal_score = frac(
+                        sats.total_satisfaction(new_alloc) - sats.total_satisfaction(alloc),
+                        project.cost,
+                    )
+                else:
+                    total_marginal_score = inf
 
                 if (
                     best_marginal_score is None
@@ -156,9 +160,10 @@ def greedy_utilitarian_scheme_additive(
     def satisfaction_density(proj):
         total_sat = sat_profile.total_satisfaction([proj])
         if total_sat > 0:
-            return frac(total_sat, proj.cost)
+            if proj.cost > 0:
+                return frac(total_sat, proj.cost)
+            return inf
         return 0
-
     # We sort based on a tuple to ensure ties are broken as intended
     ordered_projects = sorted(
         projects, key=lambda p: (-satisfaction_density(p), projects.index(p))
@@ -170,7 +175,6 @@ def greedy_utilitarian_scheme_additive(
         if project.cost <= remaining_budget:
             selection.append(project)
             remaining_budget -= project.cost
-
     return sorted(selection)
 
 
