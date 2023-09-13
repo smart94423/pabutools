@@ -111,7 +111,9 @@ def total_cost(projects: Iterable[Project]) -> Number:
     return sum(p.cost for p in projects)
 
 
-def max_budget_allocation_cardinality(projects: Iterable[Project], budget_limit: Number) -> int:
+def max_budget_allocation_cardinality(
+    projects: Iterable[Project], budget_limit: Number
+) -> int:
     """
     Returns the maximum number of projects that can be chosen with respect to the budget limit.
 
@@ -140,7 +142,9 @@ def max_budget_allocation_cardinality(projects: Iterable[Project], budget_limit:
     return selected
 
 
-def max_budget_allocation_cost(projects: Iterable[Project], budget_limit: Number) -> Number:
+def max_budget_allocation_cost(
+    projects: Iterable[Project], budget_limit: Number
+) -> Number:
     """
     Returns the maximum total cost over all subsets of projects with respect to the budget limit.
 
@@ -164,9 +168,7 @@ def max_budget_allocation_cost(projects: Iterable[Project], budget_limit: Number
     }
     if p_vars:
         mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in projects))
-        mip_model += (
-            xsum(p_vars[p] * p.cost for p in projects) <= budget_limit
-        )
+        mip_model += xsum(p_vars[p] * p.cost for p in projects) <= budget_limit
         mip_model.optimize()
         max_cost = mip_model.objective.x
         return frac(max_cost)

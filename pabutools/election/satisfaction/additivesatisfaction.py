@@ -12,7 +12,13 @@ from pabutools.election.ballot import (
     AbstractApprovalBallot,
     AbstractCardinalBallot,
 )
-from pabutools.election.instance import Instance, Project, total_cost, max_budget_allocation_cardinality, max_budget_allocation_cost
+from pabutools.election.instance import (
+    Instance,
+    Project,
+    total_cost,
+    max_budget_allocation_cardinality,
+    max_budget_allocation_cost,
+)
 from pabutools.fractions import frac
 
 from typing import TYPE_CHECKING
@@ -240,7 +246,11 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"max_budget_allocation_card": max_budget_allocation_cardinality(ballot, instance.budget_limit)}
+        return {
+            "max_budget_allocation_card": max_budget_allocation_cardinality(
+                ballot, instance.budget_limit
+            )
+        }
 
 
 def cost_sat_func(
@@ -360,7 +370,11 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"max_budget_allocation_cost": max_budget_allocation_cost(ballot, instance.budget_limit)}
+        return {
+            "max_budget_allocation_cost": max_budget_allocation_cost(
+                ballot, instance.budget_limit
+            )
+        }
 
 
 def relative_cost_approx_normaliser_sat_func(
@@ -395,9 +409,7 @@ def relative_cost_approx_normaliser_sat_func(
     """
     if precomputed_values["normalizer"] == 0:
         return 0
-    return frac(
-        int(project in ballot) * project.cost, precomputed_values["normalizer"]
-    )
+    return frac(int(project in ballot) * project.cost, precomputed_values["normalizer"])
 
 
 class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
@@ -427,7 +439,9 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     def preprocessing(
         self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
-        return {"normalizer": min(total_cost([p for p in ballot]), instance.budget_limit)}
+        return {
+            "normalizer": min(total_cost([p for p in ballot]), instance.budget_limit)
+        }
 
 
 def effort_sat_func(

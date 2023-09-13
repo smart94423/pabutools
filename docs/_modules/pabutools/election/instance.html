@@ -265,6 +265,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">powerset</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+<span class="kn">from</span> <span class="nn">mip</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">xsum</span><span class="p">,</span> <span class="n">maximize</span><span class="p">,</span> <span class="n">BINARY</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
 
@@ -364,6 +365,68 @@ document.write(`
 <span class="sd">            The total cost</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max_budget_allocation_cardinality"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.max_budget_allocation_cardinality">[docs]</a><span class="k">def</span> <span class="nf">max_budget_allocation_cardinality</span><span class="p">(</span><span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">budget_limit</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the maximum number of projects that can be chosen with respect to the budget limit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        projects : iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            An iterable of projects.</span>
+<span class="sd">        budget_limit : Number</span>
+<span class="sd">            the budget limit</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The maximum number of projects that can be chosen with respect to the budget limit.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">projects_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">projects</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">proj</span><span class="p">:</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects_sorted</span><span class="p">:</span>
+        <span class="n">new_total_cost</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">cost</span>
+        <span class="k">if</span> <span class="n">new_total_cost</span> <span class="o">&gt;</span> <span class="n">budget_limit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">new_total_cost</span>
+        <span class="n">selected</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">selected</span></div>
+
+
+<div class="viewcode-block" id="max_budget_allocation_cost"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.max_budget_allocation_cost">[docs]</a><span class="k">def</span> <span class="nf">max_budget_allocation_cost</span><span class="p">(</span><span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">budget_limit</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the maximum total cost over all subsets of projects with respect to the budget limit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        projects : iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">            An iterable of projects.</span>
+<span class="sd">        budget_limit : Number</span>
+<span class="sd">            the budget limit</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The maximum total cost over all subsets of projects with respect to the budget limit.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mip_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+    <span class="n">mip_model</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p_vars</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">p</span><span class="p">:</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">add_var</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">p_vars</span><span class="p">:</span>
+        <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">))</span>
+        <span class="n">mip_model</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">budget_limit</span>
+        <span class="p">)</span>
+        <span class="n">mip_model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+        <span class="n">max_cost</span> <span class="o">=</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">max_cost</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="nb">set</span><span class="p">[</span><span class="n">Project</span><span class="p">]):</span>

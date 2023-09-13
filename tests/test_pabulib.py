@@ -1,9 +1,16 @@
 from unittest import TestCase
 
 from pabutools.election import OrdinalBallot
-from pabutools.election.pabulib import parse_pabulib, parse_pabulib_from_string
+from pabutools.election.pabulib import (
+    parse_pabulib,
+    parse_pabulib_from_string,
+    parse_pabulib_from_url,
+    write_pabulib,
+)
 
 import os
+
+from tests.test_class_inheritence import check_members_equality
 
 
 class TestPabulib(TestCase):
@@ -589,3 +596,123 @@ voter_id;vote;voting_method;district
         assert profile.legal_max_score is None
         assert profile.legal_min_total_score is None
         assert profile.legal_max_total_score == 100
+
+    def test_url_parse(self):
+        url = "http://pabulib.org/media/files/poland_warszawa_2018_pole-mokotowskie.pb"
+        url_inst, url_prof = parse_pabulib_from_url(url)
+        assert url_inst.file_name == "poland_warszawa_2018_pole-mokotowskie.pb"
+        assert url_inst.file_path == url
+
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(
+                """META
+key;value
+description;Local PB in Warsaw, Ochota | Pole Mokotowskie
+country;Poland
+unit;Warszawa
+subunit;Pole Mokotowskie
+instance;2018
+district;Ochota
+num_projects;1
+num_votes;8
+budget;21064
+vote_type;approval
+rule;greedy
+date_begin;14.06.2017
+date_end;30.06.2017
+min_length;1
+max_sum_cost;21064
+language;polish
+edition;4
+PROJECTS
+project_id;cost;category;votes;name;target;selected
+658;21064;environmental protection,public space,urban greenery;8;Dobre grzyby (mikoryza) dla drzew Pola Mokotowskiego;seniors,families with children,animals;1
+VOTES
+voter_id;age;sex;voting_method;vote
+30397;43;F;internet;658
+39076;61;F;paper;658
+56422;66;M;internet;658
+67344;32;F;internet;658
+83776;73;F;internet;658
+89587;9;M;internet;658
+95332;31;F;internet;658
+102415;24;F;internet;658"""
+            )
+
+        file_inst, file_prof = parse_pabulib("test.pb")
+        os.remove("test.pb")
+
+        assert file_inst == url_inst
+        assert len(file_inst) == len(url_inst)
+        assert file_prof == url_prof
+        assert len(file_prof) == len(url_prof)
+        url_inst.file_name = "test.pb"
+        url_inst.file_path = "test.pb"
+        check_members_equality(file_inst, url_inst)
+        check_members_equality(file_prof, url_prof)
+
+    def test_write(self):
+        contents = """META
+key;value
+description;Local PB in Warsaw, WesoÅ‚a | Plac Wojska Polskiego
+country;Poland
+unit;Warszawa
+subunit;Plac Wojska Polskiego
+instance;2017
+district;WesoÅ‚a
+num_projects;4
+num_votes;27
+budget;51195
+vote_type;approval
+rule;greedy
+date_begin;14.06.2016
+date_end;24.06.2016
+min_length;1
+max_sum_cost;51195
+language;polish
+edition;3
+PROJECTS
+project_id;cost;category;votes;name;target;selected
+427;15995;education;16;Akademia Szkraba;children,families with children;1
+915;5825;education,environmental protection;14;Plac Wojska Polskiego dla gniazdujÄ…cych;None;1
+2567;20000;education,sport,health;12;Aktywny senior - gimnastyka;seniors;1
+1623;2900;public space,health;5;Å»yczliwoÅ›Ä‡ wobec kobiet w ciÄ…Å¼y dla mieszkanek WesoÅ‚ej.;adults,people with disabilities;1
+VOTES
+voter_id;age;sex;voting_method;vote
+5642;33;F;internet;427
+7230;65;F;internet;2567
+8987;30;F;internet;915
+10533;20;F;internet;915
+15240;37;M;internet;427,915,2567,1623
+16498;67;M;paper;2567,915
+16910;68;F;paper;2567,915
+22288;24;F;internet;427,2567,915
+24842;14;M;internet;2567
+32398;29;F;internet;915,1623,2567,427
+32998;29;F;internet;427
+44924;36;F;internet;427
+47826;69;F;paper;2567,1623
+48423;10;F;internet;915
+48974;52;F;internet;427
+50829;36;F;internet;427,2567,1623,915
+57441;26;F;internet;915,2567,427
+57475;64;M;internet;915,427
+72881;33;F;internet;915
+79157;52;F;internet;427
+80175;38;F;internet;2567
+87967;34;M;paper;427,2567,1623,915
+88076;28;F;internet;427
+88639;63;M;internet;915
+94116;33;M;internet;427
+103942;54;M;internet;427
+104255;53;F;internet;427"""
+
+        with open("test.pb", "w", encoding="utf-8") as f:
+            f.write(contents)
+        instance, profile = parse_pabulib("test.pb")
+        write_pabulib(instance, profile, "test_out.pb")
+        instance_out, profile_out = parse_pabulib("test_out.pb")
+        instance_out.file_name = "test.pb"
+        instance_out.file_path = "test.pb"
+        check_members_equality(instance, instance_out)
+        check_members_equality(profile, profile_out)
