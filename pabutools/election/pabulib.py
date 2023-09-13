@@ -21,7 +21,7 @@ from pabutools.election.profile import (
     CumulativeProfile,
     AbstractCumulativeProfile,
     OrdinalProfile,
-    AbstractOrdinalProfile
+    AbstractOrdinalProfile,
 )
 
 import urllib.request
@@ -275,6 +275,7 @@ def write_pabulib(instance, profile, file_path):
         file_path: str
             The path to the output file.
     """
+
     def update_meta_value(meta_dict, inst_meta, field, mandatory=False):
         if field in inst_meta:
             meta_dict[field] = inst_meta[field]
@@ -408,7 +409,12 @@ def write_pabulib(instance, profile, file_path):
             f.write(f"{key};{value}\n")
         f.write("PROJECTS\n" + ";".join(project_keys) + "\n")
         for project_dict in project_dicts:
-            f.write(";".join([str(project_dict.get(key, "None")) for key in project_keys]) + "\n")
+            f.write(
+                ";".join([str(project_dict.get(key, "None")) for key in project_keys])
+                + "\n"
+            )
         f.write("VOTES\n" + ";".join(vote_keys) + "\n")
         for vote_dict in vote_dicts:
-            f.write(";".join([str(vote_dict.get(key, "None")) for key in vote_keys]) + "\n")
+            f.write(
+                ";".join([str(vote_dict.get(key, "None")) for key in vote_keys]) + "\n"
+            )

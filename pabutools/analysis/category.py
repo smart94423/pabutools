@@ -68,7 +68,9 @@ def category_proportionality(
                 app_cost_per_category[category] += project.cost
         for category in categories:
             proportional_app_cost_per_category[category] += (
-                app_cost_per_category[category] / app_total_cost * profile.multiplicity(ballot)
+                app_cost_per_category[category]
+                / app_total_cost
+                * profile.multiplicity(ballot)
             )
     for category in categories:
         proportional_app_cost_per_category[category] /= profile.num_ballots()

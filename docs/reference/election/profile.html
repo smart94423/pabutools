@@ -473,6 +473,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.num_ballots"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.num_ballots()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.pop"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.pop()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.popitem"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.popitem()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.score()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.setdefault"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.setdefault()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.subtract"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.subtract()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.total"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.total()</span></code></a></li>
@@ -546,6 +547,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.num_ballots"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.num_ballots()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.pop"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.pop()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.popitem"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.popitem()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.score"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.score()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.setdefault"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.setdefault()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.subtract"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.subtract()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.total"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.total()</span></code></a></li>
@@ -2593,6 +2595,19 @@ Raises KeyError if the dict is empty.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/profile/cardinalprofile.html#CardinalMultiProfile.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the score of a project, that is, the sum of scores received from all voters.
+:param project: The project.
+:type project: pabutools.instance.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fraction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.profile.cardinalprofile.CardinalMultiProfile.setdefault">
 <span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.setdefault" title="Permalink to this definition">#</a></dt>
 <dd><p>Insert key with a value of default if key is not in the dictionary.</p>
@@ -3380,6 +3395,19 @@ raise a KeyError.</p>
 <dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
 <p>Pairs are returned in LIFO (last-in, first-out) order.
 Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the score of a project, that is, the sum of scores received from all voters.
+:param project: The project.
+:type project: pabutools.instance.instance.Project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fraction</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4270,6 +4298,7 @@ the attribute <cite>ballot_type</cite>. Throws a <cite>TypeError</cite> if not, 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.num_ballots"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.num_ballots()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.pop"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.pop()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.popitem"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.popitem()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.score()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.setdefault"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.setdefault()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.subtract"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.subtract()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.total"><code class="docutils literal notranslate"><span class="pre">CardinalMultiProfile.total()</span></code></a></li>
@@ -4343,6 +4372,7 @@ the attribute <cite>ballot_type</cite>. Throws a <cite>TypeError</cite> if not, 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.num_ballots"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.num_ballots()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.pop"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.pop()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.popitem"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.popitem()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.score"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.score()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.setdefault"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.setdefault()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.subtract"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.subtract()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.profile.cumulativeprofile.CumulativeMultiProfile.total"><code class="docutils literal notranslate"><span class="pre">CumulativeMultiProfile.total()</span></code></a></li>

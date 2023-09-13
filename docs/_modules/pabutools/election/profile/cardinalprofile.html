@@ -639,6 +639,23 @@ document.write(`
         <span class="k">if</span> <span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
 
+<div class="viewcode-block" id="CardinalMultiProfile.score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the score of a project, that is, the sum of scores received from all voters.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            project : pabutools.instance.instance.Project</span>
+<span class="sd">                The project.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Fraction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">multiplicity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="n">ballot</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplicity</span>
+        <span class="k">return</span> <span class="n">score</span></div>
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_wrap_methods</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">wrap_method_closure</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>

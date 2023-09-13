@@ -1,7 +1,12 @@
 from unittest import TestCase
 
 from pabutools.election import OrdinalBallot
-from pabutools.election.pabulib import parse_pabulib, parse_pabulib_from_string, parse_pabulib_from_url, write_pabulib
+from pabutools.election.pabulib import (
+    parse_pabulib,
+    parse_pabulib_from_string,
+    parse_pabulib_from_url,
+    write_pabulib,
+)
 
 import os
 
@@ -599,7 +604,8 @@ voter_id;vote;voting_method;district
         assert url_inst.file_path == url
 
         with open("test.pb", "w", encoding="utf-8") as f:
-            f.write("""META
+            f.write(
+                """META
 key;value
 description;Local PB in Warsaw, Ochota | Pole Mokotowskie
 country;Poland
@@ -630,7 +636,8 @@ voter_id;age;sex;voting_method;vote
 83776;73;F;internet;658
 89587;9;M;internet;658
 95332;31;F;internet;658
-102415;24;F;internet;658""")
+102415;24;F;internet;658"""
+            )
 
         file_inst, file_prof = parse_pabulib("test.pb")
         os.remove("test.pb")
@@ -709,6 +716,3 @@ voter_id;age;sex;voting_method;vote
         instance_out.file_path = "test.pb"
         check_members_equality(instance, instance_out)
         check_members_equality(profile, profile_out)
-
-
-

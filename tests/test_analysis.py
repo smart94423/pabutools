@@ -108,24 +108,24 @@ class TestAnalysis(TestCase):
         budget_allocation = [projects[0], projects[1], projects[2], projects[5]]
 
         sat_hist = satisfaction_histogram(
-            instance, 
-            app_profile, 
-            budget_allocation, 
-            Relative_Cardinality_Sat, 
-            max_satisfaction=1, 
-            num_bins=11
+            instance,
+            app_profile,
+            budget_allocation,
+            Relative_Cardinality_Sat,
+            max_satisfaction=1,
+            num_bins=11,
         )
-        assert(sat_hist == [.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, .2, 0.0, 0.4])
+        assert sat_hist == [0.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.2, 0.0, 0.4]
 
         sat_hist = satisfaction_histogram(
             instance,
-            app_multi_profile, 
-            budget_allocation, 
-            Relative_Cardinality_Sat, 
-            max_satisfaction=1, 
-            num_bins=11
+            app_multi_profile,
+            budget_allocation,
+            Relative_Cardinality_Sat,
+            max_satisfaction=1,
+            num_bins=11,
         )
-        assert(sat_hist == [.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, .2, 0.0, 0.4])
+        assert sat_hist == [0.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.2, 0.0, 0.4]
 
         sat_hist = satisfaction_histogram(
             instance,
@@ -150,7 +150,10 @@ class TestAnalysis(TestCase):
         budget_allocation = [projects[0], projects[1]]
 
         assert category_proportionality(instance, app_profile, budget_allocation) == 1
-        assert category_proportionality(instance, app_multi_profile, budget_allocation) == 1
+        assert (
+            category_proportionality(instance, app_multi_profile, budget_allocation)
+            == 1
+        )
 
         projects = [
             Project("p1", cost=1, categories={"c1", "c2"}),
@@ -222,9 +225,10 @@ class TestAnalysis(TestCase):
         app_ball_3 = ApprovalBallot([projects[1]])
         app_ball_4 = ApprovalBallot([projects[1]])
         app_ball_5 = ApprovalBallot([projects[1]])
-        app_profile = ApprovalProfile([app_ball_1, app_ball_2, app_ball_3, app_ball_4, app_ball_5])
+        app_profile = ApprovalProfile(
+            [app_ball_1, app_ball_2, app_ball_3, app_ball_4, app_ball_5]
+        )
         app_multi_profile = app_profile.as_multiprofile()
-
 
         assert avg_ballot_length(instance, app_profile) == frac(7, 5)
         assert avg_ballot_length(instance, app_multi_profile) == frac(7, 5)
@@ -244,7 +248,9 @@ class TestAnalysis(TestCase):
         card_ball_3 = CardinalBallot({projects[1]: 3})
         card_ball_4 = CardinalBallot({projects[1]: 3})
         card_ball_5 = CardinalBallot({projects[1]: 3})
-        card_profile = CardinalProfile([card_ball_1, card_ball_2, card_ball_3, card_ball_4, card_ball_5])
+        card_profile = CardinalProfile(
+            [card_ball_1, card_ball_2, card_ball_3, card_ball_4, card_ball_5]
+        )
         card_multi_profile = card_profile.as_multiprofile()
 
         assert avg_total_score(instance, card_profile) == 6

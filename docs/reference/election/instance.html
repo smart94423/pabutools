@@ -334,6 +334,8 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.get_random_instance"><code class="docutils literal notranslate"><span class="pre">get_random_instance()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.max_budget_allocation_cardinality"><code class="docutils literal notranslate"><span class="pre">max_budget_allocation_cardinality()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.max_budget_allocation_cost"><code class="docutils literal notranslate"><span class="pre">max_budget_allocation_cost()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.total_cost"><code class="docutils literal notranslate"><span class="pre">total_cost()</span></code></a></li>
 </ul>
             </nav>
@@ -714,6 +716,46 @@ The parameters are rounded up to the closest int.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.instance.max_budget_allocation_cardinality">
+<span class="sig-name descname"><span class="pre">max_budget_allocation_cardinality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Number</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/instance.html#max_budget_allocation_cardinality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.instance.max_budget_allocation_cardinality" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the maximum number of projects that can be chosen with respect to the budget limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projects</strong> (iterable[<a class="reference internal" href="#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – An iterable of projects.</p></li>
+<li><p><strong>budget_limit</strong> (<em>Number</em>) – the budget limit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The maximum number of projects that can be chosen with respect to the budget limit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.instance.max_budget_allocation_cost">
+<span class="sig-name descname"><span class="pre">max_budget_allocation_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Number</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/instance.html#max_budget_allocation_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.instance.max_budget_allocation_cost" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the maximum total cost over all subsets of projects with respect to the budget limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projects</strong> (iterable[<a class="reference internal" href="#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – An iterable of projects.</p></li>
+<li><p><strong>budget_limit</strong> (<em>Number</em>) – the budget limit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The maximum total cost over all subsets of projects with respect to the budget limit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pabutools.election.instance.total_cost">
 <span class="sig-name descname"><span class="pre">total_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/instance.html#total_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.instance.total_cost" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the total cost of a collection of projects, summing the cost of the projects.</p>
@@ -812,6 +854,8 @@ The parameters are rounded up to the closest int.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.get_random_instance"><code class="docutils literal notranslate"><span class="pre">get_random_instance()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.max_budget_allocation_cardinality"><code class="docutils literal notranslate"><span class="pre">max_budget_allocation_cardinality()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.max_budget_allocation_cost"><code class="docutils literal notranslate"><span class="pre">max_budget_allocation_cost()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.instance.total_cost"><code class="docutils literal notranslate"><span class="pre">total_cost()</span></code></a></li>
 </ul>
   </nav></div>

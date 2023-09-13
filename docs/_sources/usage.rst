@@ -753,7 +753,7 @@ exhaustive budget allocation.
 
     # Here we apply two rules: first MES with the cost satisfaction,
     # and then the greedy rule with the cardinality satisfaction
-    budget_allocation_mes_iterated = completion_by_rule_combination(
+    budget_allocation_mes_completed = completion_by_rule_combination(
         instance,
         profile,
         [method_of_equal_shares, greedy_utilitarian_welfare],
@@ -785,7 +785,7 @@ the previously returned budget allocation is returned.
         profile,
         method_of_equal_shares,
         {"sat_class": Cost_Sat},
-        budget_step=frac(1, 24),
+        budget_step=instance.budget_limit * frac(1, 100), # Important for runtime, default is 1
     )
 
 Note that since these two functions behave as rules, they can be combined. For instance, one

@@ -257,6 +257,7 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Tools to work with PaBuLib.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">str_as_frac</span>
@@ -270,11 +271,16 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Profile</span><span class="p">,</span>
     <span class="n">ApprovalProfile</span><span class="p">,</span>
+    <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
     <span class="n">CardinalProfile</span><span class="p">,</span>
+    <span class="n">AbstractCardinalProfile</span><span class="p">,</span>
     <span class="n">CumulativeProfile</span><span class="p">,</span>
+    <span class="n">AbstractCumulativeProfile</span><span class="p">,</span>
     <span class="n">OrdinalProfile</span><span class="p">,</span>
+    <span class="n">AbstractOrdinalProfile</span>
 <span class="p">)</span>
 
+<span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -318,15 +324,15 @@ document.write(`
                 <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="s2">&quot;categories&quot;</span><span class="p">]:</span>
-                        <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                             <span class="n">entry</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-                        <span class="p">]</span>
+                        <span class="p">}</span>
                         <span class="n">p</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">])</span>
                         <span class="n">optional_sets</span><span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">])</span>
                     <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;targets&quot;</span><span class="p">]:</span>
-                        <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                             <span class="n">entry</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-                        <span class="p">]</span>
+                        <span class="p">}</span>
                         <span class="n">p</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">])</span>
                         <span class="n">optional_sets</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">])</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -482,6 +488,186 @@ document.write(`
     <span class="n">instance</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span></div>
+
+
+<span class="k">def</span> <span class="nf">parse_pabulib_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a PaBuLib files given a URL and returns the corresponding instance and profile. The returned profile will be</span>
+<span class="sd">    of the correct type depending on the metadata in the file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        url : str</span>
+<span class="sd">            URL to the PaBuLib file to be parsed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        tuple[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.Profile`]</span>
+<span class="sd">            The instance and the profile corresponding to the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parse_pabulib_from_string</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="n">instance</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span>
+
+
+<span class="k">def</span> <span class="nf">write_pabulib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes an instance and a profile to a file using the pabulib format (as specified in</span>
+<span class="sd">    https://arxiv.org/pdf/2305.11035.pdf).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile: :py:class:`~pabutools.election.profile.profile.Profile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">update_meta_value</span><span class="p">(</span><span class="n">meta_dict</span><span class="p">,</span> <span class="n">inst_meta</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">inst_meta</span><span class="p">:</span>
+            <span class="n">meta_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">inst_meta</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">mandatory</span><span class="p">:</span>
+            <span class="n">meta_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Auto-filled &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;country&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;subunit&quot;</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;instance&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;num_projects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;num_votes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">num_ballots</span><span class="p">()</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;budget&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;vote_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;approval&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractCumulativeProfile</span><span class="p">):</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;vote_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cumulative&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;vote_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;scoring&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;vote_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ordinal&quot;</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;rule&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_begin&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_end&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_language&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_edition&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_district&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;date_comment&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_length</span><span class="p">:</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_min_length</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_length</span><span class="p">:</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_max_length</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_cost</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_sum_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_min_cost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_cost</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_sum_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_max_cost</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractCumulativeProfile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_min_score</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_max_score</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_total_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_sum_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_min_total_score</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_total_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_sum_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_max_total_score</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_sum_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Auto-filled max_sum_points&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_min_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_min_score</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_score</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">legal_max_score</span><span class="p">)</span>
+        <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;default_score&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractOrdinalProfile</span><span class="p">):</span>
+        <span class="n">update_meta_value</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;scoring_fn&quot;</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="n">project_dicts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">project_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;project_id&quot;</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">:</span>
+        <span class="n">project_meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">project_meta</span><span class="p">[</span><span class="n">project</span><span class="p">]:</span>
+            <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">project_meta</span><span class="p">[</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">:</span>
+                <span class="n">project_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">project</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
+            <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">categories</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;category&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">:</span>
+                <span class="n">project_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">project</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="n">project_meta</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;target&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">:</span>
+                <span class="n">project_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">project_meta</span><span class="p">[</span><span class="n">project</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_meta</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;categories&quot;</span><span class="p">,</span> <span class="s2">&quot;targets&quot;</span><span class="p">]:</span>
+                <span class="n">project_meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">:</span>
+                    <span class="n">project_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">project_dicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project_meta</span><span class="p">)</span>
+    <span class="n">project_dicts</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">project_dicts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;project_id&quot;</span><span class="p">])</span>
+
+    <span class="n">vote_dicts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">vote_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;voter_id&quot;</span><span class="p">]</span>
+    <span class="n">voter_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">profile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;voter_id&quot;</span> <span class="ow">in</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">voter_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;voter_id&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">voter_id</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">base_id</span> <span class="o">=</span> <span class="n">voter_id</span>
+        <span class="k">while</span> <span class="n">voter_id</span> <span class="ow">in</span> <span class="n">voter_ids</span><span class="p">:</span>
+            <span class="n">voter_id</span> <span class="o">=</span> <span class="n">base_id</span> <span class="o">+</span> <span class="s2">&quot;__&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+        <span class="n">vote_meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;voter_id&quot;</span><span class="p">:</span> <span class="n">voter_id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s2">&quot;age&quot;</span> <span class="ow">in</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">vote_meta</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;age&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+                <span class="n">vote_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;sex&quot;</span> <span class="ow">in</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">vote_meta</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;sex&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+                <span class="n">vote_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;sex&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;voting_method&quot;</span> <span class="ow">in</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">vote_meta</span><span class="p">[</span><span class="s2">&quot;voting_method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;voting_method&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;voting_method&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+                <span class="n">vote_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;voting_method&quot;</span><span class="p">)</span>
+        <span class="n">vote_meta</span><span class="p">[</span><span class="s2">&quot;vote&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;vote&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+            <span class="n">vote_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;vote&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
+            <span class="n">vote_meta</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ballot</span><span class="p">[</span><span class="n">p</span><span class="p">]))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;points&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+                <span class="n">vote_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;points&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ballot</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_meta</span><span class="p">:</span>
+                <span class="n">vote_meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">:</span>
+                    <span class="n">project_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mul</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)):</span>
+            <span class="n">vote_dicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vote_meta</span><span class="p">)</span>
+    <span class="n">vote_dicts</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">vote_dicts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;voter_id&quot;</span><span class="p">])</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;META</span><span class="se">\n</span><span class="s2">key;value</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;PROJECTS</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">project_dict</span> <span class="ow">in</span> <span class="n">project_dicts</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">project_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;VOTES</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vote_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">vote_dict</span> <span class="ow">in</span> <span class="n">vote_dicts</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vote_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

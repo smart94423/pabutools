@@ -1008,7 +1008,7 @@ exhaustive budget allocation.</p>
 
 <span class="c1"># Here we apply two rules: first MES with the cost satisfaction,</span>
 <span class="c1"># and then the greedy rule with the cardinality satisfaction</span>
-<span class="n">budget_allocation_mes_iterated</span> <span class="o">=</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
+<span class="n">budget_allocation_mes_completed</span> <span class="o">=</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">,</span>
     <span class="p">[</span><span class="n">method_of_equal_shares</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
@@ -1038,7 +1038,7 @@ the previously returned budget allocation is returned.</p>
     <span class="n">profile</span><span class="p">,</span>
     <span class="n">method_of_equal_shares</span><span class="p">,</span>
     <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
-    <span class="n">budget_step</span><span class="o">=</span><span class="n">frac</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+    <span class="n">budget_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="c1"># Important for runtime, default is 1</span>
 <span class="p">)</span>
 </pre></div>
 </div>
