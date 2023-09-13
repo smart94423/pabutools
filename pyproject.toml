@@ -27,6 +27,7 @@ dependencies = [
     "mip",
     "gmpy2",
     "preflibtools",
+    "natsort"
 ]
 
 [project.optional-dependencies]

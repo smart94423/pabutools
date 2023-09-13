@@ -704,13 +704,11 @@ voter_id;age;sex;voting_method;vote
             f.write(contents)
         instance, profile = parse_pabulib("test.pb")
         write_pabulib(instance, profile, "test_out.pb")
+        instance_out, profile_out = parse_pabulib("test_out.pb")
+        instance_out.file_name = "test.pb"
+        instance_out.file_path = "test.pb"
+        check_members_equality(instance, instance_out)
+        check_members_equality(profile, profile_out)
 
-        with open("test.pb", "r", encoding="utf-8") as f:
-            with open("test_out.pb", "r", encoding="utf-8") as f_out:
-                lines = f.readlines()
-                lines_out = f.readlines()
-                # assert len(lines) == len(lines_out)
-                for i in range(len(lines_out)):
-                    assert lines[i] == lines_out[i]
 
 

@@ -1,6 +1,7 @@
 """
 Tools to work with PaBuLib.
 """
+from natsort import natsorted
 from copy import deepcopy
 
 from pabutools.fractions import str_as_frac
@@ -67,15 +68,15 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
                 p.name = row[0].strip()
                 if row[i].strip().lower() != "none":
                     if key in ["category", "categories"]:
-                        project_meta["categories"] = [
+                        project_meta["categories"] = {
                             entry.strip() for entry in row[i].split(",")
-                        ]
+                        }
                         p.categories = set(project_meta["categories"])
                         optional_sets["categories"].update(project_meta["categories"])
                     elif key in ["target", "targets"]:
-                        project_meta["targets"] = [
+                        project_meta["targets"] = {
                             entry.strip() for entry in row[i].split(",")
-                        ]
+                        }
                         p.targets = set(project_meta["targets"])
                         optional_sets["targets"].update(project_meta["targets"])
                     else:
@@ -358,12 +359,21 @@ def write_pabulib(instance, profile, file_path):
                 if key not in project_keys:
                     project_keys.append(key)
         project_dicts.append(project_meta)
-    project_dicts.sort(key=lambda d: int(d["project_id"]))
+    project_dicts = natsorted(project_dicts, key=lambda d: d["project_id"])
 
     vote_dicts = []
-    vote_keys = []
+    vote_keys = ["voter_id"]
+    voter_ids = set()
     for index, ballot in enumerate(profile):
-        vote_meta = {"voter_id": index}
+        if "voter_id" in ballot.meta:
+            voter_id = str(ballot.meta["voter_id"])
+        else:
+            voter_id = index
+        counter = 1
+        base_id = voter_id
+        while voter_id in voter_ids:
+            voter_id = base_id + "__" + str(counter)
+        vote_meta = {"voter_id": voter_id}
         if "age" in ballot.meta:
             vote_meta["age"] = ballot.meta["age"]
             if "age" not in vote_keys:
@@ -377,8 +387,12 @@ def write_pabulib(instance, profile, file_path):
             if "voting_method" not in vote_keys:
                 vote_keys.append("voting_method")
         vote_meta["vote"] = ",".join([p.name for p in ballot])
+        if "vote" not in vote_keys:
+            vote_keys.append("vote")
         if isinstance(profile, AbstractCardinalProfile):
             vote_meta["points"] = ",".join([str(float(ballot[p])) for p in ballot])
+            if "points" not in vote_keys:
+                vote_keys.append("points")
         for key, value in ballot.meta.items():
             if key not in vote_meta:
                 vote_meta[key] = value
@@ -386,6 +400,7 @@ def write_pabulib(instance, profile, file_path):
                     project_keys.append(key)
         for mul in range(profile.multiplicity(ballot)):
             vote_dicts.append(vote_meta)
+    vote_dicts = natsorted(vote_dicts, key=lambda d: d["voter_id"])
 
     with open(file_path, "w", encoding="utf-8-sig") as f:
         f.write("META\nkey;value\n")
@@ -393,7 +408,7 @@ def write_pabulib(instance, profile, file_path):
             f.write(f"{key};{value}\n")
         f.write("PROJECTS\n" + ";".join(project_keys) + "\n")
         for project_dict in project_dicts:
-            f.write(";".join([str(project_dict.get(key, "")) for key in project_keys]) + "\n")
-        f.write("VOTES\n" + ";".join(project_keys) + "\n")
+            f.write(";".join([str(project_dict.get(key, "None")) for key in project_keys]) + "\n")
+        f.write("VOTES\n" + ";".join(vote_keys) + "\n")
         for vote_dict in vote_dicts:
-            f.write(";".join([str(vote_dict.get(key, "")) for key in vote_keys]) + "\n")
+            f.write(";".join([str(vote_dict.get(key, "None")) for key in vote_keys]) + "\n")
