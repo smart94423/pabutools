@@ -129,6 +129,42 @@ def dummy_elections():
     )
     res.append(test_election)
 
+    # Approval example 4 - With project with cost 0
+    p = [
+        Project("p0", 0),
+        Project("p1", 1),
+        Project("p2", 2),
+    ]
+    inst = Instance(p, budget_limit=2)
+    prof = ApprovalProfile(
+        [
+            ApprovalBallot({p[0]}),
+            ApprovalBallot({p[0], p[1], p[2]}),
+            ApprovalBallot({p[2]}),
+        ],
+        instance=inst,
+    )
+    test_election = DummyElection("AppEx_4", p, inst, prof)
+    test_election.irr_results_sat[greedy_utilitarian_welfare][Cost_Sat] = sorted(
+        [[p[0], p[2]]]
+    )
+    test_election.irr_results_sat[greedy_utilitarian_welfare][Cardinality_Sat] = sorted(
+        [[p[0], p[1]], [p[0], p[2]]]
+    )
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cost_Sat] = sorted(
+        [[p[0], p[2]], [p[2]]]
+    )
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cardinality_Sat] = sorted(
+        [[p[0], p[2]]]
+    )
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
+        [[]]
+    )
+    test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
+        [[p[0]]]
+    )
+    res.append(test_election)
+
     # Empty profile
     p = [Project("p0", 1), Project("p1", 3), Project("p2", 2), Project("p3", 1)]
     inst = Instance(p, budget_limit=3)

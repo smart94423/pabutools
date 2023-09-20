@@ -1,6 +1,7 @@
 """
 The method of equal shares.
 """
+from itertools import chain
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from numbers import Number
@@ -232,8 +233,10 @@ def mes_scheme(
         initial_projects.remove(proj)
     scores = {proj: sat_profile.total_satisfaction([proj]) for proj in initial_projects}
     for proj, score in scores.items():
-        if score <= 0 or proj.cost == 0:
+        if proj.cost == 0:
             initial_projects.remove(proj)
+            if score > 0:
+                initial_budget_allocation.append(proj)
 
     voters_details = [
         MESVoter(sat.ballot, sat, initial_budget, sat_profile.multiplicity(sat))
