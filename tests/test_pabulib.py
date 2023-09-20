@@ -716,3 +716,5 @@ voter_id;age;sex;voting_method;vote
         instance_out.file_path = "test.pb"
         check_members_equality(instance, instance_out)
         check_members_equality(profile, profile_out)
+        os.remove("test.pb")
+        os.remove("test_out.pb")
