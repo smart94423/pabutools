@@ -44,6 +44,8 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
     ----------
         instance : :py:class:`~pabutools.election.instance.Instance`
             The instance corresponding to the satisfaction profile.
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction class used to generate the satisfaction profile.
     """
 
     def __init__(
@@ -75,6 +77,10 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
                 )
             else:
                 self.extend_from_profile(profile, sat_class)
+        if sat_class is None and isinstance(init, SatisfactionProfile):
+            self.sat_class = init.sat_class
+        else:
+            self.sat_class = sat_class
 
     def extend_from_profile(
         self, profile: Profile, sat_class: type[SatisfactionMeasure]
@@ -117,6 +123,7 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
                 result = getattr(super(cls, self), name)(*args)
                 if isinstance(result, list) and not isinstance(result, cls):
                     result = cls(result, instance=self.instance)
+                    result.sat_class = self.sat_class
                 return result
 
             inner.fn_name = name
@@ -169,11 +176,16 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             A satisfaction class to use for converting a potentially given profile. Can only be used if either the
             `profile` or the `multiprofile` argument are also used. Note that we need here the class of the
             satisfaction measure, and not an instance of it.
+        inner_sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction class that needs to be stored in the `sat_class` attribute. Rarely useful (but needed for
+            deepcopy).
 
     Attributes
     ----------
         instance : :py:class:`~pabutools.election.instance.Instance`
             The instance corresponding to the satisfaction profile.
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The satisfaction class used to generate the satisfaction profile.
     """
 
     def __init__(
@@ -183,13 +195,16 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
         profile: Profile = None,
         multiprofile: MultiProfile = None,
         sat_class: type[SatisfactionMeasure] = None,
+        inner_sat_class: type[SatisfactionMeasure] = None,
     ) -> None:
         if init is None:
             init = {}
         Counter.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
         if instance is None:
-            if isinstance(init, SatisfactionMultiProfile):
+            if isinstance(init, SatisfactionMultiProfile) or isinstance(
+                init, SatisfactionProfile
+            ):
                 instance = init.instance
             elif profile and profile.instance:
                 instance = profile.instance
@@ -215,6 +230,16 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
                     self.extend_from_profile(profile, sat_class)
                 if multiprofile is not None:
                     self.extend_from_multiprofile(multiprofile, sat_class)
+        if inner_sat_class:
+            self.sat_class = inner_sat_class
+        else:
+            if sat_class is None and (
+                isinstance(init, SatisfactionMultiProfile)
+                or isinstance(init, SatisfactionProfile)
+            ):
+                self.sat_class = init.sat_class
+            else:
+                self.sat_class = sat_class
 
     def extend_from_profile(
         self, profile: Profile, sat_class: type[SatisfactionMeasure]
@@ -281,6 +306,7 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
                         result,
                         instance=self.instance,
                     )
+                    result.sat_class = self.sat_class
                 return result
 
             inner.fn_name = name
@@ -290,7 +316,14 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
             wrap_method_closure(n)
 
     def __reduce__(self):
-        return self.__class__, (dict(self), self.instance, None, None, None)
+        return self.__class__, (
+            dict(self),
+            self.instance,
+            None,
+            None,
+            None,
+            self.sat_class,
+        )
 
 
 SatisfactionMultiProfile._wrap_methods(

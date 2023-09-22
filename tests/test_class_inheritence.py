@@ -42,13 +42,13 @@ def check_members_equality(obj1, obj2, verbose=False):
         for a in dir(obj2)
         if a[:2] + a[-2:] != "____" and not callable(getattr(obj2, a))
     ]
+    if verbose:
+        print(f"{obj1_attrs}     {obj2_attrs}")
     assert obj1_attrs == obj2_attrs
     for attr in obj1_attrs:
         if verbose:
             print(
-                "{} : {}    {}".format(
-                    attr, obj1.__getattribute__(attr), obj2.__getattribute__(attr)
-                )
+                f"{attr} : {obj1.__getattribute__(attr)}    {obj2.__getattribute__(attr)}"
             )
         assert obj1.__getattribute__(attr) == obj2.__getattribute__(attr)
 

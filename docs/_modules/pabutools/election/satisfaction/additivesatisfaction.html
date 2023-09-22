@@ -268,7 +268,13 @@ document.write(`
     <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
     <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">total_cost</span><span class="p">,</span> <span class="n">max_budget_allocation_cardinality</span><span class="p">,</span> <span class="n">max_budget_allocation_cost</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">Project</span><span class="p">,</span>
+    <span class="n">total_cost</span><span class="p">,</span>
+    <span class="n">max_budget_allocation_cardinality</span><span class="p">,</span>
+    <span class="n">max_budget_allocation_cost</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
@@ -496,7 +502,11 @@ document.write(`
 <div class="viewcode-block" id="Relative_Cardinality_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;max_budget_allocation_card&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cardinality</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)}</span></div></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;max_budget_allocation_card&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cardinality</span><span class="p">(</span>
+                <span class="n">ballot</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="p">)</span>
+        <span class="p">}</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">cost_sat_func</span><span class="p">(</span>
@@ -616,7 +626,11 @@ document.write(`
 <div class="viewcode-block" id="Relative_Cost_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cost</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)}</span></div></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cost</span><span class="p">(</span>
+                <span class="n">ballot</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="p">)</span>
+        <span class="p">}</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">relative_cost_approx_normaliser_sat_func</span><span class="p">(</span>
@@ -651,9 +665,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;normalizer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;normalizer&quot;</span><span class="p">]</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;normalizer&quot;</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="Relative_Cost_Approx_Normaliser_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat">[docs]</a><span class="k">class</span> <span class="nc">Relative_Cost_Approx_Normaliser_Sat</span><span class="p">(</span><span class="n">AdditiveSatisfaction</span><span class="p">):</span>
@@ -683,7 +695,9 @@ document.write(`
 <div class="viewcode-block" id="Relative_Cost_Approx_Normaliser_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;normalizer&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">total_cost</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">]),</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)}</span></div></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;normalizer&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">total_cost</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">]),</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)</span>
+        <span class="p">}</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">effort_sat_func</span><span class="p">(</span>

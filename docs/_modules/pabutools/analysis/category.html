@@ -324,7 +324,9 @@ document.write(`
                 <span class="n">app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">+=</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
         <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
             <span class="n">proportional_app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="n">app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">/</span> <span class="n">app_total_cost</span> <span class="o">*</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+                <span class="n">app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                <span class="o">/</span> <span class="n">app_total_cost</span>
+                <span class="o">*</span> <span class="n">profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
             <span class="p">)</span>
     <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
         <span class="n">proportional_app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">/=</span> <span class="n">profile</span><span class="o">.</span><span class="n">num_ballots</span><span class="p">()</span>
