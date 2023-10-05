@@ -52,6 +52,8 @@ def median_ballot_length(instance: Instance, profile: AbstractProfile) -> int:
             The median length of the ballots in the profile.
 
     """
+    if profile.num_ballots() == 0:
+        return 0
     ballot_lengths = np.zeros(profile.num_ballots())
     index = 0
     for ballot in profile:
@@ -100,6 +102,8 @@ def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
             The median cost of the ballots in the profile.
 
     """
+    if profile.num_ballots() == 0:
+        return 0
     ballot_costs = np.zeros(profile.num_ballots())
     index = 0
     for ballot in profile:
@@ -148,6 +152,8 @@ def median_approval_score(
             The median approval score of projects.
 
     """
+    if len(instance) == 0:
+        return 0
     return float(
         np.median([frac(profile.approval_score(project)) for project in instance])
     )
@@ -190,6 +196,8 @@ def median_total_score(instance: Instance, profile: AbstractCardinalProfile) -> 
             The median score assigned to a project.
 
     """
+    if len(instance) == 0:
+        return 0
     return float(
         np.median([frac(profile.total_score(project)) for project in instance])
     )

@@ -66,6 +66,10 @@ def category_proportionality(
             app_total_cost += project.cost
             for category in project.categories:
                 app_cost_per_category[category] += project.cost
+        if app_total_cost == 0:
+            raise ValueError(
+                "Category proportionality can only be computed for instances with at least one non-empty ballot."
+            )
         for category in categories:
             proportional_app_cost_per_category[category] += (
                 app_cost_per_category[category]
