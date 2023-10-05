@@ -35,22 +35,6 @@ The following satisfaction measures have already been implemented. Note that the
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.CC_Sat`
      - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
      - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot` :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
-   * - Cost Square Root
-     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat`
-     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
-   * - Cost Log
-     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat`
-     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
-     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
-   * - Cardinality
-     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat`
-     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - all
-   * - Relative Cardinality
-     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat`
-     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
-     - all
    * - Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cost_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
@@ -61,6 +45,30 @@ The following satisfaction measures have already been implemented. Note that the
      - all
    * - Approx Normaliser Relative Cost
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat`
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - all
+   * - Cost Square Root
+     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat`
+     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+   * - Additive Cost Square Root
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat`
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+   * - Cost Log
+     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat`
+     - :py:class:`~pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+   * - Additive Cost Log
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat`
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+   * - Cardinality
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat`
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - all
+   * - Relative Cardinality
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
      - all
    * - Effort
@@ -94,6 +102,8 @@ from pabutools.election.satisfaction.additivesatisfaction import (
     Relative_Cost_Sat,
     Relative_Cardinality_Sat,
     Relative_Cost_Approx_Normaliser_Sat,
+    Additive_Cost_Log_Sat,
+    Additive_Cost_Sqrt_Sat,
 )
 from pabutools.election.satisfaction.functionalsatisfaction import (
     FunctionalSatisfaction,
@@ -123,6 +133,8 @@ __all__ = [
     "CC_Sat",
     "Cost_Log_Sat",
     "Cost_Sqrt_Sat",
+    "Additive_Cost_Log_Sat",
+    "Additive_Cost_Sqrt_Sat",
     "PositionalSatisfaction",
     "Additive_Borda_Sat",
 ]

@@ -498,8 +498,8 @@ document.write(`
     <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the cost slog satisfaction for approval ballots. It is equal to the log of the total cost of</span>
-<span class="sd">    the approved and selected projects. If that value is less than 1, we return 0 instead.</span>
+<span class="sd">    Computes the cost log satisfaction for approval ballots. It is equal to the log of 1 plus the total cost of</span>
+<span class="sd">    the approved and selected projects.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -515,20 +515,16 @@ document.write(`
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">        Number</span>
-<span class="sd">            The log root satisfaction.</span>
+<span class="sd">            The log cost satisfaction.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cost</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cost</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)))</span>
 
 
 <div class="viewcode-block" id="Cost_Log_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat">[docs]</a><span class="k">class</span> <span class="nc">Cost_Log_Sat</span><span class="p">(</span><span class="n">FunctionalSatisfaction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of</span>
-<span class="sd">    the total cost of the approved and selected projects. If that value is less than 1, we return 0 instead.</span>
+<span class="sd">    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of 1 plus the total cost</span>
+<span class="sd">    of the approved and selected projects.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

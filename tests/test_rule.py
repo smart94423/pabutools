@@ -1,6 +1,5 @@
 from unittest import TestCase
 
-import pabutools.rules.phragmen
 from pabutools.fractions import frac
 from pabutools.election.profile import ApprovalProfile
 from pabutools.election.ballot import ApprovalBallot
@@ -13,6 +12,8 @@ from pabutools.election.satisfaction import (
     CC_Sat,
     SatisfactionProfile,
     SatisfactionMultiProfile,
+    Additive_Cost_Sqrt_Sat,
+    Additive_Cost_Log_Sat,
 )
 from pabutools.election.instance import Project, Instance
 from pabutools.rules.phragmen import sequential_phragmen
@@ -30,7 +31,16 @@ ALL_SAT_RULES = [
     method_of_equal_shares,
 ]
 ALL_NON_SAT_RULES = [sequential_phragmen]
-ALL_SAT = [Cost_Sat, Cardinality_Sat, Effort_Sat, Cost_Log_Sat, Cost_Sqrt_Sat, CC_Sat]
+ALL_SAT = [
+    Cost_Sat,
+    Cardinality_Sat,
+    Effort_Sat,
+    Cost_Log_Sat,
+    Cost_Sqrt_Sat,
+    CC_Sat,
+    Additive_Cost_Sqrt_Sat,
+    Additive_Cost_Log_Sat,
+]
 
 
 class DummyElection:
@@ -218,7 +228,8 @@ def dummy_elections():
     test_election = DummyElection("AllAfford", p, inst, prof)
     for rule in ALL_SAT_RULES:
         for sat_class in ALL_SAT:
-            test_election.irr_results_sat[rule][sat_class] = sorted([p])
+            if sat_class != Cost_Log_Sat:
+                test_election.irr_results_sat[rule][sat_class] = sorted([p])
     for rule in ALL_NON_SAT_RULES:
         test_election.irr_results_non_sat[rule] = sorted([p])
     res.append(test_election)
@@ -265,7 +276,7 @@ def dummy_elections():
 ALL_TEST_ELECTIONS = dummy_elections()
 
 
-def run_sat_rule(rule):
+def run_sat_rule(rule, verbose=False):
     for test_election in ALL_TEST_ELECTIONS:
         for sat_class in test_election.irr_results_sat[rule]:
             if test_election.irr_results_sat[rule][sat_class] is not None:
@@ -274,10 +285,17 @@ def run_sat_rule(rule):
                     test_election.profile.as_multiprofile(),
                 ]:
                     for sat_profile in [None, profile.as_sat_profile(sat_class)]:
-                        # print("\n===================== {} - {} =====================".format(rule.__name__,
-                        #                                                                      sat_class.__name__))
-                        # print("Test `{}`\nInst: {}\n Profile: {}".format(test_election.name, test_election.instance,
-                        #                                                  profile))
+                        if verbose:
+                            print(
+                                "\n===================== {} - {} =====================".format(
+                                    rule.__name__, sat_class.__name__
+                                )
+                            )
+                            print(
+                                "Test `{}`\nInst: {}\n Profile: {}".format(
+                                    test_election.name, test_election.instance, profile
+                                )
+                            )
                         resolute_out = rule(
                             test_election.instance,
                             profile,
@@ -296,9 +314,14 @@ def run_sat_rule(rule):
                                 initial_budget_allocation=test_election.initial_alloc,
                             )
                         )
-                        # print("Res outcome:  {}".format(resolute_out))
-                        # print("Irres outcome:  {}".format(irresolute_out))
-                        # print("Irres expected: {}".format(test_election.irr_results_sat[rule][sat_class]))
+                        if verbose:
+                            print("Res outcome:  {}".format(resolute_out))
+                            print("Irres outcome:  {}".format(irresolute_out))
+                            print(
+                                "Irres expected: {}".format(
+                                    test_election.irr_results_sat[rule][sat_class]
+                                )
+                            )
                         assert (
                             resolute_out
                             in test_election.irr_results_sat[rule][sat_class]
@@ -353,7 +376,7 @@ def run_non_sat_rule(rule):
 
 class TestRule(TestCase):
     def test_greedy_welfare(self):
-        run_sat_rule(greedy_utilitarian_welfare)
+        run_sat_rule(greedy_utilitarian_welfare, verbose=False)
         with self.assertRaises(ValueError):
             greedy_utilitarian_welfare(Instance(), ApprovalProfile())
 
@@ -404,7 +427,7 @@ class TestRule(TestCase):
                 assert outcome1 == outcome2
 
     def test_max_welfare(self):
-        run_sat_rule(max_additive_utilitarian_welfare)
+        run_sat_rule(max_additive_utilitarian_welfare, verbose=False)
         with self.assertRaises(ValueError):
             max_additive_utilitarian_welfare(Instance(), ApprovalProfile())
 

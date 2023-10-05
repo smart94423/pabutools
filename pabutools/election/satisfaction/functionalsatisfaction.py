@@ -242,8 +242,8 @@ def cost_log_sat_func(
     projects: Iterable[Project],
 ) -> Number:
     """
-    Computes the cost slog satisfaction for approval ballots. It is equal to the log of the total cost of
-    the approved and selected projects. If that value is less than 1, we return 0 instead.
+    Computes the cost log satisfaction for approval ballots. It is equal to the log of 1 plus the total cost of
+    the approved and selected projects.
 
     Parameters
     ----------
@@ -259,20 +259,16 @@ def cost_log_sat_func(
     Returns
     -------
         Number
-            The log root satisfaction.
+            The log cost satisfaction.
 
     """
-    cost = total_cost(p for p in projects if p in ballot)
-    if cost > 1:
-        return frac(np.log(cost))
-    else:
-        return 0
+    return frac(np.log(1 + total_cost(p for p in projects if p in ballot)))
 
 
 class Cost_Log_Sat(FunctionalSatisfaction):
     """
-    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of
-    the total cost of the approved and selected projects. If that value is less than 1, we return 0 instead.
+    Cost log satisfaction. It can only be applied to approval ballots. It is equal to the log of 1 plus the total cost
+    of the approved and selected projects.
 
     Parameters
     ----------

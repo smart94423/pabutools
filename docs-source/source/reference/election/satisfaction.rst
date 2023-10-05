@@ -71,6 +71,18 @@ Satisfaction module
     :show-inheritance:
     :inherited-members:
 
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
+
 .. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Effort_Sat
     :members:
     :show-inheritance:

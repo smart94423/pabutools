@@ -6,6 +6,8 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 from numbers import Number
 
+import numpy as np
+
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import (
     AbstractBallot,
@@ -444,6 +446,132 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
         }
 
 
+def add_cost_sqrt_sat_func(
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
+) -> Number:
+    """
+    Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved
+    and selected projects of the square root of their costs.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The cost square root satisfaction of the project.
+
+    """
+    return int(project in ballot) * frac(np.sqrt(float(project.cost)))
+
+
+class Additive_Cost_Sqrt_Sat(AdditiveSatisfaction):
+    """
+    Additive cost square root satisfaction. It is equal to the sum over the approved and selected projects of the square
+    root of their costs. It can be applied to all ballot format supporting the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        if isinstance(ballot, AbstractApprovalBallot):
+            AdditiveSatisfaction.__init__(
+                self, instance, profile, ballot, add_cost_sqrt_sat_func
+            )
+        else:
+            raise ValueError(
+                "The cost square root satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )
+
+
+def additive_cost_log_sat_func(
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractBallot,
+    project: Project,
+    precomputed_values: dict,
+) -> Number:
+    """
+    Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected
+    projects of the log of 1 plus the cost of the projects.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The log cost satisfaction of the project.
+
+    """
+    return int(project in ballot) * frac(np.log(1 + project.cost))
+
+
+class Additive_Cost_Log_Sat(AdditiveSatisfaction):
+    """
+    Additive cost log satisfaction. It is equal to the sum over the approved and selected projects of the log of 1 plus
+    the cost of the projects. It can be applied to all ballot format supporting the `in` operator.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+    ):
+        if isinstance(ballot, AbstractApprovalBallot):
+            AdditiveSatisfaction.__init__(
+                self, instance, profile, ballot, additive_cost_log_sat_func
+            )
+        else:
+            raise ValueError(
+                "The cost log satisfaction cannot be used with ballot types {}".format(
+                    type(ballot)
+                )
+            )
+
+
 def effort_sat_func(
     instance: Instance,
     profile: AbstractProfile,
@@ -473,9 +601,9 @@ def effort_sat_func(
         Number
             The effort satisfaction.
     """
-    projects = [project for b in profile if project in b]
-    if projects:
-        return int(project in ballot) * frac(project.cost, len(projects))
+    denominator = sum(1 for b in profile if project in b)
+    if denominator:
+        return int(project in ballot) * frac(project.cost, denominator)
     return 0
 
 

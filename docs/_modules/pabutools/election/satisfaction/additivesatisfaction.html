@@ -262,6 +262,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AbstractBallot</span><span class="p">,</span>
@@ -700,6 +702,132 @@ document.write(`
         <span class="p">}</span></div></div>
 
 
+<span class="k">def</span> <span class="nf">add_cost_sqrt_sat_func</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved</span>
+<span class="sd">    and selected projects of the square root of their costs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        project : :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">            The selected project.</span>
+<span class="sd">        precomputed_values : dict[str, str]</span>
+<span class="sd">            A dictionary of precomputed values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The cost square root satisfaction of the project.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="Additive_Cost_Sqrt_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Cost_Sqrt_Sat</span><span class="p">(</span><span class="n">AdditiveSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Additive cost square root satisfaction. It is equal to the sum over the approved and selected projects of the square</span>
+<span class="sd">    root of their costs. It can be applied to all ballot format supporting the `in` operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
+            <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">add_cost_sqrt_sat_func</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The cost square root satisfaction cannot be used with ballot types </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">additive_cost_log_sat_func</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected</span>
+<span class="sd">    projects of the log of 1 plus the cost of the projects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        project : :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">            The selected project.</span>
+<span class="sd">        precomputed_values : dict[str, str]</span>
+<span class="sd">            A dictionary of precomputed values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The log cost satisfaction of the project.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Additive_Cost_Log_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Cost_Log_Sat</span><span class="p">(</span><span class="n">AdditiveSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Additive cost log satisfaction. It is equal to the sum over the approved and selected projects of the log of 1 plus</span>
+<span class="sd">    the cost of the projects. It can be applied to all ballot format supporting the `in` operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
+            <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">additive_cost_log_sat_func</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The cost log satisfaction cannot be used with ballot types </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span></div>
+
+
 <span class="k">def</span> <span class="nf">effort_sat_func</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
@@ -729,9 +857,9 @@ document.write(`
 <span class="sd">        Number</span>
 <span class="sd">            The effort satisfaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">profile</span> <span class="k">if</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">projects</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">projects</span><span class="p">))</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">profile</span> <span class="k">if</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">denominator</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
     <span class="k">return</span> <span class="mi">0</span>
 
 
