@@ -259,7 +259,10 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AbstractBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">AbstractProfile</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
@@ -279,6 +282,7 @@ document.write(`
     <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">sat_bounds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that</span>
@@ -324,10 +328,14 @@ document.write(`
             <span class="n">argmax_marginal_score</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">feasible</span><span class="p">:</span>
                 <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">project</span><span class="p">]</span>
-                <span class="n">total_marginal_score</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span>
-                    <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">new_alloc</span><span class="p">)</span> <span class="o">-</span> <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">alloc</span><span class="p">),</span>
-                    <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">total_marginal_score</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span>
+                        <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">new_alloc</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">alloc</span><span class="p">),</span>
+                        <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">total_marginal_score</span> <span class="o">=</span> <span class="n">inf</span>
 
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">best_marginal_score</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -412,7 +420,9 @@ document.write(`
     <span class="k">def</span> <span class="nf">satisfaction_density</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="n">total_sat</span> <span class="o">=</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">([</span><span class="n">proj</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">total_sat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">total_sat</span><span class="p">,</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">total_sat</span><span class="p">,</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">inf</span>
         <span class="k">return</span> <span class="mi">0</span>
 
     <span class="c1"># We sort based on a tuple to ensure ties are broken as intended</span>
@@ -426,7 +436,6 @@ document.write(`
         <span class="k">if</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">remaining_budget</span><span class="p">:</span>
             <span class="n">selection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
             <span class="n">remaining_budget</span> <span class="o">-=</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
-
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
 
 
@@ -485,7 +494,7 @@ document.write(`
         <span class="n">budget_allocation</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">sat_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Satisfaction and sat_profile cannot both be None.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sat_class and sat_profile cannot both be None.&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="p">)</span>

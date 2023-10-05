@@ -322,6 +322,10 @@ document.write(`
             <span class="n">app_total_cost</span> <span class="o">+=</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
             <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
                 <span class="n">app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">+=</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
+        <span class="k">if</span> <span class="n">app_total_cost</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Category proportionality can only be computed for instances with at least one non-empty ballot.&quot;</span>
+            <span class="p">)</span>
         <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
             <span class="n">proportional_app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span>
                 <span class="n">app_cost_per_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>

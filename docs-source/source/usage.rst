@@ -433,14 +433,16 @@ We also offer additive satisfaction functions, where the satisfaction for a set
 of projects is equal to the sum of the satisfaction of each individual project. The class
 :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
 implements such functions. Its constructor takes a function as a parameter that maps
-instance, profile, ballot, and project to a score. As an example, we demonstrate
+instance, profile, ballot, project, and pre-computed values to a score. The pre-computed
+argument is used to pass fixed parameters to the function that can be used
+for expensive computations not to be done more than once. As an example, we demonstrate
 how to define the cardinality satisfaction function.
 
 .. code-block:: python
 
     from pabutools.election import AdditiveSatisfaction
 
-    def cardinality_sat_func(instance, profile, ballot, project):
+    def cardinality_sat_func(instance, profile, ballot, project, precomputed_values):
         return int(project in ballot)
 
     class Cardinality_Sat(AdditiveSatisfaction):

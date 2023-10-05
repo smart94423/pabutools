@@ -708,11 +708,13 @@ at least one approved project is selected and 0 otherwise).</p>
 of projects is equal to the sum of the satisfaction of each individual project. The class
 <a class="reference internal" href="reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a>
 implements such functions. Its constructor takes a function as a parameter that maps
-instance, profile, ballot, and project to a score. As an example, we demonstrate
+instance, profile, ballot, project, and pre-computed values to a score. The pre-computed
+argument is used to pass fixed parameters to the function that can be used
+for expensive computations not to be done more than once. As an example, we demonstrate
 how to define the cardinality satisfaction function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AdditiveSatisfaction</span>
 
-<span class="k">def</span> <span class="nf">cardinality_sat_func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">cardinality_sat_func</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">precomputed_values</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">Cardinality_Sat</span><span class="p">(</span><span class="n">AdditiveSatisfaction</span><span class="p">):</span>

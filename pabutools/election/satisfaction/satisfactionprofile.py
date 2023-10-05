@@ -118,9 +118,13 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
         """
         return 1
 
-    def remove_satisfied(self, sat_bound: dict[str, Number],
-                         projects: Iterable[Project]) -> SatisfactionProfile:
-        res = SatisfactionProfile((s for s in self if s.sat(projects) < sat_bound[s.ballot.name]), instance=self.instance)
+    def remove_satisfied(
+        self, sat_bound: dict[str, Number], projects: Iterable[Project]
+    ) -> SatisfactionProfile:
+        res = SatisfactionProfile(
+            (s for s in self if s.sat(projects) < sat_bound[s.ballot.name]),
+            instance=self.instance,
+        )
         res.sat_class = self.sat_class
         return res
 
@@ -304,9 +308,17 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
     def multiplicity(self, sat: SatisfactionMeasure) -> int:
         return self[sat]
 
-    def remove_satisfied(self, sat_bound: dict[AbstractBallot, Number],
-                         projects: Iterable[Project]) -> SatisfactionMultiProfile:
-        res = SatisfactionMultiProfile({s: m for s, m in self.items() if s.sat(projects) < sat_bound[s.ballot.name]}, instance=self.instance)
+    def remove_satisfied(
+        self, sat_bound: dict[AbstractBallot, Number], projects: Iterable[Project]
+    ) -> SatisfactionMultiProfile:
+        res = SatisfactionMultiProfile(
+            {
+                s: m
+                for s, m in self.items()
+                if s.sat(projects) < sat_bound[s.ballot.name]
+            },
+            instance=self.instance,
+        )
         res.sat_class = self.sat_class
         return res
 
