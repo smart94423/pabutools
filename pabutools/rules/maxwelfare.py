@@ -150,7 +150,6 @@ def max_additive_utilitarian_welfare(
     else:
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class=sat_class)
-
     return max_additive_utilitarian_welfare_scheme(
         instance, sat_profile, budget_allocation, resoluteness=resoluteness
     )

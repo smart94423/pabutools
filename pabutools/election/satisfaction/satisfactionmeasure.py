@@ -140,3 +140,26 @@ class GroupSatisfactionMeasure(ABC, Iterable):
         for sat in self:
             res += sat.sat(projects) * self.multiplicity(sat)
         return res
+
+    @abstractmethod
+    def remove_satisfied(
+        self, sat_bound: dict[AbstractBallot, Number], projects: Iterable[Project]
+    ) -> GroupSatisfactionMeasure:
+        """
+        Returns a new satisfaction profile excluding the satisfaction measurs corresponding to satisfied voters, i.e.,
+        who have met or exceeded their satisfaction bound for a given collection of projects.
+
+        Parameters
+        ----------
+            sat_bound : dict[str, Number]
+                A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
+                the voter is considered satisfied. Note that the keys are ballot names, and that nothing ensures ballot
+                names to be unique, so be careful here.
+            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
+                The collection of projects.
+
+        Returns
+        -------
+            :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
+                The new satisfaction profile.
+        """

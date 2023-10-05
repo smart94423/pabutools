@@ -4,7 +4,9 @@ Greedy approximations of the maximum welfare.
 from copy import copy
 from collections.abc import Iterable
 from math import inf
+from numbers import Number
 
+from pabutools.election import AbstractBallot
 from pabutools.election.profile import AbstractProfile
 
 from pabutools.fractions import frac
@@ -24,6 +26,7 @@ def greedy_utilitarian_scheme(
     budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
+    sat_bounds: dict[AbstractBallot, Number] = None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
     The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that
@@ -71,7 +74,8 @@ def greedy_utilitarian_scheme(
                 new_alloc = copy(alloc) + [project]
                 if project.cost > 0:
                     total_marginal_score = frac(
-                        sats.total_satisfaction(new_alloc) - sats.total_satisfaction(alloc),
+                        sats.total_satisfaction(new_alloc)
+                        - sats.total_satisfaction(alloc),
                         project.cost,
                     )
                 else:
@@ -164,6 +168,7 @@ def greedy_utilitarian_scheme_additive(
                 return frac(total_sat, proj.cost)
             return inf
         return 0
+
     # We sort based on a tuple to ensure ties are broken as intended
     ordered_projects = sorted(
         projects, key=lambda p: (-satisfaction_density(p), projects.index(p))
@@ -233,7 +238,7 @@ def greedy_utilitarian_welfare(
         budget_allocation = []
     if sat_class is None:
         if sat_profile is None:
-            raise ValueError("Satisfaction and sat_profile cannot both be None.")
+            raise ValueError("sat_class and sat_profile cannot both be None.")
     else:
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class)

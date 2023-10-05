@@ -316,7 +316,7 @@ def get_random_approval_profile(instance: Instance, num_agents: int) -> Approval
 
 def get_all_approval_profiles(
     instance: Instance, num_agents: int
-) -> Generator[Iterable[Project]]:
+) -> Generator[ApprovalProfile]:
     """
     Returns a generator over all the possible profile for a given instance of a given length.
 
@@ -332,7 +332,8 @@ def get_all_approval_profiles(
         Generator[Iterable[:py:class:`~pabutools.election.instance.Project`]]
             Generator over subsets of projects.
     """
-    return product(powerset(instance), repeat=num_agents)
+    for p in product(powerset(instance), repeat=num_agents):
+        yield ApprovalProfile([ApprovalBallot(b) for b in p], instance=instance)
 
 
 class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):

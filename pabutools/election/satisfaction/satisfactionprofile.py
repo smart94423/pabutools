@@ -5,12 +5,14 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Iterable
+from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import (
     SatisfactionMeasure,
     GroupSatisfactionMeasure,
 )
-from pabutools.election.instance import Instance
+from pabutools.election.instance import Instance, Project
+from pabutools.election.ballot.ballot import AbstractBallot
 
 from typing import TYPE_CHECKING
 
@@ -115,6 +117,12 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
                 1
         """
         return 1
+
+    def remove_satisfied(self, sat_bound: dict[str, Number],
+                         projects: Iterable[Project]) -> SatisfactionProfile:
+        res = SatisfactionProfile((s for s in self if s.sat(projects) < sat_bound[s.ballot.name]), instance=self.instance)
+        res.sat_class = self.sat_class
+        return res
 
     @classmethod
     def _wrap_methods(cls, names):
@@ -295,6 +303,12 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
 
     def multiplicity(self, sat: SatisfactionMeasure) -> int:
         return self[sat]
+
+    def remove_satisfied(self, sat_bound: dict[AbstractBallot, Number],
+                         projects: Iterable[Project]) -> SatisfactionMultiProfile:
+        res = SatisfactionMultiProfile({s: m for s, m in self.items() if s.sat(projects) < sat_bound[s.ballot.name]}, instance=self.instance)
+        res.sat_class = self.sat_class
+        return res
 
     @classmethod
     def _wrap_methods(cls, names):

@@ -143,9 +143,9 @@ class TestProfile(TestCase):
         new_inst = Instance(
             [Project("p1", 1), Project("p2", 1), Project("p3", 1)], budget_limit=3
         )
-        assert len(set(get_all_approval_profiles(new_inst, 1))) == 8
-        assert len(set(get_all_approval_profiles(new_inst, 2))) == 8 * 8
-        assert len(set(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
+        assert len(list(get_all_approval_profiles(new_inst, 1))) == 8
+        assert len(list(get_all_approval_profiles(new_inst, 2))) == 8 * 8
+        assert len(list(get_all_approval_profiles(new_inst, 3))) == 8 * 8 * 8
 
     def test_app_multiprofile(self):
         projects = [Project("p" + str(i), cost=2) for i in range(10)]

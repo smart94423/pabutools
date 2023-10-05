@@ -154,12 +154,10 @@ def dummy_elections():
     test_election.irr_results_sat[max_additive_utilitarian_welfare][Cost_Sat] = sorted(
         [[p[0], p[2]], [p[2]]]
     )
-    test_election.irr_results_sat[max_additive_utilitarian_welfare][Cardinality_Sat] = sorted(
-        [[p[0], p[2]]]
-    )
-    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
-        [[]]
-    )
+    test_election.irr_results_sat[max_additive_utilitarian_welfare][
+        Cardinality_Sat
+    ] = sorted([[p[0], p[2]]])
+    test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[]])
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0]]]
     )
