@@ -671,8 +671,8 @@ previous two as it does not rely on a satisfaction measure.
         resoluteness=False
     )
 
-Method of Equal Shares
-^^^^^^^^^^^^^^^^^^^^^^
+Method of Equal Shares (MES)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Method of Equal Shares is another rule that returns budget allocations based on the satisfaction
 measure provided. For more details, see the `equalshares.net <https://equalshares.net/>`_ website.
@@ -728,6 +728,12 @@ measure provided. For more details, see the `equalshares.net <https://equalshare
         sat_class=Cost_Sat,
         resoluteness=False
     )
+
+Two important shortcuts are also defined by defaults for MES:
+
+* :py:func:`~pabutools.rules.mes.mes_iterated`: corresponds to the method of equal shares used together with the exhaustion method by budget iteration (see :py:func:`~pabutools.rules.exhaustion.exhaustion_by_budget_increase`);
+
+* :py:func:`~pabutools.rules.mes.mes_iterated_completed`: completes the result of the method from the previous bullet point with the outcome of the greedy method (see :py:func:`~pabutools.rules.exhaustion.completion_by_rule_combination`).
 
 Exhaustion Methods
 ^^^^^^^^^^^^^^^^^^

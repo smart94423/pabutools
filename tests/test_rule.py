@@ -192,12 +192,18 @@ def dummy_elections():
     ] = sorted([[p[0], p[2]]])
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[]])
     test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[2]]])
-    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted([[p[0], p[2]]])
+    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
+        [[p[0], p[2]]]
+    )
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0]]]
     )
-    test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted([[p[0], p[1]], [p[0], p[2]]])
-    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted([[p[0], p[1]], [p[0], p[2]]])
+    test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted(
+        [[p[0], p[1]], [p[0], p[2]]]
+    )
+    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
+        [[p[0], p[1]], [p[0], p[2]]]
+    )
     res.append(test_election)
 
     # Empty profile
@@ -356,14 +362,16 @@ def run_sat_rule(rule, verbose=False):
                             )
                         )
                         if verbose:
-                            print(f"Res outcome:  {resolute_out} -- In irres: {resolute_out in test_election.irr_results_sat[rule][sat_class]}")
+                            print(
+                                f"Res outcome:  {resolute_out} -- In irres: {resolute_out in test_election.irr_results_sat[rule][sat_class]}"
+                            )
                             print(f"Irres outcome:  {irresolute_out}")
                             print(
                                 f"Irres expected: {test_election.irr_results_sat[rule][sat_class]}"
                             )
                         assert (
-                                resolute_out
-                                in test_election.irr_results_sat[rule][sat_class]
+                            resolute_out
+                            in test_election.irr_results_sat[rule][sat_class]
                         )
                         assert resolute_out == rule(
                             test_election.instance,
@@ -375,8 +383,8 @@ def run_sat_rule(rule, verbose=False):
                             initial_budget_allocation=test_election.initial_alloc,
                         )
                         assert (
-                                irresolute_out
-                                == test_election.irr_results_sat[rule][sat_class]
+                            irresolute_out
+                            == test_election.irr_results_sat[rule][sat_class]
                         )
 
 

@@ -11,6 +11,10 @@ Rules module
 
 .. autofunction:: pabutools.rules.mes.method_of_equal_shares
 
+.. autofunction:: pabutools.rules.mes.mes_iterated
+
+.. autofunction:: pabutools.rules.mes.mes_iterated_completed
+
 .. autofunction:: pabutools.rules.exhaustion.completion_by_rule_combination
 
 .. autofunction:: pabutools.rules.exhaustion.exhaustion_by_budget_increase

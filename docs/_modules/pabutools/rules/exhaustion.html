@@ -255,22 +255,26 @@ document.write(`
                   
   <h1>Source code for pabutools.rules.exhaustion</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span><span class="p">,</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
+<span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">AbstractProfile</span>
+<span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 
 
 <div class="viewcode-block" id="completion_by_rule_combination"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.exhaustion.completion_by_rule_combination">[docs]</a><span class="k">def</span> <span class="nf">completion_by_rule_combination</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">rule_sequence</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
     <span class="n">rule_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
+    <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the given rules on the given instance and profile in sequence until an exhaustive budget allocation has been</span>
 <span class="sd">    reached (or all rules have been applied). This is useful if the first rules are non-exhaustive.</span>
-<span class="sd">    Only resolute rules are supported.</span>
+<span class="sd">    In the irresolute version, all outcomes are completed separately.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -285,10 +289,13 @@ document.write(`
 <span class="sd">            functions. Defaults to `{}`.</span>
 <span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`], optional</span>
 <span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
+<span class="sd">        resoluteness : bool, optional</span>
+<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
+<span class="sd">            Defaults to True.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project]</span>
+<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
 <span class="sd">            The selected projects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rule_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule_sequence</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rule_params</span><span class="p">):</span>
@@ -297,33 +304,54 @@ document.write(`
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">rule_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rule_params</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">rule_sequence</span><span class="p">]</span>
+    <span class="n">budget_allocations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">initial_budget_allocation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">budget_allocation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
+        <span class="n">budget_allocations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">budget_allocation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">budget_allocations</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">rule</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rule_sequence</span><span class="p">):</span>
-        <span class="n">budget_allocation</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span>
-            <span class="n">instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">,</span>
-            <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="n">budget_allocation</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">rule_params</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">budget_allocation</span><span class="p">):</span>
-            <span class="k">break</span>
-    <span class="k">return</span> <span class="n">budget_allocation</span></div>
+        <span class="n">new_budget_allocations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">budget_allocation</span> <span class="ow">in</span> <span class="n">budget_allocations</span><span class="p">:</span>
+            <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span>
+                <span class="n">instance</span><span class="p">,</span>
+                <span class="n">profile</span><span class="p">,</span>
+                <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="n">budget_allocation</span><span class="p">,</span>
+                <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">rule_params</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_budget_allocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">outcome</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">alloc</span> <span class="ow">in</span> <span class="n">outcome</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">alloc</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">alloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_budget_allocations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
+        <span class="n">budget_allocations</span> <span class="o">=</span> <span class="n">new_budget_allocations</span>
+    <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span></div>
 
 
 <div class="viewcode-block" id="exhaustion_by_budget_increase"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.exhaustion.exhaustion_by_budget_increase">[docs]</a><span class="k">def</span> <span class="nf">exhaustion_by_budget_increase</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">profile</span><span class="p">:</span> <span class="n">Profile</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">rule</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">rule_params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">budget_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">budget_step</span><span class="p">:</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">budget_bound</span><span class="p">:</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retrieved or</span>
-<span class="sd">    the budget limit is exceeded by the rule with increased budget. For now, only resolute rules are supported.</span>
+<span class="sd">    the budget limit is exceeded by the rule with increased budget. In the irresolute version, as soon as one outcome is</span>
+<span class="sd">    exhaustive or infeasible, the procedure stops.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -337,9 +365,15 @@ document.write(`
 <span class="sd">            Dictionary of additional parameters that are passed as keyword arguments to the rule</span>
 <span class="sd">            function. Defaults to `{}`.</span>
 <span class="sd">        initial_budget_allocation: Iterable[Project], optional</span>
-<span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
-<span class="sd">        budget_step: int</span>
-<span class="sd">            The step at which the budget is increased.</span>
+<span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`. Overrides the parameter in `rule_params`.</span>
+<span class="sd">        resoluteness : bool, optional</span>
+<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
+<span class="sd">            Defaults to True.</span>
+<span class="sd">        budget_step: Number</span>
+<span class="sd">            The step at which the budget is increased. Defaults to 1% of the budget limit.</span>
+<span class="sd">        budget_bound: Number</span>
+<span class="sd">            An upper bound on the budget limit. The method stops if this bound is exceeded. Defaults to the budget limit</span>
+<span class="sd">            multiplied by the number of agents plus 1.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -349,21 +383,37 @@ document.write(`
     <span class="k">if</span> <span class="n">rule_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rule_params</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">current_instance</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">initial_budget_allocation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">initial_budget_allocation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
-        <span class="n">previous_budget_allocation</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">previous_budget_allocation</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">initial_budget_allocation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">initial_budget_allocation</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">initial_budget_allocation</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
     <span class="n">rule_params</span><span class="p">[</span><span class="s2">&quot;initial_budget_allocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_budget_allocation</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">budget_allocation</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">current_instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="o">**</span><span class="n">rule_params</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">budget_allocation</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">previous_budget_allocation</span>
-        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">budget_allocation</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">budget_allocation</span>
-        <span class="n">current_instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">+=</span> <span class="n">budget_step</span>
-        <span class="n">previous_budget_allocation</span> <span class="o">=</span> <span class="n">budget_allocation</span></div>
+    <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+        <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">previous_outcome</span> <span class="o">=</span> <span class="p">[</span><span class="n">copy</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">budget_step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">budget_step</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">*</span> <span class="n">frac</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">budget_bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">budget_bound</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rule_params</span><span class="p">[</span><span class="s2">&quot;resoluteness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resoluteness</span>
+    <span class="k">while</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">&lt;=</span> <span class="n">budget_bound</span><span class="p">:</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">current_instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="o">**</span><span class="n">rule_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">previous_outcome</span>
+            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">outcome</span>
+            <span class="n">current_instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">+=</span> <span class="n">budget_step</span>
+            <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">outcome</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">outcome</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">previous_outcome</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">outcome</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">outcome</span>
+            <span class="n">current_instance</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">+=</span> <span class="n">budget_step</span>
+            <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">outcome</span>
+    <span class="k">return</span> <span class="n">previous_outcome</span></div>
 </pre></div>
 
                 </article>
