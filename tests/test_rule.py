@@ -23,12 +23,18 @@ from pabutools.rules.exhaustion import (
 )
 from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
-from pabutools.rules.mes import method_of_equal_shares
+from pabutools.rules.mes import (
+    method_of_equal_shares,
+    mes_iterated,
+    mes_iterated_completed,
+)
 
 ALL_SAT_RULES = [
     greedy_utilitarian_welfare,
     max_additive_utilitarian_welfare,
     method_of_equal_shares,
+    mes_iterated,
+    mes_iterated_completed,
 ]
 ALL_NON_SAT_RULES = [sequential_phragmen]
 ALL_SAT = [
@@ -106,8 +112,18 @@ def dummy_elections():
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
+    test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted(
+        [[p[0], p[1], p[3]]]
+    )
+    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
+        [[p[0], p[1], p[3]]]
+    )
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
         [[p[0], p[2]]]
+    )
+    test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[0], p[1], p[2]]])
+    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
+        [[p[0], p[1], p[2]]]
     )
     res.append(test_election)
 
@@ -134,8 +150,15 @@ def dummy_elections():
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
+    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
+        [[p[0], p[1], p[3]]]
+    )
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
         [[p[0], p[2]]]
+    )
+    test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[0], p[1], p[2]]])
+    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
+        [[p[0], p[1], p[2]]]
     )
     res.append(test_election)
 
@@ -168,9 +191,13 @@ def dummy_elections():
         Cardinality_Sat
     ] = sorted([[p[0], p[2]]])
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[]])
+    test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[2]]])
+    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted([[p[0], p[2]]])
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0]]]
     )
+    test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted([[p[0], p[1]], [p[0], p[2]]])
+    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted([[p[0], p[1]], [p[0], p[2]]])
     res.append(test_election)
 
     # Empty profile
@@ -190,6 +217,14 @@ def dummy_elections():
             ]
         )
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = [[]]
+        test_election.irr_results_sat[mes_iterated][sat_class] = [[]]
+        test_election.irr_results_sat[mes_iterated_completed][sat_class] = sorted(
+            [
+                sorted(list(b))
+                for b in inst.budget_allocations()
+                if inst.is_exhaustive(b)
+            ]
+        )
     test_election.irr_results_non_sat[sequential_phragmen] = [
         [p[0]],
         [p[1]],
@@ -218,6 +253,14 @@ def dummy_elections():
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = [
             initial_alloc
         ]
+        test_election.irr_results_sat[mes_iterated][sat_class] = [initial_alloc]
+        test_election.irr_results_sat[mes_iterated_completed][sat_class] = sorted(
+            [
+                sorted(list(b))
+                for b in inst.budget_allocations()
+                if p[0] in b and inst.is_exhaustive(b)
+            ]
+        )
     test_election.irr_results_non_sat[sequential_phragmen] = [initial_alloc]
     res.append(test_election)
 
@@ -287,15 +330,13 @@ def run_sat_rule(rule, verbose=False):
                     for sat_profile in [None, profile.as_sat_profile(sat_class)]:
                         if verbose:
                             print(
-                                "\n===================== {} - {} =====================".format(
-                                    rule.__name__, sat_class.__name__
-                                )
+                                f"\n=================== {rule.__name__} - {sat_class.__name__} ==================="
                             )
                             print(
-                                "Test `{}`\nInst: {}\n Profile: {}".format(
-                                    test_election.name, test_election.instance, profile
-                                )
+                                f"Test `{test_election.name}`\nInst: {test_election.instance}\nProfile: {profile}"
                             )
+                            print(f"Sat profile: {sat_profile}")
+                            print(f"Initial alloc: {test_election.initial_alloc}")
                         resolute_out = rule(
                             test_election.instance,
                             profile,
@@ -315,16 +356,14 @@ def run_sat_rule(rule, verbose=False):
                             )
                         )
                         if verbose:
-                            print("Res outcome:  {}".format(resolute_out))
-                            print("Irres outcome:  {}".format(irresolute_out))
+                            print(f"Res outcome:  {resolute_out} -- In irres: {resolute_out in test_election.irr_results_sat[rule][sat_class]}")
+                            print(f"Irres outcome:  {irresolute_out}")
                             print(
-                                "Irres expected: {}".format(
-                                    test_election.irr_results_sat[rule][sat_class]
-                                )
+                                f"Irres expected: {test_election.irr_results_sat[rule][sat_class]}"
                             )
                         assert (
-                            resolute_out
-                            in test_election.irr_results_sat[rule][sat_class]
+                                resolute_out
+                                in test_election.irr_results_sat[rule][sat_class]
                         )
                         assert resolute_out == rule(
                             test_election.instance,
@@ -336,8 +375,8 @@ def run_sat_rule(rule, verbose=False):
                             initial_budget_allocation=test_election.initial_alloc,
                         )
                         assert (
-                            irresolute_out
-                            == test_election.irr_results_sat[rule][sat_class]
+                                irresolute_out
+                                == test_election.irr_results_sat[rule][sat_class]
                         )
 
 
@@ -436,6 +475,8 @@ class TestRule(TestCase):
 
     def test_mes_approval(self):
         run_sat_rule(method_of_equal_shares)
+        run_sat_rule(mes_iterated, verbose=False)
+        run_sat_rule(mes_iterated_completed, verbose=False)
         with self.assertRaises(ValueError):
             method_of_equal_shares(Instance(), ApprovalProfile())
 

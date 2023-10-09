@@ -1,25 +1,22 @@
 """
 The method of equal shares.
 """
-from itertools import chain
 from copy import copy, deepcopy
 from collections.abc import Iterable
 from numbers import Number
 
 from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
-
-from pabutools.election import (
-    MultiProfile,
-    SatisfactionMultiProfile,
-    AbstractBallot,
-    AbstractProfile,
-)
+from pabutools.election.ballot.ballot import AbstractBallot
 from pabutools.election.instance import Instance, Project
-from pabutools.election.profile import Profile
-from pabutools.election.satisfaction import SatisfactionMeasure, SatisfactionProfile
+from pabutools.election.profile import AbstractProfile
+from pabutools.election.satisfaction import SatisfactionMeasure
 from pabutools.tiebreaking import lexico_tie_breaking
 from pabutools.fractions import frac
 from pabutools.tiebreaking import TieBreakingRule
+from pabutools.rules.exhaustion import exhaustion_by_budget_increase
+from pabutools.rules.exhaustion import completion_by_rule_combination
+from pabutools.rules.composition import popularity_comparison
+from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 
 
 class MESVoter:
@@ -108,7 +105,7 @@ class MESVoter:
 
 def mes_scheme(
     instance: Instance,
-    profile: Profile,
+    profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
     initial_budget: Number,
     initial_budget_allocation: Iterable[Project],
@@ -338,5 +335,112 @@ def method_of_equal_shares(
         frac(instance.budget_limit, profile.num_ballots()),
         budget_allocation,
         tie_breaking,
+        resoluteness=resoluteness,
+    )
+
+
+def mes_iterated(
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure] = None,
+    sat_profile: GroupSatisfactionMeasure = None,
+    initial_budget_allocation: Iterable[Project] = None,
+    resoluteness: bool = True,
+    budget_step: Number = None,
+) -> Iterable[Project]:
+    """
+    Shortcut for the method of equal shares used with the exhaustion by budget increase method.
+
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The class defining the satisfaction function used to measure the social welfare. It should be a class
+            inhereting from pabutools.instance.satisfaction.Satisfaction.
+            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
+            provided, the satisfaction argument is disregarded.
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
+            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
+            provided, but a satisfaction function is, the former is computed from the latter.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
+        resoluteness : bool, optional
+            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
+            Defaults to True.
+        budget_step: Number
+            The budget increase in each step. Defaults to 1% of the budget limit.
+
+    Returns
+    -------
+        Iterable[Project]
+            The selected projects.
+    """
+    return exhaustion_by_budget_increase(
+        instance,
+        profile,
+        method_of_equal_shares,
+        {"sat_class": sat_class, "sat_profile": sat_profile},
+        initial_budget_allocation=initial_budget_allocation,
+        resoluteness=resoluteness,
+        budget_step=budget_step,
+    )
+
+
+def mes_iterated_completed(
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure] = None,
+    sat_profile: GroupSatisfactionMeasure = None,
+    initial_budget_allocation: Iterable[Project] = None,
+    resoluteness: bool = True,
+    budget_step: Number = None,
+) -> Iterable[Project]:
+    """
+    Shortcut for the method of equal shares used with the exhaustion by budget increase method and then complete by the
+    greedy utilitarian welfare maximiser.
+
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The class defining the satisfaction function used to measure the social welfare. It should be a class
+            inhereting from pabutools.instance.satisfaction.Satisfaction.
+            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
+            provided, the satisfaction argument is disregarded.
+        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
+            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
+            provided, but a satisfaction function is, the former is computed from the latter.
+        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            An initial budget allocation, typically empty.
+        resoluteness : bool, optional
+            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
+            Defaults to True.
+        budget_step: Number
+            The budget increase in each step for the iterated MES part. Defaults to 1% of the budget limit.
+
+    Returns
+    -------
+        Iterable[Project]
+            The selected projects.
+    """
+    return completion_by_rule_combination(
+        instance,
+        profile,
+        [mes_iterated, greedy_utilitarian_welfare],
+        [
+            {
+                "sat_class": sat_class,
+                "sat_profile": sat_profile,
+                "budget_step": budget_step,
+            },
+            {"sat_class": sat_class, "sat_profile": sat_profile},
+        ],
+        initial_budget_allocation=initial_budget_allocation,
         resoluteness=resoluteness,
     )
