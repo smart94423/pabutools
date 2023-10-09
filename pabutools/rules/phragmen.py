@@ -10,8 +10,6 @@ from pabutools.election import (
     Instance,
     Project,
     total_cost,
-    ApprovalProfile,
-    ApprovalMultiProfile,
     AbstractApprovalBallot,
     AbstractApprovalProfile,
 )
