@@ -373,7 +373,7 @@ class TestSatisfaction(TestCase):
             Project("p5", 16),
             Project("p6", 16),
         ]
-        instance = Instance(projects)
+        instance = Instance(projects, budget_limit=30)
         b1 = CardinalBallot(
             {
                 projects[1]: 4,
@@ -392,7 +392,7 @@ class TestSatisfaction(TestCase):
                 projects[5]: 0,
             }
         )
-        profile = CardinalProfile((b1, b2))
+        profile = CardinalProfile((b1, b2), instance=instance)
         sat_profile = SatisfactionProfile(
             profile=profile, sat_class=Additive_Cardinal_Sat
         )
@@ -400,6 +400,15 @@ class TestSatisfaction(TestCase):
         assert sat_profile[0].sat(projects[:4]) == 4 + 74 + 12
         assert sat_profile[0].sat(projects) == 4 + 74 + 12 + 7 - 41
         assert sat_profile[1].sat(projects[2:]) == 4 + 68 + 7
+        with self.assertRaises(ValueError):
+            Additive_Cardinal_Sat(instance, profile, ApprovalBallot())
+
+        sat_profile = SatisfactionProfile(
+            profile=profile, sat_class=Additive_Cardinal_Relative_Sat
+        )
+        assert sat_profile[0].sat([projects[0]]) == 0
+        assert sat_profile[0].sat(projects[:4]) == 1
+        assert sat_profile[0].sat(projects) == frac(4 + 74 + 12 + 7 - 41, 90)
         with self.assertRaises(ValueError):
             Additive_Cardinal_Sat(instance, profile, ApprovalBallot())
 

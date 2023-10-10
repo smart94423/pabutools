@@ -78,6 +78,37 @@ def percent_non_empty_handed(
     return avg_satisfaction(instance, profile, budget_allocation, CC_Sat)
 
 
+def percent_positive_satisfaction(
+        profile: AbstractProfile, budget_allocation: Iterable[Project], sat_class: type[SatisfactionMeasure]
+) -> Number:
+    """
+    Computes the percentage of voter who enjoy a positive (thus non-zero) satisfaction.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+            Collection of projects.
+        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
+            The class defining the satisfaction function used to measure the social welfare. It should be a class
+            inhereting from :py:class:`pabutools.instance.satisfaction.Satisfaction`.
+
+    Returns
+    -------
+        Number
+            The percentage of non-empty handed voters.
+    """
+    sat_profile = profile.as_sat_profile(sat_class)
+    num_pos_sat = 0
+    for sat in sat_profile:
+        if sat.sat(budget_allocation) > 0:
+            num_pos_sat += 1
+    return frac(num_pos_sat, profile.num_ballots())
+
+
 def gini_coefficient_of_satisfaction(
     instance: Instance,
     profile: AbstractProfile,

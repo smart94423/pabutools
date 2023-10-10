@@ -340,9 +340,9 @@ document.write(`
 <span class="sd">            The Borda score of the projects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span> <span class="o">-</span> <span class="n">ballot</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span> <span class="o">-</span> <span class="n">ballot</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="mi">0</span>
 
 
 <div class="viewcode-block" id="Additive_Borda_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Borda_Sat</span><span class="p">(</span><span class="n">PositionalSatisfaction</span><span class="p">):</span>

@@ -446,6 +446,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat.sat()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.get_project_sat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.preprocessing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.sat()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.instance"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction.instance</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.profile"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction.profile</span></code></a></li>
@@ -567,7 +573,12 @@ satisfaction multiprofiles—in the class
 <td><p><a class="reference internal" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a></p></td>
 <td><p><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot" title="pabutools.election.ballot.cardinalballot.AbstractCardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCardinalBallot</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Additive Borda</p></td>
+<tr class="row-even"><td><p>Relative Additive for Cardinal Ballots</p></td>
+<td><p><a class="reference internal" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat" title="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat</span></code></a></p></td>
+<td><p><a class="reference internal" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a></p></td>
+<td><p><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot" title="pabutools.election.ballot.cardinalballot.AbstractCardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCardinalBallot</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Additive Borda</p></td>
 <td><p><a class="reference internal" href="#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat" title="pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Additive_Borda_Sat</span></code></a></p></td>
 <td><p><a class="reference internal" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a></p></td>
 <td><p><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a></p></td>
@@ -2187,6 +2198,82 @@ for the given collection of projects.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Additive_Cardinal_Relative_Sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot" title="pabutools.election.ballot.cardinalballot.AbstractCardinalBallot"><span class="pre">AbstractCardinalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Additive_Cardinal_Relative_Sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditiveSatisfaction</span></code></a></p>
+<p>The relative additive satisfaction for cardinal ballots. It is equal to the sum over the selected projects appearing
+in the ballot of the score assigned to the project by the voter, divided by the highest total score achievable by
+a feasible budget allocation. It only applies to cardinal ballots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
+<li><p><strong>ballot</strong> (<a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot" title="pabutools.election.ballot.cardinalballot.AbstractCardinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCardinalBallot</span></code></a>) – The ballot.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat">
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
+re-computing it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>project</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>) – The instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The satisfaction of the project.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing">
+<span class="sig-name descname"><span class="pre">preprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot" title="pabutools.election.ballot.cardinalballot.AbstractCardinalBallot"><span class="pre">AbstractCardinalBallot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#Additive_Cardinal_Relative_Sat.preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing" title="Permalink to this definition">#</a></dt>
+<dd><p>Preprocessing based on the instance, the profile and the ballot that returns a dictionary of precomputed
+values. The <cite>precomputed_values</cite> dictionary is initialised via this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
+<li><p><strong>ballot</strong> (<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>) – The ballot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The precomputed values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>dict</em>[<em>str</em>, <em>str</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat">
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat" title="Permalink to this definition">#</a></dt>
+<dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
+for the given collection of projects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projects</strong> (Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – The collection of projects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The corresponding satisfaction</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PositionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a></p>
@@ -2507,6 +2594,12 @@ for the given collection of projects.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.get_project_sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat.get_project_sat()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.preprocessing"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat.preprocessing()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Sat.sat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.get_project_sat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.preprocessing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat"><code class="docutils literal notranslate"><span class="pre">Additive_Cardinal_Relative_Sat.sat()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction"><code class="docutils literal notranslate"><span class="pre">PositionalSatisfaction</span></code></a><ul class="nav section-nav flex-column">

@@ -92,6 +92,12 @@ Satisfaction module
     :members:
     :show-inheritance:
     :inherited-members:
+
+.. autoclass:: pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat
+    :members:
+    :show-inheritance:
+    :inherited-members:
+
 .. autoclass:: pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction
     :members:
     :show-inheritance:

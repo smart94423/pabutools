@@ -206,7 +206,7 @@ def greedy_utilitarian_welfare(
             The profile.
         sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
-            inhereting from pabutools.instance.satisfaction.Satisfaction.
+            inhereting from :py:class:`pabutools.instance.satisfaction.Satisfaction`.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
             provided, the satisfaction argument is disregarded.
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`

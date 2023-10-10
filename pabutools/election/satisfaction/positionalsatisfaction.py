@@ -84,9 +84,9 @@ def borda_sat_func(ballot: AbstractOrdinalBallot, project: Project) -> int:
             The Borda score of the projects.
 
     """
-    if project not in ballot:
-        return 0
-    return len(ballot) - ballot.index(project) - 1
+    if project in ballot:
+        return len(ballot) - ballot.index(project) - 1
+    return 0
 
 
 class Additive_Borda_Sat(PositionalSatisfaction):

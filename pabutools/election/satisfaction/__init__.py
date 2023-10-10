@@ -79,6 +79,10 @@ The following satisfaction measures have already been implemented. Note that the
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat`
      - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
      - :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+   * - Relative Additive for Cardinal Ballots
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat`
+     - :py:class:`~pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction`
+     - :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
    * - Additive Borda
      - :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat`
      - :py:class:`~pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction`
@@ -97,13 +101,14 @@ from pabutools.election.satisfaction.additivesatisfaction import (
     AdditiveSatisfaction,
     Cost_Sat,
     Cardinality_Sat,
-    Additive_Cardinal_Sat,
     Effort_Sat,
     Relative_Cost_Sat,
     Relative_Cardinality_Sat,
     Relative_Cost_Approx_Normaliser_Sat,
     Additive_Cost_Log_Sat,
     Additive_Cost_Sqrt_Sat,
+    Additive_Cardinal_Sat,
+    Additive_Cardinal_Relative_Sat
 )
 from pabutools.election.satisfaction.functionalsatisfaction import (
     FunctionalSatisfaction,
@@ -124,11 +129,12 @@ __all__ = [
     "AdditiveSatisfaction",
     "Cost_Sat",
     "Cardinality_Sat",
-    "Additive_Cardinal_Sat",
     "Effort_Sat",
     "Relative_Cost_Sat",
     "Relative_Cardinality_Sat",
     "Relative_Cost_Approx_Normaliser_Sat",
+    "Additive_Cardinal_Sat",
+    "Additive_Cardinal_Relative_Sat",
     "FunctionalSatisfaction",
     "CC_Sat",
     "Cost_Log_Sat",

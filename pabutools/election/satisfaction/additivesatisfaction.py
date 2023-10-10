@@ -7,6 +7,7 @@ from collections.abc import Callable, Iterable
 from numbers import Number
 
 import numpy as np
+from mip import Model, BINARY, maximize, xsum
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import (
@@ -691,3 +692,89 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
                     type(ballot)
                 )
             )
+
+
+def additive_card_relative_sat_func(
+    instance: Instance,
+    profile: AbstractProfile,
+    ballot: AbstractCardinalBallot,
+    project: Project,
+    precomputed_values: dict,
+) -> Number:
+    """
+    Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the
+    project, divided by the highest total score achievable by a feasible budget allocation.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+            The ballot.
+        project : :py:class:`~pabutools.election.instance.Project`
+            The selected project.
+        precomputed_values : dict[str, str]
+            A dictionary of precomputed values.
+
+    Returns
+    -------
+        Number
+            The relative additive satisfaction for cardinal ballots.
+    """
+    if precomputed_values["max_budget_allocation_score"] == 0:
+        return 0
+    return frac(
+        ballot.get(project, 0), precomputed_values["max_budget_allocation_score"]
+    )
+
+
+class Additive_Cardinal_Relative_Sat(AdditiveSatisfaction):
+    """
+    The relative additive satisfaction for cardinal ballots. It is equal to the sum over the selected projects appearing
+    in the ballot of the score assigned to the project by the voter, divided by the highest total score achievable by
+    a feasible budget allocation. It only applies to cardinal ballots.
+
+    Parameters
+    ----------
+        instance : :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
+        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`
+            The ballot.
+    """
+
+    def __init__(
+        self,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractCardinalBallot,
+    ) -> None:
+        if isinstance(ballot, AbstractCardinalBallot):
+            AdditiveSatisfaction.__init__(
+                self, instance, profile, ballot, additive_card_relative_sat_func
+            )
+        else:
+            raise ValueError(
+                "The relative additive satisfaction for cardinal ballots cannot be used for ballots of type {}".format(
+                    type(ballot)
+                )
+            )
+
+    def preprocessing(
+        self, instance: Instance, profile: AbstractProfile, ballot: AbstractCardinalBallot
+    ):
+        res = 0
+        mip_model = Model()
+        mip_model.verbose = 0
+        p_vars = {
+            p: mip_model.add_var(var_type=BINARY, name="x_{}".format(p)) for p in instance
+        }
+        if p_vars:
+            mip_model.objective = maximize(xsum(p_vars[p] * ballot.get(p, 0) for p in instance))
+            mip_model += xsum(p_vars[p] * p.cost for p in instance) <= instance.budget_limit
+            mip_model.optimize()
+            res = mip_model.objective.x
+        return {"max_budget_allocation_score": frac(res)}

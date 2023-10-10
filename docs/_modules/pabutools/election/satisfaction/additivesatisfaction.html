@@ -263,6 +263,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">mip</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">maximize</span><span class="p">,</span> <span class="n">xsum</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">SatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="p">(</span>
@@ -947,6 +948,92 @@ document.write(`
                     <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">additive_card_relative_sat_func</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the</span>
+<span class="sd">    project, divided by the highest total score achievable by a feasible budget allocation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">        project : :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">            The selected project.</span>
+<span class="sd">        precomputed_values : dict[str, str]</span>
+<span class="sd">            A dictionary of precomputed values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Number</span>
+<span class="sd">            The relative additive satisfaction for cardinal ballots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_score&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">frac</span><span class="p">(</span>
+        <span class="n">ballot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_score&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="Additive_Cardinal_Relative_Sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat">[docs]</a><span class="k">class</span> <span class="nc">Additive_Cardinal_Relative_Sat</span><span class="p">(</span><span class="n">AdditiveSatisfaction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The relative additive satisfaction for cardinal ballots. It is equal to the sum over the selected projects appearing</span>
+<span class="sd">    in the ballot of the score assigned to the project by the voter, divided by the highest total score achievable by</span>
+<span class="sd">    a feasible budget allocation. It only applies to cardinal ballots.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        ballot : :py:class:`~pabutools.election.ballot.cardinalballot.AbstractCardinalBallot`</span>
+<span class="sd">            The ballot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
+            <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">additive_card_relative_sat_func</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The relative additive satisfaction for cardinal ballots cannot be used for ballots of type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="Additive_Cardinal_Relative_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span>
+    <span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mip_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+        <span class="n">mip_model</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">p_vars</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">p</span><span class="p">:</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">add_var</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">p_vars</span><span class="p">:</span>
+            <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">ballot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">))</span>
+            <span class="n">mip_model</span> <span class="o">+=</span> <span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="n">mip_model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;max_budget_allocation_score&quot;</span><span class="p">:</span> <span class="n">frac</span><span class="p">(</span><span class="n">res</span><span class="p">)}</span></div></div>
 </pre></div>
 
                 </article>
