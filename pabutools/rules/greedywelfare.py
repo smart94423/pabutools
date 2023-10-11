@@ -188,7 +188,7 @@ def greedy_utilitarian_welfare(
     profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure] = None,
     sat_profile: GroupSatisfactionMeasure = None,
-    is_sat_additive: bool = False,
+    is_sat_additive: bool = None,
     tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
     initial_budget_allocation: Iterable[Project] = None,
@@ -242,7 +242,8 @@ def greedy_utilitarian_welfare(
     else:
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class)
-        is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
+        if is_sat_additive is None:
+            is_sat_additive = issubclass(sat_class, AdditiveSatisfaction)
 
     if is_sat_additive:
         return greedy_utilitarian_scheme_additive(
