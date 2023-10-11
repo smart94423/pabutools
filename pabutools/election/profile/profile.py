@@ -188,7 +188,7 @@ class Profile(list, AbstractProfile):
             else:
                 instance = Instance()
         AbstractProfile.__init__(self, instance, ballot_validation, ballot_type)
-        init = list(init)  # in case `init` is an iterable 
+        init = list(init)  # in case `init` is an iterable
         if ballot_validation:
             for item in init:
                 self.validate_ballot(item)

@@ -66,7 +66,9 @@ class Project:
             categories = {}
         self.name = name
         if not int(cost) == cost:
-            cost = frac(cost)
+            cost = frac(cost)  # float costs do not work, enforce fractions
+        else:
+            cost = int(cost)
         self.cost = cost
         self.categories = categories
         self.targets = targets
