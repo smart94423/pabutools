@@ -73,3 +73,8 @@ class TestInstance(TestCase):
         assert project <= Project("z")
         assert project < "z"
         assert project < Project("z")
+
+        project = Project("test", 2.0)
+        assert isinstance(project.cost, int)
+        project = Project("test", 2.5)
+        assert not isinstance(project.cost, float)
