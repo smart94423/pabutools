@@ -301,7 +301,7 @@ if __name__ == "__main__":
     # profile = ApprovalProfile([ApprovalBallot([instance.get_project("1")]), ApprovalBallot([instance.get_project("2")]), ApprovalBallot([instance.get_project("3")]), ApprovalBallot([instance.get_project("3")])])
 
     # winners_fast = equal_shares_fast(instance, profile, sat_class=Cost_Sat)
-    winners_fast = equal_shares_iterated_fast(instance, profile, sat_class=Cost_Sat)
+    winners_fast = equal_shares_iterated_fast(instance, profile, sat_class=Cardinality_Sat)
     print(len(winners_fast))
     print(winners_fast)
     # winners_fast = equal_shares_fast_approval(instance, profile)
@@ -318,7 +318,7 @@ if __name__ == "__main__":
         instance,
         profile.as_multiprofile(),
         sat_class=Cost_Sat,
-        budget_step=10 * len(profile),
+        budget_step=len(profile),
     )
     # winners_slow = exhaustion_by_budget_increase(
     #     instance,

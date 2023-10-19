@@ -302,6 +302,7 @@ def mes_scheme(
         for proj in initial_projects
     }
     previous_outcome = initial_budget_allocation
+    num_voters = profile.num_ballots()
 
     while True:
         all_budget_allocations = []
@@ -338,7 +339,7 @@ def mes_scheme(
             initial_budget += budget_step
             previous_outcome = all_budget_allocations
         for voter in voters_details:
-            voter.budget = frac(initial_budget, profile.num_ballots())
+            voter.budget = frac(initial_budget, num_voters)
 
 
 def method_of_equal_shares(
