@@ -322,7 +322,9 @@ document.write(`
             <span class="n">categories</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span> <span class="o">==</span> <span class="n">cost</span><span class="p">:</span>
-            <span class="n">cost</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>  <span class="c1"># float costs do not work, enforce fractions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">categories</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>

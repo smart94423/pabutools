@@ -4,8 +4,15 @@ import os
 pabutools_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, pabutools_path)
 
-from pabutools.election import parse_pabulib, Cost_Sat, Instance, Project, ApprovalProfile, ApprovalBallot, \
-    Cardinality_Sat
+from pabutools.election import (
+    parse_pabulib,
+    Cost_Sat,
+    Instance,
+    Project,
+    ApprovalProfile,
+    ApprovalBallot,
+    Cardinality_Sat,
+)
 from pabutools.rules import method_of_equal_shares, exhaustion_by_budget_increase
 
 import pabutools.fractions
@@ -15,18 +22,32 @@ def equal_shares_fast(instance, profile, sat_class):
     projects = set(instance)
     costs = {p: p.cost for p in projects}
     sat_profile = profile.as_sat_profile(sat_class)
-    utilities = [{p: sat.sat_project(p) for p in instance} for i, sat in enumerate(sat_profile)]
+    utilities = [
+        {p: sat.sat_project(p) for p in instance} for i, sat in enumerate(sat_profile)
+    ]
     voters = range(len(utilities))
-    approvers = {p: [i for i, sat in enumerate(sat_profile) if p in sat.ballot] for p in instance}
+    approvers = {
+        p: [i for i, sat in enumerate(sat_profile) if p in sat.ballot] for p in instance
+    }
     total_utils = {p: sat_profile.total_satisfaction_project(p) for p in instance}
-    return equal_shares_fixed_budget(voters, projects, costs, utilities, total_utils, approvers, instance.budget_limit)
+    return equal_shares_fixed_budget(
+        voters,
+        projects,
+        costs,
+        utilities,
+        total_utils,
+        approvers,
+        instance.budget_limit,
+    )
 
 
 def equal_shares_iterated_fast(instance, profile, sat_class):
     projects = set(instance)
     costs = {p: p.cost for p in projects}
     sat_profile = profile.as_sat_profile(sat_class)
-    utilities = [{p: sat.sat_project(p) for p in instance} for i, sat in enumerate(sat_profile)]
+    utilities = [
+        {p: sat.sat_project(p) for p in instance} for i, sat in enumerate(sat_profile)
+    ]
     voters = range(len(utilities))
     return equal_shares(voters, projects, costs, utilities, instance.budget_limit)
 
@@ -36,7 +57,9 @@ def equal_shares_iterated_fast_approval(instance, profile):
     costs = {p: p.cost for p in projects}
     voters = range(len(profile))
     approvers = {p: [i for i in voters if p in profile[i]] for p in instance}
-    return equal_shares_approval(voters, projects, costs, approvers, instance.budget_limit)
+    return equal_shares_approval(
+        voters, projects, costs, approvers, instance.budget_limit
+    )
 
 
 def equal_shares_fast_approval(instance, profile):
@@ -44,7 +67,9 @@ def equal_shares_fast_approval(instance, profile):
     costs = {p: p.cost for p in projects}
     voters = range(len(profile))
     approvers = {p: [i for i in voters if p in profile[i]] for p in instance}
-    return equal_shares_fixed_budget_approval(voters, projects, costs, approvers, instance.budget_limit)
+    return equal_shares_fixed_budget_approval(
+        voters, projects, costs, approvers, instance.budget_limit
+    )
 
 
 def equal_shares_fixed_budget(N, C, cost, util, total_utility, approvers, B):
@@ -106,8 +131,11 @@ def equal_shares_fixed_budget(N, C, cost, util, total_utility, approvers, B):
             break
         best = break_ties(N, C, cost, total_utility, best)
         if len(best) > 1:
-            raise Exception("Tie-breaking failed: tie between projects " + ", ".join(best) + \
-                            "could not be resolved. Another tie-breaking needs to be added.")
+            raise Exception(
+                "Tie-breaking failed: tie between projects "
+                + ", ".join(best)
+                + "could not be resolved. Another tie-breaking needs to be added."
+            )
         best = best[0]
         winners.append(best)
         del remaining[best]
@@ -143,7 +171,9 @@ def equal_shares(N, C, cost, u, B):
         # would the next highest budget work?
         next_budget = budget + len(N)
         # print(f"budget: {next_budget}")
-        next_mes = equal_shares_fixed_budget(N, C, cost, u, total_utility, approvers, next_budget)
+        next_mes = equal_shares_fixed_budget(
+            N, C, cost, u, total_utility, approvers, next_budget
+        )
         # print(f"Next: {next_mes}")
         current_cost = sum(cost[c] for c in next_mes)
         if current_cost <= B:
@@ -174,7 +204,9 @@ def equal_shares_approval(N, C, cost, approvers, B):
             break
         # would the next highest budget work?
         next_budget = budget + len(N)
-        next_mes = equal_shares_fixed_budget_approval(N, C, cost, approvers, next_budget)
+        next_mes = equal_shares_fixed_budget_approval(
+            N, C, cost, approvers, next_budget
+        )
         current_cost = sum(cost[c] for c in next_mes)
         if current_cost <= B:
             # yes, so continue with that budget
@@ -194,8 +226,9 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B):
         best_count = max(len(approvers[c]) for c in remaining)
         remaining = [c for c in remaining if len(approvers[c]) == best_count]
         return remaining
+
     budget = {i: B / len(N) for i in N}
-    remaining = {} # remaining candidate -> previous effective vote count
+    remaining = {}  # remaining candidate -> previous effective vote count
     for c in C:
         if cost[c] > 0 and len(approvers[c]) > 0:
             remaining[c] = len(approvers[c])
@@ -241,8 +274,11 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B):
             break
         best = break_ties(N, C, cost, approvers, best)
         if len(best) > 1:
-            raise Exception("Tie-breaking failed: tie between projects " + ", ".join(best) +  \
-                    "could not be resolved. Another tie-breaking needs to be added.")
+            raise Exception(
+                "Tie-breaking failed: tie between projects "
+                + ", ".join(best)
+                + "could not be resolved. Another tie-breaking needs to be added."
+            )
         best = best[0]
         winners.append(best)
         del remaining[best]
@@ -254,6 +290,7 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B):
             else:
                 budget[i] = 0
     return winners
+
 
 if __name__ == "__main__":
     # pabutools.fractions.FRACTION = "float"
@@ -281,7 +318,8 @@ if __name__ == "__main__":
         instance,
         profile.as_multiprofile(),
         sat_class=Cost_Sat,
-        budget_step=10*len(profile))
+        budget_step=10 * len(profile),
+    )
     # winners_slow = exhaustion_by_budget_increase(
     #     instance,
     #     profile,

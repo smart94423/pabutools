@@ -108,7 +108,7 @@ from pabutools.election.satisfaction.additivesatisfaction import (
     Additive_Cost_Log_Sat,
     Additive_Cost_Sqrt_Sat,
     Additive_Cardinal_Sat,
-    Additive_Cardinal_Relative_Sat
+    Additive_Cardinal_Relative_Sat,
 )
 from pabutools.election.satisfaction.functionalsatisfaction import (
     FunctionalSatisfaction,

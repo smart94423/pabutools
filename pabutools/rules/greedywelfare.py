@@ -73,13 +73,13 @@ def greedy_utilitarian_scheme(
                         sats.total_satisfaction(new_alloc)
                         - sats.total_satisfaction(alloc),
                         project.cost,
-                        )
+                    )
                 else:
                     total_marginal_score = inf
 
                 if (
-                        best_marginal_score is None
-                        or total_marginal_score > best_marginal_score
+                    best_marginal_score is None
+                    or total_marginal_score > best_marginal_score
                 ):
                     best_marginal_score = total_marginal_score
                     argmax_marginal_score = [project]
@@ -93,7 +93,10 @@ def greedy_utilitarian_scheme(
                 new_cost = total_cost(new_alloc)
                 new_feasible = []
                 for project in feasible:
-                    if project != selected_project and new_cost + project.cost <= instance.budget_limit:
+                    if (
+                        project != selected_project
+                        and new_cost + project.cost <= instance.budget_limit
+                    ):
                         new_feasible.append(project)
                 aux(inst, prof, new_feasible, sats, allocs, new_alloc, tie, resolute)
 
@@ -102,7 +105,10 @@ def greedy_utilitarian_scheme(
     all_budget_allocations = []
     feasible_projects = []
     for p in instance:
-        if p not in initial_budget_allocation and initial_cost + p.cost <= instance.budget_limit:
+        if (
+            p not in initial_budget_allocation
+            and initial_cost + p.cost <= instance.budget_limit
+        ):
             feasible_projects.append(p)
     feasible_projects = sorted(feasible_projects)
     aux(

@@ -46,11 +46,11 @@ class MESVoter:
     """
 
     def __init__(
-            self,
-            ballot: AbstractBallot,
-            sat: SatisfactionMeasure,
-            budget: Number,
-            multiplicity: int,
+        self,
+        ballot: AbstractBallot,
+        sat: SatisfactionMeasure,
+        budget: Number,
+        multiplicity: int,
     ):
         self.ballot = ballot
         self.sat = sat
@@ -142,14 +142,14 @@ class MESVoter:
 
 
 def mes_scheme(
-        instance: Instance,
-        profile: AbstractProfile,
-        sat_profile: GroupSatisfactionMeasure,
-        initial_budget: Number,
-        initial_budget_allocation: Iterable[Project],
-        tie_breaking: TieBreakingRule,
-        resoluteness=True,
-        budget_step=None,
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_profile: GroupSatisfactionMeasure,
+    initial_budget: Number,
+    initial_budget_allocation: Iterable[Project],
+    tie_breaking: TieBreakingRule,
+    resoluteness=True,
+    budget_step=None,
 ) -> list[Project] | list[list[Project]]:
     """
     The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website
@@ -184,38 +184,43 @@ def mes_scheme(
     """
 
     def aux(
-            inst,
-            prof,
-            voters,
-            tie,
-            projects,
-            alloc,
-            total_scores,
-            supporters,
-            prev_affordability,
-            all_allocs,
-            resolute,
+        inst,
+        prof,
+        voters,
+        tie,
+        projects,
+        alloc,
+        total_scores,
+        supporters,
+        prev_affordability,
+        all_allocs,
+        resolute,
     ):
         tied_projects = None
         best_afford = float("inf")
         for project in sorted(projects, key=lambda p: prev_affordability[p]):
             if (
-                    prev_affordability[project] > best_afford
+                prev_affordability[project] > best_afford
             ):  # best possible afford for this round isn't good enough
                 break
             if (
-                    sum(voters[i].total_budget() for i in supporters[project])
-                    < project.cost
+                sum(voters[i].total_budget() for i in supporters[project])
+                < project.cost
             ):  # unaffordable, can delete
                 projects.remove(project)
                 continue
-            supporters[project].sort(key=lambda i: voters[i].budget_over_sat_project(project))
+            supporters[project].sort(
+                key=lambda i: voters[i].budget_over_sat_project(project)
+            )
             paid_so_far = 0
             denominator = total_scores[project]
             for supporter_index in supporters[project]:
                 supporter = voters[supporter_index]
                 afford_factor = frac(project.cost - paid_so_far, denominator)
-                if afford_factor * supporter.sat.sat_project(project) <= supporter.budget:
+                if (
+                    afford_factor * supporter.sat.sat_project(project)
+                    <= supporter.budget
+                ):
                     # found the best afford_factor for this candidate
                     prev_affordability[project] = afford_factor
                     if afford_factor < best_afford:
@@ -274,7 +279,9 @@ def mes_scheme(
     initial_projects = set(instance)
     for proj in initial_budget_allocation:
         initial_projects.remove(proj)
-    scores = {proj: sat_profile.total_satisfaction_project(proj) for proj in initial_projects}
+    scores = {
+        proj: sat_profile.total_satisfaction_project(proj) for proj in initial_projects
+    }
     for proj, score in scores.items():
         if proj.cost == 0:
             initial_projects.remove(proj)
@@ -335,14 +342,14 @@ def mes_scheme(
 
 
 def method_of_equal_shares(
-        instance: Instance,
-        profile: AbstractProfile,
-        sat_class: type[SatisfactionMeasure] = None,
-        sat_profile: GroupSatisfactionMeasure = None,
-        tie_breaking: TieBreakingRule = None,
-        resoluteness: bool = True,
-        initial_budget_allocation: Iterable[Project] = None,
-        budget_step=None,
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure] = None,
+    sat_profile: GroupSatisfactionMeasure = None,
+    tie_breaking: TieBreakingRule = None,
+    resoluteness: bool = True,
+    initial_budget_allocation: Iterable[Project] = None,
+    budget_step=None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
     The Method of Equal Shares (MES). See the website
@@ -403,18 +410,18 @@ def method_of_equal_shares(
         budget_allocation,
         tie_breaking,
         resoluteness=resoluteness,
-        budget_step=budget_step
+        budget_step=budget_step,
     )
 
 
 def mes_iterated(
-        instance: Instance,
-        profile: AbstractProfile,
-        sat_class: type[SatisfactionMeasure] = None,
-        sat_profile: GroupSatisfactionMeasure = None,
-        initial_budget_allocation: Iterable[Project] = None,
-        resoluteness: bool = True,
-        budget_step: Number = None,
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure] = None,
+    sat_profile: GroupSatisfactionMeasure = None,
+    initial_budget_allocation: Iterable[Project] = None,
+    resoluteness: bool = True,
+    budget_step: Number = None,
 ) -> Iterable[Project]:
     """
     Shortcut for the method of equal shares used with the exhaustion by budget increase method.
@@ -458,13 +465,13 @@ def mes_iterated(
 
 
 def mes_iterated_completed(
-        instance: Instance,
-        profile: AbstractProfile,
-        sat_class: type[SatisfactionMeasure] = None,
-        sat_profile: GroupSatisfactionMeasure = None,
-        initial_budget_allocation: Iterable[Project] = None,
-        resoluteness: bool = True,
-        budget_step: Number = None,
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure] = None,
+    sat_profile: GroupSatisfactionMeasure = None,
+    initial_budget_allocation: Iterable[Project] = None,
+    resoluteness: bool = True,
+    budget_step: Number = None,
 ) -> Iterable[Project]:
     """
     Shortcut for the method of equal shares used with the exhaustion by budget increase method and then complete by the

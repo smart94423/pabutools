@@ -79,7 +79,9 @@ def percent_non_empty_handed(
 
 
 def percent_positive_satisfaction(
-        profile: AbstractProfile, budget_allocation: Iterable[Project], sat_class: type[SatisfactionMeasure]
+    profile: AbstractProfile,
+    budget_allocation: Iterable[Project],
+    sat_class: type[SatisfactionMeasure],
 ) -> Number:
     """
     Computes the percentage of voter who enjoy a positive (thus non-zero) satisfaction.

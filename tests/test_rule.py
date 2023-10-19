@@ -383,12 +383,21 @@ def run_sat_rule(rule, verbose=False):
                         )
                         if verbose:
                             print(
-                                f"Res outcome with sat_profile: {resolute_out_sat_profile} -- Same: {resolute_out == resolute_out_sat_profile}")
+                                f"Res outcome with sat_profile: {resolute_out_sat_profile} -- Same: {resolute_out == resolute_out_sat_profile}"
+                            )
 
-                        assert total_cost(resolute_out) <= test_election.instance.budget_limit
-                        assert total_cost(resolute_out_sat_profile) <= test_election.instance.budget_limit
+                        assert (
+                            total_cost(resolute_out)
+                            <= test_election.instance.budget_limit
+                        )
+                        assert (
+                            total_cost(resolute_out_sat_profile)
+                            <= test_election.instance.budget_limit
+                        )
                         for res in irresolute_out:
-                            assert total_cost(res) <= test_election.instance.budget_limit
+                            assert (
+                                total_cost(res) <= test_election.instance.budget_limit
+                            )
                         assert (
                             sorted(resolute_out)
                             in test_election.irr_results_sat[rule][sat_class]
@@ -604,7 +613,11 @@ class TestRule(TestCase):
             [method_of_equal_shares, greedy_utilitarian_welfare],
             [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
         )
-        assert sorted(budget_allocation_mes_iterated) == [projects[0], projects[1], projects[2]]
+        assert sorted(budget_allocation_mes_iterated) == [
+            projects[0],
+            projects[1],
+            projects[2],
+        ]
         budget_allocation_mes_iterated = completion_by_rule_combination(
             instance,
             profile,

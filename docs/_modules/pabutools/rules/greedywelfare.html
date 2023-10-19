@@ -311,18 +311,14 @@ document.write(`
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">aux</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">sats</span><span class="p">,</span> <span class="n">allocs</span><span class="p">,</span> <span class="n">alloc</span><span class="p">,</span> <span class="n">tie</span><span class="p">,</span> <span class="n">resolute</span><span class="p">):</span>
-        <span class="n">current_cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
-        <span class="n">feasible</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-            <span class="n">project</span>
-            <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span>
-            <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alloc</span>
-            <span class="ow">and</span> <span class="n">current_cost</span> <span class="o">+</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
-        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">aux</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">feasible</span><span class="p">,</span> <span class="n">sats</span><span class="p">,</span> <span class="n">allocs</span><span class="p">,</span> <span class="n">alloc</span><span class="p">,</span> <span class="n">tie</span><span class="p">,</span> <span class="n">resolute</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">feasible</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">alloc</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">alloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allocs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">resolute</span><span class="p">:</span>
                 <span class="n">allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alloc</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">alloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allocs</span><span class="p">:</span>
+                    <span class="n">allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">best_marginal_score</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">argmax_marginal_score</span> <span class="o">=</span> <span class="p">[]</span>
@@ -333,31 +329,42 @@ document.write(`
                         <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">new_alloc</span><span class="p">)</span>
                         <span class="o">-</span> <span class="n">sats</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">(</span><span class="n">alloc</span><span class="p">),</span>
                         <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
-                    <span class="p">)</span>
+                        <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">total_marginal_score</span> <span class="o">=</span> <span class="n">inf</span>
 
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">best_marginal_score</span> <span class="ow">is</span> <span class="kc">None</span>
-                    <span class="ow">or</span> <span class="n">total_marginal_score</span> <span class="o">&gt;</span> <span class="n">best_marginal_score</span>
+                        <span class="n">best_marginal_score</span> <span class="ow">is</span> <span class="kc">None</span>
+                        <span class="ow">or</span> <span class="n">total_marginal_score</span> <span class="o">&gt;</span> <span class="n">best_marginal_score</span>
                 <span class="p">):</span>
                     <span class="n">best_marginal_score</span> <span class="o">=</span> <span class="n">total_marginal_score</span>
                     <span class="n">argmax_marginal_score</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span><span class="p">]</span>
                 <span class="k">elif</span> <span class="n">total_marginal_score</span> <span class="o">==</span> <span class="n">best_marginal_score</span><span class="p">:</span>
                     <span class="n">argmax_marginal_score</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-
             <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tie</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">argmax_marginal_score</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">resolute</span><span class="p">:</span>
                 <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tied_projects</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">selected_project</span> <span class="ow">in</span> <span class="n">tied_projects</span><span class="p">:</span>
                 <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">selected_project</span><span class="p">]</span>
-                <span class="n">aux</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">sats</span><span class="p">,</span> <span class="n">allocs</span><span class="p">,</span> <span class="n">new_alloc</span><span class="p">,</span> <span class="n">tie</span><span class="p">,</span> <span class="n">resolute</span><span class="p">)</span>
+                <span class="n">new_cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">new_alloc</span><span class="p">)</span>
+                <span class="n">new_feasible</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">feasible</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">project</span> <span class="o">!=</span> <span class="n">selected_project</span> <span class="ow">and</span> <span class="n">new_cost</span> <span class="o">+</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">:</span>
+                        <span class="n">new_feasible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+                <span class="n">aux</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">new_feasible</span><span class="p">,</span> <span class="n">sats</span><span class="p">,</span> <span class="n">allocs</span><span class="p">,</span> <span class="n">new_alloc</span><span class="p">,</span> <span class="n">tie</span><span class="p">,</span> <span class="n">resolute</span><span class="p">)</span>
 
     <span class="n">initial_budget_allocation</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">budget_allocation</span><span class="p">)</span>
+    <span class="n">initial_cost</span> <span class="o">=</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)</span>
     <span class="n">all_budget_allocations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">feasible_projects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">initial_budget_allocation</span> <span class="ow">and</span> <span class="n">initial_cost</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">:</span>
+            <span class="n">feasible_projects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">feasible_projects</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">feasible_projects</span><span class="p">)</span>
     <span class="n">aux</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span>
         <span class="n">profile</span><span class="p">,</span>
+        <span class="n">feasible_projects</span><span class="p">,</span>
         <span class="n">sat_profile</span><span class="p">,</span>
         <span class="n">all_budget_allocations</span><span class="p">,</span>
         <span class="n">initial_budget_allocation</span><span class="p">,</span>
@@ -412,13 +419,13 @@ document.write(`
             <span class="n">resoluteness</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">projects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+    <span class="n">projects</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">budget_allocation</span><span class="p">:</span>
         <span class="n">projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
     <span class="n">projects</span> <span class="o">=</span> <span class="n">tie_breaking</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">projects</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">satisfaction_density</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">total_sat</span> <span class="o">=</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">total_satisfaction</span><span class="p">([</span><span class="n">proj</span><span class="p">])</span>
+        <span class="n">total_sat</span> <span class="o">=</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">total_satisfaction_project</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">total_sat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">total_sat</span><span class="p">,</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
@@ -436,7 +443,7 @@ document.write(`
         <span class="k">if</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">remaining_budget</span><span class="p">:</span>
             <span class="n">selection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
             <span class="n">remaining_budget</span> <span class="o">-=</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
-    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">selection</span>
 
 
 <div class="viewcode-block" id="greedy_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.greedywelfare.greedy_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">greedy_utilitarian_welfare</span><span class="p">(</span>
@@ -444,7 +451,7 @@ document.write(`
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_sat_additive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">is_sat_additive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -498,7 +505,8 @@ document.write(`
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="p">)</span>
-        <span class="n">is_sat_additive</span> <span class="o">=</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">sat_class</span><span class="p">,</span> <span class="n">AdditiveSatisfaction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_sat_additive</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">is_sat_additive</span> <span class="o">=</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">sat_class</span><span class="p">,</span> <span class="n">AdditiveSatisfaction</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_sat_additive</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">greedy_utilitarian_scheme_additive</span><span class="p">(</span>
