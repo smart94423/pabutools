@@ -26,7 +26,6 @@ from pabutools.fractions import frac
 
 from typing import TYPE_CHECKING
 
-
 if TYPE_CHECKING:
     from pabutools.election.profile import AbstractProfile
 
@@ -65,13 +64,13 @@ class AdditiveSatisfaction(SatisfactionMeasure):
     """
 
     def __init__(
-        self,
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractBallot,
-        func: Callable[
-            [Instance, AbstractProfile, AbstractBallot, Project, dict], Number
-        ],
+            self,
+            instance: Instance,
+            profile: AbstractProfile,
+            ballot: AbstractBallot,
+            func: Callable[
+                [Instance, AbstractProfile, AbstractBallot, Project, dict], Number
+            ],
     ) -> None:
         SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.func = func
@@ -79,7 +78,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         self.precomputed_values = self.preprocessing(instance, profile, ballot)
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ) -> dict:
         """
         Preprocessing based on the instance, the profile and the ballot that returns a dictionary of precomputed
@@ -117,24 +116,30 @@ class AdditiveSatisfaction(SatisfactionMeasure):
                 The satisfaction of the project.
 
         """
-        if project in self.scores:
-            return self.scores[project]
-        score = self.func(
-            self.instance, self.profile, self.ballot, project, self.precomputed_values
-        )
-        self.scores[project] = score
+        return self.func(
+                self.instance, self.profile, self.ballot, project, self.precomputed_values
+            )
+        score = self.scores.get(project, None)
+        if score is None:
+            score = self.func(
+                self.instance, self.profile, self.ballot, project, self.precomputed_values
+            )
+            self.scores[project] = score
         return score
 
-    def sat(self, projects: Iterable[Project]) -> Number:
-        return sum(self.get_project_sat(project) for project in projects)
+    def sat(self, proj: Iterable[Project]) -> Number:
+        return sum(self.get_project_sat(p) for p in proj)
+
+    def sat_project(self, project: Project) -> Number:
+        return self.get_project_sat(project)
 
 
 def cardinality_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> int:
     """
     Computes the cardinality satisfaction for ballots. It is equal to 1 if the project is appears in the ballot and
@@ -177,7 +182,7 @@ class Cardinality_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(
             self, instance, profile, ballot, cardinality_sat_func
@@ -185,11 +190,11 @@ class Cardinality_Sat(AdditiveSatisfaction):
 
 
 def relative_cardinality_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> int:
     """
     Computes the relative cardinality satisfaction. If the project appears in the ballot, it is equal
@@ -240,14 +245,14 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(
             self, instance, profile, ballot, relative_cardinality_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         return {
             "max_budget_allocation_card": max_budget_allocation_cardinality(
@@ -257,11 +262,11 @@ class Relative_Cardinality_Sat(AdditiveSatisfaction):
 
 
 def cost_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> int:
     """
     Computes the cost satisfaction for ballots. It is equal to the cost of the project if it appears in the
@@ -304,17 +309,17 @@ class Cost_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(self, instance, profile, ballot, cost_sat_func)
 
 
 def relative_cost_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost
@@ -364,14 +369,14 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(
             self, instance, profile, ballot, relative_cost_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         return {
             "max_budget_allocation_cost": max_budget_allocation_cost(
@@ -381,11 +386,11 @@ class Relative_Cost_Sat(AdditiveSatisfaction):
 
 
 def relative_cost_approx_normaliser_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the relative cost satisfaction for ballots using an approximate normaliser: the minimum of the total cost of the projects
@@ -433,14 +438,14 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(
             self, instance, profile, ballot, relative_cost_approx_normaliser_sat_func
         )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         return {
             "normalizer": min(total_cost([p for p in ballot]), instance.budget_limit)
@@ -448,11 +453,11 @@ class Relative_Cost_Approx_Normaliser_Sat(AdditiveSatisfaction):
 
 
 def add_cost_sqrt_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved
@@ -496,7 +501,7 @@ class Additive_Cost_Sqrt_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         if isinstance(ballot, AbstractApprovalBallot):
             AdditiveSatisfaction.__init__(
@@ -511,11 +516,11 @@ class Additive_Cost_Sqrt_Sat(AdditiveSatisfaction):
 
 
 def additive_cost_log_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected
@@ -559,7 +564,7 @@ class Additive_Cost_Log_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         if isinstance(ballot, AbstractApprovalBallot):
             AdditiveSatisfaction.__init__(
@@ -574,11 +579,11 @@ class Additive_Cost_Log_Sat(AdditiveSatisfaction):
 
 
 def effort_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the effort satisfaction for ballots. If the project appears in the ballot, it is equal to the cost of the
@@ -625,17 +630,17 @@ class Effort_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractBallot
     ):
         AdditiveSatisfaction.__init__(self, instance, profile, ballot, effort_sat_func)
 
 
 def additive_card_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractCardinalBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractCardinalBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the project.
@@ -677,10 +682,10 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self,
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractCardinalBallot,
+            self,
+            instance: Instance,
+            profile: AbstractProfile,
+            ballot: AbstractCardinalBallot,
     ) -> None:
         if isinstance(ballot, AbstractCardinalBallot):
             AdditiveSatisfaction.__init__(
@@ -695,11 +700,11 @@ class Additive_Cardinal_Sat(AdditiveSatisfaction):
 
 
 def additive_card_relative_sat_func(
-    instance: Instance,
-    profile: AbstractProfile,
-    ballot: AbstractCardinalBallot,
-    project: Project,
-    precomputed_values: dict,
+        instance: Instance,
+        profile: AbstractProfile,
+        ballot: AbstractCardinalBallot,
+        project: Project,
+        precomputed_values: dict,
 ) -> Number:
     """
     Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the
@@ -747,10 +752,10 @@ class Additive_Cardinal_Relative_Sat(AdditiveSatisfaction):
     """
 
     def __init__(
-        self,
-        instance: Instance,
-        profile: AbstractProfile,
-        ballot: AbstractCardinalBallot,
+            self,
+            instance: Instance,
+            profile: AbstractProfile,
+            ballot: AbstractCardinalBallot,
     ) -> None:
         if isinstance(ballot, AbstractCardinalBallot):
             AdditiveSatisfaction.__init__(
@@ -764,7 +769,7 @@ class Additive_Cardinal_Relative_Sat(AdditiveSatisfaction):
             )
 
     def preprocessing(
-        self, instance: Instance, profile: AbstractProfile, ballot: AbstractCardinalBallot
+            self, instance: Instance, profile: AbstractProfile, ballot: AbstractCardinalBallot
     ):
         res = 0
         mip_model = Model()

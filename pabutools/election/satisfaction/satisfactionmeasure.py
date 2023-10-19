@@ -95,6 +95,23 @@ class SatisfactionMeasure(ABC):
                 The corresponding satisfaction
         """
 
+    @abstractmethod
+    def sat_project(self, project: Project) -> Number:
+        """
+        Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
+        for a single project.
+
+        Parameters
+        ----------
+            project : :py:class:`~pabutools.election.instance.Project`
+                The project.
+
+        Returns
+        -------
+            Number
+                The corresponding satisfaction
+        """
+
 
 class GroupSatisfactionMeasure(ABC, Iterable):
     """
@@ -136,10 +153,24 @@ class GroupSatisfactionMeasure(ABC, Iterable):
                 The total satisfaction for the collection of projects.
 
         """
-        res = 0
-        for sat in self:
-            res += sat.sat(projects) * self.multiplicity(sat)
-        return res
+        return sum(sat.sat(projects) * self.multiplicity(sat) for sat in self)
+
+    def total_satisfaction_project(self, project: Project) -> Number:
+        """
+        Sums up the satisfaction of all the satisfaction measures for the given project.
+
+        Parameters
+        ----------
+            project : :py:class:`~pabutools.election.instance.Project`
+                The project.
+
+        Returns
+        -------
+            Number
+                The total satisfaction for the collection of projects.
+
+        """
+        return sum(sat.sat_project(project) * self.multiplicity(sat) for sat in self)
 
     @abstractmethod
     def remove_satisfied(

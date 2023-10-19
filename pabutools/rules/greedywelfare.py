@@ -55,18 +55,14 @@ def greedy_utilitarian_scheme(
             (`resoluteness = False`).
     """
 
-    def aux(inst, prof, sats, allocs, alloc, tie, resolute):
-        current_cost = total_cost(alloc)
-        feasible = set(
-            project
-            for project in instance
-            if project not in alloc
-            and current_cost + project.cost <= instance.budget_limit
-        )
+    def aux(inst, prof, feasible, sats, allocs, alloc, tie, resolute):
         if len(feasible) == 0:
-            alloc.sort()
-            if alloc not in allocs:
+            if resolute:
                 allocs.append(alloc)
+            else:
+                alloc.sort()
+                if alloc not in allocs:
+                    allocs.append(alloc)
         else:
             best_marginal_score = None
             argmax_marginal_score = []
@@ -77,31 +73,42 @@ def greedy_utilitarian_scheme(
                         sats.total_satisfaction(new_alloc)
                         - sats.total_satisfaction(alloc),
                         project.cost,
-                    )
+                        )
                 else:
                     total_marginal_score = inf
 
                 if (
-                    best_marginal_score is None
-                    or total_marginal_score > best_marginal_score
+                        best_marginal_score is None
+                        or total_marginal_score > best_marginal_score
                 ):
                     best_marginal_score = total_marginal_score
                     argmax_marginal_score = [project]
                 elif total_marginal_score == best_marginal_score:
                     argmax_marginal_score.append(project)
-
             tied_projects = tie.order(inst, prof, argmax_marginal_score)
             if resolute:
                 tied_projects = tied_projects[:1]
             for selected_project in tied_projects:
                 new_alloc = copy(alloc) + [selected_project]
-                aux(inst, prof, sats, allocs, new_alloc, tie, resolute)
+                new_cost = total_cost(new_alloc)
+                new_feasible = []
+                for project in feasible:
+                    if project != selected_project and new_cost + project.cost <= instance.budget_limit:
+                        new_feasible.append(project)
+                aux(inst, prof, new_feasible, sats, allocs, new_alloc, tie, resolute)
 
     initial_budget_allocation = copy(budget_allocation)
+    initial_cost = total_cost(initial_budget_allocation)
     all_budget_allocations = []
+    feasible_projects = []
+    for p in instance:
+        if p not in initial_budget_allocation and initial_cost + p.cost <= instance.budget_limit:
+            feasible_projects.append(p)
+    feasible_projects = sorted(feasible_projects)
     aux(
         instance,
         profile,
+        feasible_projects,
         sat_profile,
         all_budget_allocations,
         initial_budget_allocation,
@@ -156,13 +163,13 @@ def greedy_utilitarian_scheme_additive(
             resoluteness,
         )
 
-    projects = list(instance)
+    projects = sorted(instance)
     for project in budget_allocation:
         projects.remove(project)
     projects = tie_breaking.order(instance, profile, projects)
 
     def satisfaction_density(proj):
-        total_sat = sat_profile.total_satisfaction([proj])
+        total_sat = sat_profile.total_satisfaction_project(proj)
         if total_sat > 0:
             if proj.cost > 0:
                 return frac(total_sat, proj.cost)
@@ -180,7 +187,7 @@ def greedy_utilitarian_scheme_additive(
         if project.cost <= remaining_budget:
             selection.append(project)
             remaining_budget -= project.cost
-    return sorted(selection)
+    return selection
 
 
 def greedy_utilitarian_welfare(

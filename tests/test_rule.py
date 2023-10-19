@@ -15,7 +15,7 @@ from pabutools.election.satisfaction import (
     Additive_Cost_Sqrt_Sat,
     Additive_Cost_Log_Sat,
 )
-from pabutools.election.instance import Project, Instance
+from pabutools.election.instance import Project, Instance, total_cost
 from pabutools.rules.phragmen import sequential_phragmen
 from pabutools.rules.exhaustion import (
     completion_by_rule_combination,
@@ -343,6 +343,8 @@ def run_sat_rule(rule, verbose=False):
                             )
                             print(f"Sat profile: {sat_profile}")
                             print(f"Initial alloc: {test_election.initial_alloc}")
+                            print("------------------")
+
                         resolute_out = rule(
                             test_election.instance,
                             profile,
@@ -351,6 +353,10 @@ def run_sat_rule(rule, verbose=False):
                             resoluteness=True,
                             initial_budget_allocation=test_election.initial_alloc,
                         )
+                        if verbose:
+                            print(
+                                f"Res outcome:  {resolute_out} -- In irres: {sorted(resolute_out) in test_election.irr_results_sat[rule][sat_class]}"
+                            )
                         irresolute_out = sorted(
                             rule(
                                 test_election.instance,
@@ -362,18 +368,11 @@ def run_sat_rule(rule, verbose=False):
                             )
                         )
                         if verbose:
-                            print(
-                                f"Res outcome:  {resolute_out} -- In irres: {resolute_out in test_election.irr_results_sat[rule][sat_class]}"
-                            )
                             print(f"Irres outcome:  {irresolute_out}")
                             print(
                                 f"Irres expected: {test_election.irr_results_sat[rule][sat_class]}"
                             )
-                        assert (
-                            resolute_out
-                            in test_election.irr_results_sat[rule][sat_class]
-                        )
-                        assert resolute_out == rule(
+                        resolute_out_sat_profile = rule(
                             test_election.instance,
                             test_election.profile,
                             resoluteness=True,
@@ -382,6 +381,19 @@ def run_sat_rule(rule, verbose=False):
                             ),
                             initial_budget_allocation=test_election.initial_alloc,
                         )
+                        if verbose:
+                            print(
+                                f"Res outcome with sat_profile: {resolute_out_sat_profile} -- Same: {resolute_out == resolute_out_sat_profile}")
+
+                        assert total_cost(resolute_out) <= test_election.instance.budget_limit
+                        assert total_cost(resolute_out_sat_profile) <= test_election.instance.budget_limit
+                        for res in irresolute_out:
+                            assert total_cost(res) <= test_election.instance.budget_limit
+                        assert (
+                            sorted(resolute_out)
+                            in test_election.irr_results_sat[rule][sat_class]
+                        )
+                        assert sorted(resolute_out) == sorted(resolute_out_sat_profile)
                         assert (
                             irresolute_out
                             == test_election.irr_results_sat[rule][sat_class]
@@ -482,7 +494,7 @@ class TestRule(TestCase):
         run_non_sat_rule(sequential_phragmen)
 
     def test_mes_approval(self):
-        run_sat_rule(method_of_equal_shares)
+        run_sat_rule(method_of_equal_shares, verbose=False)
         run_sat_rule(mes_iterated, verbose=False)
         run_sat_rule(mes_iterated_completed, verbose=False)
         with self.assertRaises(ValueError):
@@ -525,7 +537,7 @@ class TestRule(TestCase):
             {"sat_class": Cost_Sat},
             budget_step=frac(1, 24),
         )
-        assert budget_allocation_mes_iterated == [
+        assert sorted(budget_allocation_mes_iterated) == [
             projects[0],
             projects[1],
             projects[2],
@@ -540,7 +552,7 @@ class TestRule(TestCase):
             budget_step=frac(1, 24),
             initial_budget_allocation=[projects[6]],
         )
-        assert budget_allocation_mes_iterated == [
+        assert sorted(budget_allocation_mes_iterated) == [
             projects[0],
             projects[1],
             projects[2],
@@ -592,7 +604,7 @@ class TestRule(TestCase):
             [method_of_equal_shares, greedy_utilitarian_welfare],
             [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
         )
-        assert budget_allocation_mes_iterated == [projects[0], projects[1], projects[2]]
+        assert sorted(budget_allocation_mes_iterated) == [projects[0], projects[1], projects[2]]
         budget_allocation_mes_iterated = completion_by_rule_combination(
             instance,
             profile,
@@ -600,7 +612,7 @@ class TestRule(TestCase):
             [{"sat_class": Cost_Sat}, {"sat_class": Cost_Sat}],
             initial_budget_allocation=[projects[5]],
         )
-        assert budget_allocation_mes_iterated == [
+        assert sorted(budget_allocation_mes_iterated) == [
             projects[0],
             projects[2],
             projects[3],

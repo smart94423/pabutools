@@ -66,6 +66,9 @@ class PositionalSatisfaction(SatisfactionMeasure):
         scores = [self.positional_func(self.ballot, project) for project in projects]
         return self.aggregation_func(scores)
 
+    def sat_project(self, project: Project) -> Number:
+        return self.sat([project])
+
 
 def borda_sat_func(ballot: AbstractOrdinalBallot, project: Project) -> int:
     """

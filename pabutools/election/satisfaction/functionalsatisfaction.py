@@ -72,6 +72,9 @@ class FunctionalSatisfaction(SatisfactionMeasure):
     def sat(self, projects: Iterable[Project]) -> Number:
         return self.func(self.instance, self.profile, self.ballot, projects)
 
+    def sat_project(self, project: Project) -> Number:
+        return self.sat([project])
+
 
 def cc_sat_func_app(
     instance: Instance,

@@ -46,7 +46,7 @@ def max_additive_utilitarian_welfare_scheme(
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
-    score = {p: sat_profile.total_satisfaction([p]) for p in instance}
+    score = {p: sat_profile.total_satisfaction_project(p) for p in instance}
 
     mip_model = Model("MaxWelfare")
     mip_model.verbose = 0
