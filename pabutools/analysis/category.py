@@ -2,13 +2,13 @@ from collections.abc import Iterable
 from numbers import Number
 
 import numpy as np
-from pabutools.election.instance import Instance, Project
-from pabutools.election.profile import ApprovalProfile, ApprovalMultiProfile
+
+from pabutools.election import AbstractApprovalProfile, Instance, Project
 
 
 def category_proportionality(
     instance: Instance,
-    profile: ApprovalProfile | ApprovalMultiProfile,
+    profile: AbstractApprovalProfile,
     budget_allocation: Iterable[Project],
 ) -> Number:
     """
