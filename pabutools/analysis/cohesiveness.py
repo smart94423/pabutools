@@ -49,7 +49,7 @@ def cohesive_groups(instance: Instance, profile: AbstractProfile, projects=None)
     if projects is None:
         projects = instance
     res = set()
-    for group in powerset(range(profile.num_ballots())):
+    for group in powerset(profile):
         for project_set in powerset(projects):
             if isinstance(profile, AbstractApprovalProfile):
                 if is_cohesive_approval(instance, profile, project_set, group):
