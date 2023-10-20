@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "pabutools"
-version = "1.0.8"
+version = "1.0.9"
 description = "Implementation of all the tools necessary to explore and analyse participatory budgeting elections"
 authors = [
   { name = "Simon Rey", email = "reysimon@orange.fr" },
