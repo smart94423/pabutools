@@ -1,15 +1,21 @@
 from collections.abc import Iterable
 
 from pabutools.analysis.cohesiveness import cohesive_groups
-from pabutools.election import Instance, AbstractApprovalProfile, Project, SatisfactionMeasure, Additive_Cardinal_Sat, \
-    AbstractCardinalProfile
+from pabutools.election import (
+    Instance,
+    AbstractApprovalProfile,
+    Project,
+    SatisfactionMeasure,
+    Additive_Cardinal_Sat,
+    AbstractCardinalProfile,
+)
 
 
 def is_strong_EJR_approval(
-        instance: Instance,
-        profile: AbstractApprovalProfile,
-        sat_class: type[SatisfactionMeasure],
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractApprovalProfile,
+    sat_class: type[SatisfactionMeasure],
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         all_agents_sat = True
@@ -23,10 +29,10 @@ def is_strong_EJR_approval(
 
 
 def is_EJR_approval(
-        instance: Instance,
-        profile: AbstractApprovalProfile,
-        sat_class: type[SatisfactionMeasure],
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractApprovalProfile,
+    sat_class: type[SatisfactionMeasure],
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         one_agent_sat = False
@@ -40,10 +46,10 @@ def is_EJR_approval(
 
 
 def is_PJR_approval(
-        instance: Instance,
-        profile: AbstractApprovalProfile,
-        sat_class: type[SatisfactionMeasure],
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractApprovalProfile,
+    sat_class: type[SatisfactionMeasure],
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         threshold = sat_class(instance, profile, project_set).sat(project_set)
@@ -55,9 +61,9 @@ def is_PJR_approval(
 
 
 def is_strong_EJR_cardinal(
-        instance: Instance,
-        profile: AbstractCardinalProfile,
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractCardinalProfile,
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         all_agents_sat = True
@@ -72,9 +78,9 @@ def is_strong_EJR_cardinal(
 
 
 def is_EJR_cardinal(
-        instance: Instance,
-        profile: AbstractCardinalProfile,
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractCardinalProfile,
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         one_agent_sat = False
@@ -89,9 +95,9 @@ def is_EJR_cardinal(
 
 
 def is_PJR_cardinal(
-        instance: Instance,
-        profile: AbstractCardinalProfile,
-        budget_allocation: Iterable[Project]
+    instance: Instance,
+    profile: AbstractCardinalProfile,
+    budget_allocation: Iterable[Project],
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         threshold = sum(min(b[p] for b in profile) for p in project_set)
