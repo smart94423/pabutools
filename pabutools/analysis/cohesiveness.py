@@ -71,21 +71,23 @@ def cohesive_groups(instance: Instance, profile: AbstractProfile, projects=None)
         projects = instance
     res = []
     for group in powerset(profile):
-        for project_set in powerset(projects):
-            if isinstance(profile, AbstractApprovalProfile):
-                if is_cohesive_approval(instance, profile, project_set, group):
-                    res.append((group, project_set))
-            elif isinstance(profile, AbstractCardinalProfile):
-                alpha_min = {p: min(b[p] for b in profile) for p in project_set}
-                if is_cohesive_cardinal(
-                    instance, profile, project_set, group, alpha_min
-                ):
-                    res.append((group, project_set))
-            else:
-                raise NotImplementedError(
-                    f"We cannot find cohesive groups in a profile of type {type(profile)}. "
-                    f"Only approval and cardinal profiles are supported."
-                )
+        if len(group) > 0:
+            for project_set in powerset(projects):
+                if len(project_set) > 0:
+                    if isinstance(profile, AbstractApprovalProfile):
+                        if is_cohesive_approval(instance, profile, project_set, group):
+                            res.append((group, project_set))
+                    elif isinstance(profile, AbstractCardinalProfile):
+                        alpha_min = {p: min(b[p] for b in group) for p in project_set}
+                        if is_cohesive_cardinal(
+                            instance, profile, project_set, group, alpha_min
+                        ):
+                            res.append((group, project_set))
+                    else:
+                        raise NotImplementedError(
+                            f"We cannot find cohesive groups in a profile of type {type(profile)}. "
+                            f"Only approval and cardinal profiles are supported."
+                        )
     return res
 
 
