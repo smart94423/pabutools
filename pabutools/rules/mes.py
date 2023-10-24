@@ -25,7 +25,9 @@ class MESVoter:
 
     Parameters
     ----------
-        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+        index: Number
+            The index of the voter in the voter list
+        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot of the voter.
         sat: SatisfactionMeasure
             The satisfaction measure corresponding to the ballot.
@@ -36,7 +38,7 @@ class MESVoter:
 
     Attributes
     ----------
-        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
+        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot of the voter.
         sat: SatisfactionMeasure
             The satisfaction measure corresponding to the ballot.
@@ -48,32 +50,18 @@ class MESVoter:
 
     def __init__(
         self,
+        index: Number,
         ballot: AbstractBallot,
         sat: SatisfactionMeasure,
         budget: Number,
         multiplicity: int,
     ):
+        self.index = index
         self.ballot = ballot
         self.sat = sat
         self.budget = budget
         self.multiplicity = multiplicity
-
-    def total_sat(self, projs: Iterable[Project]) -> Number:
-        """
-        Returns the total satisfaction of a given subset of projects. It is equal to the satisfaction for the projects,
-        multiplied by the multiplicity.
-
-        Parameters
-        ----------
-            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]
-                The collection of projects.
-
-        Returns
-        -------
-            Number
-                The total satisfaction.
-        """
-        return self.multiplicity * self.sat.sat(projs)
+        self.budget_over_sat_map = dict()
 
     def total_sat_project(self, proj: Project) -> Number:
         """
@@ -82,8 +70,8 @@ class MESVoter:
 
         Parameters
         ----------
-            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]
-                The collection of projects.
+            proj: :py:class:`~pabutools.election.instance.Project`
+                The project.
 
         Returns
         -------
@@ -103,22 +91,6 @@ class MESVoter:
         """
         return self.multiplicity * self.budget
 
-    def budget_over_sat(self, projs):
-        """
-        Returns the budget divided by the satisfaction for a given subset of projects.
-
-        Parameters
-        ----------
-            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]
-                The collection of projects.
-
-        Returns
-        -------
-            Number
-                The total satisfaction.
-        """
-        return frac(self.budget, self.sat.sat(projs))
-
     def budget_over_sat_project(self, proj):
         """
         Returns the budget divided by the satisfaction for a given project.
@@ -133,7 +105,11 @@ class MESVoter:
             Number
                 The total satisfaction.
         """
-        return frac(self.budget, self.sat.sat_project(proj))
+        res = self.budget_over_sat_map.get(self.budget, None)
+        if res is None:
+            res = frac(self.budget, self.sat.sat_project(proj))
+            self.budget_over_sat_map[self.budget] = res
+        return res
 
     def __str__(self):
         return f"MESVoter[{self.budget}]"
@@ -142,215 +118,44 @@ class MESVoter:
         return f"MESVoter[{self.budget}]"
 
 
-def mes_inner_algo_general(
-    inst,
-    prof,
-    voters,
-    tie,
-    projects,
-    alloc,
-    total_scores,
-    supporters,
-    prev_affordability,
-    all_allocs,
-    resolute,
+class MESProject(Project):
+    """
+    Class used to summarise the projects in a run of MES. Mostly use to store details that can be retrieved
+    efficiently.
+    """
+
+    def __init__(self, project):
+        Project.__init__(self, project.name, project.cost)
+        self.project = project
+        self.total_sat = None
+        self.sat_supporter_map = dict()
+        self.unique_sat_supporter = None
+        self.supporter_indices = []
+        self.initial_affordability = None
+        self.affordability = None
+
+    def supporters_sat(self, supporter: MESVoter):
+        if self.unique_sat_supporter:
+            return self.unique_sat_supporter
+        return supporter.sat.sat_project(self)
+
+    def __str__(self):
+        return f"MESProject[{self.name}, {float(self.affordability)}]"
+
+    def __repr__(self):
+        return f"MESProject[{self.name}, {float(self.affordability)}]"
+
+
+def mes_inner_algo(
+        instance: Instance,
+        profile: AbstractProfile,
+        voters: list[MESVoter],
+        projects: set[MESProject],
+        tie_breaking_rule: TieBreakingRule,
+        current_alloc: list[Project],
+        all_allocs: list[list[Project]],
+        resoluteness: bool,
 ) -> None:
-    tied_projects = None
-    best_afford = float("inf")
-    for project in sorted(projects, key=lambda p: prev_affordability[p]):
-        if (
-            prev_affordability[project] > best_afford
-        ):  # best possible afford for this round isn't good enough
-            break
-        if (
-            sum(voters[i].total_budget() for i in supporters[project])
-            < project.cost
-        ):  # unaffordable, can delete
-            projects.remove(project)
-            continue
-        supporters[project].sort(
-            key=lambda i: voters[i].budget_over_sat_project(project)
-        )
-        paid_so_far = 0
-        denominator = total_scores[project]
-        for supporter_index in supporters[project]:
-            supporter = voters[supporter_index]
-            afford_factor = frac(project.cost - paid_so_far, denominator)
-            if (
-                afford_factor * supporter.sat.sat_project(project)
-                <= supporter.budget
-            ):
-                # found the best afford_factor for this candidate
-                prev_affordability[project] = afford_factor
-                if afford_factor < best_afford:
-                    best_afford = afford_factor
-                    tied_projects = [project]
-                elif afford_factor == best_afford:
-                    tied_projects.append(project)
-                break
-            paid_so_far += supporter.total_budget()
-            denominator -= supporter.total_sat_project(project)
-    if tied_projects is None:
-        if resolute:
-            all_allocs.append(alloc)
-        else:
-            alloc.sort()
-            if alloc not in all_allocs:
-                all_allocs.append(alloc)
-    else:
-        tied_projects = tie.order(inst, prof, tied_projects)
-        if resolute:
-            tied_projects = tied_projects[:1]
-        for selected_project in tied_projects:
-            if resolute:
-                new_alloc = alloc
-                new_projects = projects
-                new_voters = voters
-                new_afford = prev_affordability
-            else:
-                new_alloc = copy(alloc)
-                new_projects = copy(projects)
-                new_voters = deepcopy(voters)
-                new_afford = deepcopy(prev_affordability)
-            new_alloc.append(selected_project)
-            new_projects.remove(selected_project)
-            for supporter_index in supporters[selected_project]:
-                supporter = new_voters[supporter_index]
-                supporter.budget -= min(
-                    supporter.budget,
-                    best_afford * supporter.sat.sat_project(selected_project),
-                )
-            mes_inner_algo_general(
-                inst,
-                prof,
-                new_voters,
-                tie,
-                new_projects,
-                new_alloc,
-                total_scores,
-                supporters,
-                new_afford,
-                all_allocs,
-                resolute,
-            )
-
-
-def mes_inner_algo_binary_satisfactions(
-        inst,
-        prof,
-        voters,
-        tie,
-        projects,
-        alloc,
-        total_scores,
-        supporters,
-        supporters_sat,
-        prev_affordability,
-        all_allocs,
-        resolute,
-) -> None:
-    tied_projects = None
-    best_afford = float("inf")
-    # print("========================")
-    # print(f"{float(prev_affordability[Project('40')])} -- {float(frac(1, prev_affordability[Project('40')]))}")
-    # tmp = sorted([(p, a) for p, a in prev_affordability.items()], key=lambda x: x[1])
-    # for p, a in tmp[:5]:
-    #     print(f"{p} -- {float(a)} -- {float(frac(1, a))}")
-    for project in sorted(projects, key=lambda p: prev_affordability[p]):
-        # print(f"\tConsidering: {project}")
-        if (
-            prev_affordability[project] > best_afford
-        ):  # best possible afford for this round isn't good enough
-            break
-        if (
-            sum(voters[i].total_budget() for i in supporters[project])
-            < project.cost
-        ):  # unaffordable, can delete
-            projects.remove(project)
-            continue
-        supporters[project].sort(
-            key=lambda i: voters[i].budget_over_sat_project(project)
-        )
-        paid_so_far = 0
-        denominator = total_scores[project]
-        for supporter_index in supporters[project]:
-            supporter = voters[supporter_index]
-            afford_factor = frac(project.cost - paid_so_far, denominator)
-            eff_vote_count = frac(denominator, project.cost - paid_so_far)
-            if (
-                afford_factor * supporters_sat[project]
-                <= supporter.budget
-            ):
-                # found the best afford_factor for this project
-                prev_affordability[project] = afford_factor
-                # print(f"\t\tFactor: {float(afford_factor)} = ({project.cost} - {float(paid_so_far)})/{denominator}")
-                # print(f"\t\tEff: {float(eff_vote_count)}")
-                if afford_factor < best_afford:
-                    best_afford = afford_factor
-                    tied_projects = [project]
-                elif afford_factor == best_afford:
-                    tied_projects.append(project)
-                break
-            paid_so_far += supporter.total_budget()
-            denominator -= supporter.multiplicity * supporters_sat[project]
-    # print(f"{tied_projects}")
-    if tied_projects is None:
-        if resolute:
-            all_allocs.append(alloc)
-        else:
-            alloc.sort()
-            if alloc not in all_allocs:
-                all_allocs.append(alloc)
-    else:
-        tied_projects = tie.order(inst, prof, tied_projects)
-        if resolute:
-            tied_projects = tied_projects[:1]
-        for selected_project in tied_projects:
-            if resolute:
-                new_alloc = alloc
-                new_projects = projects
-                new_voters = voters
-                new_afford = prev_affordability
-            else:
-                new_alloc = copy(alloc)
-                new_projects = copy(projects)
-                new_voters = deepcopy(voters)
-                new_afford = deepcopy(prev_affordability)
-            new_alloc.append(selected_project)
-            new_projects.remove(selected_project)
-            for supporter_index in supporters[selected_project]:
-                supporter = new_voters[supporter_index]
-                supporter.budget -= min(
-                    supporter.budget,
-                    best_afford * supporters_sat[selected_project],
-                )
-            mes_inner_algo_binary_satisfactions(
-                inst,
-                prof,
-                new_voters,
-                tie,
-                new_projects,
-                new_alloc,
-                total_scores,
-                supporters,
-                supporters_sat,
-                new_afford,
-                all_allocs,
-                resolute,
-            )
-
-
-def method_of_equal_shares_scheme(
-    instance: Instance,
-    profile: AbstractProfile,
-    sat_profile: GroupSatisfactionMeasure,
-    initial_budget_per_voter: Number,
-    initial_budget_allocation: Iterable[Project],
-    tie_breaking: TieBreakingRule,
-    resoluteness=True,
-    budget_step=None,
-    binary_sat=False,
-) -> list[Project] | list[list[Project]]:
     """
     The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website
     `equalshares.net <https://equalshares.net/>`_ for details about how to compute the outcome of the rule.
@@ -361,11 +166,139 @@ def method_of_equal_shares_scheme(
             The instance.
         profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
+        voters: list[MESVoter]
+            The list of MESVoters, already instantiated with the necessary inner values.
+        projects: set[MESProject]
+            The set of MESProjects to take into account, already instantiated with the necessary inner
+            values.
+        tie_breaking_rule : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+            The tie-breaking rule used.
+        current_alloc: list[Project]
+            The budget allocation that is currently being built. Only populated via side effects.
+        all_allocs: list[list[Project]]
+            The set of all budget allocations returned so far. Only populated via side effects.
+        resoluteness : bool, optional
+            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
+            Defaults to True.
+    Returns
+    -------
+        Iterable[Project] | Iterable[Iterable[Project]]
+            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
+            (`resoluteness = False`).
+
+    """
+    tied_projects = None
+    best_afford = float("inf")
+    # print("========================")
+    # tmp = sorted(projects, key=lambda x: x.affordability)
+    # for p in tmp[:5]:
+    #     print(p)
+    for project in sorted(projects, key=lambda p: p.affordability):
+        # print(f"\tConsidering: {project}")
+        if (
+            project.affordability > best_afford
+        ):  # best possible afford for this round isn't good enough
+            # print(f"\t\t Skipped as affordability is too high: {float(project.affordability)} > {float(best_afford)}")
+            break
+        if (
+            sum(voters[i].total_budget() for i in project.supporter_indices)
+            < project.cost
+        ):  # unaffordable, can delete
+            # print(f"\t\t Removed for lack of budget: {float(sum(voters[i].total_budget() for i in project.supporter_indices))} < {float(project.cost)}")
+            projects.remove(project)
+            continue
+        project.supporter_indices.sort(
+            key=lambda i: voters[i].budget_over_sat_project(project)
+        )
+        paid_so_far = 0
+        denominator = project.total_sat
+        for i in project.supporter_indices:
+            supporter = voters[i]
+            afford_factor = frac(project.cost - paid_so_far, denominator)
+            if (
+                afford_factor * project.supporters_sat(supporter)
+                <= supporter.budget
+            ):
+                # found the best afford_factor for this project
+                project.affordability = afford_factor
+                # eff_vote_count = frac(denominator, project.cost - paid_so_far)
+                # print(f"\t\tFactor: {float(afford_factor)} = ({project.cost} - {float(paid_so_far)})/{denominator}")
+                # print(f"\t\tEff: {float(eff_vote_count)}")
+                if afford_factor < best_afford:
+                    best_afford = afford_factor
+                    tied_projects = [project]
+                elif afford_factor == best_afford:
+                    tied_projects.append(project)
+                break
+            paid_so_far += supporter.total_budget()
+            denominator -= supporter.multiplicity * project.supporters_sat(supporter)
+    # print(f"{tied_projects}")
+    if tied_projects is None:
+        if resoluteness:
+            all_allocs.append(current_alloc)
+        else:
+            current_alloc.sort()
+            if current_alloc not in all_allocs:
+                all_allocs.append(current_alloc)
+    else:
+        if len(tied_projects) > 1:
+            tied_projects = tie_breaking_rule.order(instance, profile, tied_projects)
+            if resoluteness:
+                tied_projects = tied_projects[:1]
+        for selected_project in tied_projects:
+            if resoluteness:
+                new_alloc = current_alloc
+                new_projects = projects
+                new_voters = voters
+            else:
+                new_alloc = copy(current_alloc)
+                new_projects = deepcopy(projects)
+                new_voters = deepcopy(voters)
+            new_alloc.append(selected_project.project)
+            new_projects.remove(selected_project)
+            for i in selected_project.supporter_indices:
+                supporter = new_voters[i]
+                supporter.budget -= min(
+                    supporter.budget,
+                    best_afford * selected_project.supporters_sat(supporter),
+                )
+            mes_inner_algo(
+                instance,
+                profile,
+                new_voters,
+                new_projects,
+                tie_breaking_rule,
+                new_alloc,
+                all_allocs,
+                resoluteness,
+            )
+
+
+def method_of_equal_shares_scheme(
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_profile: GroupSatisfactionMeasure,
+    initial_budget_per_voter: Number,
+    initial_budget_allocation: list[Project],
+    tie_breaking: TieBreakingRule,
+    resoluteness=True,
+    budget_step=None,
+    binary_sat=False,
+) -> list[Project] | list[list[Project]]:
+    """
+    The main wrapper to compute the outcome of the Method of Equal Shares (MES). This is where the
+    iterated method is implemented.
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
+            The profile.
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
         initial_budget_per_voter: Number
             The initial budget of a voter.
-        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
         tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
@@ -382,70 +315,49 @@ def method_of_equal_shares_scheme(
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
-    initial_projects = instance.difference(set(initial_budget_allocation))
-    scores = {
-        proj: sat_profile.total_satisfaction_project(proj) for proj in initial_projects
-    }
-    for proj, score in scores.items():
-        if proj.cost == 0:
-            initial_projects.remove(proj)
-            if score > 0:
-                initial_budget_allocation.append(proj)
+    index = 0
+    voters_details = []
+    for sat in sat_profile:
+        voters_details.append(MESVoter(index, sat.ballot, sat, initial_budget_per_voter, sat_profile.multiplicity(sat)))
+        index += 1
 
-    voters_details = [
-        MESVoter(sat.ballot, sat, initial_budget_per_voter, sat_profile.multiplicity(sat))
-        for sat in sat_profile
-    ]
-
-    supps = {
-        proj: [i for i, v in enumerate(voters_details) if v.sat.sat_project(proj) > 0]
-        for proj in initial_projects
-    }
-    if binary_sat:
-        projects_sat = {}
-        for p, s in supps.items():
-            if s:
-                projects_sat[p] = voters_details[s[0]].sat.sat_project(p)
+    projects = set()
+    for p in instance.difference(set(initial_budget_allocation)):
+        mes_p = MESProject(p)
+        total_sat = 0
+        for i, v in enumerate(voters_details):
+            indiv_sat = v.sat.sat_project(p)
+            if indiv_sat > 0:
+                total_sat += v.total_sat_project(p)
+                mes_p.supporter_indices.append(i)
+                if binary_sat:
+                    mes_p.unique_sat_supporter = indiv_sat
+                else:
+                    mes_p.sat_supporter_map[v] = indiv_sat
+        if total_sat > 0:
+            if p.cost > 0:
+                mes_p.total_sat = total_sat
+                afford = frac(p.cost, total_sat)
+                mes_p.initial_affordability = afford
+                mes_p.affordability = afford
+                projects.add(mes_p)
             else:
-                projects_sat[p] = 0
+                initial_budget_allocation.append(p)
 
-    initial_affordability = {
-        proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float("inf")
-        for proj in initial_projects
-    }
     previous_outcome = initial_budget_allocation
 
     while True:
         all_budget_allocations = []
-        if binary_sat:
-            mes_inner_algo_binary_satisfactions(
-                instance,
-                profile,
-                voters_details,
-                tie_breaking,
-                copy(initial_projects),
-                copy(initial_budget_allocation),
-                scores,
-                supps,
-                projects_sat,
-                deepcopy(initial_affordability),
-                all_budget_allocations,
-                resoluteness,
-            )
-        else:
-            mes_inner_algo_general(
-                instance,
-                profile,
-                voters_details,
-                tie_breaking,
-                copy(initial_projects),
-                copy(initial_budget_allocation),
-                scores,
-                supps,
-                deepcopy(initial_affordability),
-                all_budget_allocations,
-                resoluteness,
-            )
+        mes_inner_algo(
+            instance,
+            profile,
+            voters_details,
+            copy(projects),
+            tie_breaking,
+            copy(initial_budget_allocation),
+            all_budget_allocations,
+            resoluteness,
+        )
         if resoluteness:
             outcome = all_budget_allocations[0]
             if budget_step is None:
@@ -467,6 +379,8 @@ def method_of_equal_shares_scheme(
             previous_outcome = all_budget_allocations
         for voter in voters_details:
             voter.budget = initial_budget_per_voter
+        for p in projects:
+            p.affordability = p.initial_affordability
 
 
 def method_of_equal_shares(
@@ -476,7 +390,7 @@ def method_of_equal_shares(
     sat_profile: GroupSatisfactionMeasure = None,
     tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
-    initial_budget_allocation: Iterable[Project] = None,
+    initial_budget_allocation: list[Project] = None,
     budget_step=None,
     binary_sat=None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
@@ -499,7 +413,7 @@ def method_of_equal_shares(
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
             provided, but a satisfaction function is, the former is computed from the latter.
-        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
+        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
         tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.

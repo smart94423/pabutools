@@ -178,7 +178,7 @@ def equal_shares(N, C, cost, u, B):
         # would the next highest budget work?
         next_budget = budget + len(N)
         next_mes = equal_shares_fixed_budget(
-            N, C, cost, u, total_utility, approvers, next_budget, verbose=frac(next_budget, len(N)) > 301
+            N, C, cost, u, total_utility, approvers, next_budget, verbose=False
         )
         # print(f"Next: {next_mes}")
         current_cost = sum(cost[c] for c in next_mes)

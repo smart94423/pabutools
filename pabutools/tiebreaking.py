@@ -1,7 +1,7 @@
 from collections.abc import Callable, Iterable
 from numbers import Number
 
-from pabutools.election.profile import Profile
+from pabutools.election.profile import AbstractProfile
 from pabutools.election.instance import Instance, Project
 
 
@@ -26,13 +26,13 @@ class TieBreakingRule:
             project will be sorted.
     """
 
-    def __init__(self, func: Callable[[Instance, Profile, Project], Number]):
+    def __init__(self, func: Callable[[Instance, AbstractProfile, Project], Number]):
         self.func = func
 
     def order(
         self,
         instance: Instance,
-        profile: Profile,
+        profile: AbstractProfile,
         projects: Iterable[Project],
         key: Callable[..., Project] = None,
     ) -> list[Project]:
@@ -66,7 +66,7 @@ class TieBreakingRule:
     def untie(
         self,
         instance: Instance,
-        profile: Profile,
+        profile: AbstractProfile,
         projects: Iterable[Project],
         key: Callable[..., Project] = None,
     ) -> Project:
@@ -122,7 +122,7 @@ cost.
 """
 
 
-def refuse_to_break_ties(instance: Instance, profile: Profile, project: Project):
+def refuse_to_break_ties(instance: Instance, profile: AbstractProfile, project: Project):
     raise TieBreakingException("A tie occurred, but no tie-breaking rule was provided.")
 
 
