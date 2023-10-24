@@ -729,11 +729,20 @@ measure provided. For more details, see the `equalshares.net <https://equalshare
         resoluteness=False
     )
 
-Two important shortcuts are also defined by defaults for MES:
+MES can significantly under-use the budget. The idea of running the rule for different
+initial budget for the voters has been proposed in the scientific literature as a fix
+for that problem. The next section will present general methods to do so. For optimal
+performances, one should use the following:
 
-* :py:func:`~pabutools.rules.mes.mes_iterated`: corresponds to the method of equal shares used together with the exhaustion method by budget iteration (see :py:func:`~pabutools.rules.exhaustion.exhaustion_by_budget_increase`);
+.. code-block:: python
 
-* :py:func:`~pabutools.rules.mes.mes_iterated_completed`: completes the result of the method from the previous bullet point with the outcome of the greedy method (see :py:func:`~pabutools.rules.exhaustion.completion_by_rule_combination`).
+    outcome = method_of_equal_shares(
+        instance,
+        profile.as_multiprofile(), # Faster in general (typically if ballots repeat each others)
+        sat_class=Cost_Sat,
+        voter_budget_increment=1 # As soon as not-None, mes iterated is used
+    )
+
 
 Exhaustion Methods
 ^^^^^^^^^^^^^^^^^^
@@ -815,6 +824,9 @@ method (which only does something if the outcome is not already exhaustive).
         ],
     )
 
+Remember that for MES specifically, it is much faster to use the `voter_budget_increment`
+parameter directly to obtain the iterated version.
+
 Rule Composition
 ^^^^^^^^^^^^^^^^
 
@@ -854,7 +866,7 @@ the following:
     from pabutools.election import Instance, Project, ApprovalProfile, ApprovalBallot
     from pabutools.election import Cost_Sat, Cardinality_Sat
     from pabutools.rules import greedy_utilitarian_welfare, method_of_equal_shares
-    from pabutools.rules import exhaustion_by_budget_increase, popularity_comparison
+    from pabutools.rules import completion_by_rule_combination, popularity_comparison
 
     p = [Project("p" + str(i), 1) for i in range(10)]
     instance = Instance(p, budget_limit=5)
@@ -869,11 +881,11 @@ the following:
         return completion_by_rule_combination(
             instance,
             profile,
-            [exhaustion_by_budget_increase, greedy_utilitarian_welfare],
+            [method_of_equal_shares, greedy_utilitarian_welfare],
             [
                 {
-                    "rule": method_of_equal_shares,
-                    "rule_params": {"sat_class": Cost_Sat},
+                    "sat_class": Cost_Sat,
+                    "voter_budget_increment": 1,
                 },
                 {"sat_class": Cost_Sat},
             ],

@@ -988,11 +988,18 @@ measure provided. For more details, see the <a class="reference external" href="
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Two important shortcuts are also defined by defaults for MES:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="reference/rules/index.html#pabutools.rules.mes.mes_iterated" title="pabutools.rules.mes.mes_iterated"><code class="xref py py-func docutils literal notranslate"><span class="pre">mes_iterated()</span></code></a>: corresponds to the method of equal shares used together with the exhaustion method by budget iteration (see <a class="reference internal" href="reference/rules/index.html#pabutools.rules.exhaustion.exhaustion_by_budget_increase" title="pabutools.rules.exhaustion.exhaustion_by_budget_increase"><code class="xref py py-func docutils literal notranslate"><span class="pre">exhaustion_by_budget_increase()</span></code></a>);</p></li>
-<li><p><a class="reference internal" href="reference/rules/index.html#pabutools.rules.mes.mes_iterated_completed" title="pabutools.rules.mes.mes_iterated_completed"><code class="xref py py-func docutils literal notranslate"><span class="pre">mes_iterated_completed()</span></code></a>: completes the result of the method from the previous bullet point with the outcome of the greedy method (see <a class="reference internal" href="reference/rules/index.html#pabutools.rules.exhaustion.completion_by_rule_combination" title="pabutools.rules.exhaustion.completion_by_rule_combination"><code class="xref py py-func docutils literal notranslate"><span class="pre">completion_by_rule_combination()</span></code></a>).</p></li>
-</ul>
+<p>MES can significantly under-use the budget. The idea of running the rule for different
+initial budget for the voters has been proposed in the scientific literature as a fix
+for that problem. The next section will present general methods to do so. For optimal
+performances, one should use the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outcome</span> <span class="o">=</span> <span class="n">method_of_equal_shares</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="o">.</span><span class="n">as_multiprofile</span><span class="p">(),</span> <span class="c1"># Faster in general (typically if ballots repeat each others)</span>
+    <span class="n">sat_class</span><span class="o">=</span><span class="n">Cost_Sat</span><span class="p">,</span>
+    <span class="n">voter_budget_increment</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># As soon as not-None, mes iterated is used</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="exhaustion-methods">
 <h3>Exhaustion Methods<a class="headerlink" href="#exhaustion-methods" title="Permalink to this heading">#</a></h3>
@@ -1066,6 +1073,8 @@ method (which only does something if the outcome is not already exhaustive).</p>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>Remember that for MES specifically, it is much faster to use the <cite>voter_budget_increment</cite>
+parameter directly to obtain the iterated version.</p>
 </section>
 <section id="rule-composition">
 <h3>Rule Composition<a class="headerlink" href="#rule-composition" title="Permalink to this heading">#</a></h3>
@@ -1100,7 +1109,7 @@ the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">ApprovalBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">Cost_Sat</span><span class="p">,</span> <span class="n">Cardinality_Sat</span>
 <span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">,</span> <span class="n">method_of_equal_shares</span>
-<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">exhaustion_by_budget_increase</span><span class="p">,</span> <span class="n">popularity_comparison</span>
+<span class="kn">from</span> <span class="nn">pabutools.rules</span> <span class="kn">import</span> <span class="n">completion_by_rule_combination</span><span class="p">,</span> <span class="n">popularity_comparison</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">Project</span><span class="p">(</span><span class="s2">&quot;p&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">budget_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -1115,11 +1124,11 @@ the following:</p>
     <span class="k">return</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span>
         <span class="n">profile</span><span class="p">,</span>
-        <span class="p">[</span><span class="n">exhaustion_by_budget_increase</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">method_of_equal_shares</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
         <span class="p">[</span>
             <span class="p">{</span>
-                <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">method_of_equal_shares</span><span class="p">,</span>
-                <span class="s2">&quot;rule_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
+                <span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">,</span>
+                <span class="s2">&quot;voter_budget_increment&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">Cost_Sat</span><span class="p">},</span>
         <span class="p">],</span>
