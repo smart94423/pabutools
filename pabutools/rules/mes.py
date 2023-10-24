@@ -5,6 +5,7 @@ from copy import copy, deepcopy
 from collections.abc import Iterable
 from numbers import Number
 
+from pabutools.election import AbstractApprovalProfile
 from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
 from pabutools.election.ballot.ballot import AbstractBallot
 from pabutools.election.instance import Instance, Project
@@ -141,15 +142,214 @@ class MESVoter:
         return f"MESVoter[{self.budget}]"
 
 
-def mes_scheme(
+def mes_inner_algo_general(
+    inst,
+    prof,
+    voters,
+    tie,
+    projects,
+    alloc,
+    total_scores,
+    supporters,
+    prev_affordability,
+    all_allocs,
+    resolute,
+) -> None:
+    tied_projects = None
+    best_afford = float("inf")
+    for project in sorted(projects, key=lambda p: prev_affordability[p]):
+        if (
+            prev_affordability[project] > best_afford
+        ):  # best possible afford for this round isn't good enough
+            break
+        if (
+            sum(voters[i].total_budget() for i in supporters[project])
+            < project.cost
+        ):  # unaffordable, can delete
+            projects.remove(project)
+            continue
+        supporters[project].sort(
+            key=lambda i: voters[i].budget_over_sat_project(project)
+        )
+        paid_so_far = 0
+        denominator = total_scores[project]
+        for supporter_index in supporters[project]:
+            supporter = voters[supporter_index]
+            afford_factor = frac(project.cost - paid_so_far, denominator)
+            if (
+                afford_factor * supporter.sat.sat_project(project)
+                <= supporter.budget
+            ):
+                # found the best afford_factor for this candidate
+                prev_affordability[project] = afford_factor
+                if afford_factor < best_afford:
+                    best_afford = afford_factor
+                    tied_projects = [project]
+                elif afford_factor == best_afford:
+                    tied_projects.append(project)
+                break
+            paid_so_far += supporter.total_budget()
+            denominator -= supporter.total_sat_project(project)
+    if tied_projects is None:
+        if resolute:
+            all_allocs.append(alloc)
+        else:
+            alloc.sort()
+            if alloc not in all_allocs:
+                all_allocs.append(alloc)
+    else:
+        tied_projects = tie.order(inst, prof, tied_projects)
+        if resolute:
+            tied_projects = tied_projects[:1]
+        for selected_project in tied_projects:
+            if resolute:
+                new_alloc = alloc
+                new_projects = projects
+                new_voters = voters
+                new_afford = prev_affordability
+            else:
+                new_alloc = copy(alloc)
+                new_projects = copy(projects)
+                new_voters = deepcopy(voters)
+                new_afford = deepcopy(prev_affordability)
+            new_alloc.append(selected_project)
+            new_projects.remove(selected_project)
+            for supporter_index in supporters[selected_project]:
+                supporter = new_voters[supporter_index]
+                supporter.budget -= min(
+                    supporter.budget,
+                    best_afford * supporter.sat.sat_project(selected_project),
+                )
+            mes_inner_algo_general(
+                inst,
+                prof,
+                new_voters,
+                tie,
+                new_projects,
+                new_alloc,
+                total_scores,
+                supporters,
+                new_afford,
+                all_allocs,
+                resolute,
+            )
+
+
+def mes_inner_algo_binary_satisfactions(
+        inst,
+        prof,
+        voters,
+        tie,
+        projects,
+        alloc,
+        total_scores,
+        supporters,
+        supporters_sat,
+        prev_affordability,
+        all_allocs,
+        resolute,
+) -> None:
+    tied_projects = None
+    best_afford = float("inf")
+    # print("========================")
+    # print(f"{float(prev_affordability[Project('40')])} -- {float(frac(1, prev_affordability[Project('40')]))}")
+    # tmp = sorted([(p, a) for p, a in prev_affordability.items()], key=lambda x: x[1])
+    # for p, a in tmp[:5]:
+    #     print(f"{p} -- {float(a)} -- {float(frac(1, a))}")
+    for project in sorted(projects, key=lambda p: prev_affordability[p]):
+        # print(f"\tConsidering: {project}")
+        if (
+            prev_affordability[project] > best_afford
+        ):  # best possible afford for this round isn't good enough
+            break
+        if (
+            sum(voters[i].total_budget() for i in supporters[project])
+            < project.cost
+        ):  # unaffordable, can delete
+            projects.remove(project)
+            continue
+        supporters[project].sort(
+            key=lambda i: voters[i].budget_over_sat_project(project)
+        )
+        paid_so_far = 0
+        denominator = total_scores[project]
+        for supporter_index in supporters[project]:
+            supporter = voters[supporter_index]
+            afford_factor = frac(project.cost - paid_so_far, denominator)
+            eff_vote_count = frac(denominator, project.cost - paid_so_far)
+            if (
+                afford_factor * supporters_sat[project]
+                <= supporter.budget
+            ):
+                # found the best afford_factor for this project
+                prev_affordability[project] = afford_factor
+                # print(f"\t\tFactor: {float(afford_factor)} = ({project.cost} - {float(paid_so_far)})/{denominator}")
+                # print(f"\t\tEff: {float(eff_vote_count)}")
+                if afford_factor < best_afford:
+                    best_afford = afford_factor
+                    tied_projects = [project]
+                elif afford_factor == best_afford:
+                    tied_projects.append(project)
+                break
+            paid_so_far += supporter.total_budget()
+            denominator -= supporter.multiplicity * supporters_sat[project]
+    # print(f"{tied_projects}")
+    if tied_projects is None:
+        if resolute:
+            all_allocs.append(alloc)
+        else:
+            alloc.sort()
+            if alloc not in all_allocs:
+                all_allocs.append(alloc)
+    else:
+        tied_projects = tie.order(inst, prof, tied_projects)
+        if resolute:
+            tied_projects = tied_projects[:1]
+        for selected_project in tied_projects:
+            if resolute:
+                new_alloc = alloc
+                new_projects = projects
+                new_voters = voters
+                new_afford = prev_affordability
+            else:
+                new_alloc = copy(alloc)
+                new_projects = copy(projects)
+                new_voters = deepcopy(voters)
+                new_afford = deepcopy(prev_affordability)
+            new_alloc.append(selected_project)
+            new_projects.remove(selected_project)
+            for supporter_index in supporters[selected_project]:
+                supporter = new_voters[supporter_index]
+                supporter.budget -= min(
+                    supporter.budget,
+                    best_afford * supporters_sat[selected_project],
+                )
+            mes_inner_algo_binary_satisfactions(
+                inst,
+                prof,
+                new_voters,
+                tie,
+                new_projects,
+                new_alloc,
+                total_scores,
+                supporters,
+                supporters_sat,
+                new_afford,
+                all_allocs,
+                resolute,
+            )
+
+
+def method_of_equal_shares_scheme(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
-    initial_budget: Number,
+    initial_budget_per_voter: Number,
     initial_budget_allocation: Iterable[Project],
     tie_breaking: TieBreakingRule,
     resoluteness=True,
     budget_step=None,
+    binary_sat=False,
 ) -> list[Project] | list[list[Project]]:
     """
     The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website
@@ -163,7 +363,7 @@ def mes_scheme(
             The profile.
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
-        initial_budget: Number
+        initial_budget_per_voter: Number
             The initial budget of a voter.
         initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
@@ -174,111 +374,15 @@ def mes_scheme(
             Defaults to True.
         budget_step : Number, optional
             Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of
-            budget are added until an exhaustive budget allocation is found, or one that is no longer feasible
-            with the initial budget allocation.
+            budget are added to the initial budget of a voter until an exhaustive budget allocation is found, or one
+            that is no longer feasible with the initial budget limit.
     Returns
     -------
         Iterable[Project] | Iterable[Iterable[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
-
-    def aux(
-        inst,
-        prof,
-        voters,
-        tie,
-        projects,
-        alloc,
-        total_scores,
-        supporters,
-        prev_affordability,
-        all_allocs,
-        resolute,
-    ):
-        tied_projects = None
-        best_afford = float("inf")
-        for project in sorted(projects, key=lambda p: prev_affordability[p]):
-            if (
-                prev_affordability[project] > best_afford
-            ):  # best possible afford for this round isn't good enough
-                break
-            if (
-                sum(voters[i].total_budget() for i in supporters[project])
-                < project.cost
-            ):  # unaffordable, can delete
-                projects.remove(project)
-                continue
-            supporters[project].sort(
-                key=lambda i: voters[i].budget_over_sat_project(project)
-            )
-            paid_so_far = 0
-            denominator = total_scores[project]
-            for supporter_index in supporters[project]:
-                supporter = voters[supporter_index]
-                afford_factor = frac(project.cost - paid_so_far, denominator)
-                if (
-                    afford_factor * supporter.sat.sat_project(project)
-                    <= supporter.budget
-                ):
-                    # found the best afford_factor for this candidate
-                    prev_affordability[project] = afford_factor
-                    if afford_factor < best_afford:
-                        best_afford = afford_factor
-                        tied_projects = [project]
-                    elif afford_factor == best_afford:
-                        tied_projects.append(project)
-                    break
-                paid_so_far += supporter.total_budget()
-                denominator -= supporter.total_sat_project(project)
-        if tied_projects is None:
-            if resolute:
-                all_allocs.append(alloc)
-            else:
-                alloc.sort()
-                if alloc not in all_allocs:
-                    all_allocs.append(alloc)
-        else:
-            tied_projects = tie.order(inst, prof, tied_projects)
-            if resolute:
-                tied_projects = tied_projects[:1]
-            for selected_project in tied_projects:
-                if resolute:
-                    new_alloc = alloc
-                    new_projects = projects
-                    new_voters = voters
-                    new_afford = prev_affordability
-                else:
-                    new_alloc = copy(alloc)
-                    new_projects = copy(projects)
-                    new_voters = deepcopy(voters)
-                    new_afford = deepcopy(prev_affordability)
-                new_alloc.append(selected_project)
-                new_projects.remove(selected_project)
-                for supporter_index in supporters[selected_project]:
-                    supporter = new_voters[supporter_index]
-                    supporter.budget -= min(
-                        supporter.budget,
-                        best_afford * supporter.sat.sat_project(selected_project),
-                    )
-                aux(
-                    inst,
-                    prof,
-                    new_voters,
-                    tie,
-                    new_projects,
-                    new_alloc,
-                    total_scores,
-                    supporters,
-                    new_afford,
-                    all_allocs,
-                    resolute,
-                )
-
-    # Adapted from equalshares.net
-    initial_projects = set(instance)
-    for proj in initial_budget_allocation:
-        initial_projects.remove(proj)
+    initial_projects = instance.difference(set(initial_budget_allocation))
     scores = {
         proj: sat_profile.total_satisfaction_project(proj) for proj in initial_projects
     }
@@ -289,7 +393,7 @@ def mes_scheme(
                 initial_budget_allocation.append(proj)
 
     voters_details = [
-        MESVoter(sat.ballot, sat, initial_budget, sat_profile.multiplicity(sat))
+        MESVoter(sat.ballot, sat, initial_budget_per_voter, sat_profile.multiplicity(sat))
         for sat in sat_profile
     ]
 
@@ -297,28 +401,51 @@ def mes_scheme(
         proj: [i for i, v in enumerate(voters_details) if v.sat.sat_project(proj) > 0]
         for proj in initial_projects
     }
+    if binary_sat:
+        projects_sat = {}
+        for p, s in supps.items():
+            if s:
+                projects_sat[p] = voters_details[s[0]].sat.sat_project(p)
+            else:
+                projects_sat[p] = 0
+
     initial_affordability = {
         proj: frac(proj.cost, scores[proj]) if scores[proj] > 0 else float("inf")
         for proj in initial_projects
     }
     previous_outcome = initial_budget_allocation
-    num_voters = profile.num_ballots()
 
     while True:
         all_budget_allocations = []
-        aux(
-            instance,
-            profile,
-            voters_details,
-            tie_breaking,
-            copy(initial_projects),
-            copy(initial_budget_allocation),
-            scores,
-            supps,
-            initial_affordability,
-            all_budget_allocations,
-            resoluteness,
-        )
+        if binary_sat:
+            mes_inner_algo_binary_satisfactions(
+                instance,
+                profile,
+                voters_details,
+                tie_breaking,
+                copy(initial_projects),
+                copy(initial_budget_allocation),
+                scores,
+                supps,
+                projects_sat,
+                deepcopy(initial_affordability),
+                all_budget_allocations,
+                resoluteness,
+            )
+        else:
+            mes_inner_algo_general(
+                instance,
+                profile,
+                voters_details,
+                tie_breaking,
+                copy(initial_projects),
+                copy(initial_budget_allocation),
+                scores,
+                supps,
+                deepcopy(initial_affordability),
+                all_budget_allocations,
+                resoluteness,
+            )
         if resoluteness:
             outcome = all_budget_allocations[0]
             if budget_step is None:
@@ -327,7 +454,7 @@ def mes_scheme(
                 return previous_outcome
             if instance.is_exhaustive(outcome):
                 return outcome
-            initial_budget += budget_step
+            initial_budget_per_voter += budget_step
             previous_outcome = outcome
         else:
             if budget_step is None:
@@ -336,10 +463,10 @@ def mes_scheme(
                 return previous_outcome
             if any(instance.is_exhaustive(o) for o in all_budget_allocations):
                 return all_budget_allocations
-            initial_budget += budget_step
+            initial_budget_per_voter += budget_step
             previous_outcome = all_budget_allocations
         for voter in voters_details:
-            voter.budget = frac(initial_budget, num_voters)
+            voter.budget = initial_budget_per_voter
 
 
 def method_of_equal_shares(
@@ -351,6 +478,7 @@ def method_of_equal_shares(
     resoluteness: bool = True,
     initial_budget_allocation: Iterable[Project] = None,
     budget_step=None,
+    binary_sat=None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
     The Method of Equal Shares (MES). See the website
@@ -383,6 +511,9 @@ def method_of_equal_shares(
             Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of
             budget are added until an exhaustive budget allocation is found, or one that is no longer feasible
             with the initial budget allocation.
+        binary_sat : bool, optional
+            Uses the inner algorithm for binary satisfaction if set to `True`. Should typically be used with approval
+            ballots to gain on the runtime. Automatically set to `True` if an approval profile is given.
 
     Returns
     -------
@@ -403,7 +534,10 @@ def method_of_equal_shares(
         if sat_profile is None:
             sat_profile = profile.as_sat_profile(sat_class=sat_class)
 
-    return mes_scheme(
+    if binary_sat is None:
+        binary_sat = isinstance(profile, AbstractApprovalProfile)
+
+    return method_of_equal_shares_scheme(
         instance,
         profile,
         sat_profile,
@@ -412,6 +546,7 @@ def method_of_equal_shares(
         tie_breaking,
         resoluteness=resoluteness,
         budget_step=budget_step,
+        binary_sat=binary_sat,
     )
 
 
