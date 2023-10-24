@@ -378,7 +378,9 @@ class Instance(set[Project]):
         """
         return total_cost(projects) <= self.budget_limit
 
-    def is_exhaustive(self, projects: Iterable[Project]) -> bool:
+    def is_exhaustive(
+        self, projects: Iterable[Project], available_projects: Iterable[Project] = None
+    ) -> bool:
         """
         Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no
         additional project could be added without violating the budget limit.
@@ -388,13 +390,18 @@ class Instance(set[Project]):
         ----------
             projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
                 The collection of projects.
+            available_projects : Iterable[:py:class:`~pabutools.election.instance.Project`], optional
+                Only these projects are considered when testing for exhaustiveness. Defaults to None, i.e., considering
+                all projects.
         Returns
         -------
             bool
                 `True` if the collection of project is exhaustive, `False` otherwise.
         """
+        if available_projects is None:
+            available_projects = self
         cost = total_cost(projects)
-        for p in self:
+        for p in available_projects:
             if p not in projects and (p.cost + cost <= self.budget_limit):
                 return False
         return True

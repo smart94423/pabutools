@@ -122,7 +122,9 @@ cost.
 """
 
 
-def refuse_to_break_ties(instance: Instance, profile: AbstractProfile, project: Project):
+def refuse_to_break_ties(
+    instance: Instance, profile: AbstractProfile, project: Project
+):
     raise TieBreakingException("A tie occurred, but no tie-breaking rule was provided.")
 
 

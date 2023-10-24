@@ -23,18 +23,33 @@ from pabutools.rules.exhaustion import (
 )
 from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 from pabutools.rules.maxwelfare import max_additive_utilitarian_welfare
-from pabutools.rules.mes import (
-    method_of_equal_shares,
-    mes_iterated,
-    mes_iterated_completed,
-)
+from pabutools.rules.mes import method_of_equal_shares
+
+
+def mes_iterated(
+    instance,
+    profile,
+    sat_class=None,
+    sat_profile=None,
+    initial_budget_allocation=None,
+    resoluteness=False,
+):
+    return method_of_equal_shares(
+        instance,
+        profile,
+        sat_class,
+        sat_profile,
+        initial_budget_allocation=initial_budget_allocation,
+        voter_budget_increment=frac(1, 10),
+        resoluteness=resoluteness,
+    )
+
 
 ALL_SAT_RULES = [
     greedy_utilitarian_welfare,
     max_additive_utilitarian_welfare,
     method_of_equal_shares,
     mes_iterated,
-    mes_iterated_completed,
 ]
 ALL_NON_SAT_RULES = [sequential_phragmen]
 ALL_SAT = [
@@ -115,16 +130,10 @@ def dummy_elections():
     test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
-    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
-        [[p[0], p[1], p[3]]]
-    )
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
         [[p[0], p[2]]]
     )
     test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[0], p[1], p[2]]])
-    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
-        [[p[0], p[1], p[2]]]
-    )
     res.append(test_election)
 
     # Approval example 3 - With app score 0
@@ -150,16 +159,10 @@ def dummy_elections():
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0], p[1], p[3]]]
     )
-    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
-        [[p[0], p[1], p[3]]]
-    )
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted(
         [[p[0], p[2]]]
     )
     test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[0], p[1], p[2]]])
-    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
-        [[p[0], p[1], p[2]]]
-    )
     res.append(test_election)
 
     # Approval example 4 - With project with cost 0
@@ -192,16 +195,10 @@ def dummy_elections():
     ] = sorted([[p[0], p[2]]])
     test_election.irr_results_sat[method_of_equal_shares][Cost_Sat] = sorted([[]])
     test_election.irr_results_sat[mes_iterated][Cost_Sat] = sorted([[p[2]]])
-    test_election.irr_results_sat[mes_iterated_completed][Cost_Sat] = sorted(
-        [[p[0], p[2]]]
-    )
     test_election.irr_results_sat[method_of_equal_shares][Cardinality_Sat] = sorted(
         [[p[0]]]
     )
     test_election.irr_results_sat[mes_iterated][Cardinality_Sat] = sorted(
-        [[p[0], p[1]], [p[0], p[2]]]
-    )
-    test_election.irr_results_sat[mes_iterated_completed][Cardinality_Sat] = sorted(
         [[p[0], p[1]], [p[0], p[2]]]
     )
     res.append(test_election)
@@ -224,13 +221,6 @@ def dummy_elections():
         )
         test_election.irr_results_sat[method_of_equal_shares][sat_class] = [[]]
         test_election.irr_results_sat[mes_iterated][sat_class] = [[]]
-        test_election.irr_results_sat[mes_iterated_completed][sat_class] = sorted(
-            [
-                sorted(list(b))
-                for b in inst.budget_allocations()
-                if inst.is_exhaustive(b)
-            ]
-        )
     test_election.irr_results_non_sat[sequential_phragmen] = [
         [p[0]],
         [p[1]],
@@ -260,13 +250,6 @@ def dummy_elections():
             initial_alloc
         ]
         test_election.irr_results_sat[mes_iterated][sat_class] = [initial_alloc]
-        test_election.irr_results_sat[mes_iterated_completed][sat_class] = sorted(
-            [
-                sorted(list(b))
-                for b in inst.budget_allocations()
-                if p[0] in b and inst.is_exhaustive(b)
-            ]
-        )
     test_election.irr_results_non_sat[sequential_phragmen] = [initial_alloc]
     res.append(test_election)
 
@@ -505,7 +488,6 @@ class TestRule(TestCase):
     def test_mes_approval(self):
         run_sat_rule(method_of_equal_shares, verbose=False)
         run_sat_rule(mes_iterated, verbose=False)
-        run_sat_rule(mes_iterated_completed, verbose=False)
         with self.assertRaises(ValueError):
             method_of_equal_shares(Instance(), ApprovalProfile())
 

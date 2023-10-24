@@ -320,13 +320,13 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-            <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-            <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-                <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Number</span>
-            <span class="p">],</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+        <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Number</span>
+        <span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">SatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
@@ -334,7 +334,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocessing</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AdditiveSatisfaction.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Preprocessing based on the instance, the profile and the ballot that returns a dictionary of precomputed</span>
@@ -373,12 +373,16 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span>
+        <span class="p">)</span>
         <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span>
+                <span class="n">project</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
         <span class="k">return</span> <span class="n">score</span></div>
@@ -391,11 +395,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">cardinality_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cardinality satisfaction for ballots. It is equal to 1 if the project is appears in the ballot and</span>
@@ -438,7 +442,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cardinality_sat_func</span>
@@ -446,11 +450,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">relative_cardinality_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative cardinality satisfaction. If the project appears in the ballot, it is equal</span>
@@ -501,14 +505,14 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">relative_cardinality_sat_func</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Relative_Cardinality_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;max_budget_allocation_card&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cardinality</span><span class="p">(</span>
@@ -518,11 +522,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">cost_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cost satisfaction for ballots. It is equal to the cost of the project if it appears in the</span>
@@ -565,17 +569,17 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">cost_sat_func</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">relative_cost_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost</span>
@@ -625,14 +629,14 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">relative_cost_sat_func</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Relative_Cost_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">:</span> <span class="n">max_budget_allocation_cost</span><span class="p">(</span>
@@ -642,11 +646,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">relative_cost_approx_normaliser_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative cost satisfaction for ballots using an approximate normaliser: the minimum of the total cost of the projects</span>
@@ -694,14 +698,14 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">relative_cost_approx_normaliser_sat_func</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Relative_Cost_Approx_Normaliser_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;normalizer&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">total_cost</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ballot</span><span class="p">]),</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">)</span>
@@ -709,11 +713,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">add_cost_sqrt_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved</span>
@@ -757,7 +761,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
             <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -772,11 +776,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">additive_cost_log_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected</span>
@@ -820,7 +824,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractApprovalBallot</span><span class="p">):</span>
             <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -835,11 +839,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">effort_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the effort satisfaction for ballots. If the project appears in the ballot, it is equal to the cost of the</span>
@@ -886,17 +890,17 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span>
     <span class="p">):</span>
         <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">,</span> <span class="n">effort_sat_func</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">additive_card_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the project.</span>
@@ -938,10 +942,10 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-            <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
             <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -956,11 +960,11 @@ document.write(`
 
 
 <span class="k">def</span> <span class="nf">additive_card_relative_sat_func</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
-        <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
-        <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
+    <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the</span>
@@ -1008,10 +1012,10 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-            <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-            <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
             <span class="n">AdditiveSatisfaction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -1025,17 +1029,25 @@ document.write(`
             <span class="p">)</span>
 
 <div class="viewcode-block" id="Additive_Cardinal_Relative_Sat.preprocessing"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.preprocessing">[docs]</a>    <span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">mip_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
         <span class="n">mip_model</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">p_vars</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">p</span><span class="p">:</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">add_var</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span>
+            <span class="n">p</span><span class="p">:</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">add_var</span><span class="p">(</span><span class="n">var_type</span><span class="o">=</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">p_vars</span><span class="p">:</span>
-            <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">ballot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">))</span>
-            <span class="n">mip_model</span> <span class="o">+=</span> <span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span>
+                <span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">ballot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">mip_model</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">xsum</span><span class="p">(</span><span class="n">p_vars</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="o">.</span><span class="n">budget_limit</span>
+            <span class="p">)</span>
             <span class="n">mip_model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">x</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;max_budget_allocation_score&quot;</span><span class="p">:</span> <span class="n">frac</span><span class="p">(</span><span class="n">res</span><span class="p">)}</span></div></div>

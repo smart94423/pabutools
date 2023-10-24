@@ -74,7 +74,9 @@ def equal_shares_fast_approval(instance, profile):
     )
 
 
-def equal_shares_fixed_budget(N, C, cost, util, total_utility, approvers, B, verbose=False):
+def equal_shares_fixed_budget(
+    N, C, cost, util, total_utility, approvers, B, verbose=False
+):
     def break_ties(N, C, cost, approvers, choices):
         min_proj = None
         for p in choices:
@@ -97,9 +99,11 @@ def equal_shares_fixed_budget(N, C, cost, util, total_utility, approvers, B, ver
         best_eff_vote_count = 0
         # go through remaining candidates in order of decreasing previous effective vote count
         remaining_sorted = sorted(remaining, key=lambda c: remaining[c], reverse=True)
-        if verbose: print("========================")
+        if verbose:
+            print("========================")
         for c in remaining_sorted:
-            if verbose: print(f"\tConsidering: {c}")
+            if verbose:
+                print(f"\tConsidering: {c}")
             previous_eff_vote_count = remaining[c]
             if previous_eff_vote_count < best_eff_vote_count:
                 # c cannot be better than the best so far
@@ -124,7 +128,9 @@ def equal_shares_fixed_budget(N, C, cost, util, total_utility, approvers, B, ver
                 else:
                     # i (and all later approvers) can afford the payment; stop here
                     if verbose:
-                        print(f"\t\tFactor: {float(payment_factor)} = ({cost[c]} - {paid_so_far})/{denominator}")
+                        print(
+                            f"\t\tFactor: {float(payment_factor)} = ({cost[c]} - {paid_so_far})/{denominator}"
+                        )
                         print(f"\t\tEff: {float(eff_vote_count)}")
                     remaining[c] = eff_vote_count
                     if eff_vote_count > best_eff_vote_count:
@@ -192,7 +198,7 @@ def equal_shares(N, C, cost, u, B):
     return mes
 
 
-def equal_shares_approval(N, C, cost, approvers, B, budget_multiplier = 1):
+def equal_shares_approval(N, C, cost, approvers, B, budget_multiplier=1):
     mes = equal_shares_fixed_budget_approval(N, C, cost, approvers, B)
     # add1 completion
     # start with integral per-voter budget
@@ -255,7 +261,8 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B, verbose=False):
             for p, a in tmp[:5]:
                 print(f"{p} -- {float(a)}")
         for c in remaining_sorted:
-            if verbose: print(f"\tConsidering: {c}")
+            if verbose:
+                print(f"\tConsidering: {c}")
             previous_eff_vote_count = remaining[c]
             if previous_eff_vote_count < best_eff_vote_count:
                 # c cannot be better than the best so far
@@ -280,7 +287,9 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B, verbose=False):
                 else:
                     # i (and all later approvers) can afford the payment; stop here
                     if verbose:
-                        print(f"\t\tFactor: {float(max_payment)} = ({cost[c]} - {paid_so_far})/{denominator}")
+                        print(
+                            f"\t\tFactor: {float(max_payment)} = ({cost[c]} - {paid_so_far})/{denominator}"
+                        )
                         print(f"\t\tEff: {float(eff_vote_count)}")
                     remaining[c] = eff_vote_count
                     if eff_vote_count > best_eff_vote_count:
@@ -292,7 +301,8 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B, verbose=False):
         if not best:
             # no remaining candidates are affordable
             break
-        if verbose: print(best)
+        if verbose:
+            print(best)
         best = break_ties(N, C, cost, approvers, best)
         if len(best) > 1:
             raise Exception(
@@ -329,7 +339,9 @@ if __name__ == "__main__":
     # print(len(winners_fast))
     # print(winners_fast)
     # winners_fast = equal_shares_fast_approval(instance, profile)
-    winners_fast = equal_shares_iterated_fast_approval(instance, profile, budget_multiplier=1)
+    winners_fast = equal_shares_iterated_fast_approval(
+        instance, profile, budget_multiplier=1
+    )
     print(len(winners_fast))
     print(winners_fast)
     # winners_slow = method_of_equal_shares(
@@ -341,7 +353,7 @@ if __name__ == "__main__":
         instance,
         profile.as_multiprofile(),
         sat_class=Cost_Sat,
-        budget_step=1,
+        voter_budget_increment=1,
     )
     print(len(winners_slow))
     print(winners_slow)

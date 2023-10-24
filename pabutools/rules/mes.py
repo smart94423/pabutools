@@ -147,14 +147,15 @@ class MESProject(Project):
 
 
 def mes_inner_algo(
-        instance: Instance,
-        profile: AbstractProfile,
-        voters: list[MESVoter],
-        projects: set[MESProject],
-        tie_breaking_rule: TieBreakingRule,
-        current_alloc: list[Project],
-        all_allocs: list[list[Project]],
-        resoluteness: bool,
+    instance: Instance,
+    profile: AbstractProfile,
+    voters: list[MESVoter],
+    projects: set[MESProject],
+    tie_breaking_rule: TieBreakingRule,
+    current_alloc: list[Project],
+    all_allocs: list[list[Project]],
+    resoluteness: bool,
+    verbose: bool = False,
 ) -> None:
     """
     The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website
@@ -180,6 +181,8 @@ def mes_inner_algo(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
+        verbose : bool, optional
+            (De)Activate the display of additional information.
     Returns
     -------
         Iterable[Project] | Iterable[Iterable[Project]]
@@ -189,22 +192,35 @@ def mes_inner_algo(
     """
     tied_projects = None
     best_afford = float("inf")
-    # print("========================")
-    # tmp = sorted(projects, key=lambda x: x.affordability)
-    # for p in tmp[:5]:
-    #     print(p)
+    if verbose:
+        print("========================")
+        print("Projects:")
+        tmp = sorted(projects, key=lambda x: x.affordability)
+        for p in tmp[:5]:
+            print(f"\t{p}")
+        print("Voters:")
+        tmp = sorted(voters, key=lambda x: x.total_budget())
+        for v in tmp[:5]:
+            print(f"\t{v}")
     for project in sorted(projects, key=lambda p: p.affordability):
-        # print(f"\tConsidering: {project}")
+        if verbose:
+            print(f"\tConsidering: {project}")
         if (
             project.affordability > best_afford
         ):  # best possible afford for this round isn't good enough
-            # print(f"\t\t Skipped as affordability is too high: {float(project.affordability)} > {float(best_afford)}")
+            if verbose:
+                print(
+                    f"\t\t Skipped as affordability is too high: {float(project.affordability)} > {float(best_afford)}"
+                )
             break
         if (
             sum(voters[i].total_budget() for i in project.supporter_indices)
             < project.cost
         ):  # unaffordable, can delete
-            # print(f"\t\t Removed for lack of budget: {float(sum(voters[i].total_budget() for i in project.supporter_indices))} < {float(project.cost)}")
+            if verbose:
+                print(
+                    f"\t\t Removed for lack of budget: {float(sum(voters[i].total_budget() for i in project.supporter_indices))} < {float(project.cost)}"
+                )
             projects.remove(project)
             continue
         project.supporter_indices.sort(
@@ -215,15 +231,15 @@ def mes_inner_algo(
         for i in project.supporter_indices:
             supporter = voters[i]
             afford_factor = frac(project.cost - paid_so_far, denominator)
-            if (
-                afford_factor * project.supporters_sat(supporter)
-                <= supporter.budget
-            ):
+            if afford_factor * project.supporters_sat(supporter) <= supporter.budget:
                 # found the best afford_factor for this project
                 project.affordability = afford_factor
-                # eff_vote_count = frac(denominator, project.cost - paid_so_far)
-                # print(f"\t\tFactor: {float(afford_factor)} = ({project.cost} - {float(paid_so_far)})/{denominator}")
-                # print(f"\t\tEff: {float(eff_vote_count)}")
+                if verbose:
+                    eff_vote_count = frac(denominator, project.cost - paid_so_far)
+                    print(
+                        f"\t\tFactor: {float(afford_factor)} = ({float(project.cost)} - {float(paid_so_far)})/{float(denominator)}"
+                    )
+                    print(f"\t\tEff: {float(eff_vote_count)}")
                 if afford_factor < best_afford:
                     best_afford = afford_factor
                     tied_projects = [project]
@@ -232,7 +248,8 @@ def mes_inner_algo(
                 break
             paid_so_far += supporter.total_budget()
             denominator -= supporter.multiplicity * project.supporters_sat(supporter)
-    # print(f"{tied_projects}")
+    if verbose:
+        print(f"{tied_projects}")
     if tied_projects is None:
         if resoluteness:
             all_allocs.append(current_alloc)
@@ -271,6 +288,7 @@ def mes_inner_algo(
                 new_alloc,
                 all_allocs,
                 resoluteness,
+                verbose=verbose,
             )
 
 
@@ -282,7 +300,7 @@ def method_of_equal_shares_scheme(
     initial_budget_allocation: list[Project],
     tie_breaking: TieBreakingRule,
     resoluteness=True,
-    budget_step=None,
+    voter_budget_increment=None,
     binary_sat=False,
 ) -> list[Project] | list[list[Project]]:
     """
@@ -305,10 +323,10 @@ def method_of_equal_shares_scheme(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        budget_step : Number, optional
-            Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of
-            budget are added to the initial budget of a voter until an exhaustive budget allocation is found, or one
-            that is no longer feasible with the initial budget limit.
+        voter_budget_increment : Number, optional
+            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units
+            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or
+            one that is no longer feasible with the initial budget constraint.
     Returns
     -------
         Iterable[Project] | Iterable[Iterable[Project]]
@@ -316,16 +334,24 @@ def method_of_equal_shares_scheme(
             (`resoluteness = False`).
     """
     index = 0
-    voters_details = []
+    voters = []
     for sat in sat_profile:
-        voters_details.append(MESVoter(index, sat.ballot, sat, initial_budget_per_voter, sat_profile.multiplicity(sat)))
+        voters.append(
+            MESVoter(
+                index,
+                sat.ballot,
+                sat,
+                initial_budget_per_voter,
+                sat_profile.multiplicity(sat),
+            )
+        )
         index += 1
 
     projects = set()
     for p in instance.difference(set(initial_budget_allocation)):
         mes_p = MESProject(p)
         total_sat = 0
-        for i, v in enumerate(voters_details):
+        for i, v in enumerate(voters):
             indiv_sat = v.sat.sat_project(p)
             if indiv_sat > 0:
                 total_sat += v.total_sat_project(p)
@@ -351,7 +377,7 @@ def method_of_equal_shares_scheme(
         mes_inner_algo(
             instance,
             profile,
-            voters_details,
+            voters,
             copy(projects),
             tie_breaking,
             copy(initial_budget_allocation),
@@ -360,24 +386,27 @@ def method_of_equal_shares_scheme(
         )
         if resoluteness:
             outcome = all_budget_allocations[0]
-            if budget_step is None:
+            if voter_budget_increment is None:
                 return outcome
             if not instance.is_feasible(outcome):
                 return previous_outcome
-            if instance.is_exhaustive(outcome):
+            if instance.is_exhaustive(outcome, available_projects=projects):
                 return outcome
-            initial_budget_per_voter += budget_step
+            initial_budget_per_voter += voter_budget_increment
             previous_outcome = outcome
         else:
-            if budget_step is None:
+            if voter_budget_increment is None:
                 return all_budget_allocations
             if any(not instance.is_feasible(o) for o in all_budget_allocations):
                 return previous_outcome
-            if any(instance.is_exhaustive(o) for o in all_budget_allocations):
+            if any(
+                instance.is_exhaustive(o, available_projects=projects)
+                for o in all_budget_allocations
+            ):
                 return all_budget_allocations
-            initial_budget_per_voter += budget_step
+            initial_budget_per_voter += voter_budget_increment
             previous_outcome = all_budget_allocations
-        for voter in voters_details:
+        for voter in voters:
             voter.budget = initial_budget_per_voter
         for p in projects:
             p.affordability = p.initial_affordability
@@ -391,7 +420,7 @@ def method_of_equal_shares(
     tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
     initial_budget_allocation: list[Project] = None,
-    budget_step=None,
+    voter_budget_increment=None,
     binary_sat=None,
 ) -> Iterable[Project] | Iterable[Iterable[Project]]:
     """
@@ -421,10 +450,10 @@ def method_of_equal_shares(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        budget_step : Number, optional
-            Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of
-            budget are added until an exhaustive budget allocation is found, or one that is no longer feasible
-            with the initial budget allocation.
+        voter_budget_increment : Number, optional
+            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units
+            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or
+            one that is no longer feasible with the initial budget constraint.
         binary_sat : bool, optional
             Uses the inner algorithm for binary satisfaction if set to `True`. Should typically be used with approval
             ballots to gain on the runtime. Automatically set to `True` if an approval profile is given.
@@ -459,113 +488,6 @@ def method_of_equal_shares(
         budget_allocation,
         tie_breaking,
         resoluteness=resoluteness,
-        budget_step=budget_step,
+        voter_budget_increment=voter_budget_increment,
         binary_sat=binary_sat,
-    )
-
-
-def mes_iterated(
-    instance: Instance,
-    profile: AbstractProfile,
-    sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: GroupSatisfactionMeasure = None,
-    initial_budget_allocation: Iterable[Project] = None,
-    resoluteness: bool = True,
-    budget_step: Number = None,
-) -> Iterable[Project]:
-    """
-    Shortcut for the method of equal shares used with the exhaustion by budget increase method.
-
-    Parameters
-    ----------
-        instance: :py:class:`~pabutools.election.instance.Instance`
-            The instance.
-        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
-            The profile.
-        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
-            The class defining the satisfaction function used to measure the social welfare. It should be a class
-            inhereting from pabutools.instance.satisfaction.Satisfaction.
-            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
-            provided, the satisfaction argument is disregarded.
-        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
-            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
-            provided, but a satisfaction function is, the former is computed from the latter.
-        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
-            An initial budget allocation, typically empty.
-        resoluteness : bool, optional
-            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
-            Defaults to True.
-        budget_step: Number
-            The budget increase in each step. Defaults to 1% of the budget limit.
-
-    Returns
-    -------
-        Iterable[Project]
-            The selected projects.
-    """
-    return exhaustion_by_budget_increase(
-        instance,
-        profile,
-        method_of_equal_shares,
-        {"sat_class": sat_class, "sat_profile": sat_profile},
-        initial_budget_allocation=initial_budget_allocation,
-        resoluteness=resoluteness,
-        budget_step=budget_step,
-    )
-
-
-def mes_iterated_completed(
-    instance: Instance,
-    profile: AbstractProfile,
-    sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: GroupSatisfactionMeasure = None,
-    initial_budget_allocation: Iterable[Project] = None,
-    resoluteness: bool = True,
-    budget_step: Number = None,
-) -> Iterable[Project]:
-    """
-    Shortcut for the method of equal shares used with the exhaustion by budget increase method and then complete by the
-    greedy utilitarian welfare maximiser.
-
-    Parameters
-    ----------
-        instance: :py:class:`~pabutools.election.instance.Instance`
-            The instance.
-        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
-            The profile.
-        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
-            The class defining the satisfaction function used to measure the social welfare. It should be a class
-            inhereting from pabutools.instance.satisfaction.Satisfaction.
-            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
-            provided, the satisfaction argument is disregarded.
-        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
-            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is
-            provided, but a satisfaction function is, the former is computed from the latter.
-        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
-            An initial budget allocation, typically empty.
-        resoluteness : bool, optional
-            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
-            Defaults to True.
-        budget_step: Number
-            The budget increase in each step for the iterated MES part. Defaults to 1% of the budget limit.
-
-    Returns
-    -------
-        Iterable[Project]
-            The selected projects.
-    """
-    return completion_by_rule_combination(
-        instance,
-        profile,
-        [mes_iterated, greedy_utilitarian_welfare],
-        [
-            {
-                "sat_class": sat_class,
-                "sat_profile": sat_profile,
-                "budget_step": budget_step,
-            },
-            {"sat_class": sat_class, "sat_profile": sat_profile},
-        ],
-        initial_budget_allocation=initial_budget_allocation,
-        resoluteness=resoluteness,
     )

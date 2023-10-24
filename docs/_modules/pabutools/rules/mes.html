@@ -261,6 +261,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
+<span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AbstractApprovalProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">GroupSatisfactionMeasure</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">AbstractBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
@@ -280,7 +281,9 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">        index: Number</span>
+<span class="sd">            The index of the voter in the voter list</span>
+<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot of the voter.</span>
 <span class="sd">        sat: SatisfactionMeasure</span>
 <span class="sd">            The satisfaction measure corresponding to the ballot.</span>
@@ -291,7 +294,7 @@ document.write(`
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
+<span class="sd">        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot of the voter.</span>
 <span class="sd">        sat: SatisfactionMeasure</span>
 <span class="sd">            The satisfaction measure corresponding to the ballot.</span>
@@ -302,33 +305,19 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
-            <span class="n">sat</span><span class="p">:</span> <span class="n">SatisfactionMeasure</span><span class="p">,</span>
-            <span class="n">budget</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
-            <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+        <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
+        <span class="n">sat</span><span class="p">:</span> <span class="n">SatisfactionMeasure</span><span class="p">,</span>
+        <span class="n">budget</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+        <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span> <span class="o">=</span> <span class="n">ballot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sat</span> <span class="o">=</span> <span class="n">sat</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="n">budget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>
-
-    <span class="k">def</span> <span class="nf">total_sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total satisfaction of a given subset of projects. It is equal to the satisfaction for the projects,</span>
-<span class="sd">        multiplied by the multiplicity.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
-<span class="sd">                The collection of projects.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            Number</span>
-<span class="sd">                The total satisfaction.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat</span><span class="p">(</span><span class="n">projs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">budget_over_sat_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">total_sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -337,8 +326,8 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
-<span class="sd">                The collection of projects.</span>
+<span class="sd">            proj: :py:class:`~pabutools.election.instance.Project`</span>
+<span class="sd">                The project.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -358,22 +347,6 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget</span>
 
-    <span class="k">def</span> <span class="nf">budget_over_sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the budget divided by the satisfaction for a given subset of projects.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">            projs: Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
-<span class="sd">                The collection of projects.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            Number</span>
-<span class="sd">                The total satisfaction.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat</span><span class="p">(</span><span class="n">projs</span><span class="p">))</span>
-
     <span class="k">def</span> <span class="nf">budget_over_sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the budget divided by the satisfaction for a given project.</span>
@@ -388,7 +361,11 @@ document.write(`
 <span class="sd">            Number</span>
 <span class="sd">                The total satisfaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">proj</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_over_sat_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">proj</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">budget_over_sat_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MESVoter[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="si">}</span><span class="s2">]&quot;</span>
@@ -397,16 +374,45 @@ document.write(`
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MESVoter[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="si">}</span><span class="s2">]&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">mes_scheme</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
-        <span class="n">initial_budget</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
-        <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-        <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="k">class</span> <span class="nc">MESProject</span><span class="p">(</span><span class="n">Project</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class used to summarise the projects in a run of MES. Mostly use to store details that can be retrieved</span>
+<span class="sd">    efficiently.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="n">Project</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_sat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sat_supporter_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_sat_supporter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supporter_indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_affordability</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affordability</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">supporters_sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">supporter</span><span class="p">:</span> <span class="n">MESVoter</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_sat_supporter</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_sat_supporter</span>
+        <span class="k">return</span> <span class="n">supporter</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MESProject[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">affordability</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MESProject[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">affordability</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">mes_inner_algo</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">voters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MESVoter</span><span class="p">],</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">MESProject</span><span class="p">],</span>
+    <span class="n">tie_breaking_rule</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
+    <span class="n">current_alloc</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">all_allocs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]],</span>
+    <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The inner algorithm used to compute the outcome of the Method of Equal Shares (MES). See the website</span>
 <span class="sd">    `equalshares.net &lt;https://equalshares.net/&gt;`_ for details about how to compute the outcome of the rule.</span>
@@ -417,188 +423,261 @@ document.write(`
 <span class="sd">            The instance.</span>
 <span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
+<span class="sd">        voters: list[MESVoter]</span>
+<span class="sd">            The list of MESVoters, already instantiated with the necessary inner values.</span>
+<span class="sd">        projects: set[MESProject]</span>
+<span class="sd">            The set of MESProjects to take into account, already instantiated with the necessary inner</span>
+<span class="sd">            values.</span>
+<span class="sd">        tie_breaking_rule : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
+<span class="sd">            The tie-breaking rule used.</span>
+<span class="sd">        current_alloc: list[Project]</span>
+<span class="sd">            The budget allocation that is currently being built. Only populated via side effects.</span>
+<span class="sd">        all_allocs: list[list[Project]]</span>
+<span class="sd">            The set of all budget allocations returned so far. Only populated via side effects.</span>
+<span class="sd">        resoluteness : bool, optional</span>
+<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
+<span class="sd">            Defaults to True.</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            (De)Activate the display of additional information.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
+<span class="sd">            (`resoluteness = False`).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tied_projects</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">best_afford</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;========================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Projects:&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">projects</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">affordability</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Voters:&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">voters</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">total_budget</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">projects</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">affordability</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Considering: </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">project</span><span class="o">.</span><span class="n">affordability</span> <span class="o">&gt;</span> <span class="n">best_afford</span>
+        <span class="p">):</span>  <span class="c1"># best possible afford for this round isn&#39;t good enough</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2"> Skipped as affordability is too high: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">affordability</span><span class="p">)</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">best_afford</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">total_budget</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">supporter_indices</span><span class="p">)</span>
+            <span class="o">&lt;</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
+        <span class="p">):</span>  <span class="c1"># unaffordable, can delete</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2"> Removed for lack of budget: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">total_budget</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="n">supporter_indices</span><span class="p">))</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">project</span><span class="o">.</span><span class="n">supporter_indices</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">budget_over_sat_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">paid_so_far</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">total_sat</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">supporter_indices</span><span class="p">:</span>
+            <span class="n">supporter</span> <span class="o">=</span> <span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">afford_factor</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">paid_so_far</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">afford_factor</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">supporters_sat</span><span class="p">(</span><span class="n">supporter</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span><span class="p">:</span>
+                <span class="c1"># found the best afford_factor for this project</span>
+                <span class="n">project</span><span class="o">.</span><span class="n">affordability</span> <span class="o">=</span> <span class="n">afford_factor</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">eff_vote_count</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">paid_so_far</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Factor: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">afford_factor</span><span class="p">)</span><span class="si">}</span><span class="s2"> = (</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">paid_so_far</span><span class="p">)</span><span class="si">}</span><span class="s2">)/</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">denominator</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Eff: </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">eff_vote_count</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">afford_factor</span> <span class="o">&lt;</span> <span class="n">best_afford</span><span class="p">:</span>
+                    <span class="n">best_afford</span> <span class="o">=</span> <span class="n">afford_factor</span>
+                    <span class="n">tied_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">afford_factor</span> <span class="o">==</span> <span class="n">best_afford</span><span class="p">:</span>
+                    <span class="n">tied_projects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="n">paid_so_far</span> <span class="o">+=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">total_budget</span><span class="p">()</span>
+            <span class="n">denominator</span> <span class="o">-=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="n">project</span><span class="o">.</span><span class="n">supporters_sat</span><span class="p">(</span><span class="n">supporter</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tied_projects</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tied_projects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+            <span class="n">all_allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_alloc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">current_alloc</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">current_alloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_allocs</span><span class="p">:</span>
+                <span class="n">all_allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_alloc</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tied_projects</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tie_breaking_rule</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">tied_projects</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+                <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tied_projects</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">selected_project</span> <span class="ow">in</span> <span class="n">tied_projects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
+                <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">current_alloc</span>
+                <span class="n">new_projects</span> <span class="o">=</span> <span class="n">projects</span>
+                <span class="n">new_voters</span> <span class="o">=</span> <span class="n">voters</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">current_alloc</span><span class="p">)</span>
+                <span class="n">new_projects</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span>
+                <span class="n">new_voters</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">voters</span><span class="p">)</span>
+            <span class="n">new_alloc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_project</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+            <span class="n">new_projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">selected_project</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selected_project</span><span class="o">.</span><span class="n">supporter_indices</span><span class="p">:</span>
+                <span class="n">supporter</span> <span class="o">=</span> <span class="n">new_voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span> <span class="o">-=</span> <span class="nb">min</span><span class="p">(</span>
+                    <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span>
+                    <span class="n">best_afford</span> <span class="o">*</span> <span class="n">selected_project</span><span class="o">.</span><span class="n">supporters_sat</span><span class="p">(</span><span class="n">supporter</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="n">mes_inner_algo</span><span class="p">(</span>
+                <span class="n">instance</span><span class="p">,</span>
+                <span class="n">profile</span><span class="p">,</span>
+                <span class="n">new_voters</span><span class="p">,</span>
+                <span class="n">new_projects</span><span class="p">,</span>
+                <span class="n">tie_breaking_rule</span><span class="p">,</span>
+                <span class="n">new_alloc</span><span class="p">,</span>
+                <span class="n">all_allocs</span><span class="p">,</span>
+                <span class="n">resoluteness</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">method_of_equal_shares_scheme</span><span class="p">(</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
+    <span class="n">initial_budget_per_voter</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">voter_budget_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">binary_sat</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The main wrapper to compute the outcome of the Method of Equal Shares (MES). This is where the</span>
+<span class="sd">    iterated method is implemented.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
+<span class="sd">            The profile.</span>
 <span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
 <span class="sd">            The profile of satisfaction functions.</span>
-<span class="sd">        initial_budget: Number</span>
+<span class="sd">        initial_budget_per_voter: Number</span>
 <span class="sd">            The initial budget of a voter.</span>
-<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
 <span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">        budget_step : Number, optional</span>
-<span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of</span>
-<span class="sd">            budget are added until an exhaustive budget allocation is found, or one that is no longer feasible</span>
-<span class="sd">            with the initial budget allocation.</span>
+<span class="sd">        voter_budget_increment : Number, optional</span>
+<span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units</span>
+<span class="sd">            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or</span>
+<span class="sd">            one that is no longer feasible with the initial budget constraint.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">voters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="n">sat_profile</span><span class="p">:</span>
+        <span class="n">voters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">MESVoter</span><span class="p">(</span>
+                <span class="n">index</span><span class="p">,</span>
+                <span class="n">sat</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span>
+                <span class="n">sat</span><span class="p">,</span>
+                <span class="n">initial_budget_per_voter</span><span class="p">,</span>
+                <span class="n">sat_profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">sat</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">aux</span><span class="p">(</span>
-            <span class="n">inst</span><span class="p">,</span>
-            <span class="n">prof</span><span class="p">,</span>
-            <span class="n">voters</span><span class="p">,</span>
-            <span class="n">tie</span><span class="p">,</span>
-            <span class="n">projects</span><span class="p">,</span>
-            <span class="n">alloc</span><span class="p">,</span>
-            <span class="n">total_scores</span><span class="p">,</span>
-            <span class="n">supporters</span><span class="p">,</span>
-            <span class="n">prev_affordability</span><span class="p">,</span>
-            <span class="n">all_allocs</span><span class="p">,</span>
-            <span class="n">resolute</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="n">tied_projects</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">best_afford</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">projects</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">prev_affordability</span><span class="p">[</span><span class="n">p</span><span class="p">]):</span>
-            <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">prev_affordability</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_afford</span>
-            <span class="p">):</span>  <span class="c1"># best possible afford for this round isn&#39;t good enough</span>
-                <span class="k">break</span>
-            <span class="k">if</span> <span class="p">(</span>
-                    <span class="nb">sum</span><span class="p">(</span><span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">total_budget</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">supporters</span><span class="p">[</span><span class="n">project</span><span class="p">])</span>
-                    <span class="o">&lt;</span> <span class="n">project</span><span class="o">.</span><span class="n">cost</span>
-            <span class="p">):</span>  <span class="c1"># unaffordable, can delete</span>
-                <span class="n">projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-                <span class="k">continue</span>
-            <span class="n">supporters</span><span class="p">[</span><span class="n">project</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">voters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">budget_over_sat_project</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
-            <span class="n">paid_so_far</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">total_scores</span><span class="p">[</span><span class="n">project</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">supporter_index</span> <span class="ow">in</span> <span class="n">supporters</span><span class="p">[</span><span class="n">project</span><span class="p">]:</span>
-                <span class="n">supporter</span> <span class="o">=</span> <span class="n">voters</span><span class="p">[</span><span class="n">supporter_index</span><span class="p">]</span>
-                <span class="n">afford_factor</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">paid_so_far</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">afford_factor</span> <span class="o">*</span> <span class="n">supporter</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span><span class="p">:</span>
-                    <span class="c1"># found the best afford_factor for this candidate</span>
-                    <span class="n">prev_affordability</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="n">afford_factor</span>
-                    <span class="k">if</span> <span class="n">afford_factor</span> <span class="o">&lt;</span> <span class="n">best_afford</span><span class="p">:</span>
-                        <span class="n">best_afford</span> <span class="o">=</span> <span class="n">afford_factor</span>
-                        <span class="n">tied_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span><span class="p">]</span>
-                    <span class="k">elif</span> <span class="n">afford_factor</span> <span class="o">==</span> <span class="n">best_afford</span><span class="p">:</span>
-                        <span class="n">tied_projects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-                    <span class="k">break</span>
-                <span class="n">paid_so_far</span> <span class="o">+=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">total_budget</span><span class="p">()</span>
-                <span class="n">denominator</span> <span class="o">-=</span> <span class="n">supporter</span><span class="o">.</span><span class="n">total_sat_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tied_projects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">resolute</span><span class="p">:</span>
-                <span class="n">all_allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">alloc</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">alloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_allocs</span><span class="p">:</span>
-                    <span class="n">all_allocs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tie</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="n">tied_projects</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">resolute</span><span class="p">:</span>
-                <span class="n">tied_projects</span> <span class="o">=</span> <span class="n">tied_projects</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">selected_project</span> <span class="ow">in</span> <span class="n">tied_projects</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">resolute</span><span class="p">:</span>
-                    <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">alloc</span>
-                    <span class="n">new_projects</span> <span class="o">=</span> <span class="n">projects</span>
-                    <span class="n">new_voters</span> <span class="o">=</span> <span class="n">voters</span>
-                    <span class="n">new_afford</span> <span class="o">=</span> <span class="n">prev_affordability</span>
+    <span class="n">projects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">)):</span>
+        <span class="n">mes_p</span> <span class="o">=</span> <span class="n">MESProject</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">total_sat</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">voters</span><span class="p">):</span>
+            <span class="n">indiv_sat</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">indiv_sat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">total_sat</span> <span class="o">+=</span> <span class="n">v</span><span class="o">.</span><span class="n">total_sat_project</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">mes_p</span><span class="o">.</span><span class="n">supporter_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">binary_sat</span><span class="p">:</span>
+                    <span class="n">mes_p</span><span class="o">.</span><span class="n">unique_sat_supporter</span> <span class="o">=</span> <span class="n">indiv_sat</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">new_alloc</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span>
-                    <span class="n">new_projects</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span>
-                    <span class="n">new_voters</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">voters</span><span class="p">)</span>
-                    <span class="n">new_afford</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">prev_affordability</span><span class="p">)</span>
-                <span class="n">new_alloc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_project</span><span class="p">)</span>
-                <span class="n">new_projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">selected_project</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">supporter_index</span> <span class="ow">in</span> <span class="n">supporters</span><span class="p">[</span><span class="n">selected_project</span><span class="p">]:</span>
-                    <span class="n">supporter</span> <span class="o">=</span> <span class="n">new_voters</span><span class="p">[</span><span class="n">supporter_index</span><span class="p">]</span>
-                    <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span> <span class="o">-=</span> <span class="nb">min</span><span class="p">(</span>
-                        <span class="n">supporter</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span>
-                        <span class="n">best_afford</span> <span class="o">*</span> <span class="n">supporter</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">selected_project</span><span class="p">),</span>
-                    <span class="p">)</span>
-                <span class="n">aux</span><span class="p">(</span>
-                    <span class="n">inst</span><span class="p">,</span>
-                    <span class="n">prof</span><span class="p">,</span>
-                    <span class="n">new_voters</span><span class="p">,</span>
-                    <span class="n">tie</span><span class="p">,</span>
-                    <span class="n">new_projects</span><span class="p">,</span>
-                    <span class="n">new_alloc</span><span class="p">,</span>
-                    <span class="n">total_scores</span><span class="p">,</span>
-                    <span class="n">supporters</span><span class="p">,</span>
-                    <span class="n">new_afford</span><span class="p">,</span>
-                    <span class="n">all_allocs</span><span class="p">,</span>
-                    <span class="n">resolute</span><span class="p">,</span>
-                <span class="p">)</span>
+                    <span class="n">mes_p</span><span class="o">.</span><span class="n">sat_supporter_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">indiv_sat</span>
+        <span class="k">if</span> <span class="n">total_sat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">mes_p</span><span class="o">.</span><span class="n">total_sat</span> <span class="o">=</span> <span class="n">total_sat</span>
+                <span class="n">afford</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">total_sat</span><span class="p">)</span>
+                <span class="n">mes_p</span><span class="o">.</span><span class="n">initial_affordability</span> <span class="o">=</span> <span class="n">afford</span>
+                <span class="n">mes_p</span><span class="o">.</span><span class="n">affordability</span> <span class="o">=</span> <span class="n">afford</span>
+                <span class="n">projects</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mes_p</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">initial_budget_allocation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-    <span class="c1"># Adapted from equalshares.net</span>
-    <span class="n">initial_projects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">proj</span> <span class="ow">in</span> <span class="n">initial_budget_allocation</span><span class="p">:</span>
-        <span class="n">initial_projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-    <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">proj</span><span class="p">:</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">total_satisfaction_project</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span> <span class="k">for</span> <span class="n">proj</span> <span class="ow">in</span> <span class="n">initial_projects</span><span class="p">}</span>
-    <span class="k">for</span> <span class="n">proj</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">cost</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">initial_projects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">initial_budget_allocation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-
-    <span class="n">voters_details</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">MESVoter</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">sat</span><span class="p">,</span> <span class="n">initial_budget</span><span class="p">,</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">sat</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="n">sat_profile</span>
-    <span class="p">]</span>
-
-    <span class="n">supps</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">proj</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">voters_details</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">proj</span> <span class="ow">in</span> <span class="n">initial_projects</span>
-    <span class="p">}</span>
-    <span class="n">initial_affordability</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">proj</span><span class="p">:</span> <span class="n">frac</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">scores</span><span class="p">[</span><span class="n">proj</span><span class="p">])</span> <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="n">proj</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">proj</span> <span class="ow">in</span> <span class="n">initial_projects</span>
-    <span class="p">}</span>
     <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">initial_budget_allocation</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">all_budget_allocations</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">aux</span><span class="p">(</span>
+        <span class="n">mes_inner_algo</span><span class="p">(</span>
             <span class="n">instance</span><span class="p">,</span>
             <span class="n">profile</span><span class="p">,</span>
-            <span class="n">voters_details</span><span class="p">,</span>
+            <span class="n">voters</span><span class="p">,</span>
+            <span class="n">copy</span><span class="p">(</span><span class="n">projects</span><span class="p">),</span>
             <span class="n">tie_breaking</span><span class="p">,</span>
-            <span class="n">copy</span><span class="p">(</span><span class="n">initial_projects</span><span class="p">),</span>
             <span class="n">copy</span><span class="p">(</span><span class="n">initial_budget_allocation</span><span class="p">),</span>
-            <span class="n">scores</span><span class="p">,</span>
-            <span class="n">supps</span><span class="p">,</span>
-            <span class="n">initial_affordability</span><span class="p">,</span>
             <span class="n">all_budget_allocations</span><span class="p">,</span>
             <span class="n">resoluteness</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">resoluteness</span><span class="p">:</span>
             <span class="n">outcome</span> <span class="o">=</span> <span class="n">all_budget_allocations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">budget_step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">voter_budget_increment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">outcome</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">previous_outcome</span>
-            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">outcome</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">outcome</span><span class="p">,</span> <span class="n">available_projects</span><span class="o">=</span><span class="n">projects</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">outcome</span>
-            <span class="n">initial_budget</span> <span class="o">+=</span> <span class="n">budget_step</span>
+            <span class="n">initial_budget_per_voter</span> <span class="o">+=</span> <span class="n">voter_budget_increment</span>
             <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">outcome</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">budget_step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">voter_budget_increment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">all_budget_allocations</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_feasible</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">all_budget_allocations</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">previous_outcome</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">all_budget_allocations</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">is_exhaustive</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">available_projects</span><span class="o">=</span><span class="n">projects</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">all_budget_allocations</span>
+            <span class="p">):</span>
                 <span class="k">return</span> <span class="n">all_budget_allocations</span>
-            <span class="n">initial_budget</span> <span class="o">+=</span> <span class="n">budget_step</span>
+            <span class="n">initial_budget_per_voter</span> <span class="o">+=</span> <span class="n">voter_budget_increment</span>
             <span class="n">previous_outcome</span> <span class="o">=</span> <span class="n">all_budget_allocations</span>
-        <span class="k">for</span> <span class="n">voter</span> <span class="ow">in</span> <span class="n">voters_details</span><span class="p">:</span>
-            <span class="n">voter</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="n">frac</span><span class="p">(</span><span class="n">initial_budget</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">num_ballots</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">voter</span> <span class="ow">in</span> <span class="n">voters</span><span class="p">:</span>
+            <span class="n">voter</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="n">initial_budget_per_voter</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">affordability</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">initial_affordability</span>
 
 
 <div class="viewcode-block" id="method_of_equal_shares"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.mes.method_of_equal_shares">[docs]</a><span class="k">def</span> <span class="nf">method_of_equal_shares</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">voter_budget_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">binary_sat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Method of Equal Shares (MES). See the website</span>
@@ -619,7 +698,7 @@ document.write(`
 <span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
 <span class="sd">            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is</span>
 <span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
-<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
+<span class="sd">        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
 <span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional</span>
 <span class="sd">            The tie-breaking rule used.</span>
@@ -627,10 +706,13 @@ document.write(`
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">        budget_step : Number, optional</span>
-<span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `budget_step` units of</span>
-<span class="sd">            budget are added until an exhaustive budget allocation is found, or one that is no longer feasible</span>
-<span class="sd">            with the initial budget allocation.</span>
+<span class="sd">        voter_budget_increment : Number, optional</span>
+<span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units</span>
+<span class="sd">            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or</span>
+<span class="sd">            one that is no longer feasible with the initial budget constraint.</span>
+<span class="sd">        binary_sat : bool, optional</span>
+<span class="sd">            Uses the inner algorithm for binary satisfaction if set to `True`. Should typically be used with approval</span>
+<span class="sd">            ballots to gain on the runtime. Automatically set to `True` if an approval profile is given.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -651,7 +733,10 @@ document.write(`
         <span class="k">if</span> <span class="n">sat_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="o">=</span><span class="n">sat_class</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">mes_scheme</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">binary_sat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">binary_sat</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">AbstractApprovalProfile</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">method_of_equal_shares_scheme</span><span class="p">(</span>
         <span class="n">instance</span><span class="p">,</span>
         <span class="n">profile</span><span class="p">,</span>
         <span class="n">sat_profile</span><span class="p">,</span>
@@ -659,114 +744,8 @@ document.write(`
         <span class="n">budget_allocation</span><span class="p">,</span>
         <span class="n">tie_breaking</span><span class="p">,</span>
         <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="o">=</span><span class="n">budget_step</span>
-    <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="mes_iterated"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.mes.mes_iterated">[docs]</a><span class="k">def</span> <span class="nf">mes_iterated</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="p">:</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Shortcut for the method of equal shares used with the exhaustion by budget increase method.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
-<span class="sd">            The instance.</span>
-<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
-<span class="sd">            The profile.</span>
-<span class="sd">        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
-<span class="sd">            The class defining the satisfaction function used to measure the social welfare. It should be a class</span>
-<span class="sd">            inhereting from pabutools.instance.satisfaction.Satisfaction.</span>
-<span class="sd">            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is</span>
-<span class="sd">            provided, the satisfaction argument is disregarded.</span>
-<span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
-<span class="sd">            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is</span>
-<span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
-<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
-<span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        resoluteness : bool, optional</span>
-<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
-<span class="sd">            Defaults to True.</span>
-<span class="sd">        budget_step: Number</span>
-<span class="sd">            The budget increase in each step. Defaults to 1% of the budget limit.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Iterable[Project]</span>
-<span class="sd">            The selected projects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">exhaustion_by_budget_increase</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">,</span>
-        <span class="n">method_of_equal_shares</span><span class="p">,</span>
-        <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">sat_class</span><span class="p">,</span> <span class="s2">&quot;sat_profile&quot;</span><span class="p">:</span> <span class="n">sat_profile</span><span class="p">},</span>
-        <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="n">initial_budget_allocation</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="o">=</span><span class="n">budget_step</span><span class="p">,</span>
-    <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="mes_iterated_completed"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.mes.mes_iterated_completed">[docs]</a><span class="k">def</span> <span class="nf">mes_iterated_completed</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-        <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">budget_step</span><span class="p">:</span> <span class="n">Number</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Shortcut for the method of equal shares used with the exhaustion by budget increase method and then complete by the</span>
-<span class="sd">    greedy utilitarian welfare maximiser.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
-<span class="sd">            The instance.</span>
-<span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
-<span class="sd">            The profile.</span>
-<span class="sd">        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
-<span class="sd">            The class defining the satisfaction function used to measure the social welfare. It should be a class</span>
-<span class="sd">            inhereting from pabutools.instance.satisfaction.Satisfaction.</span>
-<span class="sd">            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is</span>
-<span class="sd">            provided, the satisfaction argument is disregarded.</span>
-<span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
-<span class="sd">            The satisfaction profile corresponding to the instance and the profile. If no satisfaction profile is</span>
-<span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
-<span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
-<span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        resoluteness : bool, optional</span>
-<span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
-<span class="sd">            Defaults to True.</span>
-<span class="sd">        budget_step: Number</span>
-<span class="sd">            The budget increase in each step for the iterated MES part. Defaults to 1% of the budget limit.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Iterable[Project]</span>
-<span class="sd">            The selected projects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">completion_by_rule_combination</span><span class="p">(</span>
-        <span class="n">instance</span><span class="p">,</span>
-        <span class="n">profile</span><span class="p">,</span>
-        <span class="p">[</span><span class="n">mes_iterated</span><span class="p">,</span> <span class="n">greedy_utilitarian_welfare</span><span class="p">],</span>
-        <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">sat_class</span><span class="p">,</span>
-                <span class="s2">&quot;sat_profile&quot;</span><span class="p">:</span> <span class="n">sat_profile</span><span class="p">,</span>
-                <span class="s2">&quot;budget_step&quot;</span><span class="p">:</span> <span class="n">budget_step</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="p">{</span><span class="s2">&quot;sat_class&quot;</span><span class="p">:</span> <span class="n">sat_class</span><span class="p">,</span> <span class="s2">&quot;sat_profile&quot;</span><span class="p">:</span> <span class="n">sat_profile</span><span class="p">},</span>
-        <span class="p">],</span>
-        <span class="n">initial_budget_allocation</span><span class="o">=</span><span class="n">initial_budget_allocation</span><span class="p">,</span>
-        <span class="n">resoluteness</span><span class="o">=</span><span class="n">resoluteness</span><span class="p">,</span>
+        <span class="n">voter_budget_increment</span><span class="o">=</span><span class="n">voter_budget_increment</span><span class="p">,</span>
+        <span class="n">binary_sat</span><span class="o">=</span><span class="n">binary_sat</span><span class="p">,</span>
     <span class="p">)</span></div>
 </pre></div>
 
