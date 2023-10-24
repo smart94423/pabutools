@@ -16,7 +16,7 @@ def is_cohesive_approval(
         projects: Iterable[Project],
         ballots: Iterable[AbstractApprovalBallot]
 ) -> bool:
-    if not is_large_enough(profile.num_ballots(), sum(profile.multiplicity(b) for b in ballots), total_cost(projects), instance.budget_limit):
+    if not is_large_enough(sum(profile.multiplicity(b) for b in ballots), profile.num_ballots(), total_cost(projects), instance.budget_limit):
         return False
     if len(ballots) == 0 or len(projects) == 0:
         return False
@@ -34,13 +34,13 @@ def is_cohesive_cardinal(
         ballots: Iterable[AbstractCardinalBallot],
         alpha: dict[Project, Number]
 ) -> bool:
-    if not is_large_enough(profile.num_ballots(), sum(profile.multiplicity(b) for b in ballots), total_cost(projects), instance.budget_limit):
+    if not is_large_enough(sum(profile.multiplicity(b) for b in ballots), profile.num_ballots(), total_cost(projects), instance.budget_limit):
         return False
     if len(ballots) == 0 or len(projects) == 0:
         return False
     for ballot in ballots:
         for p in projects:
-            if ballot[p] > alpha[p]:
+            if ballot[p] < alpha[p]:
                 return False
     return True
 
