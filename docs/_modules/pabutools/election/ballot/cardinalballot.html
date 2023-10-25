@@ -257,25 +257,27 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Cardinal ballots, i.e., ballots in which the voters map projects to scores.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Mapping</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot.ballot</span> <span class="kn">import</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">Ballot</span><span class="p">,</span> <span class="n">AbstractBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Project</span>
 
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 
-<div class="viewcode-block" id="AbstractCardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">AbstractCardinalBallot</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">]):</span>
+<div class="viewcode-block" id="AbstractCardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.AbstractCardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">AbstractCardinalBallot</span><span class="p">(</span><span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for cardinal ballots. Essentially used for typing purposes.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="FrozenCardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">FrozenCardinalBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">],</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
+<div class="viewcode-block" id="FrozenCardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.FrozenCardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">FrozenCardinalBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">],</span> <span class="n">FrozenBallot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Frozen cardinal ballot, that is, a ballot in which the voter assigned scores to projects.</span>
-<span class="sd">    Since there is not frozen dictionary implemented in Python, this class simply inherits from the Python class `dict`,</span>
+<span class="sd">    Since there is no frozen dictionary implemented in Python, this class simply inherits from the Python class `dict`,</span>
 <span class="sd">    overriding the `set_item` method to ensure that it is non-mutable (raising an exception if the method is used).</span>
 
 <span class="sd">    Parameters</span>
@@ -303,10 +305,10 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">init</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">init</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">dict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -329,7 +331,7 @@ document.write(`
         <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__hash__</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
 
 
-<div class="viewcode-block" id="CardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">CardinalBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">],</span> <span class="n">Ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
+<div class="viewcode-block" id="CardinalBallot"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot">[docs]</a><span class="k">class</span> <span class="nc">CardinalBallot</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">],</span> <span class="n">Ballot</span><span class="p">,</span> <span class="n">AbstractCardinalBallot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A cardinal ballot, that is, a ballot in which the voter assigned scores to projects. This class inherits from the</span>
 <span class="sd">    Python class `dict` and can be used as one.</span>
@@ -359,10 +361,10 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">init</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">init</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Project</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">init</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -380,7 +382,7 @@ document.write(`
         <span class="n">Ballot</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
         <span class="n">AbstractCardinalBallot</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CardinalBallot.complete"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">default_score</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="CardinalBallot.complete"><a class="viewcode-back" href="../../../../reference/election/ballot.html#pabutools.election.ballot.cardinalballot.CardinalBallot.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">default_score</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Completes the ballot by assigning the `default_score` to all projects from `projects` that have not been</span>
 <span class="sd">        assigned a score yet.</span>
@@ -389,7 +391,7 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">                The set of all the projects to consider. This is typically the instance.</span>
-<span class="sd">            default_score : Number</span>
+<span class="sd">            default_score : Numeric</span>
 <span class="sd">                The default score that will be assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">:</span>

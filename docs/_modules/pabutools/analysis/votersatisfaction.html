@@ -254,14 +254,14 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.analysis.votersatisfaction</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
-<span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">ApprovalProfile</span><span class="p">,</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile.profile</span> <span class="kn">import</span> <span class="n">MultiProfile</span><span class="p">,</span> <span class="n">AbstractProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">SatisfactionMeasure</span><span class="p">,</span>
@@ -276,9 +276,9 @@ document.write(`
 <div class="viewcode-block" id="avg_satisfaction"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.votersatisfaction.avg_satisfaction">[docs]</a><span class="k">def</span> <span class="nf">avg_satisfaction</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the average satisfaction for a given instance, profile and satisfaction measure.</span>
 
@@ -295,7 +295,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average satisfaction of a voter for the budget allocation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -309,8 +309,8 @@ document.write(`
 
 
 <div class="viewcode-block" id="percent_non_empty_handed"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.votersatisfaction.percent_non_empty_handed">[docs]</a><span class="k">def</span> <span class="nf">percent_non_empty_handed</span><span class="p">(</span>
-    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the percentage of voter for which at least one project from the budget allocation also appears in their</span>
 <span class="sd">    ballot.</span>
@@ -328,7 +328,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The percentage of non-empty handed voters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">avg_satisfaction</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">budget_allocation</span><span class="p">,</span> <span class="n">CC_Sat</span><span class="p">)</span></div>
@@ -336,16 +336,14 @@ document.write(`
 
 <div class="viewcode-block" id="percent_positive_satisfaction"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.votersatisfaction.percent_positive_satisfaction">[docs]</a><span class="k">def</span> <span class="nf">percent_positive_satisfaction</span><span class="p">(</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the percentage of voter who enjoy a positive (thus non-zero) satisfaction.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        instance : :py:class:`~pabutools.election.instance.Instance`</span>
-<span class="sd">            The instance.</span>
 <span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
 <span class="sd">        budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
@@ -356,7 +354,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The percentage of non-empty handed voters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sat_profile</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">as_sat_profile</span><span class="p">(</span><span class="n">sat_class</span><span class="p">)</span>
@@ -370,10 +368,10 @@ document.write(`
 <div class="viewcode-block" id="gini_coefficient_of_satisfaction"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.votersatisfaction.gini_coefficient_of_satisfaction">[docs]</a><span class="k">def</span> <span class="nf">gini_coefficient_of_satisfaction</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
     <span class="n">invert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the Gini coefficient of the satisfaction of the voters.</span>
 
@@ -392,7 +390,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The Gini coefficient of the satisfaction of the voters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">voter_satisfactions</span> <span class="o">=</span> <span class="p">[]</span>
@@ -411,11 +409,11 @@ document.write(`
 <div class="viewcode-block" id="satisfaction_histogram"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.votersatisfaction.satisfaction_histogram">[docs]</a><span class="k">def</span> <span class="nf">satisfaction_histogram</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
-    <span class="n">max_satisfaction</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+    <span class="n">max_satisfaction</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">,</span>
     <span class="n">num_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">21</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Number</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Numeric</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the data necessary to plot a histogram of the satisfaction of the voters. Each bin contains the percentage</span>
 <span class="sd">    of voters whose satisfaction corresponds to the bin.</span>
@@ -430,14 +428,14 @@ document.write(`
 <span class="sd">            Collection of projects.</span>
 <span class="sd">        sat_class: type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
 <span class="sd">            The satisfaction measure used to do the comparison.</span>
-<span class="sd">        max_satisfaction: Number</span>
+<span class="sd">        max_satisfaction: Numeric</span>
 <span class="sd">            The normaliser for the satisfaction.</span>
 <span class="sd">        num_bins: int, optional</span>
 <span class="sd">            The number of bins of the histogram. Defaults to `20`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        list[Number]</span>
+<span class="sd">        list[Numeric]</span>
 <span class="sd">            A list of values, one per bin of the histogram.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -460,7 +458,7 @@ document.write(`
                 <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">satisfaction</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_bins</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">max_satisfaction</span><span class="p">)</span>
             <span class="p">]</span> <span class="o">+=</span> <span class="n">sat_profile</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">(</span><span class="n">ballot</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hist_data</span><span class="p">)):</span>
-        <span class="n">hist_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hist_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">profile</span><span class="o">.</span><span class="n">num_ballots</span><span class="p">()</span>
+        <span class="n">hist_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">profile</span><span class="o">.</span><span class="n">num_ballots</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">hist_data</span></div>
 </pre></div>
 

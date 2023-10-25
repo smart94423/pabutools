@@ -259,8 +259,9 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Collection</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -276,10 +277,9 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 
+<span class="c1"># To avoid circular import that is only needed for type checking</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="p">(</span>
-        <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">AbstractProfile</span>
 
 
 <div class="viewcode-block" id="FunctionalSatisfaction"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction">[docs]</a><span class="k">class</span> <span class="nc">FunctionalSatisfaction</span><span class="p">(</span><span class="n">SatisfactionMeasure</span><span class="p">):</span>
@@ -296,7 +296,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot.</span>
-<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Numeric]</span>
 <span class="sd">            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of</span>
 <span class="sd">            projects, given the instance, the profile and the ballot under consideration.</span>
 
@@ -308,7 +308,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot.</span>
-<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Numeric]</span>
 <span class="sd">            The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of</span>
 <span class="sd">            projects, given the instance, the profile and the ballot under consideration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -319,16 +319,16 @@ document.write(`
         <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
         <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]],</span> <span class="n">Number</span>
+            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]],</span> <span class="n">Numeric</span>
         <span class="p">],</span>
     <span class="p">):</span>
         <span class="n">SatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
 
-<div class="viewcode-block" id="FunctionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="FunctionalSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">projects</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FunctionalSatisfaction.sat_project"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat_project">[docs]</a>    <span class="k">def</span> <span class="nf">sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="FunctionalSatisfaction.sat_project"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat_project">[docs]</a>    <span class="k">def</span> <span class="nf">sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="p">([</span><span class="n">project</span><span class="p">])</span></div></div>
 
 
@@ -336,7 +336,7 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
-    <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to 1 if at least one approved project</span>
@@ -366,8 +366,8 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
-    <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to the maximum score assigned to</span>
 <span class="sd">    a selected project in the ballot, and 0 if no selected project has been assigned a score.</span>
@@ -385,7 +385,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The Chamberlin-Courant satisfaction.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -438,8 +438,8 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
-    <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cost square root satisfaction for approval ballots. It is equal to the square root of the total cost of</span>
 <span class="sd">    the approved and selected projects.</span>
@@ -457,7 +457,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The cost square root satisfaction.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -498,8 +498,8 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span>
-    <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cost log satisfaction for approval ballots. It is equal to the log of 1 plus the total cost of</span>
 <span class="sd">    the approved and selected projects.</span>
@@ -517,7 +517,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The log cost satisfaction.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

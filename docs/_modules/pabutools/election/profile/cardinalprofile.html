@@ -254,10 +254,13 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for pabutools.election.profile.cardinalprofile</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.election.ballot.cardinalballot</span> <span class="kn">import</span> <span class="n">AbstractCardinalBallot</span>
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election.ballot</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Ballot</span><span class="p">,</span>
@@ -269,7 +272,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Project</span>
 
 
-<div class="viewcode-block" id="AbstractCardinalProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.AbstractCardinalProfile">[docs]</a><span class="k">class</span> <span class="nc">AbstractCardinalProfile</span><span class="p">(</span><span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractCardinalProfile"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.AbstractCardinalProfile">[docs]</a><span class="k">class</span> <span class="nc">AbstractCardinalProfile</span><span class="p">(</span><span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">AbstractCardinalBallot</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for cardinal profiles. Stores the metadata and the methods specific to cardinal profiles.</span>
 
@@ -281,10 +284,10 @@ document.write(`
 <span class="sd">        legal_max_length : int, optional</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_min_score : Number, optional</span>
+<span class="sd">        legal_min_score : Numeric, optional</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_max_score : Number, optional</span>
+<span class="sd">        legal_max_score : Numeric, optional</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
 
@@ -294,9 +297,9 @@ document.write(`
 <span class="sd">            The minimum number of projects a voter needs to assign a score to per the rules of the election.</span>
 <span class="sd">        legal_max_length : int</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
-<span class="sd">        legal_min_score : Number</span>
+<span class="sd">        legal_min_score : Numeric</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
-<span class="sd">        legal_max_score : Number</span>
+<span class="sd">        legal_max_score : Numeric</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -304,8 +307,8 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">AbstractProfile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">ABC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -314,7 +317,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_min_score</span> <span class="o">=</span> <span class="n">legal_min_score</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">legal_max_score</span> <span class="o">=</span> <span class="n">legal_max_score</span>
 
-<div class="viewcode-block" id="AbstractCardinalProfile.total_score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.AbstractCardinalProfile.total_score">[docs]</a>    <span class="k">def</span> <span class="nf">total_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="AbstractCardinalProfile.total_score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.AbstractCardinalProfile.total_score">[docs]</a>    <span class="k">def</span> <span class="nf">total_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total score of a project, that is, the sum of scores received from all voters.</span>
 
@@ -325,7 +328,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            Number</span>
+<span class="sd">            Numeric</span>
 <span class="sd">                The total score assigned to the project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -364,10 +367,10 @@ document.write(`
 <span class="sd">        legal_max_length : int, optional</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_min_score : Number, optional</span>
+<span class="sd">        legal_min_score : Numeric, optional</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_max_score : Number, optional</span>
+<span class="sd">        legal_max_score : Numeric, optional</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
 
@@ -384,9 +387,9 @@ document.write(`
 <span class="sd">            The minimum number of projects a voter needs to assign a score to per the rules of the election.</span>
 <span class="sd">        legal_max_length : int</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
-<span class="sd">        legal_min_score : Number</span>
+<span class="sd">        legal_min_score : Numeric</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
-<span class="sd">        legal_max_score : Number</span>
+<span class="sd">        legal_max_score : Numeric</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -398,8 +401,8 @@ document.write(`
         <span class="n">ballot_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Ballot</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
             <span class="n">legal_min_length</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">legal_min_length</span>
@@ -456,7 +459,7 @@ document.write(`
             <span class="n">legal_max_score</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">legal_max_score</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="CardinalProfile.complete"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">default_score</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="CardinalProfile.complete"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalProfile.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">default_score</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Completes all the ballots such that for all ballots, if a project from `projects` has not been assigned a score,</span>
 <span class="sd">        then it is assigned `default_score`.</span>
@@ -465,7 +468,7 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">            projects : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">                The set of all the projects to consider. This is typically the instance.</span>
-<span class="sd">            default_score : Number</span>
+<span class="sd">            default_score : Numeric</span>
 <span class="sd">                The default score that will be assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ballot</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
@@ -549,10 +552,10 @@ document.write(`
 <span class="sd">        legal_max_length : int, optional</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_min_score : Number, optional</span>
+<span class="sd">        legal_min_score : Numeric, optional</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
-<span class="sd">        legal_max_score : Number, optional</span>
+<span class="sd">        legal_max_score : Numeric, optional</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">            Defaults to `None`.</span>
 
@@ -569,9 +572,9 @@ document.write(`
 <span class="sd">            The minimum number of projects a voter needs to assign a score to per the rules of the election.&amp;</span>
 <span class="sd">        legal_max_length : int</span>
 <span class="sd">            The maximum number of projects a voter needs to assign a score to per the rules of the election.</span>
-<span class="sd">        legal_min_score : Number</span>
+<span class="sd">        legal_min_score : Numeric</span>
 <span class="sd">            The minimum score a project can be assigned by a voter per the rules of the election.</span>
-<span class="sd">        legal_max_score : Number</span>
+<span class="sd">        legal_max_score : Numeric</span>
 <span class="sd">            The maximum score a project can be assigned by a voter per the rules of the election.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -584,8 +587,8 @@ document.write(`
         <span class="n">profile</span><span class="p">:</span> <span class="n">CardinalProfile</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">legal_max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Number</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_min_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legal_max_score</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">legal_min_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">AbstractCardinalProfile</span><span class="p">):</span>
@@ -639,7 +642,7 @@ document.write(`
         <span class="k">if</span> <span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CardinalMultiProfile.score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="CardinalMultiProfile.score"><a class="viewcode-back" href="../../../../reference/election/profile.html#pabutools.election.profile.cardinalprofile.CardinalMultiProfile.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the score of a project, that is, the sum of scores received from all voters.</span>
 <span class="sd">        Parameters</span>

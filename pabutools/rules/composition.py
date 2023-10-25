@@ -1,7 +1,7 @@
 """
 Module implementing different ways to compose rules.
 """
-from collections.abc import Iterable, Callable
+from collections.abc import Collection, Callable, Iterable
 
 from pabutools.election import (
     Instance,
@@ -17,8 +17,8 @@ def popularity_comparison(
     sat_class: type[SatisfactionMeasure],
     rule_sequence: Iterable[Callable],
     rule_params: Iterable[dict] = None,
-    initial_budget_allocation: Iterable[Project] = None,
-) -> Iterable[Iterable[Project]]:
+    initial_budget_allocation: Collection[Project] = None,
+) -> Iterable[Collection[Project]]:
     """
     Compute the outcome of several rules and returns the one that is the most preferred by the largest set of voters,
     according to a given satisfaction measure. Should only be applied to resolute rules.
@@ -36,7 +36,7 @@ def popularity_comparison(
         rule_params: Iterable[dict], optional
             Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule
             functions. Defaults to `{}`.
-        initial_budget_allocation: Iterable[Project], optional
+        initial_budget_allocation: Collection[Project], optional
             An initial budget allocation, typically empty. Defaults to `[]`.
 
     Returns
@@ -91,8 +91,8 @@ def social_welfare_comparison(
     sat_class: type[SatisfactionMeasure],
     rule_sequence: Iterable[Callable],
     rule_params: Iterable[dict] = None,
-    initial_budget_allocation: Iterable[Project] = None,
-) -> Iterable[Iterable[Project]]:
+    initial_budget_allocation: Collection[Project] = None,
+) -> Iterable[Collection[Project]]:
     """
     Compute the outcome of several rules and returns the one that is the most preferred by the voters according to a
     given satisfaction measure. Should only be applied to resolute rules.
@@ -110,7 +110,7 @@ def social_welfare_comparison(
         rule_params: Iterable[dict], optional
             Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule
             functions. Defaults to `{}`.
-        initial_budget_allocation: Iterable[Project], optional
+        initial_budget_allocation: Collection[Project], optional
             An initial budget allocation, typically empty. Defaults to `[]`.
 
     Returns

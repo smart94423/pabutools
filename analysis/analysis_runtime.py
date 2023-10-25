@@ -95,7 +95,7 @@ def runtime_analysis_plot(csv_file="runtime.csv", xaxis="num_projects_cat"):
             g.set_title("MES[Cost_Sat] resolute and exhaustive (budget increase)")
         else:
             g.set_title(rule)
-        g.set_xlabel("Number of projects")
+        g.set_xlabel("Numeric of projects")
         g.set_ylabel("Runtime")
 
         plt.show()

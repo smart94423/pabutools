@@ -256,7 +256,7 @@ document.write(`
   <h1>Source code for pabutools.analysis.profileproperties</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
@@ -269,7 +269,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">mean_generator</span>
 
 
-<div class="viewcode-block" id="avg_ballot_length"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_ballot_length">[docs]</a><span class="k">def</span> <span class="nf">avg_ballot_length</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="avg_ballot_length"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_ballot_length">[docs]</a><span class="k">def</span> <span class="nf">avg_ballot_length</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the average length of the ballots in the profile.</span>
 
@@ -282,7 +282,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average length of the ballots in the profile.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -304,7 +304,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The median length of the ballots in the profile.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -319,7 +319,7 @@ document.write(`
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ballot_lengths</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="avg_ballot_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_ballot_cost">[docs]</a><span class="k">def</span> <span class="nf">avg_ballot_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="avg_ballot_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_ballot_cost">[docs]</a><span class="k">def</span> <span class="nf">avg_ballot_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the average cost of the ballots in the profile.</span>
 
@@ -332,7 +332,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average cost of the ballots in the profile.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -341,7 +341,7 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="median_ballot_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.median_ballot_cost">[docs]</a><span class="k">def</span> <span class="nf">median_ballot_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="median_ballot_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.median_ballot_cost">[docs]</a><span class="k">def</span> <span class="nf">median_ballot_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the median cost of the ballots in the profile.</span>
 
@@ -354,7 +354,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The median cost of the ballots in the profile.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -369,7 +369,7 @@ document.write(`
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ballot_costs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="avg_approval_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_approval_score">[docs]</a><span class="k">def</span> <span class="nf">avg_approval_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="avg_approval_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_approval_score">[docs]</a><span class="k">def</span> <span class="nf">avg_approval_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the average approval score of projects.</span>
 
@@ -382,7 +382,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average approval score of projects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -391,7 +391,7 @@ document.write(`
 
 <div class="viewcode-block" id="median_approval_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.median_approval_score">[docs]</a><span class="k">def</span> <span class="nf">median_approval_score</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the median approval score of projects.</span>
 
@@ -404,7 +404,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The median approval score of projects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -415,7 +415,7 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="avg_total_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_total_score">[docs]</a><span class="k">def</span> <span class="nf">avg_total_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractCardinalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="avg_total_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.avg_total_score">[docs]</a><span class="k">def</span> <span class="nf">avg_total_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractCardinalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the average score assigned to a project by the voters.</span>
 
@@ -428,14 +428,14 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average score assigned to a project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">mean_generator</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">total_score</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="median_total_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.median_total_score">[docs]</a><span class="k">def</span> <span class="nf">median_total_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractCardinalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="median_total_score"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.profileproperties.median_total_score">[docs]</a><span class="k">def</span> <span class="nf">median_total_score</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractCardinalProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the median score assigned to a project by the voters.</span>
 
@@ -448,7 +448,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The median score assigned to a project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

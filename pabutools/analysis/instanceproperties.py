@@ -1,13 +1,13 @@
 from pabutools.election.instance import Instance, total_cost
 
-from numbers import Number
+from pabutools.utils import Numeric
 
 import numpy as np
 
 from pabutools.fractions import frac
 
 
-def sum_project_cost(instance: Instance) -> Number:
+def sum_project_cost(instance: Instance) -> Numeric:
     """
     Returns the total cost of all the projects in the instance.
 
@@ -18,14 +18,14 @@ def sum_project_cost(instance: Instance) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The total cost.
 
     """
     return total_cost(instance)
 
 
-def funding_scarcity(instance: Instance) -> Number:
+def funding_scarcity(instance: Instance) -> Numeric:
     """
     Returns the ratio of the total cost of the instance, divided by the budget limit. This measure is called the funding
     scarcity.
@@ -37,7 +37,7 @@ def funding_scarcity(instance: Instance) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The funding scarcity of the instance.
 
     """
@@ -48,7 +48,7 @@ def funding_scarcity(instance: Instance) -> Number:
     )
 
 
-def avg_project_cost(instance: Instance) -> Number:
+def avg_project_cost(instance: Instance) -> Numeric:
     """
     Returns the average cost of a project.
 
@@ -59,14 +59,14 @@ def avg_project_cost(instance: Instance) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The average cost of a project.
 
     """
     return frac(total_cost(instance), len(instance))
 
 
-def median_project_cost(instance: Instance) -> Number:
+def median_project_cost(instance: Instance) -> Numeric:
     """
     Returns the median cost of a project.
 
@@ -77,14 +77,14 @@ def median_project_cost(instance: Instance) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The median cost of a project.
 
     """
     return float(np.median([project.cost for project in instance]))
 
 
-def std_dev_project_cost(instance: Instance) -> Number:
+def std_dev_project_cost(instance: Instance) -> Numeric:
     """
     Returns the standard deviation of the costs of the projects.
 
@@ -95,7 +95,7 @@ def std_dev_project_cost(instance: Instance) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The standard deviation.
 
     """

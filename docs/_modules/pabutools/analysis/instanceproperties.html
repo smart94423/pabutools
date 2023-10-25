@@ -256,14 +256,14 @@ document.write(`
   <h1>Source code for pabutools.analysis.instanceproperties</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pabutools.election.instance</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">total_cost</span>
 
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 
 
-<div class="viewcode-block" id="sum_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.sum_project_cost">[docs]</a><span class="k">def</span> <span class="nf">sum_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="sum_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.sum_project_cost">[docs]</a><span class="k">def</span> <span class="nf">sum_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the total cost of all the projects in the instance.</span>
 
@@ -274,14 +274,14 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The total cost.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="funding_scarcity"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.funding_scarcity">[docs]</a><span class="k">def</span> <span class="nf">funding_scarcity</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="funding_scarcity"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.funding_scarcity">[docs]</a><span class="k">def</span> <span class="nf">funding_scarcity</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the ratio of the total cost of the instance, divided by the budget limit. This measure is called the funding</span>
 <span class="sd">    scarcity.</span>
@@ -293,7 +293,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The funding scarcity of the instance.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -304,7 +304,7 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="avg_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.avg_project_cost">[docs]</a><span class="k">def</span> <span class="nf">avg_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="avg_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.avg_project_cost">[docs]</a><span class="k">def</span> <span class="nf">avg_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the average cost of a project.</span>
 
@@ -315,14 +315,14 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The average cost of a project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="n">total_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">instance</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="median_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.median_project_cost">[docs]</a><span class="k">def</span> <span class="nf">median_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="median_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.median_project_cost">[docs]</a><span class="k">def</span> <span class="nf">median_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the median cost of a project.</span>
 
@@ -333,14 +333,14 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The median cost of a project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="n">project</span><span class="o">.</span><span class="n">cost</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">instance</span><span class="p">]))</span></div>
 
 
-<div class="viewcode-block" id="std_dev_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.std_dev_project_cost">[docs]</a><span class="k">def</span> <span class="nf">std_dev_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="std_dev_project_cost"><a class="viewcode-back" href="../../../reference/analysis/index.html#pabutools.analysis.instanceproperties.std_dev_project_cost">[docs]</a><span class="k">def</span> <span class="nf">std_dev_project_cost</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the standard deviation of the costs of the projects.</span>
 
@@ -351,7 +351,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The standard deviation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

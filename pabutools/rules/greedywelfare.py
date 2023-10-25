@@ -1,10 +1,13 @@
 """
 Greedy approximations of the maximum welfare.
 """
+from __future__ import annotations
+
 from copy import copy
-from collections.abc import Iterable
+from collections.abc import Collection
 from math import inf
-from numbers import Number
+
+from pabutools.utils import Numeric
 
 from pabutools.election import AbstractBallot
 from pabutools.election.profile import AbstractProfile
@@ -23,11 +26,11 @@ def greedy_utilitarian_scheme(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
-    budget_allocation: Iterable[Project],
+    budget_allocation: Collection[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
-    sat_bounds: dict[AbstractBallot, Number] = None,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+    sat_bounds: dict[AbstractBallot, Numeric] = None,
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that
     lead to the highest increase in total score divided by the cost of the project. Projects that would lead to a
@@ -50,7 +53,7 @@ def greedy_utilitarian_scheme(
             Defaults to True.
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
@@ -131,10 +134,10 @@ def greedy_utilitarian_scheme_additive(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
-    budget_allocation: Iterable[Project],
+    budget_allocation: Collection[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     Faster version of the inner algorithm for the greedy rule if the scores are additive.
 
@@ -155,7 +158,7 @@ def greedy_utilitarian_scheme_additive(
             Defaults to True.
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
@@ -204,8 +207,8 @@ def greedy_utilitarian_welfare(
     is_sat_additive: bool = None,
     tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
-    initial_budget_allocation: Iterable[Project] = None,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+    initial_budget_allocation: Collection[Project] = None,
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting
     a project that lead to the highest increase in total satisfaction divided by the cost of the project. Projects that

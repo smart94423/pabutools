@@ -257,10 +257,13 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Greedy approximations of the maximum welfare.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AbstractBallot</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="n">AbstractProfile</span>
@@ -279,11 +282,11 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">sat_bounds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+    <span class="n">sat_bounds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that</span>
 <span class="sd">    lead to the highest increase in total score divided by the cost of the project. Projects that would lead to a</span>
@@ -306,7 +309,7 @@ document.write(`
 <span class="sd">            Defaults to True.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -387,10 +390,10 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
-    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Faster version of the inner algorithm for the greedy rule if the scores are additive.</span>
 
@@ -411,7 +414,7 @@ document.write(`
 <span class="sd">            Defaults to True.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -460,8 +463,8 @@ document.write(`
     <span class="n">is_sat_additive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting</span>
 <span class="sd">    a project that lead to the highest increase in total satisfaction divided by the cost of the project. Projects that</span>

@@ -3,8 +3,9 @@ Functional satisfaction measures.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
-from numbers import Number
+from collections.abc import Callable, Iterable, Collection
+
+from pabutools.utils import Numeric
 
 import numpy as np
 
@@ -20,10 +21,9 @@ from typing import TYPE_CHECKING
 
 from pabutools.fractions import frac
 
+# To avoid circular import that is only needed for type checking
 if TYPE_CHECKING:
-    from pabutools.election.profile import (
-        AbstractProfile,
-    )
+    from pabutools.election.profile import AbstractProfile
 
 
 class FunctionalSatisfaction(SatisfactionMeasure):
@@ -40,7 +40,7 @@ class FunctionalSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
-        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Numeric]
             The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
             projects, given the instance, the profile and the ballot under consideration.
 
@@ -52,7 +52,7 @@ class FunctionalSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
-        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Number]
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`, :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, Iterable[:py:class:`~pabutools.election.instance.Project`], Numeric]
             The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
             projects, given the instance, the profile and the ballot under consideration.
     """
@@ -63,16 +63,16 @@ class FunctionalSatisfaction(SatisfactionMeasure):
         profile: AbstractProfile,
         ballot: AbstractBallot,
         func: Callable[
-            [Instance, AbstractProfile, AbstractBallot, Iterable[Project]], Number
+            [Instance, AbstractProfile, AbstractBallot, Collection[Project]], Numeric
         ],
     ):
         SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.func = func
 
-    def sat(self, projects: Iterable[Project]) -> Number:
+    def sat(self, projects: Collection[Project]) -> Numeric:
         return self.func(self.instance, self.profile, self.ballot, projects)
 
-    def sat_project(self, project: Project) -> Number:
+    def sat_project(self, project: Project) -> Numeric:
         return self.sat([project])
 
 
@@ -80,7 +80,7 @@ def cc_sat_func_app(
     instance: Instance,
     profile: AbstractProfile,
     ballot: AbstractApprovalBallot,
-    projects: Iterable[Project],
+    projects: Collection[Project],
 ) -> int:
     """
     Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to 1 if at least one approved project
@@ -110,8 +110,8 @@ def cc_sat_func_card(
     instance: Instance,
     profile: AbstractProfile,
     ballot: AbstractCardinalBallot,
-    projects: Iterable[Project],
-) -> Number:
+    projects: Collection[Project],
+) -> Numeric:
     """
     Computes the Chamberlin-Courant satisfaction for approval ballots. It is equal to the maximum score assigned to
     a selected project in the ballot, and 0 if no selected project has been assigned a score.
@@ -129,7 +129,7 @@ def cc_sat_func_card(
 
     Returns
     -------
-        Number
+        Numeric
             The Chamberlin-Courant satisfaction.
 
     """
@@ -182,8 +182,8 @@ def cost_sqrt_sat_func(
     instance: Instance,
     profile: AbstractProfile,
     ballot: AbstractApprovalBallot,
-    projects: Iterable[Project],
-) -> Number:
+    projects: Collection[Project],
+) -> Numeric:
     """
     Computes the cost square root satisfaction for approval ballots. It is equal to the square root of the total cost of
     the approved and selected projects.
@@ -201,7 +201,7 @@ def cost_sqrt_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The cost square root satisfaction.
 
     """
@@ -242,8 +242,8 @@ def cost_log_sat_func(
     instance: Instance,
     profile: AbstractProfile,
     ballot: AbstractApprovalBallot,
-    projects: Iterable[Project],
-) -> Number:
+    projects: Collection[Project],
+) -> Numeric:
     """
     Computes the cost log satisfaction for approval ballots. It is equal to the log of 1 plus the total cost of
     the approved and selected projects.
@@ -261,7 +261,7 @@ def cost_log_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The log cost satisfaction.
 
     """

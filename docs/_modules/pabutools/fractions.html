@@ -257,31 +257,45 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module introducing all the functions used to handle fractions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">mpq</span>
 
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
-<span class="n">FRACTION</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
+<span class="n">GMPY_FRAC</span> <span class="o">=</span> <span class="s2">&quot;gmpy2&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Value of the `FRACTION` constant when gumpy2 fractions are to be used. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">FLOAT_FRAC</span> <span class="o">=</span> <span class="s2">&quot;float&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Value of the `FRACTION` constant when float fractions are to be used. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">FRACTION</span> <span class="o">=</span> <span class="n">GMPY_FRAC</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Constant describing which module to use for computing fractions. It can either be &quot;gmpy2&quot; or &quot;float&quot;. The default is </span>
 <span class="sd">&quot;gmpy2&quot;.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="frac"><a class="viewcode-back" href="../../reference/fractions.html#pabutools.fractions.frac">[docs]</a><span class="k">def</span> <span class="nf">frac</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="frac"><a class="viewcode-back" href="../../reference/fractions.html#pabutools.fractions.frac">[docs]</a><span class="k">def</span> <span class="nf">frac</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a fraction instantiated from the module defined by the `FRACTION` constant. If more than two numbers are</span>
 <span class="sd">    provided, an error is raised.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            One or two numbers.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The fraction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -307,7 +321,7 @@ document.write(`
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;frac can only take 1 or 2 arguments&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="str_as_frac"><a class="viewcode-back" href="../../reference/fractions.html#pabutools.fractions.str_as_frac">[docs]</a><span class="k">def</span> <span class="nf">str_as_frac</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="str_as_frac"><a class="viewcode-back" href="../../reference/fractions.html#pabutools.fractions.str_as_frac">[docs]</a><span class="k">def</span> <span class="nf">str_as_frac</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a string to a fraction instantiated from the module defined by the `FRACTION` constant.</span>
 
@@ -318,13 +332,15 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The fraction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">FRACTION</span> <span class="o">==</span> <span class="s2">&quot;gmpy2&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">mpq</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">FRACTION</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The `FRACTION` constant has an unknown value: </span><span class="si">{</span><span class="n">FRACTION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>

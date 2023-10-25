@@ -257,9 +257,12 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Phragmén&#39;s methods.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="p">(</span>
@@ -280,7 +283,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
 <span class="sd">            The ballot of the voter.</span>
-<span class="sd">        load: Number</span>
+<span class="sd">        load: Numeric</span>
 <span class="sd">            The initial load of the voter.</span>
 <span class="sd">        multiplicity: int</span>
 <span class="sd">            The multiplicity of the ballot.</span>
@@ -289,13 +292,13 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">        ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`</span>
 <span class="sd">            The ballot of the voter.</span>
-<span class="sd">        load: Number</span>
+<span class="sd">        load: Numeric</span>
 <span class="sd">            The initial load of the voter.</span>
 <span class="sd">        multiplicity: int</span>
 <span class="sd">            The multiplicity of the ballot.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractApprovalBallot</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span> <span class="o">=</span> <span class="n">ballot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="n">load</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>
@@ -307,8 +310,8 @@ document.write(`
 <div class="viewcode-block" id="sequential_phragmen"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.phragmen.sequential_phragmen">[docs]</a><span class="k">def</span> <span class="nf">sequential_phragmen</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
-    <span class="n">initial_loads</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Number</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">initial_loads</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Numeric</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
@@ -326,7 +329,7 @@ document.write(`
 <span class="sd">            The instance.</span>
 <span class="sd">        profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        initial_loads: list[Number], optional</span>
+<span class="sd">        initial_loads: list[Numeric], optional</span>
 <span class="sd">            A list of initial load, one per ballot in `profile`. By defaults, the initial load is `0`.</span>
 <span class="sd">        initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
@@ -339,7 +342,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>

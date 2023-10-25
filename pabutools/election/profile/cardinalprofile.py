@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 from abc import ABC
-from collections.abc import Iterable
-from copy import deepcopy
-from numbers import Number
+from collections.abc import Collection, Iterable
+
+from pabutools.election.ballot.cardinalballot import AbstractCardinalBallot
+from pabutools.utils import Numeric
 
 from pabutools.election.ballot import (
     Ballot,
@@ -13,7 +16,7 @@ from pabutools.election.profile.profile import Profile, MultiProfile, AbstractPr
 from pabutools.election.instance import Instance, Project
 
 
-class AbstractCardinalProfile(AbstractProfile, ABC):
+class AbstractCardinalProfile(AbstractProfile, ABC, Iterable[AbstractCardinalBallot]):
     """
     Abstract class for cardinal profiles. Stores the metadata and the methods specific to cardinal profiles.
 
@@ -25,10 +28,10 @@ class AbstractCardinalProfile(AbstractProfile, ABC):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
 
@@ -38,9 +41,9 @@ class AbstractCardinalProfile(AbstractProfile, ABC):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
     """
 
@@ -48,8 +51,8 @@ class AbstractCardinalProfile(AbstractProfile, ABC):
         self,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
     ):
         AbstractProfile.__init__(self)
         ABC.__init__(self)
@@ -58,7 +61,7 @@ class AbstractCardinalProfile(AbstractProfile, ABC):
         self.legal_min_score = legal_min_score
         self.legal_max_score = legal_max_score
 
-    def total_score(self, project: Project) -> Number:
+    def total_score(self, project: Project) -> Numeric:
         """
         Returns the total score of a project, that is, the sum of scores received from all voters.
 
@@ -69,7 +72,7 @@ class AbstractCardinalProfile(AbstractProfile, ABC):
 
         Returns
         -------
-            Number
+            Numeric
                 The total score assigned to the project.
         """
         score = 0
@@ -108,10 +111,10 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
 
@@ -128,9 +131,9 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
     """
 
@@ -142,8 +145,8 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         ballot_type: type[Ballot] = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
             legal_min_length = init.legal_min_length
@@ -200,7 +203,7 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
             legal_max_score=self.legal_max_score,
         )
 
-    def complete(self, projects: Iterable[Project], default_score: Number) -> None:
+    def complete(self, projects: Collection[Project], default_score: Numeric) -> None:
         """
         Completes all the ballots such that for all ballots, if a project from `projects` has not been assigned a score,
         then it is assigned `default_score`.
@@ -209,7 +212,7 @@ class CardinalProfile(Profile, AbstractCardinalProfile):
         ----------
             projects : Iterable[:py:class:`~pabutools.election.instance.Project`]
                 The set of all the projects to consider. This is typically the instance.
-            default_score : Number
+            default_score : Numeric
                 The default score that will be assigned.
         """
         for ballot in self:
@@ -293,10 +296,10 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
 
@@ -313,9 +316,9 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.&
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
     """
 
@@ -328,8 +331,8 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         profile: CardinalProfile = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
     ) -> None:
         if legal_min_length is None:
             if isinstance(init, AbstractCardinalProfile):
@@ -383,7 +386,7 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         if profile is not None:
             self.extend(profile)
 
-    def score(self, project: Project) -> Number:
+    def score(self, project: Project) -> Numeric:
         """
         Returns the score of a project, that is, the sum of scores received from all voters.
         Parameters

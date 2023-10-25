@@ -1,16 +1,18 @@
 """
 Approval ballots, i.e., ballots in which the voters indicate which projects they approve of.
 """
+from __future__ import annotations
+
 import random
 from abc import ABC
 
-from collections.abc import Iterable
+from collections.abc import Collection
 
 from pabutools.election.instance import Project
 from pabutools.election.ballot.ballot import Ballot, FrozenBallot, AbstractBallot
 
 
-class AbstractApprovalBallot(ABC, Iterable[Project]):
+class AbstractApprovalBallot(AbstractBallot, ABC):
     """
     Abstract class for approval ballots. Essentially used for typing purposes.
     """
@@ -47,7 +49,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
 
     def __init__(
         self,
-        init: Iterable[Project] = (),
+        init: Collection[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
@@ -66,7 +68,7 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
         AbstractApprovalBallot.__init__(self)
 
     def __new__(
-        cls, approved: Iterable[Project] = (), name: str = "", meta: dict | None = None
+        cls, approved: Collection[Project] = (), name: str = "", meta: dict | None = None
     ):
         return tuple.__new__(cls, tuple(approved))
 
@@ -105,7 +107,7 @@ class ApprovalBallot(set[Project], Ballot, AbstractApprovalBallot):
 
     def __init__(
         self,
-        init: Iterable[Project] = (),
+        init: Collection[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
@@ -178,7 +180,7 @@ ApprovalBallot._wrap_methods(
 
 
 def get_random_approval_ballot(
-    projects: Iterable[Project], name: str = "RandomAppBallot"
+    projects: Collection[Project], name: str = "RandomAppBallot"
 ) -> ApprovalBallot:
     """
     Generates a random approval ballot in which each project is approved with probability 0.5.

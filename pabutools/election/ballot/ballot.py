@@ -1,13 +1,15 @@
 """
 Ballots, that is, the information submitted by the voters during the election.
 """
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
+from collections.abc import Collection
 
 from pabutools.election import Project
 
 
-class AbstractBallot(ABC, Iterable[Project]):
+class AbstractBallot(ABC, Collection[Project]):
     """
     Abstract class representing the ballots, i.e., the information submitted by the voters. Essentially used for
     type-hint purposes.
@@ -38,7 +40,7 @@ class AbstractBallot(ABC, Iterable[Project]):
         self.name = name
 
 
-class FrozenBallot(AbstractBallot):
+class FrozenBallot(AbstractBallot, ABC):
     """
     Abstract class representing frozen ballots, i.e., ballots that are hashable (and thus non-mutable). In general the
     :py:class:`~pabutools.election.ballot.ballot.Ballot` class should be preferred over this one but hashable ballots

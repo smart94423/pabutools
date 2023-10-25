@@ -4,8 +4,9 @@ Satisfaction profiles.
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable
-from numbers import Number
+from collections.abc import Collection, Iterable
+
+from pabutools.utils import Numeric
 
 from pabutools.election.satisfaction.satisfactionmeasure import (
     SatisfactionMeasure,
@@ -59,6 +60,7 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
     ) -> None:
         list.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
+        self.instance = None  # Only for type checking, so that init.instance does not fail
         if instance is None:
             if isinstance(init, SatisfactionProfile):
                 instance = init.instance
@@ -119,7 +121,7 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
         return 1
 
     def remove_satisfied(
-        self, sat_bound: dict[str, Number], projects: Iterable[Project]
+        self, sat_bound: dict[str, Numeric], projects: Collection[Project]
     ) -> SatisfactionProfile:
         res = SatisfactionProfile(
             (s for s in self if s.sat(projects) < sat_bound[s.ballot.name]),
@@ -309,7 +311,7 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
         return self[sat]
 
     def remove_satisfied(
-        self, sat_bound: dict[AbstractBallot, Number], projects: Iterable[Project]
+        self, sat_bound: dict[AbstractBallot, Numeric], projects: Collection[Project]
     ) -> SatisfactionMultiProfile:
         res = SatisfactionMultiProfile(
             {

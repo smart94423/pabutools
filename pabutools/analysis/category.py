@@ -1,5 +1,6 @@
-from collections.abc import Iterable
-from numbers import Number
+from collections.abc import Collection
+
+from pabutools.utils import Numeric
 
 import numpy as np
 
@@ -9,8 +10,8 @@ from pabutools.election import AbstractApprovalProfile, Instance, Project
 def category_proportionality(
     instance: Instance,
     profile: AbstractApprovalProfile,
-    budget_allocation: Iterable[Project],
-) -> Number:
+    budget_allocation: Collection[Project],
+) -> Numeric:
     """
     Computes the difference between the cost allocated per category, and that existing in the profile. More
     specifically, for each category (an error is raised if not category are specified) we compute the amount of money
@@ -32,7 +33,7 @@ def category_proportionality(
 
     Returns
     -------
-        Number
+        Numeric
             The score for the category proportionality.
 
     """

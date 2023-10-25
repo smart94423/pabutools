@@ -1,5 +1,6 @@
-from collections.abc import Callable, Iterable
-from numbers import Number
+from collections.abc import Callable, Iterable, Collection
+
+from pabutools.utils import Numeric
 
 from pabutools.election.profile import AbstractProfile
 from pabutools.election.instance import Instance, Project
@@ -15,25 +16,25 @@ class TieBreakingRule:
 
     Parameters
     ----------
-        func : Callable[[Instance, Profile, Project], Number]
+        func : Callable[[Instance, Profile, Project], Numeric]
             A function taking as input an instance, a profile and a project and returning the value on which the
             project will be sorted.
 
     Attributes
     ----------
-        func : Callable[[Instance, Profile, Project], Number]
+        func : Callable[[Instance, Profile, Project], Numeric]
             A function taking as input an instance, a profile and a project and returning the value on which the
             project will be sorted.
     """
 
-    def __init__(self, func: Callable[[Instance, AbstractProfile, Project], Number]):
+    def __init__(self, func: Callable[[Instance, AbstractProfile, Project], Numeric]):
         self.func = func
 
     def order(
         self,
         instance: Instance,
         profile: AbstractProfile,
-        projects: Iterable[Project],
+        projects: Collection[Project],
         key: Callable[..., Project] = None,
     ) -> list[Project]:
         """
@@ -56,8 +57,10 @@ class TieBreakingRule:
             list[:py:class:`~pabutools.election.instance.Project`]
                 The projects, ordered by the tie-breaking.
         """
+        def default_key(p):
+            return p
         if key is None:
-            key = lambda x: x
+            key = default_key
         return sorted(
             projects,
             key=lambda project: self.func(instance, profile, key(project)),
@@ -67,7 +70,7 @@ class TieBreakingRule:
         self,
         instance: Instance,
         profile: AbstractProfile,
-        projects: Iterable[Project],
+        projects: Collection[Project],
         key: Callable[..., Project] = None,
     ) -> Project:
         """
@@ -91,8 +94,10 @@ class TieBreakingRule:
             :py:class:`~pabutools.election.instance.Project`
                 The first project according to the tie-breaking.
         """
+        def default_key(p):
+            return p
         if key is None:
-            key = lambda x: x
+            key = default_key
         return self.order(instance, profile, projects, key)[0]
 
 

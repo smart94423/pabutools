@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from abc import ABC
 from collections.abc import Iterable
-from copy import deepcopy
-from numbers import Number
+
+from pabutools.utils import Numeric
 
 from pabutools.election.profile.profile import AbstractProfile
 
@@ -31,16 +33,16 @@ class AbstractCumulativeProfile(AbstractCardinalProfile, ABC):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_min_total_score : Number, optional
+        legal_min_total_score : Numeric, optional
             Minimum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
-        legal_max_total_score : Number, optional
+        legal_max_total_score : Numeric, optional
             Maximum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
 
@@ -50,13 +52,13 @@ class AbstractCumulativeProfile(AbstractCardinalProfile, ABC):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
-        legal_min_total_score : Number
+        legal_min_total_score : Numeric
             Minimum total score that can be assigned across all projects per the rules of the election.
-        legal_max_total_score : Number
+        legal_max_total_score : Numeric
             Maximum total score that can be assigned across all projects per the rules of the election.
     """
 
@@ -64,10 +66,10 @@ class AbstractCumulativeProfile(AbstractCardinalProfile, ABC):
         self,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
-        legal_min_total_score: Number | None = None,
-        legal_max_total_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
+        legal_min_total_score: Numeric | None = None,
+        legal_max_total_score: Numeric | None = None,
     ):
         AbstractCardinalProfile.__init__(
             self,
@@ -110,16 +112,16 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_min_total_score : Number, optional
+        legal_min_total_score : Numeric, optional
             Minimum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
-        legal_max_total_score : Number, optional
+        legal_max_total_score : Numeric, optional
             Maximum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
 
@@ -136,13 +138,13 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
-        legal_min_total_score : Number
+        legal_min_total_score : Numeric
             Minimum total score that can be assigned across all projects per the rules of the election.
-        legal_max_total_score : Number
+        legal_max_total_score : Numeric
             Maximum total score that can be assigned across all projects per the rules of the election.
     """
 
@@ -154,10 +156,10 @@ class CumulativeProfile(CardinalProfile, AbstractCumulativeProfile):
         ballot_type: type[Ballot] = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
-        legal_min_total_score: Number | None = None,
-        legal_max_total_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
+        legal_min_total_score: Numeric | None = None,
+        legal_max_total_score: Numeric | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(init, AbstractCardinalProfile):
             legal_min_length = init.legal_min_length
@@ -304,16 +306,16 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         legal_max_length : int, optional
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
             Defaults to `None`.
-        legal_min_score : Number, optional
+        legal_min_score : Numeric, optional
             The minimum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_max_score : Number, optional
+        legal_max_score : Numeric, optional
             The maximum score a project can be assigned by a voter per the rules of the election.
             Defaults to `None`.
-        legal_min_total_score : Number, optional
+        legal_min_total_score : Numeric, optional
             Minimum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
-        legal_max_total_score : Number, optional
+        legal_max_total_score : Numeric, optional
             Maximum total score that can be assigned across all projects per the rules of the election.
             Defaults to `None`.
 
@@ -330,13 +332,13 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
             The minimum number of projects a voter needs to assign a score to per the rules of the election.
         legal_max_length : int
             The maximum number of projects a voter needs to assign a score to per the rules of the election.
-        legal_min_score : Number
+        legal_min_score : Numeric
             The minimum score a project can be assigned by a voter per the rules of the election.
-        legal_max_score : Number
+        legal_max_score : Numeric
             The maximum score a project can be assigned by a voter per the rules of the election.
-        legal_min_total_score : Number
+        legal_min_total_score : Numeric
             Minimum total score that can be assigned across all projects per the rules of the election.
-        legal_max_total_score : Number
+        legal_max_total_score : Numeric
             Maximum total score that can be assigned across all projects per the rules of the election.
     """
 
@@ -349,10 +351,10 @@ class CumulativeMultiProfile(CardinalMultiProfile, AbstractCumulativeProfile):
         profile: CumulativeProfile = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_score: Number | None = None,
-        legal_max_score: Number | None = None,
-        legal_min_total_score: Number | None = None,
-        legal_max_total_score: Number | None = None,
+        legal_min_score: Numeric | None = None,
+        legal_max_score: Numeric | None = None,
+        legal_min_total_score: Numeric | None = None,
+        legal_max_total_score: Numeric | None = None,
     ) -> None:
         if legal_min_length is None:
             if isinstance(init, AbstractCardinalProfile):

@@ -1,9 +1,12 @@
 """
 The method of equal shares.
 """
+from __future__ import annotations
+
 from copy import copy, deepcopy
-from collections.abc import Iterable
-from numbers import Number
+from collections.abc import Collection
+
+from pabutools.utils import Numeric
 
 from pabutools.election import AbstractApprovalProfile
 from pabutools.election.satisfaction.satisfactionmeasure import GroupSatisfactionMeasure
@@ -14,9 +17,6 @@ from pabutools.election.satisfaction import SatisfactionMeasure
 from pabutools.tiebreaking import lexico_tie_breaking
 from pabutools.fractions import frac
 from pabutools.tiebreaking import TieBreakingRule
-from pabutools.rules.exhaustion import exhaustion_by_budget_increase
-from pabutools.rules.exhaustion import completion_by_rule_combination
-from pabutools.rules.greedywelfare import greedy_utilitarian_welfare
 
 
 class MESVoter:
@@ -25,13 +25,13 @@ class MESVoter:
 
     Parameters
     ----------
-        index: Number
+        index: Numeric
             The index of the voter in the voter list
         ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot of the voter.
         sat: SatisfactionMeasure
             The satisfaction measure corresponding to the ballot.
-        budget: Number
+        budget: Numeric
             The budget of the voter.
         multiplicity: int
             The multiplicity of the ballot.
@@ -42,7 +42,7 @@ class MESVoter:
             The ballot of the voter.
         sat: SatisfactionMeasure
             The satisfaction measure corresponding to the ballot.
-        budget: Number
+        budget: Numeric
             The budget of the voter.
         multiplicity: int
             The multiplicity of the ballot.
@@ -50,10 +50,10 @@ class MESVoter:
 
     def __init__(
         self,
-        index: Number,
+        index: Numeric,
         ballot: AbstractBallot,
         sat: SatisfactionMeasure,
-        budget: Number,
+        budget: Numeric,
         multiplicity: int,
     ):
         self.index = index
@@ -63,7 +63,7 @@ class MESVoter:
         self.multiplicity = multiplicity
         self.budget_over_sat_map = dict()
 
-    def total_sat_project(self, proj: Project) -> Number:
+    def total_sat_project(self, proj: Project) -> Numeric:
         """
         Returns the total satisfaction of a given project. It is equal to the satisfaction for the project,
         multiplied by the multiplicity.
@@ -75,18 +75,18 @@ class MESVoter:
 
         Returns
         -------
-            Number
+            Numeric
                 The total satisfaction.
         """
         return self.multiplicity * self.sat.sat_project(proj)
 
-    def total_budget(self) -> Number:
+    def total_budget(self) -> Numeric:
         """
         Returns the total budget of the voters. It is equal to the budget multiplied by the multiplicity.
 
         Returns
         -------
-            Number
+            Numeric
                 The total budget.
         """
         return self.multiplicity * self.budget
@@ -102,7 +102,7 @@ class MESVoter:
 
         Returns
         -------
-            Number
+            Numeric
                 The total satisfaction.
         """
         res = self.budget_over_sat_map.get(self.budget, None)
@@ -185,7 +185,7 @@ def mes_inner_algo(
             (De)Activate the display of additional information.
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
 
@@ -296,7 +296,7 @@ def method_of_equal_shares_scheme(
     instance: Instance,
     profile: AbstractProfile,
     sat_profile: GroupSatisfactionMeasure,
-    initial_budget_per_voter: Number,
+    initial_budget_per_voter: Numeric,
     initial_budget_allocation: list[Project],
     tie_breaking: TieBreakingRule,
     resoluteness=True,
@@ -314,7 +314,7 @@ def method_of_equal_shares_scheme(
             The profile.
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
             The profile of satisfaction functions.
-        initial_budget_per_voter: Number
+        initial_budget_per_voter: Numeric
             The initial budget of a voter.
         initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
@@ -323,13 +323,13 @@ def method_of_equal_shares_scheme(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        voter_budget_increment : Number, optional
+        voter_budget_increment : Numeric, optional
             Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units
             of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or
             one that is no longer feasible with the initial budget constraint.
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
@@ -422,7 +422,7 @@ def method_of_equal_shares(
     initial_budget_allocation: list[Project] = None,
     voter_budget_increment=None,
     binary_sat=None,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     The Method of Equal Shares (MES). See the website
     `equalshares.net <https://equalshares.net/>`_ for details about how to compute the outcome of the rule. Note that
@@ -450,7 +450,7 @@ def method_of_equal_shares(
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
             Defaults to True.
-        voter_budget_increment : Number, optional
+        voter_budget_increment : Numeric, optional
             Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units
             of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or
             one that is no longer feasible with the initial budget constraint.

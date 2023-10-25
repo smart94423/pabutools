@@ -1,6 +1,6 @@
 import numpy as np
 
-from numbers import Number
+from pabutools.utils import Numeric
 
 from pabutools.election import (
     AbstractApprovalProfile,
@@ -13,7 +13,7 @@ from pabutools.fractions import frac
 from pabutools.utils import mean_generator
 
 
-def avg_ballot_length(instance: Instance, profile: AbstractProfile) -> Number:
+def avg_ballot_length(instance: Instance, profile: AbstractProfile) -> Numeric:
     """
     Returns the average length of the ballots in the profile.
 
@@ -26,7 +26,7 @@ def avg_ballot_length(instance: Instance, profile: AbstractProfile) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The average length of the ballots in the profile.
 
     """
@@ -48,7 +48,7 @@ def median_ballot_length(instance: Instance, profile: AbstractProfile) -> int:
 
     Returns
     -------
-        Number
+        Numeric
             The median length of the ballots in the profile.
 
     """
@@ -63,7 +63,7 @@ def median_ballot_length(instance: Instance, profile: AbstractProfile) -> int:
     return int(np.median(ballot_lengths))
 
 
-def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
+def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Numeric:
     """
     Returns the average cost of the ballots in the profile.
 
@@ -76,7 +76,7 @@ def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The average cost of the ballots in the profile.
 
     """
@@ -85,7 +85,7 @@ def avg_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
     )
 
 
-def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
+def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Numeric:
     """
     Returns the median cost of the ballots in the profile.
 
@@ -98,7 +98,7 @@ def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The median cost of the ballots in the profile.
 
     """
@@ -113,7 +113,7 @@ def median_ballot_cost(instance: Instance, profile: AbstractProfile) -> Number:
     return np.median(ballot_costs)
 
 
-def avg_approval_score(instance: Instance, profile: AbstractApprovalProfile) -> Number:
+def avg_approval_score(instance: Instance, profile: AbstractApprovalProfile) -> Numeric:
     """
     Returns the average approval score of projects.
 
@@ -126,7 +126,7 @@ def avg_approval_score(instance: Instance, profile: AbstractApprovalProfile) -> 
 
     Returns
     -------
-        Number
+        Numeric
             The average approval score of projects.
 
     """
@@ -135,7 +135,7 @@ def avg_approval_score(instance: Instance, profile: AbstractApprovalProfile) -> 
 
 def median_approval_score(
     instance: Instance, profile: AbstractApprovalProfile
-) -> Number:
+) -> Numeric:
     """
     Returns the median approval score of projects.
 
@@ -148,7 +148,7 @@ def median_approval_score(
 
     Returns
     -------
-        Number
+        Numeric
             The median approval score of projects.
 
     """
@@ -159,7 +159,7 @@ def median_approval_score(
     )
 
 
-def avg_total_score(instance: Instance, profile: AbstractCardinalProfile) -> Number:
+def avg_total_score(instance: Instance, profile: AbstractCardinalProfile) -> Numeric:
     """
     Returns the average score assigned to a project by the voters.
 
@@ -172,14 +172,14 @@ def avg_total_score(instance: Instance, profile: AbstractCardinalProfile) -> Num
 
     Returns
     -------
-        Number
+        Numeric
             The average score assigned to a project.
 
     """
     return mean_generator(profile.total_score(project) for project in instance)
 
 
-def median_total_score(instance: Instance, profile: AbstractCardinalProfile) -> Number:
+def median_total_score(instance: Instance, profile: AbstractCardinalProfile) -> Numeric:
     """
     Returns the median score assigned to a project by the voters.
 
@@ -192,7 +192,7 @@ def median_total_score(instance: Instance, profile: AbstractCardinalProfile) -> 
 
     Returns
     -------
-        Number
+        Numeric
             The median score assigned to a project.
 
     """

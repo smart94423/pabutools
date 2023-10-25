@@ -3,13 +3,17 @@ Module defining the basic classes used to represent a participatory budgeting el
 The :py:class:`~pabutools.election.instance.Project` and the
 :py:class:`~pabutools.election.instance.Instance` classes are defined here.
 """
-from collections.abc import Iterable, Generator
+from __future__ import annotations
+
+from collections.abc import Collection, Generator
+
+from pabutools.utils import Numeric
 
 from pabutools.fractions import frac
 from pabutools.utils import powerset
-from numbers import Number
+
 from math import ceil
-from mip import Model, xsum, maximize, BINARY
+from mip import Model, xsum, maximize, BINARY, OptimizationStatus
 
 import random
 
@@ -24,7 +28,7 @@ class Project:
             The name of the project. This is used as the identifier of a project. It should be unique with a collection
             of projects, though this is not enforced.
             Defaults to `""`.
-        cost : Number, optional
+        cost : Numeric, optional
             The cost of the project.
             Defaults to `0`.
         categories: set[str], optional
@@ -41,7 +45,7 @@ class Project:
         name : str
             The name of the project. This is used as the identifier of a project. It should be unique with a collection
             of projects, though this is not enforced.
-        cost : Number
+        cost : Numeric
             The cost of the project.
         categories: set[str]
             The categories that the project is a member of. These categories can  "Urban greenery" or "Public
@@ -58,7 +62,7 @@ class Project:
         return self.__str__()
 
     def __init__(
-        self, name: str = "", cost: Number = 0, categories=None, targets=None
+        self, name: str = "", cost: Numeric = 0, categories=None, targets=None
     ) -> None:
         if targets is None:
             targets = {}
@@ -96,7 +100,7 @@ class Project:
         return hash(self.name)
 
 
-def total_cost(projects: Iterable[Project]) -> Number:
+def total_cost(projects: Collection[Project]) -> Numeric:
     """
     Returns the total cost of a collection of projects, summing the cost of the projects.
 
@@ -107,14 +111,14 @@ def total_cost(projects: Iterable[Project]) -> Number:
 
     Returns
     -------
-        Number
+        Numeric
             The total cost
     """
     return sum(p.cost for p in projects)
 
 
 def max_budget_allocation_cardinality(
-    projects: Iterable[Project], budget_limit: Number
+    projects: Collection[Project], budget_limit: Numeric
 ) -> int:
     """
     Returns the maximum number of projects that can be chosen with respect to the budget limit.
@@ -123,7 +127,7 @@ def max_budget_allocation_cardinality(
     ----------
         projects : iterable[:py:class:`~pabutools.election.instance.Project`]
             An iterable of projects.
-        budget_limit : Number
+        budget_limit : Numeric
             the budget limit
 
     Returns
@@ -145,8 +149,8 @@ def max_budget_allocation_cardinality(
 
 
 def max_budget_allocation_cost(
-    projects: Iterable[Project], budget_limit: Number
-) -> Number:
+    projects: Collection[Project], budget_limit: Numeric
+) -> Numeric:
     """
     Returns the maximum total cost over all subsets of projects with respect to the budget limit.
 
@@ -154,7 +158,7 @@ def max_budget_allocation_cost(
     ----------
         projects : iterable[:py:class:`~pabutools.election.instance.Project`]
             An iterable of projects.
-        budget_limit : Number
+        budget_limit : Numeric
             the budget limit
 
     Returns
@@ -171,9 +175,11 @@ def max_budget_allocation_cost(
     if p_vars:
         mip_model.objective = maximize(xsum(p_vars[p] * p.cost for p in projects))
         mip_model += xsum(p_vars[p] * p.cost for p in projects) <= budget_limit
-        mip_model.optimize()
-        max_cost = mip_model.objective.x
-        return frac(max_cost)
+        opt_status = mip_model.optimize()
+        if opt_status == OptimizationStatus.OPTIMAL:
+            max_cost = mip_model.objective.x
+            return frac(float(max_cost))
+        raise ValueError("The MIP to find the maximum cost of a budget allocation failed to find an optimal solution.")
     return 0
 
 
@@ -192,7 +198,7 @@ class Instance(set[Project]):
             An iterable of :py:class:`~pabutools.election.instance.Project` that constitutes the initial set of projects
             for the instance. In case an :py:class:`~pabutools.election.instance.Instance` object is passed, the
             additional attributes are also copied (except if the corresponding keyword arguments have been given).
-        budget_limit : Number, optional
+        budget_limit : Numeric, optional
             The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be
             feasible.
         categories: set[str], optional
@@ -224,7 +230,7 @@ class Instance(set[Project]):
 
     Attributes
     ----------
-        budget_limit : Number
+        budget_limit : Numeric
             The budget limit of the instance, that is, the maximum amount of money a set of projects can use to be
             feasible.
         categories: set[str]
@@ -249,8 +255,8 @@ class Instance(set[Project]):
 
     def __init__(
         self,
-        init: Iterable[Project] = (),
-        budget_limit: Number | None = None,
+        init: Collection[Project] = (),
+        budget_limit: Numeric | None = None,
         categories: set[str] | None = None,
         targets: set[str] | None = None,
         file_path: str | None = None,
@@ -261,6 +267,7 @@ class Instance(set[Project]):
     ) -> None:
         set.__init__(self, init)
 
+        self.budget_limit = None  # Only for type checking, so that init.budget_limit does not fail
         if budget_limit is None:
             if isinstance(init, Instance):
                 budget_limit = init.budget_limit
@@ -268,6 +275,7 @@ class Instance(set[Project]):
                 budget_limit = 0
         self.budget_limit = budget_limit
 
+        self.categories = None  # Only for type checking, so that init.categories does not fail
         if categories is None:
             if isinstance(init, Instance):
                 categories = init.categories
@@ -275,6 +283,7 @@ class Instance(set[Project]):
                 categories = set()
         self.categories = categories
 
+        self.targets = None  # Only for type checking, so that init.targets does not fail
         if targets is None:
             if isinstance(init, Instance):
                 targets = init.targets
@@ -282,6 +291,7 @@ class Instance(set[Project]):
                 targets = set()
         self.targets = targets
 
+        self.file_path = None  # Only for type checking, so that init.file_path does not fail
         if file_path is None:
             if isinstance(init, Instance):
                 file_path = init.file_path
@@ -289,6 +299,7 @@ class Instance(set[Project]):
                 file_path = ""
         self.file_path = file_path
 
+        self.file_name = None  # Only for type checking, so that init.file_name does not fail
         if file_name is None:
             if isinstance(init, Instance):
                 file_name = init.file_name
@@ -296,6 +307,7 @@ class Instance(set[Project]):
                 file_name = ""
         self.file_name = file_name
 
+        self.parsing_errors = None  # Only for type checking, so that init.parsing_errors does not fail
         if parsing_errors is None:
             if isinstance(init, Instance):
                 parsing_errors = init.parsing_errors
@@ -303,6 +315,7 @@ class Instance(set[Project]):
                 parsing_errors = False
         self.parsing_errors = parsing_errors
 
+        self.meta = None  # Only for type checking, so that init.meta does not fail
         if meta is None:
             if isinstance(init, Instance):
                 meta = init.meta
@@ -310,6 +323,7 @@ class Instance(set[Project]):
                 meta = dict()
         self.meta = meta
 
+        self.project_meta = None  # Only for type checking, so that init.projet_meta does not fail
         if project_meta is None:
             if isinstance(init, Instance):
                 project_meta = init.project_meta
@@ -334,7 +348,7 @@ class Instance(set[Project]):
             "No project with name {} found in the instance.".format(project_name)
         )
 
-    def budget_allocations(self) -> Generator[Iterable[Project]]:
+    def budget_allocations(self) -> Generator[Collection[Project]]:
         """
         Returns a generator for all the feasible budget allocations of the instance.
 
@@ -362,7 +376,7 @@ class Instance(set[Project]):
             self.budget_limit <= min(p.cost for p in self)
         )
 
-    def is_feasible(self, projects: Iterable[Project]) -> bool:
+    def is_feasible(self, projects: Collection[Project]) -> bool:
         """
         Tests if a given collection of projects is feasible for the instance, meaning that the total cost of the
         projects does not exceed the budget limit of the instance.
@@ -379,7 +393,7 @@ class Instance(set[Project]):
         return total_cost(projects) <= self.budget_limit
 
     def is_exhaustive(
-        self, projects: Iterable[Project], available_projects: Iterable[Project] = None
+        self, projects: Collection[Project], available_projects: Collection[Project] = None
     ) -> bool:
         """
         Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no

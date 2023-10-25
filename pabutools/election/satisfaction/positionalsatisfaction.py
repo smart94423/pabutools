@@ -3,8 +3,9 @@ Positional satisfaction measures.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
-from numbers import Number
+from collections.abc import Callable, Iterable, Collection
+
+from pabutools.utils import Numeric
 
 from pabutools.election.satisfaction.satisfactionmeasure import SatisfactionMeasure
 from pabutools.election.ballot import AbstractOrdinalBallot
@@ -12,6 +13,7 @@ from pabutools.election.instance import Instance, Project
 
 from typing import TYPE_CHECKING
 
+# To avoid circular import that is only needed for type checking
 if TYPE_CHECKING:
     from pabutools.election.profile import AbstractProfile
 
@@ -28,10 +30,10 @@ class PositionalSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
             The ballot.
-        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]
+        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Numeric]
             The positional function mapping ordinal ballots and projects to numbers. That represents the actual
             satisfaction function.
-        aggregation_func : Callable[[Iterable[Number]], Number]
+        aggregation_func : Callable[[Iterable[Numeric]], Numeric]
             The aggregation function used to aggregate the positional scores for a collection of projects.
 
     Attributes
@@ -42,10 +44,10 @@ class PositionalSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`
             The ballot.
-        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Number]
+        positional_func : Callable[[:py:class:`~pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot`, :py:class:`~pabutools.election.instance.Project`], Numeric]
             The positional function mapping ordinal ballots and projects to numbers. That represents the actual
             satisfaction function.
-        aggregation_func : Callable[[Iterable[Number]], Number]
+        aggregation_func : Callable[[Iterable[Numeric]], Numeric]
             The aggregation function used to aggregate the positional scores for a collection of projects.
     """
 
@@ -54,19 +56,19 @@ class PositionalSatisfaction(SatisfactionMeasure):
         instance: Instance,
         profile: AbstractProfile,
         ballot: AbstractOrdinalBallot,
-        positional_func: Callable[[AbstractOrdinalBallot, Project], Number],
-        aggregation_func: Callable[[Iterable[Number]], Number],
+        positional_func: Callable[[AbstractOrdinalBallot, Project], Numeric],
+        aggregation_func: Callable[[Iterable[Numeric]], Numeric],
     ):
         SatisfactionMeasure.__init__(self, instance, profile, ballot)
         self.positional_func = positional_func
         self.aggregation_func = aggregation_func
         self.instance = instance
 
-    def sat(self, projects: Iterable[Project]):
+    def sat(self, projects: Collection[Project]):
         scores = [self.positional_func(self.ballot, project) for project in projects]
         return self.aggregation_func(scores)
 
-    def sat_project(self, project: Project) -> Number:
+    def sat_project(self, project: Project) -> Numeric:
         return self.sat([project])
 
 
@@ -88,7 +90,7 @@ def borda_sat_func(ballot: AbstractOrdinalBallot, project: Project) -> int:
 
     """
     if project in ballot:
-        return len(ballot) - ballot.index(project) - 1
+        return len(ballot) - ballot.position(project) - 1
     return 0
 
 

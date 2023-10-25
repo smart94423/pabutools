@@ -257,30 +257,38 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Collection of util functions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Generator</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">mpq</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 
+<span class="n">Numeric</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">mpq</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Type for numeric values. Is the union of int, float and mpq fractions (from the gumpy2 package).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 
 <div class="viewcode-block" id="mean_generator"><a class="viewcode-back" href="../../reference/utils.html#pabutools.utils.mean_generator">[docs]</a><span class="k">def</span> <span class="nf">mean_generator</span><span class="p">(</span>
-    <span class="n">generator</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Number</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Number</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="n">generator</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Numeric</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Numeric</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the mean of a sequence of numbers given as a generator. If the generator contains tuples, the first element</span>
 <span class="sd">    is assumed to be the value and the second its multiplicity.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        generator: Iterable[Number] | Iterable[tuple[Number, int]</span>
+<span class="sd">        generator: Iterable[Numeric] | Iterable[tuple[Numeric, int]</span>
 <span class="sd">            The generator.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The mean of the values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
@@ -288,7 +296,7 @@ document.write(`
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
         <span class="n">multiplicity</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">multiplicity</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">multiplicity</span><span class="p">):</span>
@@ -315,18 +323,18 @@ document.write(`
     <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="gini_coefficient"><a class="viewcode-back" href="../../reference/utils.html#pabutools.utils.gini_coefficient">[docs]</a><span class="k">def</span> <span class="nf">gini_coefficient</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Number</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="gini_coefficient"><a class="viewcode-back" href="../../reference/utils.html#pabutools.utils.gini_coefficient">[docs]</a><span class="k">def</span> <span class="nf">gini_coefficient</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Numeric</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Gini coefficient of the vector of values given as argument.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        values: Iterable[Number]</span>
+<span class="sd">        values: Iterable[Numeric]</span>
 <span class="sd">            A vector of values.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The Gini coefficient.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

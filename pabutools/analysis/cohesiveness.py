@@ -1,11 +1,11 @@
-from collections.abc import Iterable
-from numbers import Number
+from collections.abc import Collection
+
+from pabutools.utils import Numeric
 
 from pabutools.election import (
     Instance,
     AbstractApprovalProfile,
     Project,
-    AbstractBallot,
     total_cost,
     AbstractCardinalProfile,
     AbstractCardinalBallot,
@@ -16,7 +16,7 @@ from pabutools.utils import powerset
 
 
 def is_large_enough(
-    group_size: int, num_voters: int, projects_cost: Number, budget_limit: Number
+    group_size: int, num_voters: int, projects_cost: Numeric, budget_limit: Numeric
 ) -> bool:
     return projects_cost * num_voters <= group_size * budget_limit
 
@@ -24,8 +24,8 @@ def is_large_enough(
 def is_cohesive_approval(
     instance: Instance,
     profile: AbstractApprovalProfile,
-    projects: Iterable[Project],
-    ballots: Iterable[AbstractApprovalBallot],
+    projects: Collection[Project],
+    ballots: Collection[AbstractApprovalBallot],
 ) -> bool:
     if not is_large_enough(
         sum(profile.multiplicity(b) for b in ballots),
@@ -46,9 +46,9 @@ def is_cohesive_approval(
 def is_cohesive_cardinal(
     instance: Instance,
     profile: AbstractCardinalProfile,
-    projects: Iterable[Project],
-    ballots: Iterable[AbstractCardinalBallot],
-    alpha: dict[Project, Number],
+    projects: Collection[Project],
+    ballots: Collection[AbstractCardinalBallot],
+    alpha: dict[Project, Numeric],
 ) -> bool:
     if not is_large_enough(
         sum(profile.multiplicity(b) for b in ballots),
@@ -92,7 +92,7 @@ def cohesive_groups(instance: Instance, profile: AbstractProfile, projects=None)
 
 
 def maximal_cohesive_for_projects_approval(
-    instance: Instance, profile: AbstractApprovalProfile, projects: Iterable[Project]
+    instance: Instance, profile: AbstractApprovalProfile, projects: Collection[Project]
 ) -> tuple[AbstractApprovalBallot]:
     res = []
     for ballot in profile:
@@ -110,7 +110,7 @@ def maximal_cohesive_for_projects_approval(
 
 
 def maximal_cohesive_groups(
-    instance: Instance, profile: AbstractProfile, projects: Iterable[Project] = None
+    instance: Instance, profile: AbstractProfile, projects: Collection[Project] = None
 ):
     if projects is None:
         projects = instance

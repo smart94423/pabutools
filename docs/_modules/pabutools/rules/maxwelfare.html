@@ -257,19 +257,18 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Welfare-maximizing rules.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span>
 
 <span class="kn">import</span> <span class="nn">mip</span>
 <span class="kn">from</span> <span class="nn">mip</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">xsum</span><span class="p">,</span> <span class="n">maximize</span><span class="p">,</span> <span class="n">BINARY</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">Profile</span><span class="p">,</span>
     <span class="n">SatisfactionMeasure</span><span class="p">,</span>
-    <span class="n">SatisfactionProfile</span><span class="p">,</span>
     <span class="n">Project</span><span class="p">,</span>
     <span class="n">total_cost</span><span class="p">,</span>
-    <span class="n">MultiProfile</span><span class="p">,</span>
     <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
     <span class="n">AbstractProfile</span><span class="p">,</span>
 <span class="p">)</span>
@@ -277,10 +276,10 @@ document.write(`
 
 <span class="k">def</span> <span class="nf">max_additive_utilitarian_welfare_scheme</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
-    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">SatisfactionProfile</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The inner algorithm for the welfare maximizing rule. It generates the corresponding budget allocations using a</span>
 <span class="sd">    linear program solver. Note that there is no control over the way ties are broken.</span>
@@ -298,7 +297,7 @@ document.write(`
 <span class="sd">            Defaults to True.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -361,8 +360,8 @@ document.write(`
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is</span>
 <span class="sd">    defined as the sum of the satisfactin of the voters, where the satisfaction is computed using the satisfaction</span>
@@ -391,7 +390,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>

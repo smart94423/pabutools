@@ -257,9 +257,12 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The method of equal shares.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">AbstractApprovalProfile</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.satisfaction.satisfactionmeasure</span> <span class="kn">import</span> <span class="n">GroupSatisfactionMeasure</span>
@@ -270,9 +273,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">lexico_tie_breaking</span>
 <span class="kn">from</span> <span class="nn">pabutools.fractions</span> <span class="kn">import</span> <span class="n">frac</span>
 <span class="kn">from</span> <span class="nn">pabutools.tiebreaking</span> <span class="kn">import</span> <span class="n">TieBreakingRule</span>
-<span class="kn">from</span> <span class="nn">pabutools.rules.exhaustion</span> <span class="kn">import</span> <span class="n">exhaustion_by_budget_increase</span>
-<span class="kn">from</span> <span class="nn">pabutools.rules.exhaustion</span> <span class="kn">import</span> <span class="n">completion_by_rule_combination</span>
-<span class="kn">from</span> <span class="nn">pabutools.rules.greedywelfare</span> <span class="kn">import</span> <span class="n">greedy_utilitarian_welfare</span>
 
 
 <span class="k">class</span> <span class="nc">MESVoter</span><span class="p">:</span>
@@ -281,13 +281,13 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">        index: Number</span>
+<span class="sd">        index: Numeric</span>
 <span class="sd">            The index of the voter in the voter list</span>
 <span class="sd">        ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot of the voter.</span>
 <span class="sd">        sat: SatisfactionMeasure</span>
 <span class="sd">            The satisfaction measure corresponding to the ballot.</span>
-<span class="sd">        budget: Number</span>
+<span class="sd">        budget: Numeric</span>
 <span class="sd">            The budget of the voter.</span>
 <span class="sd">        multiplicity: int</span>
 <span class="sd">            The multiplicity of the ballot.</span>
@@ -298,7 +298,7 @@ document.write(`
 <span class="sd">            The ballot of the voter.</span>
 <span class="sd">        sat: SatisfactionMeasure</span>
 <span class="sd">            The satisfaction measure corresponding to the ballot.</span>
-<span class="sd">        budget: Number</span>
+<span class="sd">        budget: Numeric</span>
 <span class="sd">            The budget of the voter.</span>
 <span class="sd">        multiplicity: int</span>
 <span class="sd">            The multiplicity of the ballot.</span>
@@ -306,10 +306,10 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">index</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">,</span>
         <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
         <span class="n">sat</span><span class="p">:</span> <span class="n">SatisfactionMeasure</span><span class="p">,</span>
-        <span class="n">budget</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+        <span class="n">budget</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">,</span>
         <span class="n">multiplicity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
@@ -319,7 +319,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="n">multiplicity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">budget_over_sat_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">total_sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">total_sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total satisfaction of a given project. It is equal to the satisfaction for the project,</span>
 <span class="sd">        multiplied by the multiplicity.</span>
@@ -331,18 +331,18 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            Number</span>
+<span class="sd">            Numeric</span>
 <span class="sd">                The total satisfaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sat</span><span class="o">.</span><span class="n">sat_project</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">total_budget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">total_budget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total budget of the voters. It is equal to the budget multiplied by the multiplicity.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            Number</span>
+<span class="sd">            Numeric</span>
 <span class="sd">                The total budget.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget</span>
@@ -358,7 +358,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            Number</span>
+<span class="sd">            Numeric</span>
 <span class="sd">                The total satisfaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_over_sat_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -441,7 +441,7 @@ document.write(`
 <span class="sd">            (De)Activate the display of additional information.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 
@@ -552,7 +552,7 @@ document.write(`
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span><span class="p">,</span>
-    <span class="n">initial_budget_per_voter</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span>
+    <span class="n">initial_budget_per_voter</span><span class="p">:</span> <span class="n">Numeric</span><span class="p">,</span>
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
     <span class="n">tie_breaking</span><span class="p">:</span> <span class="n">TieBreakingRule</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -570,7 +570,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
 <span class="sd">            The profile of satisfaction functions.</span>
-<span class="sd">        initial_budget_per_voter: Number</span>
+<span class="sd">        initial_budget_per_voter: Numeric</span>
 <span class="sd">            The initial budget of a voter.</span>
 <span class="sd">        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
@@ -579,13 +579,13 @@ document.write(`
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">        voter_budget_increment : Number, optional</span>
+<span class="sd">        voter_budget_increment : Numeric, optional</span>
 <span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units</span>
 <span class="sd">            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or</span>
 <span class="sd">            one that is no longer feasible with the initial budget constraint.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Iterable[Project] | Iterable[Iterable[Project]]</span>
+<span class="sd">        Collection[Project] | Iterable[Collection[Project]]</span>
 <span class="sd">            The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute</span>
 <span class="sd">            (`resoluteness = False`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -678,7 +678,7 @@ document.write(`
     <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">voter_budget_increment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">binary_sat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Method of Equal Shares (MES). See the website</span>
 <span class="sd">    `equalshares.net &lt;https://equalshares.net/&gt;`_ for details about how to compute the outcome of the rule. Note that</span>
@@ -706,7 +706,7 @@ document.write(`
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">        voter_budget_increment : Number, optional</span>
+<span class="sd">        voter_budget_increment : Numeric, optional</span>
 <span class="sd">            Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units</span>
 <span class="sd">            of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or</span>
 <span class="sd">            one that is no longer feasible with the initial budget constraint.</span>

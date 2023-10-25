@@ -1,6 +1,8 @@
 """
 Cumulative ballots, i.e., ballots in which the voters distribute a given amount of points to the projects.
 """
+from __future__ import annotations
+
 from abc import ABC
 
 from pabutools.election.ballot.ballot import FrozenBallot, AbstractBallot
@@ -10,7 +12,7 @@ from pabutools.election.ballot.cardinalballot import (
 )
 from pabutools.election.instance import Project
 
-from numbers import Number
+from pabutools.utils import Numeric
 
 
 class AbstractCumulativeBallot(AbstractCardinalBallot, ABC):
@@ -20,13 +22,13 @@ class AbstractCumulativeBallot(AbstractCardinalBallot, ABC):
 
 
 class FrozenCumulativeBallot(
-    dict[Project, Number], FrozenBallot, AbstractCumulativeBallot
+    dict[Project, Numeric], FrozenBallot, AbstractCumulativeBallot
 ):
     """
     Frozen cumulative ballot, that is, a ballot in which the voter distributes a given amount of points to the projects.
     This is a special type of cardinal ballot
     (see :py:class:`~pabutools.election.ballot.cardinalballot.CardinalBallot`).
-    Since there is not frozen dictionary implemented in Python, this class simply
+    Since there is no frozen dictionary implemented in Python, this class simply
     inherits from the Python class `dict`, overriding the `set_item` method to ensure that it is non-mutable
     (raising an exception if the method is used).
 
@@ -56,7 +58,7 @@ class FrozenCumulativeBallot(
 
     def __init__(
         self,
-        init: dict[Project, Number] = None,
+        init: dict[Project, Numeric] = None,
         name: str | None = None,
         meta: dict | None = None,
     ):
@@ -116,7 +118,7 @@ class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
 
     def __init__(
         self,
-        init: dict[Project, Number] = None,
+        init: dict[Project, Numeric] = None,
         name: str | None = None,
         meta: dict | None = None,
     ):

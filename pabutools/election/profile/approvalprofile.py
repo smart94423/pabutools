@@ -1,13 +1,15 @@
 """
 Approval profiles, i.e., collections of approval ballots.
 """
-from abc import ABC
-from collections import Counter
-from collections.abc import Iterable, Generator
-from copy import deepcopy
-from itertools import product
-from numbers import Number
+from __future__ import annotations
 
+from abc import ABC
+from collections.abc import Iterable, Generator
+from itertools import product
+
+from pabutools.utils import Numeric
+
+from pabutools.election.ballot.approvalballot import AbstractApprovalBallot
 from pabutools.election.ballot.ballot import AbstractBallot
 
 from pabutools.election.ballot import (
@@ -21,7 +23,7 @@ from pabutools.election.instance import Instance, Project
 from pabutools.utils import powerset
 
 
-class AbstractApprovalProfile(AbstractProfile, ABC):
+class AbstractApprovalProfile(AbstractProfile, ABC, Iterable[AbstractApprovalBallot]):
     """
     Abstract class for approval profiles. Stores the metadata and the methods specific to approval profiles.
 
@@ -33,10 +35,10 @@ class AbstractApprovalProfile(AbstractProfile, ABC):
         legal_max_length : int, optional
             The maximum length of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_min_cost : Number, optional
+        legal_min_cost : Numeric, optional
             The minimum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_max_cost : Number, optional
+        legal_max_cost : Numeric, optional
             The maximum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
 
@@ -46,9 +48,9 @@ class AbstractApprovalProfile(AbstractProfile, ABC):
             The minimum length of an approval ballot per the rules of the election.
         legal_max_length : int
             The maximum length of an approval ballot per the rules of the election.
-        legal_min_cost : Number
+        legal_min_cost : Numeric
             The minimum total cost of an approval ballot per the rules of the election.
-        legal_max_cost : Number
+        legal_max_cost : Numeric
             The maximum total cost of an approval ballot per the rules of the election.
     """
 
@@ -56,8 +58,8 @@ class AbstractApprovalProfile(AbstractProfile, ABC):
         self,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_cost: Number | None = None,
-        legal_max_cost: Number | None = None,
+        legal_min_cost: Numeric | None = None,
+        legal_max_cost: Numeric | None = None,
     ):
         AbstractProfile.__init__(self)
         ABC.__init__(self)
@@ -156,10 +158,10 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
         legal_max_length : int, optional
             The maximum length of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_min_cost : Number, optional
+        legal_min_cost : Numeric, optional
             The minimum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_max_cost : Number, optional
+        legal_max_cost : Numeric, optional
             The maximum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
 
@@ -176,9 +178,9 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
             The minimum length of an approval ballot per the rules of the election.
         legal_max_length : int
             The maximum length of an approval ballot per the rules of the election.
-        legal_min_cost : Number
+        legal_min_cost : Numeric
             The minimum total cost of an approval ballot per the rules of the election.
-        legal_max_cost : Number
+        legal_max_cost : Numeric
             The maximum total cost of an approval ballot per the rules of the election.
     """
 
@@ -190,8 +192,8 @@ class ApprovalProfile(Profile, AbstractApprovalProfile):
         ballot_type: type[AbstractBallot] | None = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_cost: Number | None = None,
-        legal_max_cost: Number | None = None,
+        legal_min_cost: Numeric | None = None,
+        legal_max_cost: Numeric | None = None,
     ) -> None:
         if legal_min_length is None and isinstance(init, AbstractApprovalProfile):
             legal_min_length = init.legal_min_length
@@ -369,10 +371,10 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
         legal_max_length : int, optional
             The maximum length of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_min_cost : Number, optional
+        legal_min_cost : Numeric, optional
             The minimum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
-        legal_max_cost : Number, optional
+        legal_max_cost : Numeric, optional
             The maximum total cost of an approval ballot per the rules of the election.
             Defaults to `None`.
 
@@ -389,9 +391,9 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
             The minimum length of an approval ballot per the rules of the election.
         legal_max_length : int
             The maximum length of an approval ballot per the rules of the election.
-        legal_min_cost : Number
+        legal_min_cost : Numeric
             The minimum total cost of an approval ballot per the rules of the election.
-        legal_max_cost : Number
+        legal_max_cost : Numeric
             The maximum total cost of an approval ballot per the rules of the election.
     """
 
@@ -404,8 +406,8 @@ class ApprovalMultiProfile(MultiProfile, AbstractApprovalProfile):
         profile: ApprovalProfile = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
-        legal_min_cost: Number | None = None,
-        legal_max_cost: Number | None = None,
+        legal_min_cost: Numeric | None = None,
+        legal_max_cost: Numeric | None = None,
     ):
         if legal_min_length is None:
             if isinstance(init, AbstractApprovalProfile):

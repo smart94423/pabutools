@@ -659,7 +659,7 @@ the instance are thus ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -670,14 +670,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat_project">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat_project" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#SatisfactionMeasure.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -688,7 +688,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -719,13 +719,13 @@ for a single project.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.remove_satisfied">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numbers.Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure"><span class="pre">GroupSatisfactionMeasure</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.remove_satisfied" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure"><span class="pre">GroupSatisfactionMeasure</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.remove_satisfied" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a new satisfaction profile excluding the satisfaction measurs corresponding to satisfied voters, i.e.,
 who have met or exceeded their satisfaction bound for a given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Number</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
+<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Numeric</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
 the voter is considered satisfied. Note that the keys are ballot names, and that nothing ensures ballot
 names to be unique, so be careful here.</p></li>
 <li><p><strong>projects</strong> (Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – The collection of projects.</p></li>
@@ -742,7 +742,7 @@ names to be unique, so be careful here.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction">
-<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.total_satisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.total_satisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -752,14 +752,14 @@ names to be unique, so be careful here.</p></li>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction_project">
-<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.total_satisfaction_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionmeasure.html#GroupSatisfactionMeasure.total_satisfaction_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -769,7 +769,7 @@ names to be unique, so be careful here.</p></li>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -965,13 +965,13 @@ Raises KeyError if the dict is empty.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.remove_satisfied">
-<span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numbers.Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile"><span class="pre">SatisfactionMultiProfile</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionMultiProfile.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.remove_satisfied" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile"><span class="pre">SatisfactionMultiProfile</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionMultiProfile.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.remove_satisfied" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a new satisfaction profile excluding the satisfaction measurs corresponding to satisfied voters, i.e.,
 who have met or exceeded their satisfaction bound for a given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Number</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
+<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Numeric</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
 the voter is considered satisfied. Note that the keys are ballot names, and that nothing ensures ballot
 names to be unique, so be careful here.</p></li>
 <li><p><strong>projects</strong> (Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – The collection of projects.</p></li>
@@ -1019,7 +1019,7 @@ allowed to contain zero and negative counts.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction">
-<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1029,14 +1029,14 @@ allowed to contain zero and negative counts.</p>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction_project">
-<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionMultiProfile.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1046,7 +1046,7 @@ allowed to contain zero and negative counts.</p>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1209,13 +1209,13 @@ to save up computation).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.remove_satisfied">
-<span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numbers.Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile"><span class="pre">SatisfactionProfile</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionProfile.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.remove_satisfied" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">remove_satisfied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sat_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile" title="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile"><span class="pre">SatisfactionProfile</span></a></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/satisfactionprofile.html#SatisfactionProfile.remove_satisfied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.remove_satisfied" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a new satisfaction profile excluding the satisfaction measurs corresponding to satisfied voters, i.e.,
 who have met or exceeded their satisfaction bound for a given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Number</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
+<li><p><strong>sat_bound</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Numeric</em><em>]</em>) – A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
 the voter is considered satisfied. Note that the keys are ballot names, and that nothing ensures ballot
 names to be unique, so be careful here.</p></li>
 <li><p><strong>projects</strong> (Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>]) – The collection of projects.</p></li>
@@ -1249,7 +1249,7 @@ ascending or descending, according to their function values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction">
-<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1259,14 +1259,14 @@ ascending or descending, according to their function values.</p>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction_project">
-<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_satisfaction_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.satisfactionprofile.SatisfactionProfile.total_satisfaction_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Sums up the satisfaction of all the satisfaction measures for the given project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1276,7 +1276,7 @@ ascending or descending, according to their function values.</p>
 <dd class="field-even"><p>The total satisfaction for the collection of projects.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1285,7 +1285,7 @@ ascending or descending, according to their function values.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FunctionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FunctionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Numeric</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a></p>
 <p>Class representing satisfaction measures that are simply defined via functions of the ballot and a subset of
 projects.</p>
@@ -1295,7 +1295,7 @@ projects.</p>
 <li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
 <li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
 <li><p><strong>ballot</strong> (<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>) – The ballot.</p></li>
-<li><p><strong>func</strong> (Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>, <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Number]) – The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
+<li><p><strong>func</strong> (Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>, <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Numeric]) – The actual satisfaction function, i.e., a function returning the satisfaction for a given collection of
 projects, given the instance, the profile and the ballot under consideration.</p></li>
 </ul>
 </dd>
@@ -1340,14 +1340,14 @@ projects, given the instance, the profile and the ballot under consideration.</p
 projects, given the instance, the profile and the ballot under consideration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>, <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Number]</p>
+<dd class="field-odd"><p>Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>, <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, Iterable[<a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Numeric]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1358,14 +1358,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/functionalsatisfaction.html#FunctionalSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.FunctionalSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1376,7 +1376,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1402,7 +1402,7 @@ and 0 if no selected project has been assigned a score.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1413,14 +1413,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.CC_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1431,7 +1431,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1455,7 +1455,7 @@ the total cost of the approved and selected projects.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1466,14 +1466,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Sqrt_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1484,7 +1484,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1508,7 +1508,7 @@ of the approved and selected projects.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1519,14 +1519,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.functionalsatisfaction.Cost_Log_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1537,7 +1537,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1546,7 +1546,7 @@ for a single project.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditiveSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdditiveSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><span class="pre">AbstractBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Numeric</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a></p>
 <p>Class representing additive satisfaction measures, that is, satisfaction functions for which the total
 satisfaction is exactly the sum of the satisfaction of the individual projects. To speed up computations,
@@ -1557,7 +1557,7 @@ scores are only computed once and for all.</p>
 <li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
 <li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
 <li><p><strong>ballot</strong> (<a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>) – The ballot.</p></li>
-<li><p><strong>func</strong> (Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>,  <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, dict[str, str]], Number]) – A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values
+<li><p><strong>func</strong> (Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>,  <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, dict[str, str]], Numeric]) – A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values
 and returning the score of the project as a fraction.</p></li>
 </ul>
 </dd>
@@ -1602,7 +1602,7 @@ and returning the score of the project as a fraction.</p></li>
 and returning the score of the project as a fraction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>,  <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, dict[str, str]], Number]</p>
+<dd class="field-odd"><p>Callable[[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>,  <a class="reference internal" href="ballot.html#pabutools.election.ballot.ballot.AbstractBallot" title="pabutools.election.ballot.ballot.AbstractBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>, dict[str, str]], Numeric]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1620,7 +1620,7 @@ and returning the score of the project as a fraction.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.get_project_sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.get_project_sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -1631,7 +1631,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1660,7 +1660,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1671,14 +1671,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/additivesatisfaction.html#AdditiveSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1689,7 +1689,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1713,7 +1713,7 @@ It applies to all ballot types that support the <cite>in</cite> operator.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -1724,7 +1724,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1753,7 +1753,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1764,14 +1764,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cardinality_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1782,7 +1782,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1808,7 +1808,7 @@ It applies to all ballot types that support the <cite>in</cite> operator.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -1819,7 +1819,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1848,7 +1848,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1859,14 +1859,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cardinality_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1877,7 +1877,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1901,7 +1901,7 @@ It applies to all ballot types that support the <cite>in</cite> operator.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -1912,7 +1912,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1941,7 +1941,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -1952,14 +1952,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Cost_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -1970,7 +1970,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1995,7 +1995,7 @@ all ballot types that support the <cite>in</cite> operator.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2006,7 +2006,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2035,7 +2035,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2046,14 +2046,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2064,7 +2064,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2090,7 +2090,7 @@ divided by the total cost of the projects appearing in the ballot. It applies to
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2101,7 +2101,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2130,7 +2130,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2141,14 +2141,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Relative_Cost_Approx_Normaliser_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2159,7 +2159,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2183,7 +2183,7 @@ root of their costs. It can be applied to all ballot format supporting the <cite
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2194,7 +2194,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2223,7 +2223,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2234,14 +2234,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Sqrt_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2252,7 +2252,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2276,7 +2276,7 @@ the cost of the projects. It can be applied to all ballot format supporting the 
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2287,7 +2287,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2316,7 +2316,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2327,14 +2327,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cost_Log_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2345,7 +2345,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2370,7 +2370,7 @@ applies to all ballot types that support the <cite>in</cite> operator.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2381,7 +2381,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2410,7 +2410,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2421,14 +2421,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Effort_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2439,7 +2439,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2463,7 +2463,7 @@ ballot of the score assigned to the project by the voter. It only applies to car
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2474,7 +2474,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2503,7 +2503,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2514,14 +2514,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2532,7 +2532,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2557,7 +2557,7 @@ a feasible budget allocation. It only applies to cardinal ballots.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat">
-<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_project_sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.get_project_sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
 re-computing it.</p>
 <dl class="field-list simple">
@@ -2568,7 +2568,7 @@ re-computing it.</p>
 <dd class="field-even"><p>The satisfaction of the project.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2597,7 +2597,7 @@ values. The <cite>precomputed_values</cite> dictionary is initialised via this m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2608,14 +2608,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.additivesatisfaction.Additive_Cardinal_Relative_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2626,7 +2626,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2635,7 +2635,7 @@ for a single project.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PositionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PositionalSatisfaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ballot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><span class="pre">AbstractOrdinalBallot</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Numeric</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Numeric</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Numeric</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure" title="pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure"><code class="xref py py-class docutils literal notranslate"><span class="pre">SatisfactionMeasure</span></code></a></p>
 <p>Class representing satisfaction measures that are based on the position of the projects in an ordinal ballot.</p>
 <dl class="field-list simple">
@@ -2644,9 +2644,9 @@ for a single project.</p>
 <li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
 <li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProfile</span></code></a>) – The profile.</p></li>
 <li><p><strong>ballot</strong> (<a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a>) – The ballot.</p></li>
-<li><p><strong>positional_func</strong> (Callable[[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Number]) – The positional function mapping ordinal ballots and projects to numbers. That represents the actual
+<li><p><strong>positional_func</strong> (Callable[[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Numeric]) – The positional function mapping ordinal ballots and projects to numbers. That represents the actual
 satisfaction function.</p></li>
-<li><p><strong>aggregation_func</strong> (<em>Callable</em><em>[</em><em>[</em><em>Iterable</em><em>[</em><em>Number</em><em>]</em><em>]</em><em>, </em><em>Number</em><em>]</em>) – The aggregation function used to aggregate the positional scores for a collection of projects.</p></li>
+<li><p><strong>aggregation_func</strong> (<em>Callable</em><em>[</em><em>[</em><em>Iterable</em><em>[</em><em>Numeric</em><em>]</em><em>]</em><em>, </em><em>Numeric</em><em>]</em>) – The aggregation function used to aggregate the positional scores for a collection of projects.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2690,7 +2690,7 @@ satisfaction function.</p></li>
 satisfaction function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Callable[[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Number]</p>
+<dd class="field-odd"><p>Callable[[<a class="reference internal" href="ballot.html#pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot" title="pabutools.election.ballot.ordinalballot.AbstractOrdinalBallot"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractOrdinalBallot</span></code></a>, <a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>], Numeric]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2701,14 +2701,14 @@ satisfaction function.</p>
 <dd><p>The aggregation function used to aggregate the positional scores for a collection of projects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Callable</em>[[<em>Iterable</em>[Number]], Number]</p>
+<dd class="field-odd"><p><em>Callable</em>[[<em>Iterable</em>[Numeric]], Numeric]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction.sat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2719,14 +2719,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/satisfaction/positionalsatisfaction.html#PositionalSatisfaction.sat_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.PositionalSatisfaction.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2737,7 +2737,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2762,7 +2762,7 @@ project in the ballot</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat">
-<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for the given collection of projects.</p>
 <dl class="field-list simple">
@@ -2773,14 +2773,14 @@ for the given collection of projects.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat_project">
-<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat_project" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sat_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Project" title="pabutools.election.instance.Project"><span class="pre">Project</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="headerlink" href="#pabutools.election.satisfaction.positionalsatisfaction.Additive_Borda_Sat.sat_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
 for a single project.</p>
 <dl class="field-list simple">
@@ -2791,7 +2791,7 @@ for a single project.</p>
 <dd class="field-even"><p>The corresponding satisfaction</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>

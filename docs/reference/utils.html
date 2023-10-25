@@ -304,6 +304,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.gini_coefficient"><code class="docutils literal notranslate"><span class="pre">gini_coefficient()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.mean_generator"><code class="docutils literal notranslate"><span class="pre">mean_generator()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.powerset"><code class="docutils literal notranslate"><span class="pre">powerset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.Numeric"><code class="docutils literal notranslate"><span class="pre">Numeric</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -320,35 +321,35 @@ document.write(`
 <p>Collection of util functions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pabutools.utils.gini_coefficient">
-<span class="sig-name descname"><span class="pre">gini_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../_modules/pabutools/utils.html#gini_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.utils.gini_coefficient" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gini_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../_modules/pabutools/utils.html#gini_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.utils.gini_coefficient" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the Gini coefficient of the vector of values given as argument.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>values</strong> (<em>Iterable</em><em>[</em><em>Number</em><em>]</em>) – A vector of values.</p>
+<dd class="field-odd"><p><strong>values</strong> (<em>Iterable</em><em>[</em><em>Numeric</em><em>]</em>) – A vector of values.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Gini coefficient.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pabutools.utils.mean_generator">
-<span class="sig-name descname"><span class="pre">mean_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numbers.Number</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span></span></span><a class="reference internal" href="../_modules/pabutools/utils.html#mean_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.utils.mean_generator" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">mean_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">mpq</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">mpq</span></span></span><a class="reference internal" href="../_modules/pabutools/utils.html#mean_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.utils.mean_generator" title="Permalink to this definition">#</a></dt>
 <dd><p>Computes the mean of a sequence of numbers given as a generator. If the generator contains tuples, the first element
 is assumed to be the value and the second its multiplicity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>generator</strong> (<em>Iterable</em><em>[</em><em>Number</em><em>] </em><em>| </em><em>Iterable</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>int</em><em>]</em>) – The generator.</p>
+<dd class="field-odd"><p><strong>generator</strong> (<em>Iterable</em><em>[</em><em>Numeric</em><em>] </em><em>| </em><em>Iterable</em><em>[</em><em>tuple</em><em>[</em><em>Numeric</em><em>, </em><em>int</em><em>]</em>) – The generator.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The mean of the values.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number</p>
+<dd class="field-odd"><p>Numeric</p>
 </dd>
 </dl>
 </dd></dl>
@@ -368,6 +369,13 @@ is assumed to be the value and the second its multiplicity.</p>
 <dd class="field-odd"><p><em>Generator</em></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pabutools.utils.Numeric">
+<span class="sig-name descname"><span class="pre">Numeric</span></span><a class="headerlink" href="#pabutools.utils.Numeric" title="Permalink to this definition">#</a></dt>
+<dd><p>Type for numeric values. Is the union of int, float and mpq fractions (from the gumpy2 package).</p>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">mpq</span></code>]</p>
 </dd></dl>
 
 </section>
@@ -414,6 +422,7 @@ is assumed to be the value and the second its multiplicity.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.gini_coefficient"><code class="docutils literal notranslate"><span class="pre">gini_coefficient()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.mean_generator"><code class="docutils literal notranslate"><span class="pre">mean_generator()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.powerset"><code class="docutils literal notranslate"><span class="pre">powerset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.utils.Numeric"><code class="docutils literal notranslate"><span class="pre">Numeric</span></code></a></li>
 </ul>
   </nav></div>
 

@@ -1,9 +1,12 @@
 """
 Phragmén's methods.
 """
-from collections.abc import Iterable
+from __future__ import annotations
+
+from collections.abc import Collection
 from copy import deepcopy
-from numbers import Number
+
+from pabutools.utils import Numeric
 
 from pabutools.fractions import frac
 from pabutools.election import (
@@ -24,7 +27,7 @@ class PhragmenVoter:
     ----------
         ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
             The ballot of the voter.
-        load: Number
+        load: Numeric
             The initial load of the voter.
         multiplicity: int
             The multiplicity of the ballot.
@@ -33,13 +36,13 @@ class PhragmenVoter:
     ----------
         ballot: :py:class:`~pabutools.election.ballot.approvalballot.AbstractApprovalBallot`
             The ballot of the voter.
-        load: Number
+        load: Numeric
             The initial load of the voter.
         multiplicity: int
             The multiplicity of the ballot.
     """
 
-    def __init__(self, ballot: AbstractApprovalBallot, load: Number, multiplicity: int):
+    def __init__(self, ballot: AbstractApprovalBallot, load: Numeric, multiplicity: int):
         self.ballot = ballot
         self.load = load
         self.multiplicity = multiplicity
@@ -51,8 +54,8 @@ class PhragmenVoter:
 def sequential_phragmen(
     instance: Instance,
     profile: AbstractApprovalProfile,
-    initial_loads: list[Number] = None,
-    initial_budget_allocation: Iterable[Project] = None,
+    initial_loads: list[Numeric] = None,
+    initial_budget_allocation: Collection[Project] = None,
     tie_breaking: TieBreakingRule = None,
     resoluteness: bool = True,
 ) -> list[Project] | list[list[Project]]:
@@ -70,7 +73,7 @@ def sequential_phragmen(
             The instance.
         profile : :py:class:`~pabutools.election.profile.profile.AbstractProfile`
             The profile.
-        initial_loads: list[Number], optional
+        initial_loads: list[Numeric], optional
             A list of initial load, one per ballot in `profile`. By defaults, the initial load is `0`.
         initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
@@ -83,7 +86,7 @@ def sequential_phragmen(
 
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """

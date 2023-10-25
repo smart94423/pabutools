@@ -257,7 +257,7 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module implementing different ways to compose rules.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 
 <span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Instance</span><span class="p">,</span>
@@ -273,8 +273,8 @@ document.write(`
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
     <span class="n">rule_sequence</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
     <span class="n">rule_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the outcome of several rules and returns the one that is the most preferred by the largest set of voters,</span>
 <span class="sd">    according to a given satisfaction measure. Should only be applied to resolute rules.</span>
@@ -292,7 +292,7 @@ document.write(`
 <span class="sd">        rule_params: Iterable[dict], optional</span>
 <span class="sd">            Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule</span>
 <span class="sd">            functions. Defaults to `{}`.</span>
-<span class="sd">        initial_budget_allocation: Iterable[Project], optional</span>
+<span class="sd">        initial_budget_allocation: Collection[Project], optional</span>
 <span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
 
 <span class="sd">    Returns</span>
@@ -347,8 +347,8 @@ document.write(`
     <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">],</span>
     <span class="n">rule_sequence</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
     <span class="n">rule_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the outcome of several rules and returns the one that is the most preferred by the voters according to a</span>
 <span class="sd">    given satisfaction measure. Should only be applied to resolute rules.</span>
@@ -366,7 +366,7 @@ document.write(`
 <span class="sd">        rule_params: Iterable[dict], optional</span>
 <span class="sd">            Iterable of dictionaries of additional parameters that are passed as keyword arguments to the rule</span>
 <span class="sd">            functions. Defaults to `{}`.</span>
-<span class="sd">        initial_budget_allocation: Iterable[Project], optional</span>
+<span class="sd">        initial_budget_allocation: Collection[Project], optional</span>
 <span class="sd">            An initial budget allocation, typically empty. Defaults to `[]`.</span>
 
 <span class="sd">    Returns</span>

@@ -1,30 +1,38 @@
 """
 Collection of util functions.
 """
+from __future__ import annotations
+
 from collections.abc import Iterable, Generator
 from itertools import combinations, chain
-from numbers import Number
 
-import numpy as np
+from typing import Union
+
+from gmpy2 import mpq
 
 from pabutools.fractions import frac
 
+Numeric = Union[int, float, mpq]
+"""
+Type for numeric values. Is the union of int, float and mpq fractions (from the gumpy2 package).
+"""
+
 
 def mean_generator(
-    generator: Iterable[Number] | Iterable[tuple[Number, int]]
-) -> Number:
+    generator: Iterable[Numeric] | Iterable[tuple[Numeric, int]]
+) -> Numeric:
     """
     Computes the mean of a sequence of numbers given as a generator. If the generator contains tuples, the first element
     is assumed to be the value and the second its multiplicity.
 
     Parameters
     ----------
-        generator: Iterable[Number] | Iterable[tuple[Number, int]
+        generator: Iterable[Numeric] | Iterable[tuple[Numeric, int]
             The generator.
 
     Returns
     -------
-        Number
+        Numeric
             The mean of the values.
     """
     n = 0
@@ -32,7 +40,7 @@ def mean_generator(
     for x in generator:
         multiplicity = 1
         value = x
-        if type(x) is tuple:
+        if isinstance(x, tuple):
             value = x[0]
             multiplicity = x[1]
         for i in range(multiplicity):
@@ -59,18 +67,18 @@ def powerset(iterable: Iterable) -> Generator:
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def gini_coefficient(values: Iterable[Number]) -> Number:
+def gini_coefficient(values: Iterable[Numeric]) -> Numeric:
     """
     Returns the Gini coefficient of the vector of values given as argument.
 
     Parameters
     ----------
-        values: Iterable[Number]
+        values: Iterable[Numeric]
             A vector of values.
 
     Returns
     -------
-        Number
+        Numeric
             The Gini coefficient.
 
     """

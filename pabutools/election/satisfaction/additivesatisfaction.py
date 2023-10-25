@@ -3,8 +3,9 @@ Additive satisfaction measures.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
-from numbers import Number
+from collections.abc import Callable, Collection
+
+from pabutools.utils import Numeric
 
 import numpy as np
 from mip import Model, BINARY, maximize, xsum
@@ -44,7 +45,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
-        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Number]
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Numeric]
             A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values
             and returning the score of the project as a fraction.
 
@@ -56,7 +57,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
             The profile.
         ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot.
-        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Number]
+        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Numeric]
             A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values
             and returning the score of the project as a fraction.
         precomputed_values : dict[str, str]
@@ -69,7 +70,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         profile: AbstractProfile,
         ballot: AbstractBallot,
         func: Callable[
-            [Instance, AbstractProfile, AbstractBallot, Project, dict], Number
+            [Instance, AbstractProfile, AbstractBallot, Project, dict], Numeric
         ],
     ) -> None:
         SatisfactionMeasure.__init__(self, instance, profile, ballot)
@@ -100,7 +101,7 @@ class AdditiveSatisfaction(SatisfactionMeasure):
         """
         return {}
 
-    def get_project_sat(self, project: Project) -> Number:
+    def get_project_sat(self, project: Project) -> Numeric:
         """
         Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid
         re-computing it.
@@ -112,13 +113,10 @@ class AdditiveSatisfaction(SatisfactionMeasure):
 
         Returns
         -------
-            Number
+            Numeric
                 The satisfaction of the project.
 
         """
-        return self.func(
-            self.instance, self.profile, self.ballot, project, self.precomputed_values
-        )
         score = self.scores.get(project, None)
         if score is None:
             score = self.func(
@@ -131,10 +129,10 @@ class AdditiveSatisfaction(SatisfactionMeasure):
             self.scores[project] = score
         return score
 
-    def sat(self, proj: Iterable[Project]) -> Number:
+    def sat(self, proj: Collection[Project]) -> Numeric:
         return sum(self.get_project_sat(p) for p in proj)
 
-    def sat_project(self, project: Project) -> Number:
+    def sat_project(self, project: Project) -> Numeric:
         return self.get_project_sat(project)
 
 
@@ -220,7 +218,7 @@ def relative_cardinality_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The relative cardinality satisfaction.
 
     """
@@ -324,7 +322,7 @@ def relative_cost_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost
     of the project divided by the total cost of the most expensive subset of projects appearing in the ballot. It is
@@ -345,7 +343,7 @@ def relative_cost_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The relative cost satisfaction.
     """
     if precomputed_values["max_budget_allocation_cost"] == 0:
@@ -395,7 +393,7 @@ def relative_cost_approx_normaliser_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the relative cost satisfaction for ballots using an approximate normaliser: the minimum of the total cost of the projects
     appearing in the ballot and the total budget. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`
@@ -416,7 +414,7 @@ def relative_cost_approx_normaliser_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The relative cost satisfaction with an approximate normaliser.
     """
     if precomputed_values["normalizer"] == 0:
@@ -462,7 +460,7 @@ def add_cost_sqrt_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved
     and selected projects of the square root of their costs.
@@ -482,7 +480,7 @@ def add_cost_sqrt_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The cost square root satisfaction of the project.
 
     """
@@ -525,7 +523,7 @@ def additive_cost_log_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected
     projects of the log of 1 plus the cost of the projects.
@@ -545,7 +543,7 @@ def additive_cost_log_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The log cost satisfaction of the project.
 
     """
@@ -588,7 +586,7 @@ def effort_sat_func(
     ballot: AbstractBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the effort satisfaction for ballots. If the project appears in the ballot, it is equal to the cost of the
     project, divided by the number of voters who included the project in their ballot.
@@ -608,7 +606,7 @@ def effort_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The effort satisfaction.
     """
     denominator = sum(1 for b in profile if project in b)
@@ -645,7 +643,7 @@ def additive_card_sat_func(
     ballot: AbstractCardinalBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the project.
 
@@ -664,7 +662,7 @@ def additive_card_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The additive satisfaction for cardinal ballots.
     """
     return ballot.get(project, 0)
@@ -709,7 +707,7 @@ def additive_card_relative_sat_func(
     ballot: AbstractCardinalBallot,
     project: Project,
     precomputed_values: dict,
-) -> Number:
+) -> Numeric:
     """
     Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the
     project, divided by the highest total score achievable by a feasible budget allocation.
@@ -729,7 +727,7 @@ def additive_card_relative_sat_func(
 
     Returns
     -------
-        Number
+        Numeric
             The relative additive satisfaction for cardinal ballots.
     """
     if precomputed_values["max_budget_allocation_score"] == 0:

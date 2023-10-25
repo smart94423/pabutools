@@ -11,6 +11,7 @@ from pabutools.election.ballot import (
     CardinalBallot,
     OrdinalBallot,
     CumulativeBallot,
+    AbstractCardinalBallot,
 )
 from pabutools.election.profile import (
     Profile,
@@ -31,8 +32,8 @@ import os
 
 def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
     """
-    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile will be of the
-    correct type depending on the metadata in the file.
+    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile
+    will be of the correct type depending on the metadata in the file.
 
     Parameters
     ----------
@@ -89,13 +90,17 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
             for i in range(len(row)):
                 if row[i].strip().lower() != "none":
                     ballot_meta[header[i].strip()] = row[i].strip()
-            if instance.meta["vote_type"] == "approval":
+            vote_type = instance.meta["vote_type"]
+            if vote_type == "approval":
                 ballot = ApprovalBallot()
                 for project_name in ballot_meta["vote"].split(","):
                     ballot.add(instance.get_project(project_name))
                 ballot_meta.pop("vote")
-            elif instance.meta["vote_type"] == "scoring":
-                ballot = CardinalBallot()
+            elif vote_type in ["scoring", "cumulative"]:
+                if vote_type == "scoring":
+                    ballot = CardinalBallot()
+                else:
+                    ballot = CumulativeBallot()
                 points = ballot_meta["points"].split(",")
                 for index, project_name in enumerate(ballot_meta["vote"].split(",")):
                     ballot[instance.get_project(project_name)] = str_as_frac(
@@ -103,16 +108,7 @@ def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
                     )
                 ballot_meta.pop("vote")
                 ballot_meta.pop("points")
-            elif instance.meta["vote_type"] == "cumulative":
-                ballot = CumulativeBallot()
-                points = ballot_meta["points"].split(",")
-                for index, project_name in enumerate(ballot_meta["vote"].split(",")):
-                    ballot[instance.get_project(project_name)] = str_as_frac(
-                        points[index].strip()
-                    )
-                ballot_meta.pop("vote")
-                ballot_meta.pop("points")
-            elif instance.meta["vote_type"] == "ordinal":
+            elif vote_type == "ordinal":
                 ballot = OrdinalBallot()
                 for project_name in ballot_meta["vote"].split(","):
                     ballot.append(instance.get_project(project_name))
@@ -390,7 +386,7 @@ def write_pabulib(instance, profile, file_path):
         vote_meta["vote"] = ",".join([p.name for p in ballot])
         if "vote" not in vote_keys:
             vote_keys.append("vote")
-        if isinstance(profile, AbstractCardinalProfile):
+        if isinstance(ballot, AbstractCardinalBallot):
             vote_meta["points"] = ",".join([str(float(ballot[p])) for p in ballot])
             if "points" not in vote_keys:
                 vote_keys.append("points")

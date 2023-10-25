@@ -4,8 +4,9 @@ Satisfaction measures.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
-from numbers import Number
+from collections.abc import Collection, Iterable
+
+from pabutools.utils import Numeric
 
 from pabutools.election.ballot import AbstractBallot
 
@@ -79,7 +80,7 @@ class SatisfactionMeasure(ABC):
         return "SAT[{}]".format(self.ballot)
 
     @abstractmethod
-    def sat(self, projects: Iterable[Project]) -> Number:
+    def sat(self, projects: Collection[Project]) -> Numeric:
         """
         Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
         for the given collection of projects.
@@ -91,12 +92,12 @@ class SatisfactionMeasure(ABC):
 
         Returns
         -------
-            Number
+            Numeric
                 The corresponding satisfaction
         """
 
     @abstractmethod
-    def sat_project(self, project: Project) -> Number:
+    def sat_project(self, project: Project) -> Numeric:
         """
         Given the internal attributes of the satisfaction measure (ballot, profile, instance), returns the satisfaction
         for a single project.
@@ -108,7 +109,7 @@ class SatisfactionMeasure(ABC):
 
         Returns
         -------
-            Number
+            Numeric
                 The corresponding satisfaction
         """
 
@@ -138,7 +139,7 @@ class GroupSatisfactionMeasure(ABC, Iterable):
                 The multiplicity of the satisfaction measure.
         """
 
-    def total_satisfaction(self, projects: Iterable[Project]) -> Number:
+    def total_satisfaction(self, projects: Collection[Project]) -> Numeric:
         """
         Sums up the satisfaction of all the satisfaction measures for the given collection of projects.
 
@@ -149,13 +150,13 @@ class GroupSatisfactionMeasure(ABC, Iterable):
 
         Returns
         -------
-            Number
+            Numeric
                 The total satisfaction for the collection of projects.
 
         """
         return sum(sat.sat(projects) * self.multiplicity(sat) for sat in self)
 
-    def total_satisfaction_project(self, project: Project) -> Number:
+    def total_satisfaction_project(self, project: Project) -> Numeric:
         """
         Sums up the satisfaction of all the satisfaction measures for the given project.
 
@@ -166,7 +167,7 @@ class GroupSatisfactionMeasure(ABC, Iterable):
 
         Returns
         -------
-            Number
+            Numeric
                 The total satisfaction for the collection of projects.
 
         """
@@ -174,7 +175,7 @@ class GroupSatisfactionMeasure(ABC, Iterable):
 
     @abstractmethod
     def remove_satisfied(
-        self, sat_bound: dict[AbstractBallot, Number], projects: Iterable[Project]
+        self, sat_bound: dict[AbstractBallot, Numeric], projects: Collection[Project]
     ) -> GroupSatisfactionMeasure:
         """
         Returns a new satisfaction profile excluding the satisfaction measurs corresponding to satisfied voters, i.e.,
@@ -182,7 +183,7 @@ class GroupSatisfactionMeasure(ABC, Iterable):
 
         Parameters
         ----------
-            sat_bound : dict[str, Number]
+            sat_bound : dict[str, Numeric]
                 A dictionary of ballot names to numbers, specifying for each ballot the satisfaction bound above which
                 the voter is considered satisfied. Note that the keys are ballot names, and that nothing ensures ballot
                 names to be unique, so be careful here.

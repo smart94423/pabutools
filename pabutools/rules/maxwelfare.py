@@ -1,19 +1,18 @@
 """
 Welfare-maximizing rules.
 """
-from collections.abc import Iterable
+from __future__ import annotations
+
+from collections.abc import Collection
 
 import mip
 from mip import Model, xsum, maximize, BINARY
 
 from pabutools.election import (
     Instance,
-    Profile,
     SatisfactionMeasure,
-    SatisfactionProfile,
     Project,
     total_cost,
-    MultiProfile,
     GroupSatisfactionMeasure,
     AbstractProfile,
 )
@@ -21,10 +20,10 @@ from pabutools.election import (
 
 def max_additive_utilitarian_welfare_scheme(
     instance: Instance,
-    sat_profile: SatisfactionProfile,
-    initial_budget_allocation: Iterable[Project],
+    sat_profile: GroupSatisfactionMeasure,
+    initial_budget_allocation: Collection[Project],
     resoluteness: bool = True,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     The inner algorithm for the welfare maximizing rule. It generates the corresponding budget allocations using a
     linear program solver. Note that there is no control over the way ties are broken.
@@ -42,7 +41,7 @@ def max_additive_utilitarian_welfare_scheme(
             Defaults to True.
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
@@ -105,8 +104,8 @@ def max_additive_utilitarian_welfare(
     sat_class: type[SatisfactionMeasure] = None,
     sat_profile: GroupSatisfactionMeasure = None,
     resoluteness: bool = True,
-    initial_budget_allocation: Iterable[Project] = None,
-) -> Iterable[Project] | Iterable[Iterable[Project]]:
+    initial_budget_allocation: Collection[Project] = None,
+) -> Collection[Project] | Collection[Collection[Project]]:
     """
     Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is
     defined as the sum of the satisfactin of the voters, where the satisfaction is computed using the satisfaction
@@ -135,7 +134,7 @@ def max_additive_utilitarian_welfare(
 
     Returns
     -------
-        Iterable[Project] | Iterable[Iterable[Project]]
+        Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """

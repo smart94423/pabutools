@@ -49,7 +49,7 @@ class AbstractProfile(ABC, Iterable[AbstractBallot]):
     def __init__(
         self,
         instance: Instance | None = None,
-        ballot_validation: bool = None,
+        ballot_validation: bool | None = None,
         ballot_type: type[AbstractBallot] = None,
     ) -> None:
         ABC.__init__(self)

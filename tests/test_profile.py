@@ -122,6 +122,7 @@ class TestProfile(TestCase):
 
         # Test other methods
         assert len(profile.approved_projects()) == 6
+        assert sorted(profile.approved_projects()) == projects[:6]
         assert profile.is_trivial() is True
         instance.budget_limit = 3
         assert profile.is_trivial() is False

@@ -1,17 +1,35 @@
 """
 Ordinal ballots, i.e., ballots in which the voters order the projects given their preferences.
 """
-from abc import ABC
-from collections.abc import Iterable
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from collections.abc import Collection
 
 from pabutools.election.ballot.ballot import FrozenBallot, Ballot, AbstractBallot
 from pabutools.election.instance import Project
 
 
-class AbstractOrdinalBallot(ABC, Iterable[Project]):
+class AbstractOrdinalBallot(AbstractBallot, ABC, Collection[Project]):
     """
     Abstract class for cumulative ballots. Essentially used for typing purposes.
     """
+
+    @abstractmethod
+    def position(self, project: Project) -> int:
+        """
+        Returns the position of a project in the ordinal ballot.
+
+        Parameters
+        ----------
+            project : :py:class:`~pabutools.election.instance.Project`
+                The project.
+
+        Returns
+        -------
+            int
+                The position of the project.
+        """
 
 
 class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
@@ -43,9 +61,12 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
             strings. Could for instance store the gender of the voter, their location etc.
     """
 
+    def position(self, project: Project) -> int:
+        return self.index(project)
+
     def __init__(
         self,
-        init: Iterable[Project] = (),
+        init: Collection[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:
@@ -64,7 +85,7 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
         AbstractOrdinalBallot.__init__(self)
 
     def __new__(
-        cls, iterable: Iterable[Project] = (), name: str = "", meta: dict | None = None
+        cls, iterable: Collection[Project] = (), name: str = "", meta: dict | None = None
     ):
         if len(set(iterable)) != len(iterable):
             raise ValueError(
@@ -108,9 +129,12 @@ class OrdinalBallot(dict, Ballot, AbstractOrdinalBallot):
             strings. Could for instance store the gender of the voter, their location etc.
     """
 
+    def position(self, project: Project) -> int:
+        return self.index(project)
+
     def __init__(
         self,
-        init: Iterable[Project] = (),
+        init: Collection[Project] = (),
         name: str | None = None,
         meta: dict | None = None,
     ) -> None:

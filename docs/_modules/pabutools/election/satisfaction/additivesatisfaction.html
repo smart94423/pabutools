@@ -259,8 +259,9 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Collection</span>
+
+<span class="kn">from</span> <span class="nn">pabutools.utils</span> <span class="kn">import</span> <span class="n">Numeric</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">mip</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">maximize</span><span class="p">,</span> <span class="n">xsum</span>
@@ -300,7 +301,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot.</span>
-<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Number]</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Numeric]</span>
 <span class="sd">            A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values</span>
 <span class="sd">            and returning the score of the project as a fraction.</span>
 
@@ -312,7 +313,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        ballot : :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`</span>
 <span class="sd">            The ballot.</span>
-<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Number]</span>
+<span class="sd">        func : Callable[[:py:class:`~pabutools.election.instance.Instance`, :py:class:`~pabutools.election.profile.profile.AbstractProfile`,  :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`, :py:class:`~pabutools.election.instance.Project`, dict[str, str]], Numeric]</span>
 <span class="sd">            A function taking as input an instance, a profile, a ballot, a project and dictionary of precomputed values</span>
 <span class="sd">            and returning the score of the project as a fraction.</span>
 <span class="sd">        precomputed_values : dict[str, str]</span>
@@ -325,7 +326,7 @@ document.write(`
         <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
         <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Number</span>
+            <span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">AbstractBallot</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Numeric</span>
         <span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">SatisfactionMeasure</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">ballot</span><span class="p">)</span>
@@ -356,7 +357,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{}</span></div>
 
-<div class="viewcode-block" id="AdditiveSatisfaction.get_project_sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.get_project_sat">[docs]</a>    <span class="k">def</span> <span class="nf">get_project_sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="AdditiveSatisfaction.get_project_sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.get_project_sat">[docs]</a>    <span class="k">def</span> <span class="nf">get_project_sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a project, computes the corresponding satisfaction. Stores the score after computation to avoid</span>
 <span class="sd">        re-computing it.</span>
@@ -368,13 +369,10 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">            Number</span>
+<span class="sd">            Numeric</span>
 <span class="sd">                The satisfaction of the project.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ballot</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precomputed_values</span>
-        <span class="p">)</span>
         <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span>
@@ -387,10 +385,10 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
         <span class="k">return</span> <span class="n">score</span></div>
 
-<div class="viewcode-block" id="AdditiveSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="AdditiveSatisfaction.sat"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat">[docs]</a>    <span class="k">def</span> <span class="nf">sat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_project_sat</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AdditiveSatisfaction.sat_project"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat_project">[docs]</a>    <span class="k">def</span> <span class="nf">sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<div class="viewcode-block" id="AdditiveSatisfaction.sat_project"><a class="viewcode-back" href="../../../../reference/election/satisfaction.html#pabutools.election.satisfaction.additivesatisfaction.AdditiveSatisfaction.sat_project">[docs]</a>    <span class="k">def</span> <span class="nf">sat_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_project_sat</span><span class="p">(</span><span class="n">project</span><span class="p">)</span></div></div>
 
 
@@ -476,7 +474,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The relative cardinality satisfaction.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -580,7 +578,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative cost satisfaction for ballots. If the project appears in the ballot, it is equal to the cost</span>
 <span class="sd">    of the project divided by the total cost of the most expensive subset of projects appearing in the ballot. It is</span>
@@ -601,7 +599,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The relative cost satisfaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_cost&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -651,7 +649,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative cost satisfaction for ballots using an approximate normaliser: the minimum of the total cost of the projects</span>
 <span class="sd">    appearing in the ballot and the total budget. See :py:func:`~pabutools.election.satisfaction.additivesatisfaction.relative_cost_sat_func`</span>
@@ -672,7 +670,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The relative cost satisfaction with an approximate normaliser.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;normalizer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -718,7 +716,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the additive cost square root satisfaction for approval ballots. It is equal to the sum over the approved</span>
 <span class="sd">    and selected projects of the square root of their costs.</span>
@@ -738,7 +736,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The cost square root satisfaction of the project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -781,7 +779,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the cost slog satisfaction for approval ballots. It is equal to the sum over the approved and selected</span>
 <span class="sd">    projects of the log of 1 plus the cost of the projects.</span>
@@ -801,7 +799,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The log cost satisfaction of the project.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -844,7 +842,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the effort satisfaction for ballots. If the project appears in the ballot, it is equal to the cost of the</span>
 <span class="sd">    project, divided by the number of voters who included the project in their ballot.</span>
@@ -864,7 +862,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The effort satisfaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">denominator</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">profile</span> <span class="k">if</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">b</span><span class="p">)</span>
@@ -901,7 +899,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the project.</span>
 
@@ -920,7 +918,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The additive satisfaction for cardinal ballots.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">ballot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -965,7 +963,7 @@ document.write(`
     <span class="n">ballot</span><span class="p">:</span> <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
     <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">,</span>
     <span class="n">precomputed_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the relative additive satisfaction for cardinal ballots. It is equal to score assigned by the agent to the</span>
 <span class="sd">    project, divided by the highest total score achievable by a feasible budget allocation.</span>
@@ -985,7 +983,7 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">        Number</span>
+<span class="sd">        Numeric</span>
 <span class="sd">            The relative additive satisfaction for cardinal ballots.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">precomputed_values</span><span class="p">[</span><span class="s2">&quot;max_budget_allocation_score&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
