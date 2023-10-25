@@ -332,6 +332,10 @@ class MultiProfile(Counter, AbstractProfile):
             instance=self.instance, multiprofile=self, sat_class=sat_class
         )
 
+    def total(self):
+        # Re-implemented as it is not available in Python <3.10
+        return sum(self.values())
+
     def num_ballots(self) -> int:
         return self.total()
 
