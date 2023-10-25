@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from pabutools.election.profile import Profile, MultiProfile
 
 
-class SatisfactionProfile(list, GroupSatisfactionMeasure):
+class SatisfactionProfile(list[SatisfactionMeasure], GroupSatisfactionMeasure):
     """
     A profile of satisfaction measure, i.e., a collection of satisfaction measures, one per voter.
     This class inherits from the Python `list` class and can thus be used as one.
@@ -327,6 +327,10 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
         )
         res.sat_class = self.sat_class
         return res
+
+    def total(self):
+        # Re-implemented as it is not available in Python <3.10
+        return sum(self.values())
 
     @classmethod
     def _wrap_methods(cls, names):

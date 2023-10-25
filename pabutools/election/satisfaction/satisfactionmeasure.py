@@ -114,7 +114,7 @@ class SatisfactionMeasure(ABC):
         """
 
 
-class GroupSatisfactionMeasure(ABC, Iterable):
+class GroupSatisfactionMeasure(ABC, Iterable[SatisfactionMeasure]):
     """
     Abstract class representing a collection of satisfaction measure, one per voter.
     """
