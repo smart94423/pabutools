@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "pabutools"
-version = "1.0.14"
+version = "1.1.0"
 description = "Implementation of all the tools necessary to explore and analyse participatory budgeting elections"
 authors = [
   { name = "Simon Rey", email = "reysimon@orange.fr" },
@@ -18,10 +18,11 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "numpy",
     "mip",
