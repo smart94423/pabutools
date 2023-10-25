@@ -1,6 +1,8 @@
 """
 Module implementing different ways to compose rules.
 """
+from __future__ import annotations
+
 from collections.abc import Collection, Callable, Iterable
 
 from pabutools.election import (
