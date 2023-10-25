@@ -42,7 +42,9 @@ class PhragmenVoter:
             The multiplicity of the ballot.
     """
 
-    def __init__(self, ballot: AbstractApprovalBallot, load: Numeric, multiplicity: int):
+    def __init__(
+        self, ballot: AbstractApprovalBallot, load: Numeric, multiplicity: int
+    ):
         self.ballot = ballot
         self.load = load
         self.multiplicity = multiplicity
@@ -54,9 +56,9 @@ class PhragmenVoter:
 def sequential_phragmen(
     instance: Instance,
     profile: AbstractApprovalProfile,
-    initial_loads: list[Numeric] = None,
-    initial_budget_allocation: Collection[Project] = None,
-    tie_breaking: TieBreakingRule = None,
+    initial_loads: list[Numeric] | None = None,
+    initial_budget_allocation: Collection[Project] | None = None,
+    tie_breaking: TieBreakingRule | None = None,
     resoluteness: bool = True,
 ) -> list[Project] | list[list[Project]]:
     """
@@ -202,7 +204,7 @@ def sequential_phragmen(
 
     scores = {project: profile.approval_score(project) for project in instance}
 
-    all_budget_allocations = []
+    all_budget_allocations: list[list[Project]] = []
     aux(
         instance,
         initial_projects,

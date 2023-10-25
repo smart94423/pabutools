@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy, copy
-from collections.abc import Collection, Callable, Iterable
-
+from collections.abc import Collection, Callable, Iterable, Sequence
 
 from pabutools.election.instance import Instance, Project
 from pabutools.election.profile import AbstractProfile
@@ -14,9 +13,9 @@ from pabutools.utils import Numeric
 def completion_by_rule_combination(
     instance: Instance,
     profile: AbstractProfile,
-    rule_sequence: Collection[Callable],
-    rule_params: Collection[dict] = None,
-    initial_budget_allocation: Collection[Project] = None,
+    rule_sequence: Sequence[Callable],
+    rule_params: Sequence[dict] | None = None,
+    initial_budget_allocation: Collection[Project] | None = None,
     resoluteness: bool = True,
 ) -> Collection[Project] | Iterable[Collection[Project]]:
     """
@@ -90,11 +89,11 @@ def exhaustion_by_budget_increase(
     instance: Instance,
     profile: AbstractProfile,
     rule: Callable,
-    rule_params: dict = None,
-    initial_budget_allocation: Collection[Project] = None,
+    rule_params: dict | None = None,
+    initial_budget_allocation: Collection[Project] | None = None,
     resoluteness: bool = True,
-    budget_step: Numeric = None,
-    budget_bound: Numeric = None,
+    budget_step: Numeric | None = None,
+    budget_bound: Numeric | None = None,
 ) -> Collection[Project]:
     """
     Runs the given rule iteratively with increasing budget, until an exhaustive allocation is retrieved or

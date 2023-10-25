@@ -29,7 +29,7 @@ def greedy_utilitarian_scheme(
     budget_allocation: Collection[Project],
     tie_breaking: TieBreakingRule,
     resoluteness: bool = True,
-    sat_bounds: dict[AbstractBallot, Numeric] = None,
+    sat_bounds: dict[AbstractBallot, Numeric] | None = None,
 ) -> Collection[Project] | Collection[Collection[Project]]:
     """
     The inner algorithm for the greedy rule. It selects projects in rounds, each time selecting a project that
@@ -105,7 +105,7 @@ def greedy_utilitarian_scheme(
 
     initial_budget_allocation = copy(budget_allocation)
     initial_cost = total_cost(initial_budget_allocation)
-    all_budget_allocations = []
+    all_budget_allocations: list[list[Project]] = []
     feasible_projects = []
     for p in instance:
         if (
@@ -202,12 +202,12 @@ def greedy_utilitarian_scheme_additive(
 def greedy_utilitarian_welfare(
     instance: Instance,
     profile: AbstractProfile,
-    sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: GroupSatisfactionMeasure = None,
-    is_sat_additive: bool = None,
-    tie_breaking: TieBreakingRule = None,
+    sat_class: type[SatisfactionMeasure] | None = None,
+    sat_profile: GroupSatisfactionMeasure | None = None,
+    is_sat_additive: bool | None = None,
+    tie_breaking: TieBreakingRule | None = None,
     resoluteness: bool = True,
-    initial_budget_allocation: Collection[Project] = None,
+    initial_budget_allocation: Collection[Project] | None = None,
 ) -> Collection[Project] | Collection[Collection[Project]]:
     """
     General greedy scheme for approximating the utilitarian welfare. It selects projects in rounds, each time selecting

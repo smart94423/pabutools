@@ -68,7 +68,10 @@ class FrozenApprovalBallot(tuple[Project], FrozenBallot, AbstractApprovalBallot)
         AbstractApprovalBallot.__init__(self)
 
     def __new__(
-        cls, approved: Collection[Project] = (), name: str = "", meta: dict | None = None
+        cls,
+        approved: Collection[Project] = (),
+        name: str = "",
+        meta: dict | None = None,
     ):
         return tuple.__new__(cls, tuple(approved))
 

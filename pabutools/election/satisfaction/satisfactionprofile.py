@@ -54,13 +54,15 @@ class SatisfactionProfile(list, GroupSatisfactionMeasure):
     def __init__(
         self,
         init: Iterable[SatisfactionMeasure] = (),
-        instance: Instance = None,
-        profile: Profile = None,
-        sat_class: type[SatisfactionMeasure] = None,
+        instance: Instance | None = None,
+        profile: Profile | None = None,
+        sat_class: type[SatisfactionMeasure] | None = None,
     ) -> None:
         list.__init__(self, init)
         GroupSatisfactionMeasure.__init__(self)
-        self.instance = None  # Only for type checking, so that init.instance does not fail
+        self.instance = (
+            None  # Only for type checking, so that init.instance does not fail
+        )
         if instance is None:
             if isinstance(init, SatisfactionProfile):
                 instance = init.instance
@@ -204,12 +206,14 @@ class SatisfactionMultiProfile(Counter, GroupSatisfactionMeasure):
 
     def __init__(
         self,
-        init: Iterable[SatisfactionMeasure] | dict[SatisfactionMeasure, int] = None,
-        instance: Instance = None,
-        profile: Profile = None,
-        multiprofile: MultiProfile = None,
-        sat_class: type[SatisfactionMeasure] = None,
-        inner_sat_class: type[SatisfactionMeasure] = None,
+        init: Iterable[SatisfactionMeasure]
+        | dict[SatisfactionMeasure, int]
+        | None = None,
+        instance: Instance | None = None,
+        profile: Profile | None = None,
+        multiprofile: MultiProfile | None = None,
+        sat_class: type[SatisfactionMeasure] | None = None,
+        inner_sat_class: type[SatisfactionMeasure] | None = None,
     ) -> None:
         if init is None:
             init = {}

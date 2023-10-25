@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Callable, Iterable, Collection
 
 from pabutools.utils import Numeric
@@ -35,7 +37,7 @@ class TieBreakingRule:
         instance: Instance,
         profile: AbstractProfile,
         projects: Collection[Project],
-        key: Callable[..., Project] = None,
+        key: Callable[..., Project] | None = None,
     ) -> list[Project]:
         """
         Break the ties among all the projects provided in input and returns them ordered. The tie-breaking can be
@@ -57,8 +59,10 @@ class TieBreakingRule:
             list[:py:class:`~pabutools.election.instance.Project`]
                 The projects, ordered by the tie-breaking.
         """
+
         def default_key(p):
             return p
+
         if key is None:
             key = default_key
         return sorted(
@@ -71,7 +75,7 @@ class TieBreakingRule:
         instance: Instance,
         profile: AbstractProfile,
         projects: Collection[Project],
-        key: Callable[..., Project] = None,
+        key: Callable[..., Project] | None = None,
     ) -> Project:
         """
         Break the ties among all the projects provided in input and returns a single project. Orders the
@@ -94,8 +98,10 @@ class TieBreakingRule:
             :py:class:`~pabutools.election.instance.Project`
                 The first project according to the tie-breaking.
         """
+
         def default_key(p):
             return p
+
         if key is None:
             key = default_key
         return self.order(instance, profile, projects, key)[0]

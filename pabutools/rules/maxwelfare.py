@@ -101,10 +101,10 @@ def max_additive_utilitarian_welfare_scheme(
 def max_additive_utilitarian_welfare(
     instance: Instance,
     profile: AbstractProfile,
-    sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: GroupSatisfactionMeasure = None,
+    sat_class: type[SatisfactionMeasure] | None = None,
+    sat_profile: GroupSatisfactionMeasure | None = None,
     resoluteness: bool = True,
-    initial_budget_allocation: Collection[Project] = None,
+    initial_budget_allocation: Collection[Project] | None = None,
 ) -> Collection[Project] | Collection[Collection[Project]]:
     """
     Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is

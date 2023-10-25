@@ -35,11 +35,11 @@ def mean_generator(
         Numeric
             The mean of the values.
     """
-    n = 0
-    mean = 0
+    n: int = 0
+    mean: Numeric = 0
     for x in generator:
-        multiplicity = 1
-        value = x
+        multiplicity: int = 1
+        value: Numeric = x
         if isinstance(x, tuple):
             value = x[0]
             multiplicity = x[1]
@@ -82,8 +82,8 @@ def gini_coefficient(values: Iterable[Numeric]) -> Numeric:
             The Gini coefficient.
 
     """
-    all_nul = True
-    num_values = 0
+    all_nul: bool = True
+    num_values: int = 0
     for v in values:
         if v < 0:
             raise ValueError(
@@ -94,8 +94,8 @@ def gini_coefficient(values: Iterable[Numeric]) -> Numeric:
         num_values += 1
     if all_nul:
         return 0
-    sorted_values = sorted(values)
-    total_cum_sum = 0
+    sorted_values: list[Numeric] = sorted(values)
+    total_cum_sum: Numeric = 0
     for i, v in enumerate(sorted_values):
         total_cum_sum += v * (num_values - i)
     return frac(num_values + 1 - frac(2 * total_cum_sum, sum(values)), num_values)

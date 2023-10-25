@@ -16,8 +16,8 @@ def popularity_comparison(
     profile: Profile,
     sat_class: type[SatisfactionMeasure],
     rule_sequence: Iterable[Callable],
-    rule_params: Iterable[dict] = None,
-    initial_budget_allocation: Collection[Project] = None,
+    rule_params: Iterable[dict] | None = None,
+    initial_budget_allocation: Collection[Project] | None = None,
 ) -> Iterable[Collection[Project]]:
     """
     Compute the outcome of several rules and returns the one that is the most preferred by the largest set of voters,
@@ -90,8 +90,8 @@ def social_welfare_comparison(
     profile: Profile,
     sat_class: type[SatisfactionMeasure],
     rule_sequence: Iterable[Callable],
-    rule_params: Iterable[dict] = None,
-    initial_budget_allocation: Collection[Project] = None,
+    rule_params: Iterable[dict] | None = None,
+    initial_budget_allocation: Collection[Project] | None = None,
 ) -> Iterable[Collection[Project]]:
     """
     Compute the outcome of several rules and returns the one that is the most preferred by the voters according to a

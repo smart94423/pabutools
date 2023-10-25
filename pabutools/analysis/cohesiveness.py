@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Collection
 
 from pabutools.utils import Numeric
@@ -74,6 +76,7 @@ def cohesive_groups(instance: Instance, profile: AbstractProfile, projects=None)
         if len(group) > 0:
             for project_set in powerset(projects):
                 if len(project_set) > 0:
+                    # This fails for multiprofiles as the multiplicity is not taken into account
                     if isinstance(profile, AbstractApprovalProfile):
                         if is_cohesive_approval(instance, profile, project_set, group):
                             res.append((group, project_set))
@@ -93,7 +96,7 @@ def cohesive_groups(instance: Instance, profile: AbstractProfile, projects=None)
 
 def maximal_cohesive_for_projects_approval(
     instance: Instance, profile: AbstractApprovalProfile, projects: Collection[Project]
-) -> tuple[AbstractApprovalBallot]:
+) -> list[AbstractApprovalBallot] | None:
     res = []
     for ballot in profile:
         all_in = True
@@ -106,11 +109,14 @@ def maximal_cohesive_for_projects_approval(
     if len(res) > 0 and is_large_enough(
         len(res), profile.num_ballots(), total_cost(projects), instance.budget_limit
     ):
-        return tuple(res)
+        return res
+    return None
 
 
 def maximal_cohesive_groups(
-    instance: Instance, profile: AbstractProfile, projects: Collection[Project] = None
+    instance: Instance,
+    profile: AbstractProfile,
+    projects: Collection[Project] | None = None,
 ):
     if projects is None:
         projects = instance

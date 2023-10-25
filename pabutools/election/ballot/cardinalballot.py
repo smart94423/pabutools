@@ -18,7 +18,9 @@ class AbstractCardinalBallot(AbstractBallot, ABC, Mapping[Project, Numeric]):
     """
 
 
-class FrozenCardinalBallot(dict[Project, Numeric], FrozenBallot, AbstractCardinalBallot):
+class FrozenCardinalBallot(
+    dict[Project, Numeric], FrozenBallot, AbstractCardinalBallot
+):
     """
     Frozen cardinal ballot, that is, a ballot in which the voter assigned scores to projects.
     Since there is no frozen dictionary implemented in Python, this class simply inherits from the Python class `dict`,
@@ -49,10 +51,10 @@ class FrozenCardinalBallot(dict[Project, Numeric], FrozenBallot, AbstractCardina
     """
 
     def __init__(
-            self,
-            init: dict[Project, Numeric] = (),
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: dict[Project, Numeric] = (),
+        name: str | None = None,
+        meta: dict | None = None,
     ):
         dict.__init__(self, init)
         if name is None:
@@ -105,10 +107,10 @@ class CardinalBallot(dict[Project, Numeric], Ballot, AbstractCardinalBallot):
     """
 
     def __init__(
-            self,
-            init: dict[Project, Numeric] = None,
-            name: str | None = None,
-            meta: dict | None = None,
+        self,
+        init: dict[Project, Numeric] | None = None,
+        name: str | None = None,
+        meta: dict | None = None,
     ):
         if init is None:
             init = dict()

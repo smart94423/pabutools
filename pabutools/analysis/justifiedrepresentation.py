@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Collection, Callable, Iterable
 
 from pabutools.utils import Numeric
@@ -65,7 +67,7 @@ def is_EJR_approval(
     profile: AbstractApprovalProfile,
     sat_class: type[SatisfactionMeasure],
     budget_allocation: Collection[Project],
-    up_to_func: Callable[[Iterable[Numeric]], Numeric] = None,
+    up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         one_agent_sat = False
@@ -121,7 +123,7 @@ def is_PJR_approval(
     profile: AbstractApprovalProfile,
     sat_class: type[SatisfactionMeasure],
     budget_allocation: Collection[Project],
-    up_to_func: Callable[[Iterable[Numeric]], Numeric] = None,
+    up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         sat = sat_class(instance, profile, ApprovalBallot(instance))
@@ -192,7 +194,7 @@ def is_EJR_cardinal(
     profile: AbstractCardinalProfile,
     budget_allocation: Collection[Project],
     sat_class: type[SatisfactionMeasure] = Additive_Cardinal_Sat,
-    up_to_func: Callable[[Iterable[Numeric]], Numeric] = None,
+    up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         one_agent_sat = False
@@ -238,7 +240,7 @@ def is_PJR_cardinal(
     instance: Instance,
     profile: AbstractCardinalProfile,
     budget_allocation: Iterable[Project],
-    up_to_func: Callable[[Iterable[Numeric]], Numeric] = None,
+    up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         threshold = sum(min(b[p] for b in profile) for p in project_set)

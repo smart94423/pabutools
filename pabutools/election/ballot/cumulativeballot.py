@@ -58,7 +58,7 @@ class FrozenCumulativeBallot(
 
     def __init__(
         self,
-        init: dict[Project, Numeric] = None,
+        init: dict[Project, Numeric] | None = None,
         name: str | None = None,
         meta: dict | None = None,
     ):
@@ -118,7 +118,7 @@ class CumulativeBallot(CardinalBallot, AbstractCumulativeBallot):
 
     def __init__(
         self,
-        init: dict[Project, Numeric] = None,
+        init: dict[Project, Numeric] | None = None,
         name: str | None = None,
         meta: dict | None = None,
     ):

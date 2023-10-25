@@ -1,6 +1,8 @@
 """
 Tools to work with PrefLib.
 """
+from __future__ import annotations
+
 import preflibtools.instances as preflib
 from preflibtools.instances import PrefLibInstance
 
@@ -88,7 +90,7 @@ def approval_to_preflib(
     description: str = "",
     publication_date: str = "",
     modification_date: str = "",
-    alternative_names: dict[Project, str] = None,
+    alternative_names: dict[Project, str] | None = None,
 ) -> preflib.CategoricalInstance:
     """
     Converts a participatory budgeting instance and profile of approval ballots into a PrefLib instance.
@@ -160,13 +162,13 @@ def cardinal_to_preflib(
     file_path: str = "",
     file_name: str = "",
     modification_type: str = "original",
-    relates_to: str = None,
-    related_files: str = None,
+    relates_to: str | None = None,
+    related_files: str | None = None,
     title: str = "",
     description: str = "",
     publication_date: str = "",
     modification_date: str = "",
-    alternative_names: dict[Project, str] = None,
+    alternative_names: dict[Project, str] | None = None,
 ) -> preflib.OrdinalInstance:
     """
     Converts a participatory budgeting instance and profile of cardinal ballots into a PrefLib instance.
@@ -233,13 +235,13 @@ def ordinal_to_preflib(
     file_path: str = "",
     file_name: str = "",
     modification_type: str = "original",
-    relates_to: str = None,
-    related_files: str = None,
+    relates_to: str | None = None,
+    related_files: str | None = None,
     title: str = "",
     description: str = "",
     publication_date: str = "",
     modification_date: str = "",
-    alternative_names: dict[Project, str] = None,
+    alternative_names: dict[Project, str] | None = None,
 ) -> preflib.OrdinalInstance:
     """
     Converts a participatory budgeting instance and profile of ordinal ballots into a PrefLib instance.

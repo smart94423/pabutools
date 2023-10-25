@@ -38,6 +38,8 @@ class MESVoter:
 
     Attributes
     ----------
+        index: int
+            The index of the voter in the list of voters MES maintains
         ballot: :py:class:`~pabutools.election.ballot.ballot.AbstractBallot`
             The ballot of the voter.
         sat: SatisfactionMeasure
@@ -46,6 +48,8 @@ class MESVoter:
             The budget of the voter.
         multiplicity: int
             The multiplicity of the ballot.
+        budget_over_sat_map: dict[Numeric, Numeric]
+            Maps values of the budget to values of the budget divided by the total satisfaction.
     """
 
     def __init__(
@@ -56,12 +60,12 @@ class MESVoter:
         budget: Numeric,
         multiplicity: int,
     ):
-        self.index = index
-        self.ballot = ballot
-        self.sat = sat
-        self.budget = budget
-        self.multiplicity = multiplicity
-        self.budget_over_sat_map = dict()
+        self.index: int = index
+        self.ballot: AbstractBallot = ballot
+        self.sat: SatisfactionMeasure = sat
+        self.budget: Numeric = budget
+        self.multiplicity: int = multiplicity
+        self.budget_over_sat_map: dict[Numeric, Numeric] = dict()
 
     def total_sat_project(self, proj: Project) -> Numeric:
         """
@@ -190,17 +194,17 @@ def mes_inner_algo(
             (`resoluteness = False`).
 
     """
-    tied_projects = None
+    tied_projects = []
     best_afford = float("inf")
     if verbose:
         print("========================")
         print("Projects:")
-        tmp = sorted(projects, key=lambda x: x.affordability)
-        for p in tmp[:5]:
+        tmp_proj = sorted(projects, key=lambda x: x.affordability)
+        for p in tmp_proj[:5]:
             print(f"\t{p}")
         print("Voters:")
-        tmp = sorted(voters, key=lambda x: x.total_budget())
-        for v in tmp[:5]:
+        tmp_vot = sorted(voters, key=lambda x: x.total_budget())
+        for v in tmp_vot[:5]:
             print(f"\t{v}")
     for project in sorted(projects, key=lambda p: p.affordability):
         if verbose:
@@ -250,7 +254,7 @@ def mes_inner_algo(
             denominator -= supporter.multiplicity * project.supporters_sat(supporter)
     if verbose:
         print(f"{tied_projects}")
-    if tied_projects is None:
+    if not tied_projects:
         if resoluteness:
             all_allocs.append(current_alloc)
         else:
@@ -370,10 +374,10 @@ def method_of_equal_shares_scheme(
             else:
                 initial_budget_allocation.append(p)
 
-    previous_outcome = initial_budget_allocation
+    previous_outcome: list[Project] | list[list[Project]] = initial_budget_allocation
 
     while True:
-        all_budget_allocations = []
+        all_budget_allocations: list[list[Project]] = []
         mes_inner_algo(
             instance,
             profile,
@@ -415,11 +419,11 @@ def method_of_equal_shares_scheme(
 def method_of_equal_shares(
     instance: Instance,
     profile: AbstractProfile,
-    sat_class: type[SatisfactionMeasure] = None,
-    sat_profile: GroupSatisfactionMeasure = None,
-    tie_breaking: TieBreakingRule = None,
+    sat_class: type[SatisfactionMeasure] | None = None,
+    sat_profile: GroupSatisfactionMeasure | None = None,
+    tie_breaking: TieBreakingRule | None = None,
     resoluteness: bool = True,
-    initial_budget_allocation: list[Project] = None,
+    initial_budget_allocation: list[Project] | None = None,
     voter_budget_increment=None,
     binary_sat=None,
 ) -> Collection[Project] | Collection[Collection[Project]]:

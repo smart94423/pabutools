@@ -179,7 +179,9 @@ def max_budget_allocation_cost(
         if opt_status == OptimizationStatus.OPTIMAL:
             max_cost = mip_model.objective.x
             return frac(float(max_cost))
-        raise ValueError("The MIP to find the maximum cost of a budget allocation failed to find an optimal solution.")
+        raise ValueError(
+            "The MIP to find the maximum cost of a budget allocation failed to find an optimal solution."
+        )
     return 0
 
 
@@ -267,7 +269,9 @@ class Instance(set[Project]):
     ) -> None:
         set.__init__(self, init)
 
-        self.budget_limit = None  # Only for type checking, so that init.budget_limit does not fail
+        self.budget_limit: Numeric = (
+            0  # Only for type checking, so that init.budget_limit does not fail
+        )
         if budget_limit is None:
             if isinstance(init, Instance):
                 budget_limit = init.budget_limit
@@ -275,7 +279,9 @@ class Instance(set[Project]):
                 budget_limit = 0
         self.budget_limit = budget_limit
 
-        self.categories = None  # Only for type checking, so that init.categories does not fail
+        self.categories = (
+            None  # Only for type checking, so that init.categories does not fail
+        )
         if categories is None:
             if isinstance(init, Instance):
                 categories = init.categories
@@ -283,7 +289,9 @@ class Instance(set[Project]):
                 categories = set()
         self.categories = categories
 
-        self.targets = None  # Only for type checking, so that init.targets does not fail
+        self.targets = (
+            None  # Only for type checking, so that init.targets does not fail
+        )
         if targets is None:
             if isinstance(init, Instance):
                 targets = init.targets
@@ -291,7 +299,9 @@ class Instance(set[Project]):
                 targets = set()
         self.targets = targets
 
-        self.file_path = None  # Only for type checking, so that init.file_path does not fail
+        self.file_path = (
+            None  # Only for type checking, so that init.file_path does not fail
+        )
         if file_path is None:
             if isinstance(init, Instance):
                 file_path = init.file_path
@@ -299,7 +309,9 @@ class Instance(set[Project]):
                 file_path = ""
         self.file_path = file_path
 
-        self.file_name = None  # Only for type checking, so that init.file_name does not fail
+        self.file_name = (
+            None  # Only for type checking, so that init.file_name does not fail
+        )
         if file_name is None:
             if isinstance(init, Instance):
                 file_name = init.file_name
@@ -307,7 +319,9 @@ class Instance(set[Project]):
                 file_name = ""
         self.file_name = file_name
 
-        self.parsing_errors = None  # Only for type checking, so that init.parsing_errors does not fail
+        self.parsing_errors = (
+            None  # Only for type checking, so that init.parsing_errors does not fail
+        )
         if parsing_errors is None:
             if isinstance(init, Instance):
                 parsing_errors = init.parsing_errors
@@ -323,7 +337,9 @@ class Instance(set[Project]):
                 meta = dict()
         self.meta = meta
 
-        self.project_meta = None  # Only for type checking, so that init.projet_meta does not fail
+        self.project_meta = (
+            None  # Only for type checking, so that init.projet_meta does not fail
+        )
         if project_meta is None:
             if isinstance(init, Instance):
                 project_meta = init.project_meta
@@ -393,7 +409,9 @@ class Instance(set[Project]):
         return total_cost(projects) <= self.budget_limit
 
     def is_exhaustive(
-        self, projects: Collection[Project], available_projects: Collection[Project] = None
+        self,
+        projects: Collection[Project],
+        available_projects: Collection[Project] | None = None,
     ) -> bool:
         """
         Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no

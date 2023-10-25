@@ -85,7 +85,10 @@ class FrozenOrdinalBallot(tuple[Project], FrozenBallot, AbstractOrdinalBallot):
         AbstractOrdinalBallot.__init__(self)
 
     def __new__(
-        cls, iterable: Collection[Project] = (), name: str = "", meta: dict | None = None
+        cls,
+        iterable: Collection[Project] = (),
+        name: str = "",
+        meta: dict | None = None,
     ):
         if len(set(iterable)) != len(iterable):
             raise ValueError(

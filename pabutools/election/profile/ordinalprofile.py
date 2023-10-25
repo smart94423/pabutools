@@ -94,8 +94,8 @@ class OrdinalProfile(Profile, AbstractOrdinalProfile):
         self,
         init: Iterable[OrdinalBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = None,
-        ballot_type: type[Ballot] = None,
+        ballot_validation: bool | None = None,
+        ballot_type: type[Ballot] | None = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
     ) -> None:
@@ -237,9 +237,9 @@ class OrdinalMultiProfile(MultiProfile, AbstractOrdinalProfile):
         self,
         init: Iterable[FrozenOrdinalBallot] = (),
         instance: Instance | None = None,
-        ballot_validation: bool = None,
-        ballot_type: type[FrozenBallot] = None,
-        profile: OrdinalProfile = None,
+        ballot_validation: bool | None = None,
+        ballot_type: type[FrozenBallot] | None = None,
+        profile: OrdinalProfile | None = None,
         legal_min_length: int | None = None,
         legal_max_length: int | None = None,
     ) -> None:
