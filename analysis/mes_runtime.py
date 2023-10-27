@@ -1,6 +1,8 @@
 import sys
 import os
 
+from pabutools.rules.mes import naive_mes, is_affordable2
+
 pabutools_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, pabutools_path)
 
@@ -324,7 +326,7 @@ def equal_shares_fixed_budget_approval(N, C, cost, approvers, B, verbose=False):
 
 
 if __name__ == "__main__":
-    # pabutools.fractions.FRACTION = "float"
+    pabutools.fractions.FRACTION = "float"
     instance, profile = parse_pabulib("poland_wieliczka_2023.pb")
     # instance, profile = parse_pabulib("poland_warszawa_2019_ursynow.pb")
     # profile = profile.as_multiprofile()
@@ -344,19 +346,22 @@ if __name__ == "__main__":
     )
     print(len(winners_fast))
     print(winners_fast)
-    # winners_slow = method_of_equal_shares(
-    #     instance,
-    #     profile,
-    #     sat_class=Cost_Sat,
-    #     budget_step=None)
     winners_slow = method_of_equal_shares(
         instance,
         profile.as_multiprofile(),
         sat_class=Cost_Sat,
         voter_budget_increment=1,
+        verbose=False,
     )
     print(len(winners_slow))
-    print(winners_slow)
+    print(f"{winners_slow} - {winners_slow == winners_fast}")
+    # winners_slow = naive_mes(instance, profile, Cost_Sat, frac(instance.budget_limit, profile.num_ballots()))
+    # print(len(winners_slow))
+    # print(f"{winners_slow} - {winners_slow == winners_fast}")
+    #
+    # winners_slow = naive_mes(instance, profile, Cost_Sat, frac(instance.budget_limit, profile.num_ballots()), afford_func=is_affordable2)
+    # print(len(winners_slow))
+    # print(f"{winners_slow} - {winners_slow == winners_fast}")
     # winners_slow = method_of_equal_shares(
     #     instance,
     #     profile.as_multiprofile(),

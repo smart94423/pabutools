@@ -65,7 +65,7 @@ class MESVoter:
         self.sat: SatisfactionMeasure = sat
         self.budget: Numeric = budget
         self.multiplicity: int = multiplicity
-        self.budget_over_sat_map: dict[Numeric, Numeric] = dict()
+        self.budget_over_sat_map: dict[tuple[Project, Numeric], Numeric] = dict()
 
     def total_sat_project(self, proj: Project) -> Numeric:
         """
@@ -109,10 +109,10 @@ class MESVoter:
             Numeric
                 The total satisfaction.
         """
-        res = self.budget_over_sat_map.get(self.budget, None)
+        res = self.budget_over_sat_map.get((proj, self.budget), None)
         if res is None:
             res = frac(self.budget, self.sat.sat_project(proj))
-            self.budget_over_sat_map[self.budget] = res
+            self.budget_over_sat_map[(proj, self.budget)] = res
         return res
 
     def __str__(self):
@@ -148,6 +148,131 @@ class MESProject(Project):
 
     def __repr__(self):
         return f"MESProject[{self.name}, {float(self.affordability)}]"
+
+
+def affordability_poor_rich(voters: list[MESVoter], project: MESProject) -> Numeric:
+    """Compute the affordability factor of a project using the "poor/rich" algorithm.
+
+    Parameters
+    ----------
+        voters: list[MESVoter]
+            The list of the voters, formatted for MES.
+        project: MESProject
+            The project under consideration.
+
+    Returns
+    -------
+        Numeric
+            The affordability factor of the project.
+
+    """
+    rich = set(project.supporter_indices)
+    poor = set()
+    while len(rich) > 0:
+        poor_budget = sum(voters[i].total_budget() for i in poor)
+        numerator = frac(project.cost - poor_budget)
+        denominator = sum(voters[i].total_sat_project(project) for i in rich)
+        affordability = frac(numerator, denominator)
+        new_poor = {
+            i
+            for i in rich
+            if voters[i].total_budget()
+            < affordability * voters[i].sat.sat_project(project)
+        }
+        if len(new_poor) == 0:
+            return affordability
+        rich -= new_poor
+        poor.update(new_poor)
+
+
+def naive_mes(
+    instance: Instance,
+    profile: AbstractProfile,
+    sat_class: type[SatisfactionMeasure],
+    initial_budget_per_voter: Numeric,
+) -> list[Project]:
+    """
+    Naive implementation of the method of equal shares. Probably slow, but useful to test the correctness of
+    other implementations.
+
+    Parameters
+    ----------
+        instance: Instance
+            The instance.
+        profile: AbstractProfile
+            The profile.
+        sat_class: type[SatisfactionMeasure]
+            The satisfaction measure used as a proxy of the satisfaction of the voters.
+        initial_budget_per_voter: Numeric
+            The initial budget allocated to the voters in the run of MES.
+
+    Returns
+    -------
+        list[Project]
+            All the projects selected by the method of equal shares.
+
+    """
+    sat_profile = profile.as_sat_profile(sat_class)
+    voters = []
+    for index, sat in enumerate(sat_profile):
+        voters.append(
+            MESVoter(
+                index,
+                sat.ballot,
+                sat,
+                initial_budget_per_voter,
+                sat_profile.multiplicity(sat),
+            )
+        )
+        index += 1
+
+    projects = set()
+    for p in instance:
+        mes_p = MESProject(p)
+        total_sat = 0
+        for i, v in enumerate(voters):
+            indiv_sat = v.sat.sat_project(p)
+            if indiv_sat > 0:
+                total_sat += v.total_sat_project(p)
+                mes_p.supporter_indices.append(i)
+                mes_p.sat_supporter_map[v] = indiv_sat
+        if total_sat > 0:
+            if p.cost > 0:
+                mes_p.total_sat = total_sat
+                projects.add(mes_p)
+
+    res = []
+    affordabilities = dict()
+
+    remaining_projects = deepcopy(projects)
+    while True:
+        to_remove = set()
+        for project in remaining_projects:
+            if (
+                sum(voters[i].total_budget() for i in project.supporter_indices)
+                < project.cost
+            ):
+                to_remove.add(project)
+            afford = affordability_poor_rich(voters, project)
+            if afford is not None:
+                affordabilities[project] = afford
+        for project in to_remove:
+            remaining_projects.remove(project)
+            if project in affordabilities:
+                del affordabilities[project]
+        if len(remaining_projects) == 0:
+            return res
+        min_afford = min(affordabilities.values())
+        selected = [p for p in remaining_projects if affordabilities[p] == min_afford][
+            0
+        ]
+        res.append(selected.project)
+        remaining_projects.remove(selected)
+        del affordabilities[selected]
+        for i in selected.supporter_indices:
+            voters[i].budget -= min(
+                voters[i].budget, min_afford * voters[i].sat.sat_project(selected)
+            )
 
 
 def mes_inner_algo(
@@ -198,17 +323,20 @@ def mes_inner_algo(
     best_afford = float("inf")
     if verbose:
         print("========================")
-        print("Projects:")
-        tmp_proj = sorted(projects, key=lambda x: x.affordability)
-        for p in tmp_proj[:5]:
-            print(f"\t{p}")
-        print("Voters:")
-        tmp_vot = sorted(voters, key=lambda x: x.total_budget())
-        for v in tmp_vot[:5]:
-            print(f"\t{v}")
     for project in sorted(projects, key=lambda p: p.affordability):
         if verbose:
             print(f"\tConsidering: {project}")
+        if (
+            sum(voters[i].total_budget() for i in project.supporter_indices)
+            < project.cost
+        ):  # unaffordable, can delete
+            if verbose:
+                print(
+                    f"\t\t Removed for lack of budget: "
+                    f"{float(sum(voters[i].total_budget() for i in project.supporter_indices))} < {float(project.cost)}"
+                )
+            projects.remove(project)
+            continue
         if (
             project.affordability > best_afford
         ):  # best possible afford for this round isn't good enough
@@ -217,31 +345,28 @@ def mes_inner_algo(
                     f"\t\t Skipped as affordability is too high: {float(project.affordability)} > {float(best_afford)}"
                 )
             break
-        if (
-            sum(voters[i].total_budget() for i in project.supporter_indices)
-            < project.cost
-        ):  # unaffordable, can delete
-            if verbose:
-                print(
-                    f"\t\t Removed for lack of budget: {float(sum(voters[i].total_budget() for i in project.supporter_indices))} < {float(project.cost)}"
-                )
-            projects.remove(project)
-            continue
         project.supporter_indices.sort(
             key=lambda i: voters[i].budget_over_sat_project(project)
         )
-        paid_so_far = 0
+        current_contribution = 0
         denominator = project.total_sat
         for i in project.supporter_indices:
             supporter = voters[i]
-            afford_factor = frac(project.cost - paid_so_far, denominator)
+            afford_factor = frac(project.cost - current_contribution, denominator)
+            if verbose:
+                print(
+                    f"\t\t\t {project.cost} - {current_contribution} / {denominator} = {afford_factor} * "
+                    f"{project.supporters_sat(supporter)} ?? {supporter.budget}"
+                )
             if afford_factor * project.supporters_sat(supporter) <= supporter.budget:
                 # found the best afford_factor for this project
                 project.affordability = afford_factor
                 if verbose:
-                    eff_vote_count = frac(denominator, project.cost - paid_so_far)
+                    eff_vote_count = frac(
+                        denominator, project.cost - current_contribution
+                    )
                     print(
-                        f"\t\tFactor: {float(afford_factor)} = ({float(project.cost)} - {float(paid_so_far)})/{float(denominator)}"
+                        f"\t\tFactor: {float(afford_factor)} = ({float(project.cost)} - {float(current_contribution)})/{float(denominator)}"
                     )
                     print(f"\t\tEff: {float(eff_vote_count)}")
                 if afford_factor < best_afford:
@@ -250,7 +375,7 @@ def mes_inner_algo(
                 elif afford_factor == best_afford:
                     tied_projects.append(project)
                 break
-            paid_so_far += supporter.total_budget()
+            current_contribution += supporter.total_budget()
             denominator -= supporter.multiplicity * project.supporters_sat(supporter)
     if verbose:
         print(f"{tied_projects}")
@@ -277,6 +402,10 @@ def mes_inner_algo(
                 new_voters = deepcopy(voters)
             new_alloc.append(selected_project.project)
             new_projects.remove(selected_project)
+            if verbose:
+                print(
+                    f"Price is {best_afford * selected_project.supporters_sat(selected_project.supporter_indices[0])}"
+                )
             for i in selected_project.supporter_indices:
                 supporter = new_voters[i]
                 supporter.budget -= min(
@@ -306,6 +435,7 @@ def method_of_equal_shares_scheme(
     resoluteness=True,
     voter_budget_increment=None,
     binary_sat=False,
+    verbose: bool = False,
 ) -> list[Project] | list[list[Project]]:
     """
     The main wrapper to compute the outcome of the Method of Equal Shares (MES). This is where the
@@ -331,15 +461,21 @@ def method_of_equal_shares_scheme(
             Any value that is not `None` will lead to the iterated variant of MES where `voter_budget_increment` units
             of budget are added to the initial budget of the voters until an exhaustive budget allocation is found, or
             one that is no longer feasible with the initial budget constraint.
+        binary_sat : bool, optional
+            Uses the inner algorithm for binary satisfaction if set to `True`. Should typically be used with approval
+            ballots to gain on the runtime. Automatically set to `True` if an approval profile is given.
+        verbose : bool, optional
+            (De)Activate the display of additional information.
     Returns
     -------
         Collection[Project] | Iterable[Collection[Project]]
             The selected projects if resolute (`resoluteness` = True), or the set of selected projects if irresolute
             (`resoluteness = False`).
     """
-    index = 0
+    if verbose:
+        print(f"Initial budget per voter is: {initial_budget_per_voter}")
     voters = []
-    for sat in sat_profile:
+    for index, sat in enumerate(sat_profile):
         voters.append(
             MESVoter(
                 index,
@@ -387,6 +523,7 @@ def method_of_equal_shares_scheme(
             copy(initial_budget_allocation),
             all_budget_allocations,
             resoluteness,
+            verbose,
         )
         if resoluteness:
             outcome = all_budget_allocations[0]
@@ -426,6 +563,7 @@ def method_of_equal_shares(
     initial_budget_allocation: list[Project] | None = None,
     voter_budget_increment=None,
     binary_sat=None,
+    verbose: bool = False,
 ) -> Collection[Project] | Collection[Collection[Project]]:
     """
     The Method of Equal Shares (MES). See the website
@@ -461,6 +599,8 @@ def method_of_equal_shares(
         binary_sat : bool, optional
             Uses the inner algorithm for binary satisfaction if set to `True`. Should typically be used with approval
             ballots to gain on the runtime. Automatically set to `True` if an approval profile is given.
+        verbose : bool, optional
+            (De)Activate the display of additional information.
 
     Returns
     -------
@@ -494,4 +634,5 @@ def method_of_equal_shares(
         resoluteness=resoluteness,
         voter_budget_increment=voter_budget_increment,
         binary_sat=binary_sat,
+        verbose=verbose,
     )

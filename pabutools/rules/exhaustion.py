@@ -53,8 +53,10 @@ def completion_by_rule_combination(
         rule_params = [{} for _ in rule_sequence]
     for i, params in enumerate(rule_params):
         if "resoluteness" in params and params["resoluteness"] != resoluteness:
-            raise ValueError(f"The rule parameter at position {i} sets the resoluteness parameter to a different "
-                             "one that the resoluteness argument passed to completion_by_rule_combination.")
+            raise ValueError(
+                f"The rule parameter at position {i} sets the resoluteness parameter to a different "
+                "one that the resoluteness argument passed to completion_by_rule_combination."
+            )
     budget_allocations = []
     res = []
     if initial_budget_allocation is not None:

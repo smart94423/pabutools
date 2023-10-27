@@ -644,26 +644,26 @@ class TestRule(TestCase):
         p2 = Project("p2", 2)
         p3 = Project("p3", 3)
         instance = Instance([p1, p2, p3], budget_limit=4)
-        profile = ApprovalProfile([
-            ApprovalBallot([p1]),
-            ApprovalBallot([p1]),
-            ApprovalBallot([p1]),
-            ApprovalBallot([p1]),
-            ApprovalBallot([p1]),
-            ApprovalBallot([p2]),
-            ApprovalBallot([p3]),
-            ApprovalBallot([p3])
-        ])
+        profile = ApprovalProfile(
+            [
+                ApprovalBallot([p1]),
+                ApprovalBallot([p1]),
+                ApprovalBallot([p1]),
+                ApprovalBallot([p1]),
+                ApprovalBallot([p1]),
+                ApprovalBallot([p2]),
+                ApprovalBallot([p3]),
+                ApprovalBallot([p3]),
+            ]
+        )
 
         def mes_phragmen(instance, profile, resoluteness=True):
             return completion_by_rule_combination(
                 instance,
                 profile,
                 [method_of_equal_shares, sequential_phragmen],
-                [
-                    {"sat_class": Cost_Sat}, {}
-                ],
-                resoluteness=resoluteness
+                [{"sat_class": Cost_Sat}, {}],
+                resoluteness=resoluteness,
             )
 
         assert method_of_equal_shares(instance, profile, Cost_Sat) == [p1]
