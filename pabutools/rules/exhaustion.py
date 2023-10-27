@@ -51,6 +51,10 @@ def completion_by_rule_combination(
         )
     if rule_params is None:
         rule_params = [{} for _ in rule_sequence]
+    for i, params in enumerate(rule_params):
+        if "resoluteness" in params and params["resoluteness"] != resoluteness:
+            raise ValueError(f"The rule parameter at position {i} sets the resoluteness parameter to a different "
+                             "one that the resoluteness argument passed to completion_by_rule_combination.")
     budget_allocations = []
     res = []
     if initial_budget_allocation is not None:
@@ -69,20 +73,24 @@ def completion_by_rule_combination(
             )
             if resoluteness:
                 if instance.is_exhaustive(outcome):
-                    res.append(outcome)
+                    return outcome
                 else:
                     new_budget_allocations = [outcome]
             else:
+                all_resolute = True
                 for alloc in outcome:
                     if instance.is_exhaustive(alloc):
                         if alloc not in res:
                             res.append(alloc)
                     else:
+                        all_resolute = False
                         new_budget_allocations.append(alloc)
+                if all_resolute:
+                    return res
         budget_allocations = new_budget_allocations
     if resoluteness:
-        return res[0]
-    return res
+        return budget_allocations[0]
+    return res + budget_allocations
 
 
 def exhaustion_by_budget_increase(
