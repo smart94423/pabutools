@@ -1,7 +1,7 @@
 import sys
 import os
 
-from pabutools.rules.mes import naive_mes, is_affordable2
+from pabutools.rules.mes import naive_mes
 
 pabutools_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, pabutools_path)
@@ -352,6 +352,7 @@ if __name__ == "__main__":
         sat_class=Cost_Sat,
         voter_budget_increment=1,
         verbose=False,
+        resoluteness=False,
     )
     print(len(winners_slow))
     print(f"{winners_slow} - {winners_slow == winners_fast}")

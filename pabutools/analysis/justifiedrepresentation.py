@@ -126,9 +126,9 @@ def is_PJR_approval(
     up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
-        sat = sat_class(instance, profile, ApprovalBallot(instance))
+        sat = sat_class(instance, group, ApprovalBallot(instance))
         threshold = sat.sat(project_set)
-        group_approved = {p for p in budget_allocation if any(p in b for b in profile)}
+        group_approved = {p for p in budget_allocation if any(p in b for b in group)}
         surplus = 0
         if up_to_func is not None:
             surplus = up_to_func(
@@ -216,7 +216,7 @@ def is_EJR_cardinal(
     return True
 
 
-def is_EJR_one_cardinal(
+def is_EJR_any_cardinal(
     instance: Instance,
     profile: AbstractCardinalProfile,
     budget_allocation: Collection[Project],
@@ -226,7 +226,7 @@ def is_EJR_one_cardinal(
     )
 
 
-def is_EJR_any_cardinal(
+def is_EJR_one_cardinal(
     instance: Instance,
     profile: AbstractCardinalProfile,
     budget_allocation: Collection[Project],
@@ -243,12 +243,12 @@ def is_PJR_cardinal(
     up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
-        threshold = sum(min(b[p] for b in profile) for p in project_set)
-        group_sat = sum(max(b[p] for b in profile) for p in budget_allocation)
+        threshold = sum(min(b[p] for b in group) for p in project_set)
+        group_sat = sum(max(b[p] for b in group) for p in budget_allocation)
         surplus = 0
         if up_to_func is not None:
             surplus = up_to_func(
-                max(b[p] for b in profile)
+                max(b[p] for b in group)
                 for p in project_set
                 if p not in budget_allocation
             )
