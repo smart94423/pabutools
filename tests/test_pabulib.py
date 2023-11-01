@@ -612,7 +612,6 @@ country;Poland
 unit;Warszawa
 subunit;Pole Mokotowskie
 instance;2018
-district;Ochota
 num_projects;1
 num_votes;8
 budget;21064
@@ -620,13 +619,15 @@ vote_type;approval
 rule;greedy
 date_begin;14.06.2017
 date_end;30.06.2017
-min_length;1
-max_sum_cost;21064
 language;polish
 edition;4
+district;Ochota
+min_length;1
+max_sum_cost;21064
+currency;PLN
 PROJECTS
-project_id;cost;category;votes;name;target;selected
-658;21064;environmental protection,public space,urban greenery;8;Dobre grzyby (mikoryza) dla drzew Pola Mokotowskiego;seniors,families with children,animals;1
+project_id;cost;name;category;target;votes;selected
+658;21064;Dobre grzyby (mikoryza) dla drzew Pola Mokotowskiego;environmental protection,public space,urban greenery;seniors,families with children,animals;8;1
 VOTES
 voter_id;age;sex;voting_method;vote
 30397;43;F;internet;658
