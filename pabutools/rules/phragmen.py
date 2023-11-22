@@ -79,7 +79,7 @@ def sequential_phragmen(
             A list of initial load, one per ballot in `profile`. By defaults, the initial load is `0`.
         initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
             Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional

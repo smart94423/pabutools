@@ -301,7 +301,7 @@ def mes_inner_algo(
         projects: set[MESProject]
             The set of MESProjects to take into account, already instantiated with the necessary inner
             values.
-        tie_breaking_rule : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+        tie_breaking_rule : :py:class:`~pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         current_alloc: list[Project]
             The budget allocation that is currently being built. Only populated via side effects.
@@ -452,7 +452,7 @@ def method_of_equal_shares_scheme(
             The initial budget of a voter.
         initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
@@ -586,7 +586,7 @@ def method_of_equal_shares(
             provided, but a satisfaction function is, the former is computed from the latter.
         initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
             Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional

@@ -46,7 +46,7 @@ def greedy_utilitarian_scheme(
             The profile of satisfaction functions.
         budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
@@ -151,7 +151,7 @@ def greedy_utilitarian_scheme_additive(
             The profile of satisfaction functions.
         budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`
             The tie-breaking rule used.
         resoluteness : bool, optional
             Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.
@@ -222,7 +222,7 @@ def greedy_utilitarian_welfare(
             The profile.
         sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]
             The class defining the satisfaction function used to measure the social welfare. It should be a class
-            inhereting from :py:class:`pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`.
+            inhereting from :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`.
             If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is
             provided, the satisfaction argument is disregarded.
         sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`
@@ -233,7 +233,7 @@ def greedy_utilitarian_welfare(
             is provided.
         initial_budget_allocation : Iterable[:py:class:`~pabutools.election.instance.Project`]
             An initial budget allocation, typically empty.
-        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional
+        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`, optional
             The tie-breaking rule used.
             Defaults to the lexicographic tie-breaking.
         resoluteness : bool, optional
