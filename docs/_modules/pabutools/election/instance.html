@@ -435,7 +435,9 @@ document.write(`
         <span class="k">if</span> <span class="n">opt_status</span> <span class="o">==</span> <span class="n">OptimizationStatus</span><span class="o">.</span><span class="n">OPTIMAL</span><span class="p">:</span>
             <span class="n">max_cost</span> <span class="o">=</span> <span class="n">mip_model</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">x</span>
             <span class="k">return</span> <span class="n">frac</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">max_cost</span><span class="p">))</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The MIP to find the maximum cost of a budget allocation failed to find an optimal solution.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The MIP to find the maximum cost of a budget allocation failed to find an optimal solution.&quot;</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="mi">0</span></div>
 
 
@@ -523,7 +525,9 @@ document.write(`
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">set</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.budget_limit does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span><span class="p">:</span> <span class="n">Numeric</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># Only for type checking, so that init.budget_limit does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">budget_limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">budget_limit</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">budget_limit</span>
@@ -531,7 +535,9 @@ document.write(`
                 <span class="n">budget_limit</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span> <span class="o">=</span> <span class="n">budget_limit</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.categories does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.categories does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">categories</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">categories</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">categories</span>
@@ -539,7 +545,9 @@ document.write(`
                 <span class="n">categories</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">categories</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.targets does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.targets does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">targets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">targets</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">targets</span>
@@ -547,7 +555,9 @@ document.write(`
                 <span class="n">targets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.file_path does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.file_path does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">file_path</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">file_path</span>
@@ -555,7 +565,9 @@ document.write(`
                 <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.file_name does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.file_name does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">file_name</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">file_name</span>
@@ -563,7 +575,9 @@ document.write(`
                 <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.parsing_errors does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.parsing_errors does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">parsing_errors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">parsing_errors</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">parsing_errors</span>
@@ -579,7 +593,9 @@ document.write(`
                 <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">project_meta</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.projet_meta does not fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_meta</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Only for type checking, so that init.projet_meta does not fail</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">project_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">Instance</span><span class="p">):</span>
                 <span class="n">project_meta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">project_meta</span>
@@ -649,7 +665,9 @@ document.write(`
         <span class="k">return</span> <span class="n">total_cost</span><span class="p">(</span><span class="n">projects</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget_limit</span></div>
 
 <div class="viewcode-block" id="Instance.is_exhaustive"><a class="viewcode-back" href="../../../reference/election/instance.html#pabutools.election.instance.Instance.is_exhaustive">[docs]</a>    <span class="k">def</span> <span class="nf">is_exhaustive</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span> <span class="n">available_projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">],</span>
+        <span class="n">available_projects</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tests if a given collection of projects is exhaustive. A collection of projects is said to be exhaustive if no</span>

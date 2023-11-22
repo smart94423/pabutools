@@ -391,7 +391,7 @@ class CardinalMultiProfile(MultiProfile, AbstractCardinalProfile):
         Returns the score of a project, that is, the sum of scores received from all voters.
         Parameters
         ----------
-            project : pabutools.instance.instance.Project
+            project : pabutools.election.instance.Project
                 The project.
         Returns
         -------

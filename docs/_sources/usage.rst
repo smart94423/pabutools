@@ -624,10 +624,10 @@ to additive satisfaction measures (and runs faster).
         resoluteness=False
     )
 
-Sequential Phragmèn's Rule
+Sequential Phragmén's Rule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Another rule provided is the Sequential Phragmèn's Rule, which is different from the
+Another rule provided is the Sequential Phragmén's Rule, which is different from the
 previous two as it does not rely on a satisfaction measure.
 
 .. code-block:: python

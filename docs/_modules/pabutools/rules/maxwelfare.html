@@ -357,10 +357,10 @@ document.write(`
 <div class="viewcode-block" id="max_additive_utilitarian_welfare"><a class="viewcode-back" href="../../../reference/rules/index.html#pabutools.rules.maxwelfare.max_additive_utilitarian_welfare">[docs]</a><span class="k">def</span> <span class="nf">max_additive_utilitarian_welfare</span><span class="p">(</span>
     <span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span>
     <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span>
-    <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sat_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SatisfactionMeasure</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sat_profile</span><span class="p">:</span> <span class="n">GroupSatisfactionMeasure</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">resoluteness</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">initial_budget_allocation</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="n">Project</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Rule returning the budget allocation(s) maximizing the utilitarian social welfare. The utilitarian social welfare is</span>
@@ -376,7 +376,7 @@ document.write(`
 <span class="sd">            The profile.</span>
 <span class="sd">        sat_class : type[:py:class:`~pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure`]</span>
 <span class="sd">            The class defining the satisfaction function used to measure the social welfare. It should be a class</span>
-<span class="sd">            inhereting from pabutools.instance.satisfaction.Satisfaction.</span>
+<span class="sd">            inhereting from pabutools.election.satisfaction.satisfactionmeasure.SatisfactionMeasure.</span>
 <span class="sd">            If no satisfaction is provided, a satisfaction profile needs to be provided. If a satisfation profile is</span>
 <span class="sd">            provided, the satisfaction argument is disregarded.</span>
 <span class="sd">        sat_profile : :py:class:`~pabutools.election.satisfaction.satisfactionmeasure.GroupSatisfactionMeasure`</span>
