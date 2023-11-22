@@ -13,30 +13,35 @@ from pabutools.election import (
     Additive_Cardinal_Sat,
     AbstractCardinalProfile,
     ApprovalBallot,
-    total_cost,
+    total_cost, AbstractProfile,
 )
 from pabutools.utils import powerset
 
 
-def is_in_core_approval(
+def is_in_core(
     instance: Instance,
-    profile: AbstractApprovalProfile,
+    profile: AbstractProfile,
     sat_class: type[SatisfactionMeasure],
     budget_allocation: Collection[Project],
+    up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group in powerset(profile):
         if len(group) > 0:
-            for proj_set in powerset(instance):
+            for project_set in powerset(instance):
                 if is_large_enough(
                     len(group),
                     profile.num_ballots(),
-                    total_cost(proj_set),
+                    total_cost(project_set),
                     instance.budget_limit,
                 ):
                     all_better_alone = True
                     for ballot in group:
                         sat = sat_class(instance, profile, ballot)
-                        if sat.sat(budget_allocation) >= sat.sat(proj_set):
+                        surplus = 0
+                        if up_to_func is not None:
+                            surplus = up_to_func(sat.sat_project(p) for p in project_set if p not in budget_allocation
+                            )
+                        if sat.sat(budget_allocation) + surplus >= sat.sat(project_set):
                             all_better_alone = False
                             break
                     if all_better_alone:
@@ -126,7 +131,7 @@ def is_PJR_approval(
     up_to_func: Callable[[Iterable[Numeric]], Numeric] | None = None,
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
-        sat = sat_class(instance, group, ApprovalBallot(instance))
+        sat = sat_class(instance, profile, ApprovalBallot(instance))
         threshold = sat.sat(project_set)
         group_approved = {p for p in budget_allocation if any(p in b for b in group)}
         surplus = 0
@@ -178,7 +183,7 @@ def is_strong_EJR_cardinal(
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         all_agents_sat = True
-        threshold = sum(min(b[p] for b in profile) for p in project_set)
+        threshold = sum(min(b[p] for b in group) for p in project_set)
         for ballot in group:
             sat = sat_class(instance, profile, ballot)
             if sat.sat(budget_allocation) < threshold:
@@ -198,7 +203,7 @@ def is_EJR_cardinal(
 ) -> bool:
     for group, project_set in cohesive_groups(instance, profile):
         one_agent_sat = False
-        threshold = sum(min(b[p] for b in profile) for p in project_set)
+        threshold = sum(min(b[p] for b in group) for p in project_set)
         for ballot in group:
             sat = sat_class(instance, profile, ballot)
             surplus = 0
