@@ -270,6 +270,7 @@ document.write(`
     <span class="n">AbstractCardinalBallot</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pabutools.election.profile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AbstractProfile</span><span class="p">,</span>
     <span class="n">Profile</span><span class="p">,</span>
     <span class="n">ApprovalProfile</span><span class="p">,</span>
     <span class="n">AbstractApprovalProfile</span><span class="p">,</span>
@@ -288,8 +289,8 @@ document.write(`
 
 <span class="k">def</span> <span class="nf">parse_pabulib_from_string</span><span class="p">(</span><span class="n">file_content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instance</span><span class="p">,</span> <span class="n">Profile</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile</span>
-<span class="sd">    will be of the correct type depending on the metadata in the file.</span>
+<span class="sd">    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The</span>
+<span class="sd">    returned profile will be of the correct type depending on the metadata in the file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -514,9 +515,11 @@ document.write(`
     <span class="k">return</span> <span class="n">instance</span><span class="p">,</span> <span class="n">profile</span>
 
 
-<span class="k">def</span> <span class="nf">write_pabulib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes an instance and a profile to a file using the pabulib format (as specified in</span>
-<span class="sd">    https://arxiv.org/pdf/2305.11035.pdf).</span>
+<div class="viewcode-block" id="election_as_pabulib_string"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.pabulib.election_as_pabulib_string">[docs]</a><span class="k">def</span> <span class="nf">election_as_pabulib_string</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a string representing the instance and the profile according to the Pabulib standard</span>
+<span class="sd">    (as specified in https://arxiv.org/pdf/2305.11035.pdf).</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -524,8 +527,11 @@ document.write(`
 <span class="sd">            The instance.</span>
 <span class="sd">        profile: :py:class:`~pabutools.election.profile.profile.Profile`</span>
 <span class="sd">            The profile.</span>
-<span class="sd">        file_path: str</span>
-<span class="sd">            The path to the output file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The instance and profile represented as a Pabulib string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">update_meta_value</span><span class="p">(</span><span class="n">meta_dict</span><span class="p">,</span> <span class="n">inst_meta</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -655,21 +661,34 @@ document.write(`
             <span class="n">vote_dicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vote_meta</span><span class="p">)</span>
     <span class="n">vote_dicts</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">vote_dicts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;voter_id&quot;</span><span class="p">])</span>
 
+    <span class="n">file_str</span> <span class="o">=</span> <span class="s2">&quot;META</span><span class="se">\n</span><span class="s2">key;value</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">file_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;PROJECTS</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">project_dict</span> <span class="ow">in</span> <span class="n">project_dicts</span><span class="p">:</span>
+        <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">project_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;VOTES</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vote_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">vote_dict</span> <span class="ow">in</span> <span class="n">vote_dicts</span><span class="p">:</span>
+        <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vote_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">file_str</span></div>
+
+
+<div class="viewcode-block" id="write_pabulib"><a class="viewcode-back" href="../../../reference/election/libraries.html#pabutools.election.pabulib.write_pabulib">[docs]</a><span class="k">def</span> <span class="nf">write_pabulib</span><span class="p">(</span><span class="n">instance</span><span class="p">:</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">AbstractProfile</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes an instance and a profile to a file using the pabulib format (as specified in</span>
+<span class="sd">    https://arxiv.org/pdf/2305.11035.pdf).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        instance: :py:class:`~pabutools.election.instance.Instance`</span>
+<span class="sd">            The instance.</span>
+<span class="sd">        profile: :py:class:`~pabutools.election.profile.profile.Profile`</span>
+<span class="sd">            The profile.</span>
+<span class="sd">        file_path: str</span>
+<span class="sd">            The path to the output file. Defaults to :code:`None`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;META</span><span class="se">\n</span><span class="s2">key;value</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;PROJECTS</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">project_dict</span> <span class="ow">in</span> <span class="n">project_dicts</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">project_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">project_keys</span><span class="p">])</span>
-                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;VOTES</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vote_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">vote_dict</span> <span class="ow">in</span> <span class="n">vote_dicts</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-                <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vote_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vote_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">election_as_pabulib_string</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">))</span></div>
 </pre></div>
 
                 </article>

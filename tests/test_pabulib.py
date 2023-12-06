@@ -5,7 +5,7 @@ from pabutools.election.pabulib import (
     parse_pabulib,
     parse_pabulib_from_string,
     parse_pabulib_from_url,
-    write_pabulib,
+    write_pabulib, election_as_pabulib_string,
 )
 
 import os

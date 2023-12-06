@@ -303,6 +303,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.parse_pabulib"><code class="docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.write_pabulib"><code class="docutils literal notranslate"><span class="pre">write_pabulib()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.election_as_pabulib_string"><code class="docutils literal notranslate"><span class="pre">election_as_pabulib_string()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.init_preflib_instance"><code class="docutils literal notranslate"><span class="pre">init_preflib_instance()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.approval_to_preflib"><code class="docutils literal notranslate"><span class="pre">approval_to_preflib()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.cardinal_to_preflib"><code class="docutils literal notranslate"><span class="pre">cardinal_to_preflib()</span></code></a></li>
@@ -334,6 +336,43 @@ correct type depending on the metadata in the file.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>, <a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.pabulib.write_pabulib">
+<span class="sig-name descname"><span class="pre">write_pabulib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/pabulib.html#write_pabulib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.pabulib.write_pabulib" title="Permalink to this definition">#</a></dt>
+<dd><p>Writes an instance and a profile to a file using the pabulib format (as specified in
+<a class="reference external" href="https://arxiv.org/pdf/2305.11035.pdf">https://arxiv.org/pdf/2305.11035.pdf</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>) – The profile.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) – The path to the output file. Defaults to <code class="code docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pabutools.election.pabulib.election_as_pabulib_string">
+<span class="sig-name descname"><span class="pre">election_as_pabulib_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><span class="pre">Instance</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="profile.html#pabutools.election.profile.profile.AbstractProfile" title="pabutools.election.profile.profile.AbstractProfile"><span class="pre">AbstractProfile</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/pabutools/election/pabulib.html#election_as_pabulib_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pabutools.election.pabulib.election_as_pabulib_string" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a string representing the instance and the profile according to the Pabulib standard
+(as specified in <a class="reference external" href="https://arxiv.org/pdf/2305.11035.pdf">https://arxiv.org/pdf/2305.11035.pdf</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance</strong> (<a class="reference internal" href="instance.html#pabutools.election.instance.Instance" title="pabutools.election.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a>) – The instance.</p></li>
+<li><p><strong>profile</strong> (<a class="reference internal" href="profile.html#pabutools.election.profile.profile.Profile" title="pabutools.election.profile.profile.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>) – The profile.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The instance and profile represented as a Pabulib string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>str</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -485,6 +524,8 @@ correct type depending on the metadata in the file.</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.parse_pabulib"><code class="docutils literal notranslate"><span class="pre">parse_pabulib()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.write_pabulib"><code class="docutils literal notranslate"><span class="pre">write_pabulib()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.pabulib.election_as_pabulib_string"><code class="docutils literal notranslate"><span class="pre">election_as_pabulib_string()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.init_preflib_instance"><code class="docutils literal notranslate"><span class="pre">init_preflib_instance()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.approval_to_preflib"><code class="docutils literal notranslate"><span class="pre">approval_to_preflib()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pabutools.election.preflib.cardinal_to_preflib"><code class="docutils literal notranslate"><span class="pre">cardinal_to_preflib()</span></code></a></li>

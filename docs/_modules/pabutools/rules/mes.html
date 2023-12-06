@@ -557,7 +557,7 @@ document.write(`
 <span class="sd">        projects: set[MESProject]</span>
 <span class="sd">            The set of MESProjects to take into account, already instantiated with the necessary inner</span>
 <span class="sd">            values.</span>
-<span class="sd">        tie_breaking_rule : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
+<span class="sd">        tie_breaking_rule : :py:class:`~pabutools.tiebreaking.TieBreakingRule`</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">        current_alloc: list[Project]</span>
 <span class="sd">            The budget allocation that is currently being built. Only populated via side effects.</span>
@@ -708,7 +708,7 @@ document.write(`
 <span class="sd">            The initial budget of a voter.</span>
 <span class="sd">        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`</span>
+<span class="sd">        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">        resoluteness : bool, optional</span>
 <span class="sd">            Set to `False` to obtain an irresolute outcome, where all tied budget allocations are returned.</span>
@@ -842,7 +842,7 @@ document.write(`
 <span class="sd">            provided, but a satisfaction function is, the former is computed from the latter.</span>
 <span class="sd">        initial_budget_allocation : list[:py:class:`~pabutools.election.instance.Project`]</span>
 <span class="sd">            An initial budget allocation, typically empty.</span>
-<span class="sd">        tie_breaking : :py:class:`pabutools.tiebreaking.TieBreakingRule`, optional</span>
+<span class="sd">        tie_breaking : :py:class:`~pabutools.tiebreaking.TieBreakingRule`, optional</span>
 <span class="sd">            The tie-breaking rule used.</span>
 <span class="sd">            Defaults to the lexicographic tie-breaking.</span>
 <span class="sd">        resoluteness : bool, optional</span>

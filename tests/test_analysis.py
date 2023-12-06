@@ -7,7 +7,6 @@ from pabutools.analysis.category import *
 from pabutools.election import CardinalProfile
 from pabutools.election.profile.approvalprofile import (
     ApprovalProfile,
-    ApprovalMultiProfile,
 )
 
 from pabutools.election.satisfaction import (

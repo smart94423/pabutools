@@ -316,6 +316,24 @@ length of a ballot or the number of points that must be allocated for instance.
     profile.legal_min_total_score   # Imposed minimum total scores for the ballots in the profile
     profile.legal_max_total_score   # Imposed maximum total scores for the ballots in the profile
 
+
+It is also possible to write instances and profiles into Pabulib files:
+
+.. code-block:: python
+
+    from pabutools.election import write_pabulib
+
+    write_pabulib(instance, profile, "path/to/the/file.pb")
+
+If you need the string corresponding to the file content, you can use the following:
+
+.. code-block:: python
+
+    from pabutools.election.pabulib import election_as_pabulib_string
+
+    str_representation = election_as_pabulib_string(instance, profile)
+
+
 PrefLib
 ^^^^^^^
 

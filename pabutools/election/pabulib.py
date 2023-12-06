@@ -14,6 +14,7 @@ from pabutools.election.ballot import (
     AbstractCardinalBallot,
 )
 from pabutools.election.profile import (
+    AbstractProfile,
     Profile,
     ApprovalProfile,
     AbstractApprovalProfile,
@@ -32,8 +33,8 @@ import os
 
 def parse_pabulib_from_string(file_content: str) -> tuple[Instance, Profile]:
     """
-    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The returned profile
-    will be of the correct type depending on the metadata in the file.
+    Parses a PaBuLib file given as a string and returns the corresponding instance and profile. The
+    returned profile will be of the correct type depending on the metadata in the file.
 
     Parameters
     ----------
@@ -258,9 +259,11 @@ def parse_pabulib_from_url(url: str) -> tuple[Instance, Profile]:
     return instance, profile
 
 
-def write_pabulib(instance, profile, file_path):
-    """Writes an instance and a profile to a file using the pabulib format (as specified in
-    https://arxiv.org/pdf/2305.11035.pdf).
+def election_as_pabulib_string(instance: Instance, profile: AbstractProfile) -> str:
+    """
+    Creates a string representing the instance and the profile according to the Pabulib standard
+    (as specified in https://arxiv.org/pdf/2305.11035.pdf).
+
 
     Parameters
     ----------
@@ -268,8 +271,11 @@ def write_pabulib(instance, profile, file_path):
             The instance.
         profile: :py:class:`~pabutools.election.profile.profile.Profile`
             The profile.
-        file_path: str
-            The path to the output file.
+
+    Returns
+    -------
+        str
+            The instance and profile represented as a Pabulib string
     """
 
     def update_meta_value(meta_dict, inst_meta, field, mandatory=False):
@@ -399,18 +405,31 @@ def write_pabulib(instance, profile, file_path):
             vote_dicts.append(vote_meta)
     vote_dicts = natsorted(vote_dicts, key=lambda d: d["voter_id"])
 
+    file_str = "META\nkey;value\n"
+    for key, value in meta.items():
+        file_str += f"{key};{value}\n"
+    file_str += "PROJECTS\n" + ";".join(project_keys) + "\n"
+    for project_dict in project_dicts:
+        file_str += ";".join([str(project_dict.get(key, "None")) for key in project_keys]) + "\n"
+    file_str += "VOTES\n" + ";".join(vote_keys) + "\n"
+    for vote_dict in vote_dicts:
+        file_str += ";".join([str(vote_dict.get(key, "None")) for key in vote_keys]) + "\n"
+    return file_str
+
+
+def write_pabulib(instance: Instance, profile: AbstractProfile, file_path: str) -> None:
+    """Writes an instance and a profile to a file using the pabulib format (as specified in
+    https://arxiv.org/pdf/2305.11035.pdf).
+
+    Parameters
+    ----------
+        instance: :py:class:`~pabutools.election.instance.Instance`
+            The instance.
+        profile: :py:class:`~pabutools.election.profile.profile.Profile`
+            The profile.
+        file_path: str
+            The path to the output file. Defaults to :code:`None`.
+    """
+
     with open(file_path, "w", encoding="utf-8-sig") as f:
-        f.write("META\nkey;value\n")
-        for key, value in meta.items():
-            f.write(f"{key};{value}\n")
-        f.write("PROJECTS\n" + ";".join(project_keys) + "\n")
-        for project_dict in project_dicts:
-            f.write(
-                ";".join([str(project_dict.get(key, "None")) for key in project_keys])
-                + "\n"
-            )
-        f.write("VOTES\n" + ";".join(vote_keys) + "\n")
-        for vote_dict in vote_dicts:
-            f.write(
-                ";".join([str(vote_dict.get(key, "None")) for key in vote_keys]) + "\n"
-            )
+        f.write(election_as_pabulib_string(instance, profile))

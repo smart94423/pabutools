@@ -607,6 +607,18 @@ length of a ballot or the number of points that must be allocated for instance.<
 <span class="n">profile</span><span class="o">.</span><span class="n">legal_max_total_score</span>   <span class="c1"># Imposed maximum total scores for the ballots in the profile</span>
 </pre></div>
 </div>
+<p>It is also possible to write instances and profiles into Pabulib files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election</span> <span class="kn">import</span> <span class="n">write_pabulib</span>
+
+<span class="n">write_pabulib</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="s2">&quot;path/to/the/file.pb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you need the string corresponding to the file content, you can use the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pabutools.election.pabulib</span> <span class="kn">import</span> <span class="n">election_as_pabulib_string</span>
+
+<span class="n">str_representation</span> <span class="o">=</span> <span class="n">election_as_pabulib_string</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="preflib">
 <h3>PrefLib<a class="headerlink" href="#preflib" title="Permalink to this heading">#</a></h3>
